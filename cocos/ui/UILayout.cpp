@@ -953,7 +953,13 @@ void Layout::requestDoLayout()
 {
     _doLayoutDirty = true;
 }
-    
+
+void Layout::forceDoLayout()
+{
+    this->requestDoLayout();
+    this->doLayout();
+}
+
 Size Layout::getLayoutContentSize()const
 {
     return this->getContentSize();
