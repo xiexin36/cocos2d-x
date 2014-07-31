@@ -16,6 +16,9 @@
     <Filter Include="UIWidgets\ScrollWidget">
       <UniqueIdentifier>{b59b178a-b7e0-4826-ba07-44c46cd29a10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProtocolBuf">
+      <UniqueIdentifier>{e6e4bc83-b744-4ea5-85cd-9dd1cbe9bd69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\UIScrollView.h">
@@ -93,6 +96,9 @@
     <ClInclude Include="..\GUIExport.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\editor-support\cocostudio\CSParseBinary.pb.h">
+      <Filter>ProtocolBuf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\UIScrollView.cpp">
@@ -166,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="..\UIDeprecated.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\editor-support\cocostudio\CSParseBinary.pb.cc">
+      <Filter>ProtocolBuf</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
