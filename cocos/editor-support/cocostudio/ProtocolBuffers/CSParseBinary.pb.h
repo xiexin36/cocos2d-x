@@ -5429,128 +5429,119 @@ class Frame : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // repeated .protocolbuffers.TimeLineBoolFrame visibleFrames = 5;
-  inline int visibleframes_size() const;
-  inline void clear_visibleframes();
-  static const int kVisibleFramesFieldNumber = 5;
-  inline const ::protocolbuffers::TimeLineBoolFrame& visibleframes(int index) const;
-  inline ::protocolbuffers::TimeLineBoolFrame* mutable_visibleframes(int index);
-  inline ::protocolbuffers::TimeLineBoolFrame* add_visibleframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineBoolFrame >&
-      visibleframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineBoolFrame >*
-      mutable_visibleframes();
+  // optional .protocolbuffers.TimeLineBoolFrame visibleFrame = 5;
+  inline bool has_visibleframe() const;
+  inline void clear_visibleframe();
+  static const int kVisibleFrameFieldNumber = 5;
+  inline const ::protocolbuffers::TimeLineBoolFrame& visibleframe() const;
+  inline ::protocolbuffers::TimeLineBoolFrame* mutable_visibleframe();
+  inline ::protocolbuffers::TimeLineBoolFrame* release_visibleframe();
+  inline void set_allocated_visibleframe(::protocolbuffers::TimeLineBoolFrame* visibleframe);
 
-  // repeated .protocolbuffers.TimeLineIntFrame zOrderFrames = 6;
-  inline int zorderframes_size() const;
-  inline void clear_zorderframes();
-  static const int kZOrderFramesFieldNumber = 6;
-  inline const ::protocolbuffers::TimeLineIntFrame& zorderframes(int index) const;
-  inline ::protocolbuffers::TimeLineIntFrame* mutable_zorderframes(int index);
-  inline ::protocolbuffers::TimeLineIntFrame* add_zorderframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >&
-      zorderframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >*
-      mutable_zorderframes();
+  // optional .protocolbuffers.TimeLineIntFrame zOrderFrame = 6;
+  inline bool has_zorderframe() const;
+  inline void clear_zorderframe();
+  static const int kZOrderFrameFieldNumber = 6;
+  inline const ::protocolbuffers::TimeLineIntFrame& zorderframe() const;
+  inline ::protocolbuffers::TimeLineIntFrame* mutable_zorderframe();
+  inline ::protocolbuffers::TimeLineIntFrame* release_zorderframe();
+  inline void set_allocated_zorderframe(::protocolbuffers::TimeLineIntFrame* zorderframe);
 
-  // repeated .protocolbuffers.TimeLineIntFrame rotationFrames = 7;
-  inline int rotationframes_size() const;
-  inline void clear_rotationframes();
-  static const int kRotationFramesFieldNumber = 7;
-  inline const ::protocolbuffers::TimeLineIntFrame& rotationframes(int index) const;
-  inline ::protocolbuffers::TimeLineIntFrame* mutable_rotationframes(int index);
-  inline ::protocolbuffers::TimeLineIntFrame* add_rotationframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >&
-      rotationframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >*
-      mutable_rotationframes();
+  // optional .protocolbuffers.TimeLinePointFrame rotationSkewFrame = 7;
+  inline bool has_rotationskewframe() const;
+  inline void clear_rotationskewframe();
+  static const int kRotationSkewFrameFieldNumber = 7;
+  inline const ::protocolbuffers::TimeLinePointFrame& rotationskewframe() const;
+  inline ::protocolbuffers::TimeLinePointFrame* mutable_rotationskewframe();
+  inline ::protocolbuffers::TimeLinePointFrame* release_rotationskewframe();
+  inline void set_allocated_rotationskewframe(::protocolbuffers::TimeLinePointFrame* rotationskewframe);
 
-  // repeated .protocolbuffers.TimeLineStringFrame eventFrames = 8;
-  inline int eventframes_size() const;
-  inline void clear_eventframes();
-  static const int kEventFramesFieldNumber = 8;
-  inline const ::protocolbuffers::TimeLineStringFrame& eventframes(int index) const;
-  inline ::protocolbuffers::TimeLineStringFrame* mutable_eventframes(int index);
-  inline ::protocolbuffers::TimeLineStringFrame* add_eventframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineStringFrame >&
-      eventframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineStringFrame >*
-      mutable_eventframes();
+  // optional .protocolbuffers.TimeLineStringFrame eventFrame = 8;
+  inline bool has_eventframe() const;
+  inline void clear_eventframe();
+  static const int kEventFrameFieldNumber = 8;
+  inline const ::protocolbuffers::TimeLineStringFrame& eventframe() const;
+  inline ::protocolbuffers::TimeLineStringFrame* mutable_eventframe();
+  inline ::protocolbuffers::TimeLineStringFrame* release_eventframe();
+  inline void set_allocated_eventframe(::protocolbuffers::TimeLineStringFrame* eventframe);
 
-  // repeated .protocolbuffers.TimeLinePointFrame anchorPointFrames = 9;
-  inline int anchorpointframes_size() const;
-  inline void clear_anchorpointframes();
-  static const int kAnchorPointFramesFieldNumber = 9;
-  inline const ::protocolbuffers::TimeLinePointFrame& anchorpointframes(int index) const;
-  inline ::protocolbuffers::TimeLinePointFrame* mutable_anchorpointframes(int index);
-  inline ::protocolbuffers::TimeLinePointFrame* add_anchorpointframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >&
-      anchorpointframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >*
-      mutable_anchorpointframes();
+  // optional .protocolbuffers.TimeLinePointFrame anchorPointFrame = 9;
+  inline bool has_anchorpointframe() const;
+  inline void clear_anchorpointframe();
+  static const int kAnchorPointFrameFieldNumber = 9;
+  inline const ::protocolbuffers::TimeLinePointFrame& anchorpointframe() const;
+  inline ::protocolbuffers::TimeLinePointFrame* mutable_anchorpointframe();
+  inline ::protocolbuffers::TimeLinePointFrame* release_anchorpointframe();
+  inline void set_allocated_anchorpointframe(::protocolbuffers::TimeLinePointFrame* anchorpointframe);
 
-  // repeated .protocolbuffers.TimeLinePointFrame positionFrames = 10;
-  inline int positionframes_size() const;
-  inline void clear_positionframes();
-  static const int kPositionFramesFieldNumber = 10;
-  inline const ::protocolbuffers::TimeLinePointFrame& positionframes(int index) const;
-  inline ::protocolbuffers::TimeLinePointFrame* mutable_positionframes(int index);
-  inline ::protocolbuffers::TimeLinePointFrame* add_positionframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >&
-      positionframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >*
-      mutable_positionframes();
+  // optional .protocolbuffers.TimeLinePointFrame positionFrame = 10;
+  inline bool has_positionframe() const;
+  inline void clear_positionframe();
+  static const int kPositionFrameFieldNumber = 10;
+  inline const ::protocolbuffers::TimeLinePointFrame& positionframe() const;
+  inline ::protocolbuffers::TimeLinePointFrame* mutable_positionframe();
+  inline ::protocolbuffers::TimeLinePointFrame* release_positionframe();
+  inline void set_allocated_positionframe(::protocolbuffers::TimeLinePointFrame* positionframe);
 
-  // repeated .protocolbuffers.TimeLinePointFrame scaleFrames = 11;
-  inline int scaleframes_size() const;
-  inline void clear_scaleframes();
-  static const int kScaleFramesFieldNumber = 11;
-  inline const ::protocolbuffers::TimeLinePointFrame& scaleframes(int index) const;
-  inline ::protocolbuffers::TimeLinePointFrame* mutable_scaleframes(int index);
-  inline ::protocolbuffers::TimeLinePointFrame* add_scaleframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >&
-      scaleframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >*
-      mutable_scaleframes();
+  // optional .protocolbuffers.TimeLinePointFrame scaleFrame = 11;
+  inline bool has_scaleframe() const;
+  inline void clear_scaleframe();
+  static const int kScaleFrameFieldNumber = 11;
+  inline const ::protocolbuffers::TimeLinePointFrame& scaleframe() const;
+  inline ::protocolbuffers::TimeLinePointFrame* mutable_scaleframe();
+  inline ::protocolbuffers::TimeLinePointFrame* release_scaleframe();
+  inline void set_allocated_scaleframe(::protocolbuffers::TimeLinePointFrame* scaleframe);
 
-  // repeated .protocolbuffers.TimeLineColorFrame colorFrames = 12;
-  inline int colorframes_size() const;
-  inline void clear_colorframes();
-  static const int kColorFramesFieldNumber = 12;
-  inline const ::protocolbuffers::TimeLineColorFrame& colorframes(int index) const;
-  inline ::protocolbuffers::TimeLineColorFrame* mutable_colorframes(int index);
-  inline ::protocolbuffers::TimeLineColorFrame* add_colorframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineColorFrame >&
-      colorframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineColorFrame >*
-      mutable_colorframes();
+  // optional .protocolbuffers.TimeLineColorFrame colorFrame = 12;
+  inline bool has_colorframe() const;
+  inline void clear_colorframe();
+  static const int kColorFrameFieldNumber = 12;
+  inline const ::protocolbuffers::TimeLineColorFrame& colorframe() const;
+  inline ::protocolbuffers::TimeLineColorFrame* mutable_colorframe();
+  inline ::protocolbuffers::TimeLineColorFrame* release_colorframe();
+  inline void set_allocated_colorframe(::protocolbuffers::TimeLineColorFrame* colorframe);
 
-  // repeated .protocolbuffers.TimeLineTextureFrame textureFrames = 13;
-  inline int textureframes_size() const;
-  inline void clear_textureframes();
-  static const int kTextureFramesFieldNumber = 13;
-  inline const ::protocolbuffers::TimeLineTextureFrame& textureframes(int index) const;
-  inline ::protocolbuffers::TimeLineTextureFrame* mutable_textureframes(int index);
-  inline ::protocolbuffers::TimeLineTextureFrame* add_textureframes();
-  inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineTextureFrame >&
-      textureframes() const;
-  inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineTextureFrame >*
-      mutable_textureframes();
+  // optional .protocolbuffers.TimeLineTextureFrame textureFrame = 13;
+  inline bool has_textureframe() const;
+  inline void clear_textureframe();
+  static const int kTextureFrameFieldNumber = 13;
+  inline const ::protocolbuffers::TimeLineTextureFrame& textureframe() const;
+  inline ::protocolbuffers::TimeLineTextureFrame* mutable_textureframe();
+  inline ::protocolbuffers::TimeLineTextureFrame* release_textureframe();
+  inline void set_allocated_textureframe(::protocolbuffers::TimeLineTextureFrame* textureframe);
 
   // @@protoc_insertion_point(class_scope:protocolbuffers.Frame)
  private:
+  inline void set_has_visibleframe();
+  inline void clear_has_visibleframe();
+  inline void set_has_zorderframe();
+  inline void clear_has_zorderframe();
+  inline void set_has_rotationskewframe();
+  inline void clear_has_rotationskewframe();
+  inline void set_has_eventframe();
+  inline void clear_has_eventframe();
+  inline void set_has_anchorpointframe();
+  inline void clear_has_anchorpointframe();
+  inline void set_has_positionframe();
+  inline void clear_has_positionframe();
+  inline void set_has_scaleframe();
+  inline void clear_has_scaleframe();
+  inline void set_has_colorframe();
+  inline void clear_has_colorframe();
+  inline void set_has_textureframe();
+  inline void clear_has_textureframe();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineBoolFrame > visibleframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame > zorderframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame > rotationframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineStringFrame > eventframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame > anchorpointframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame > positionframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame > scaleframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineColorFrame > colorframes_;
-  ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineTextureFrame > textureframes_;
+  ::protocolbuffers::TimeLineBoolFrame* visibleframe_;
+  ::protocolbuffers::TimeLineIntFrame* zorderframe_;
+  ::protocolbuffers::TimeLinePointFrame* rotationskewframe_;
+  ::protocolbuffers::TimeLineStringFrame* eventframe_;
+  ::protocolbuffers::TimeLinePointFrame* anchorpointframe_;
+  ::protocolbuffers::TimeLinePointFrame* positionframe_;
+  ::protocolbuffers::TimeLinePointFrame* scaleframe_;
+  ::protocolbuffers::TimeLineColorFrame* colorframe_;
+  ::protocolbuffers::TimeLineTextureFrame* textureframe_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
@@ -18255,229 +18246,346 @@ TimeLine::mutable_frames() {
 
 // Frame
 
-// repeated .protocolbuffers.TimeLineBoolFrame visibleFrames = 5;
-inline int Frame::visibleframes_size() const {
-  return visibleframes_.size();
+// optional .protocolbuffers.TimeLineBoolFrame visibleFrame = 5;
+inline bool Frame::has_visibleframe() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Frame::clear_visibleframes() {
-  visibleframes_.Clear();
+inline void Frame::set_has_visibleframe() {
+  _has_bits_[0] |= 0x00000001u;
 }
-inline const ::protocolbuffers::TimeLineBoolFrame& Frame::visibleframes(int index) const {
-  return visibleframes_.Get(index);
+inline void Frame::clear_has_visibleframe() {
+  _has_bits_[0] &= ~0x00000001u;
 }
-inline ::protocolbuffers::TimeLineBoolFrame* Frame::mutable_visibleframes(int index) {
-  return visibleframes_.Mutable(index);
+inline void Frame::clear_visibleframe() {
+  if (visibleframe_ != NULL) visibleframe_->::protocolbuffers::TimeLineBoolFrame::Clear();
+  clear_has_visibleframe();
 }
-inline ::protocolbuffers::TimeLineBoolFrame* Frame::add_visibleframes() {
-  return visibleframes_.Add();
+inline const ::protocolbuffers::TimeLineBoolFrame& Frame::visibleframe() const {
+  return visibleframe_ != NULL ? *visibleframe_ : *default_instance_->visibleframe_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineBoolFrame >&
-Frame::visibleframes() const {
-  return visibleframes_;
+inline ::protocolbuffers::TimeLineBoolFrame* Frame::mutable_visibleframe() {
+  set_has_visibleframe();
+  if (visibleframe_ == NULL) visibleframe_ = new ::protocolbuffers::TimeLineBoolFrame;
+  return visibleframe_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineBoolFrame >*
-Frame::mutable_visibleframes() {
-  return &visibleframes_;
+inline ::protocolbuffers::TimeLineBoolFrame* Frame::release_visibleframe() {
+  clear_has_visibleframe();
+  ::protocolbuffers::TimeLineBoolFrame* temp = visibleframe_;
+  visibleframe_ = NULL;
+  return temp;
 }
-
-// repeated .protocolbuffers.TimeLineIntFrame zOrderFrames = 6;
-inline int Frame::zorderframes_size() const {
-  return zorderframes_.size();
-}
-inline void Frame::clear_zorderframes() {
-  zorderframes_.Clear();
-}
-inline const ::protocolbuffers::TimeLineIntFrame& Frame::zorderframes(int index) const {
-  return zorderframes_.Get(index);
-}
-inline ::protocolbuffers::TimeLineIntFrame* Frame::mutable_zorderframes(int index) {
-  return zorderframes_.Mutable(index);
-}
-inline ::protocolbuffers::TimeLineIntFrame* Frame::add_zorderframes() {
-  return zorderframes_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >&
-Frame::zorderframes() const {
-  return zorderframes_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >*
-Frame::mutable_zorderframes() {
-  return &zorderframes_;
+inline void Frame::set_allocated_visibleframe(::protocolbuffers::TimeLineBoolFrame* visibleframe) {
+  delete visibleframe_;
+  visibleframe_ = visibleframe;
+  if (visibleframe) {
+    set_has_visibleframe();
+  } else {
+    clear_has_visibleframe();
+  }
 }
 
-// repeated .protocolbuffers.TimeLineIntFrame rotationFrames = 7;
-inline int Frame::rotationframes_size() const {
-  return rotationframes_.size();
+// optional .protocolbuffers.TimeLineIntFrame zOrderFrame = 6;
+inline bool Frame::has_zorderframe() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void Frame::clear_rotationframes() {
-  rotationframes_.Clear();
+inline void Frame::set_has_zorderframe() {
+  _has_bits_[0] |= 0x00000002u;
 }
-inline const ::protocolbuffers::TimeLineIntFrame& Frame::rotationframes(int index) const {
-  return rotationframes_.Get(index);
+inline void Frame::clear_has_zorderframe() {
+  _has_bits_[0] &= ~0x00000002u;
 }
-inline ::protocolbuffers::TimeLineIntFrame* Frame::mutable_rotationframes(int index) {
-  return rotationframes_.Mutable(index);
+inline void Frame::clear_zorderframe() {
+  if (zorderframe_ != NULL) zorderframe_->::protocolbuffers::TimeLineIntFrame::Clear();
+  clear_has_zorderframe();
 }
-inline ::protocolbuffers::TimeLineIntFrame* Frame::add_rotationframes() {
-  return rotationframes_.Add();
+inline const ::protocolbuffers::TimeLineIntFrame& Frame::zorderframe() const {
+  return zorderframe_ != NULL ? *zorderframe_ : *default_instance_->zorderframe_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >&
-Frame::rotationframes() const {
-  return rotationframes_;
+inline ::protocolbuffers::TimeLineIntFrame* Frame::mutable_zorderframe() {
+  set_has_zorderframe();
+  if (zorderframe_ == NULL) zorderframe_ = new ::protocolbuffers::TimeLineIntFrame;
+  return zorderframe_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineIntFrame >*
-Frame::mutable_rotationframes() {
-  return &rotationframes_;
+inline ::protocolbuffers::TimeLineIntFrame* Frame::release_zorderframe() {
+  clear_has_zorderframe();
+  ::protocolbuffers::TimeLineIntFrame* temp = zorderframe_;
+  zorderframe_ = NULL;
+  return temp;
 }
-
-// repeated .protocolbuffers.TimeLineStringFrame eventFrames = 8;
-inline int Frame::eventframes_size() const {
-  return eventframes_.size();
-}
-inline void Frame::clear_eventframes() {
-  eventframes_.Clear();
-}
-inline const ::protocolbuffers::TimeLineStringFrame& Frame::eventframes(int index) const {
-  return eventframes_.Get(index);
-}
-inline ::protocolbuffers::TimeLineStringFrame* Frame::mutable_eventframes(int index) {
-  return eventframes_.Mutable(index);
-}
-inline ::protocolbuffers::TimeLineStringFrame* Frame::add_eventframes() {
-  return eventframes_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineStringFrame >&
-Frame::eventframes() const {
-  return eventframes_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineStringFrame >*
-Frame::mutable_eventframes() {
-  return &eventframes_;
+inline void Frame::set_allocated_zorderframe(::protocolbuffers::TimeLineIntFrame* zorderframe) {
+  delete zorderframe_;
+  zorderframe_ = zorderframe;
+  if (zorderframe) {
+    set_has_zorderframe();
+  } else {
+    clear_has_zorderframe();
+  }
 }
 
-// repeated .protocolbuffers.TimeLinePointFrame anchorPointFrames = 9;
-inline int Frame::anchorpointframes_size() const {
-  return anchorpointframes_.size();
+// optional .protocolbuffers.TimeLinePointFrame rotationSkewFrame = 7;
+inline bool Frame::has_rotationskewframe() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Frame::clear_anchorpointframes() {
-  anchorpointframes_.Clear();
+inline void Frame::set_has_rotationskewframe() {
+  _has_bits_[0] |= 0x00000004u;
 }
-inline const ::protocolbuffers::TimeLinePointFrame& Frame::anchorpointframes(int index) const {
-  return anchorpointframes_.Get(index);
+inline void Frame::clear_has_rotationskewframe() {
+  _has_bits_[0] &= ~0x00000004u;
 }
-inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_anchorpointframes(int index) {
-  return anchorpointframes_.Mutable(index);
+inline void Frame::clear_rotationskewframe() {
+  if (rotationskewframe_ != NULL) rotationskewframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+  clear_has_rotationskewframe();
 }
-inline ::protocolbuffers::TimeLinePointFrame* Frame::add_anchorpointframes() {
-  return anchorpointframes_.Add();
+inline const ::protocolbuffers::TimeLinePointFrame& Frame::rotationskewframe() const {
+  return rotationskewframe_ != NULL ? *rotationskewframe_ : *default_instance_->rotationskewframe_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >&
-Frame::anchorpointframes() const {
-  return anchorpointframes_;
+inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_rotationskewframe() {
+  set_has_rotationskewframe();
+  if (rotationskewframe_ == NULL) rotationskewframe_ = new ::protocolbuffers::TimeLinePointFrame;
+  return rotationskewframe_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >*
-Frame::mutable_anchorpointframes() {
-  return &anchorpointframes_;
+inline ::protocolbuffers::TimeLinePointFrame* Frame::release_rotationskewframe() {
+  clear_has_rotationskewframe();
+  ::protocolbuffers::TimeLinePointFrame* temp = rotationskewframe_;
+  rotationskewframe_ = NULL;
+  return temp;
 }
-
-// repeated .protocolbuffers.TimeLinePointFrame positionFrames = 10;
-inline int Frame::positionframes_size() const {
-  return positionframes_.size();
-}
-inline void Frame::clear_positionframes() {
-  positionframes_.Clear();
-}
-inline const ::protocolbuffers::TimeLinePointFrame& Frame::positionframes(int index) const {
-  return positionframes_.Get(index);
-}
-inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_positionframes(int index) {
-  return positionframes_.Mutable(index);
-}
-inline ::protocolbuffers::TimeLinePointFrame* Frame::add_positionframes() {
-  return positionframes_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >&
-Frame::positionframes() const {
-  return positionframes_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >*
-Frame::mutable_positionframes() {
-  return &positionframes_;
+inline void Frame::set_allocated_rotationskewframe(::protocolbuffers::TimeLinePointFrame* rotationskewframe) {
+  delete rotationskewframe_;
+  rotationskewframe_ = rotationskewframe;
+  if (rotationskewframe) {
+    set_has_rotationskewframe();
+  } else {
+    clear_has_rotationskewframe();
+  }
 }
 
-// repeated .protocolbuffers.TimeLinePointFrame scaleFrames = 11;
-inline int Frame::scaleframes_size() const {
-  return scaleframes_.size();
+// optional .protocolbuffers.TimeLineStringFrame eventFrame = 8;
+inline bool Frame::has_eventframe() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void Frame::clear_scaleframes() {
-  scaleframes_.Clear();
+inline void Frame::set_has_eventframe() {
+  _has_bits_[0] |= 0x00000008u;
 }
-inline const ::protocolbuffers::TimeLinePointFrame& Frame::scaleframes(int index) const {
-  return scaleframes_.Get(index);
+inline void Frame::clear_has_eventframe() {
+  _has_bits_[0] &= ~0x00000008u;
 }
-inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_scaleframes(int index) {
-  return scaleframes_.Mutable(index);
+inline void Frame::clear_eventframe() {
+  if (eventframe_ != NULL) eventframe_->::protocolbuffers::TimeLineStringFrame::Clear();
+  clear_has_eventframe();
 }
-inline ::protocolbuffers::TimeLinePointFrame* Frame::add_scaleframes() {
-  return scaleframes_.Add();
+inline const ::protocolbuffers::TimeLineStringFrame& Frame::eventframe() const {
+  return eventframe_ != NULL ? *eventframe_ : *default_instance_->eventframe_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >&
-Frame::scaleframes() const {
-  return scaleframes_;
+inline ::protocolbuffers::TimeLineStringFrame* Frame::mutable_eventframe() {
+  set_has_eventframe();
+  if (eventframe_ == NULL) eventframe_ = new ::protocolbuffers::TimeLineStringFrame;
+  return eventframe_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLinePointFrame >*
-Frame::mutable_scaleframes() {
-  return &scaleframes_;
+inline ::protocolbuffers::TimeLineStringFrame* Frame::release_eventframe() {
+  clear_has_eventframe();
+  ::protocolbuffers::TimeLineStringFrame* temp = eventframe_;
+  eventframe_ = NULL;
+  return temp;
 }
-
-// repeated .protocolbuffers.TimeLineColorFrame colorFrames = 12;
-inline int Frame::colorframes_size() const {
-  return colorframes_.size();
-}
-inline void Frame::clear_colorframes() {
-  colorframes_.Clear();
-}
-inline const ::protocolbuffers::TimeLineColorFrame& Frame::colorframes(int index) const {
-  return colorframes_.Get(index);
-}
-inline ::protocolbuffers::TimeLineColorFrame* Frame::mutable_colorframes(int index) {
-  return colorframes_.Mutable(index);
-}
-inline ::protocolbuffers::TimeLineColorFrame* Frame::add_colorframes() {
-  return colorframes_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineColorFrame >&
-Frame::colorframes() const {
-  return colorframes_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineColorFrame >*
-Frame::mutable_colorframes() {
-  return &colorframes_;
+inline void Frame::set_allocated_eventframe(::protocolbuffers::TimeLineStringFrame* eventframe) {
+  delete eventframe_;
+  eventframe_ = eventframe;
+  if (eventframe) {
+    set_has_eventframe();
+  } else {
+    clear_has_eventframe();
+  }
 }
 
-// repeated .protocolbuffers.TimeLineTextureFrame textureFrames = 13;
-inline int Frame::textureframes_size() const {
-  return textureframes_.size();
+// optional .protocolbuffers.TimeLinePointFrame anchorPointFrame = 9;
+inline bool Frame::has_anchorpointframe() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void Frame::clear_textureframes() {
-  textureframes_.Clear();
+inline void Frame::set_has_anchorpointframe() {
+  _has_bits_[0] |= 0x00000010u;
 }
-inline const ::protocolbuffers::TimeLineTextureFrame& Frame::textureframes(int index) const {
-  return textureframes_.Get(index);
+inline void Frame::clear_has_anchorpointframe() {
+  _has_bits_[0] &= ~0x00000010u;
 }
-inline ::protocolbuffers::TimeLineTextureFrame* Frame::mutable_textureframes(int index) {
-  return textureframes_.Mutable(index);
+inline void Frame::clear_anchorpointframe() {
+  if (anchorpointframe_ != NULL) anchorpointframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+  clear_has_anchorpointframe();
 }
-inline ::protocolbuffers::TimeLineTextureFrame* Frame::add_textureframes() {
-  return textureframes_.Add();
+inline const ::protocolbuffers::TimeLinePointFrame& Frame::anchorpointframe() const {
+  return anchorpointframe_ != NULL ? *anchorpointframe_ : *default_instance_->anchorpointframe_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineTextureFrame >&
-Frame::textureframes() const {
-  return textureframes_;
+inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_anchorpointframe() {
+  set_has_anchorpointframe();
+  if (anchorpointframe_ == NULL) anchorpointframe_ = new ::protocolbuffers::TimeLinePointFrame;
+  return anchorpointframe_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::protocolbuffers::TimeLineTextureFrame >*
-Frame::mutable_textureframes() {
-  return &textureframes_;
+inline ::protocolbuffers::TimeLinePointFrame* Frame::release_anchorpointframe() {
+  clear_has_anchorpointframe();
+  ::protocolbuffers::TimeLinePointFrame* temp = anchorpointframe_;
+  anchorpointframe_ = NULL;
+  return temp;
+}
+inline void Frame::set_allocated_anchorpointframe(::protocolbuffers::TimeLinePointFrame* anchorpointframe) {
+  delete anchorpointframe_;
+  anchorpointframe_ = anchorpointframe;
+  if (anchorpointframe) {
+    set_has_anchorpointframe();
+  } else {
+    clear_has_anchorpointframe();
+  }
+}
+
+// optional .protocolbuffers.TimeLinePointFrame positionFrame = 10;
+inline bool Frame::has_positionframe() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Frame::set_has_positionframe() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Frame::clear_has_positionframe() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Frame::clear_positionframe() {
+  if (positionframe_ != NULL) positionframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+  clear_has_positionframe();
+}
+inline const ::protocolbuffers::TimeLinePointFrame& Frame::positionframe() const {
+  return positionframe_ != NULL ? *positionframe_ : *default_instance_->positionframe_;
+}
+inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_positionframe() {
+  set_has_positionframe();
+  if (positionframe_ == NULL) positionframe_ = new ::protocolbuffers::TimeLinePointFrame;
+  return positionframe_;
+}
+inline ::protocolbuffers::TimeLinePointFrame* Frame::release_positionframe() {
+  clear_has_positionframe();
+  ::protocolbuffers::TimeLinePointFrame* temp = positionframe_;
+  positionframe_ = NULL;
+  return temp;
+}
+inline void Frame::set_allocated_positionframe(::protocolbuffers::TimeLinePointFrame* positionframe) {
+  delete positionframe_;
+  positionframe_ = positionframe;
+  if (positionframe) {
+    set_has_positionframe();
+  } else {
+    clear_has_positionframe();
+  }
+}
+
+// optional .protocolbuffers.TimeLinePointFrame scaleFrame = 11;
+inline bool Frame::has_scaleframe() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Frame::set_has_scaleframe() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Frame::clear_has_scaleframe() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Frame::clear_scaleframe() {
+  if (scaleframe_ != NULL) scaleframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+  clear_has_scaleframe();
+}
+inline const ::protocolbuffers::TimeLinePointFrame& Frame::scaleframe() const {
+  return scaleframe_ != NULL ? *scaleframe_ : *default_instance_->scaleframe_;
+}
+inline ::protocolbuffers::TimeLinePointFrame* Frame::mutable_scaleframe() {
+  set_has_scaleframe();
+  if (scaleframe_ == NULL) scaleframe_ = new ::protocolbuffers::TimeLinePointFrame;
+  return scaleframe_;
+}
+inline ::protocolbuffers::TimeLinePointFrame* Frame::release_scaleframe() {
+  clear_has_scaleframe();
+  ::protocolbuffers::TimeLinePointFrame* temp = scaleframe_;
+  scaleframe_ = NULL;
+  return temp;
+}
+inline void Frame::set_allocated_scaleframe(::protocolbuffers::TimeLinePointFrame* scaleframe) {
+  delete scaleframe_;
+  scaleframe_ = scaleframe;
+  if (scaleframe) {
+    set_has_scaleframe();
+  } else {
+    clear_has_scaleframe();
+  }
+}
+
+// optional .protocolbuffers.TimeLineColorFrame colorFrame = 12;
+inline bool Frame::has_colorframe() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Frame::set_has_colorframe() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Frame::clear_has_colorframe() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Frame::clear_colorframe() {
+  if (colorframe_ != NULL) colorframe_->::protocolbuffers::TimeLineColorFrame::Clear();
+  clear_has_colorframe();
+}
+inline const ::protocolbuffers::TimeLineColorFrame& Frame::colorframe() const {
+  return colorframe_ != NULL ? *colorframe_ : *default_instance_->colorframe_;
+}
+inline ::protocolbuffers::TimeLineColorFrame* Frame::mutable_colorframe() {
+  set_has_colorframe();
+  if (colorframe_ == NULL) colorframe_ = new ::protocolbuffers::TimeLineColorFrame;
+  return colorframe_;
+}
+inline ::protocolbuffers::TimeLineColorFrame* Frame::release_colorframe() {
+  clear_has_colorframe();
+  ::protocolbuffers::TimeLineColorFrame* temp = colorframe_;
+  colorframe_ = NULL;
+  return temp;
+}
+inline void Frame::set_allocated_colorframe(::protocolbuffers::TimeLineColorFrame* colorframe) {
+  delete colorframe_;
+  colorframe_ = colorframe;
+  if (colorframe) {
+    set_has_colorframe();
+  } else {
+    clear_has_colorframe();
+  }
+}
+
+// optional .protocolbuffers.TimeLineTextureFrame textureFrame = 13;
+inline bool Frame::has_textureframe() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Frame::set_has_textureframe() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Frame::clear_has_textureframe() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Frame::clear_textureframe() {
+  if (textureframe_ != NULL) textureframe_->::protocolbuffers::TimeLineTextureFrame::Clear();
+  clear_has_textureframe();
+}
+inline const ::protocolbuffers::TimeLineTextureFrame& Frame::textureframe() const {
+  return textureframe_ != NULL ? *textureframe_ : *default_instance_->textureframe_;
+}
+inline ::protocolbuffers::TimeLineTextureFrame* Frame::mutable_textureframe() {
+  set_has_textureframe();
+  if (textureframe_ == NULL) textureframe_ = new ::protocolbuffers::TimeLineTextureFrame;
+  return textureframe_;
+}
+inline ::protocolbuffers::TimeLineTextureFrame* Frame::release_textureframe() {
+  clear_has_textureframe();
+  ::protocolbuffers::TimeLineTextureFrame* temp = textureframe_;
+  textureframe_ = NULL;
+  return temp;
+}
+inline void Frame::set_allocated_textureframe(::protocolbuffers::TimeLineTextureFrame* textureframe) {
+  delete textureframe_;
+  textureframe_ = textureframe;
+  if (textureframe) {
+    set_has_textureframe();
+  } else {
+    clear_has_textureframe();
+  }
 }
 
 // -------------------------------------------------------------------

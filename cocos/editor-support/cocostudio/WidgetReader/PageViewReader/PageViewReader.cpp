@@ -4,6 +4,9 @@
 #include "ui/UIPageView.h"
 #include "ui/UILayout.h"
 #include "cocostudio/CocoLoader.h"
+/* peterson protocol buffers */
+#include "../../ProtocolBuffers/CSParseBinary.pb.h"
+/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -42,4 +45,11 @@ namespace cocostudio
     {
         LayoutReader::setPropsFromJsonDictionary(widget, options);
     }
+    
+    /* peterson protocol buffers */
+    void PageViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
+    {
+        LayoutReader::setPropsFromProtocolBuffers(widget, nodeTree);                
+    }
+    /**/
 }
