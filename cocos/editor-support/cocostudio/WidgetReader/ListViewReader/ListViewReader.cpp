@@ -3,6 +3,9 @@
 #include "ListViewReader.h"
 #include "ui/UIListView.h"
 #include "cocostudio/CocoLoader.h"
+/* peterson protocol buffers */
+#include "../../ProtocolBuffers/CSParseBinary.pb.h"
+/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -75,5 +78,25 @@ namespace cocostudio
         float itemMargin = DICTOOL->getFloatValue_json(options, P_ItemMargin);
         listView->setItemsMargin(itemMargin);
     }
+    
+    /* peterson protocol buffers */
+    void ListViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
+    {
+        ScrollViewReader::setPropsFromProtocolBuffers(widget, nodeTree);
+        
+        ListView* listView = static_cast<ListView*>(widget);
+        const protocolbuffers::ListViewOptions& options = nodeTree.listviewoptions();
+        
+        int direction = options.has_direction() ? options.direction() : 2;
+        listView->setDirection((ScrollView::Direction)direction);
+        
+        int gravityValue = options.has_gravity() ? options.gravity() : 3;
+        ListView::Gravity gravity = (ListView::Gravity)gravityValue;
+        listView->setGravity(gravity);
+        
+        float itemMargin = options.itemmargin();
+        listView->setItemsMargin(itemMargin);
+    }
+    /**/
 }
 

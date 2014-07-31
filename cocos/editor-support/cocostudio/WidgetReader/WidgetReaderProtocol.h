@@ -29,6 +29,13 @@
 #include "cocostudio/DictionaryHelper.h"
 #include "cocostudio/CocosStudioExport.h"
 
+/* peterson protocol buffers */
+namespace protocolbuffers
+{
+    class NodeTree;
+}
+/**/
+
 namespace cocos2d
 {
     namespace ui
@@ -48,6 +55,10 @@ namespace cocostudio
         virtual ~WidgetReaderProtocol() {};
         virtual void setPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options) = 0;
         virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader,  stExpCocoNode*	pCocoNode) = 0;
+        
+        /* peterson protocol buffers */
+        virtual void setPropsFromProtocolBuffers(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree) = 0;
+        /**/
     };
 }
 

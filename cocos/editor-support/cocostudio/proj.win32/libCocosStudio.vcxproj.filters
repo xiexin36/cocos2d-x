@@ -85,6 +85,9 @@
     <Filter Include="TimelineAction">
       <UniqueIdentifier>{2d371825-3c46-4901-850c-3bccf6b49efc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="protocolBuffers">
+      <UniqueIdentifier>{1c1dbc40-e7c2-49ea-a5c9-3cf5e32f4cc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\CCComAttribute.cpp">
@@ -248,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="..\ActionTimeline\CCTimeLine.cpp">
       <Filter>TimelineAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ProtocolBuffers\CSParseBinary.pb.cc">
+      <Filter>protocolBuffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -456,5 +462,8 @@
       <Filter>TimelineAction</Filter>
     </ClInclude>
     <ClInclude Include="..\CocosStudioExport.h" />
+    <ClInclude Include="..\ProtocolBuffers\CSParseBinary.pb.h">
+      <Filter>protocolBuffers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

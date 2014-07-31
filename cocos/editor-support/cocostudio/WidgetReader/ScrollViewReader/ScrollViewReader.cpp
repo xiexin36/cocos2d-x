@@ -3,6 +3,9 @@
 #include "ScrollViewReader.h"
 #include "ui/UIScrollView.h"
 #include "cocostudio/CocoLoader.h"
+/* peterson protocol buffers */
+#include "../../ProtocolBuffers/CSParseBinary.pb.h"
+/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -82,4 +85,21 @@ namespace cocostudio
         
         LayoutReader::setColorPropsFromJsonDictionary(widget, options);
     }
+    
+    /* peterson protocol buffers */
+    void ScrollViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
+    {
+        LayoutReader::setPropsFromProtocolBuffers(widget, nodeTree);
+        
+        ScrollView* scrollView = static_cast<ScrollView*>(widget);
+        const protocolbuffers::ScrollViewOptions& options = nodeTree.scrollviewoptions();
+        
+        float innerWidth = options.has_innerwidth() ? options.innerwidth() : 200;
+        float innerHeight = options.has_innerheight() ? options.innerheight() : 200;
+        scrollView->setInnerContainerSize(Size(innerWidth, innerHeight));
+        int direction = options.has_direction() ? options.direction() : 1;
+        scrollView->setDirection((ScrollView::Direction)direction);
+        scrollView->setBounceEnabled(options.bounceenable());
+    }
+    /**/
 }

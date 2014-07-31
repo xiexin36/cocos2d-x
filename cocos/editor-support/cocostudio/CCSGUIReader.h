@@ -31,6 +31,27 @@ THE SOFTWARE.
 #include "base/ObjectFactory.h"
 #include "cocostudio/CocosStudioExport.h"
 
+/* peterson protocol buffers */
+namespace protocolbuffers
+{
+    class NodeTree;
+    class WidgetOptions;
+    class LayoutOptions;
+    class CheckBoxOptions;
+    class ButtonOptions;
+    class ImageViewOptions;
+    class LabelAtlasOptions;
+    class LabelBMFontOptions;
+    class LabelOptions;
+    class LoadingBarOptions;
+    class SliderOptions;
+    class TextFieldOptions;
+    class ScrollViewOptions;
+    class PageViewOptions;
+    class ListViewOptions;
+}
+/**/
+
 namespace cocostudio {
     
     class CocoLoader;
@@ -111,6 +132,13 @@ public:
                                                 CocoLoader* cocoLoader,
                                                 stExpCocoNode*	pCocoNode) = 0;
     
+    /* peterson protocol buffers */
+    virtual cocos2d::ui::Widget* widgetFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree) = 0;
+    virtual void setPropsForAllWidgetFromProtocolBuffers(WidgetReaderProtocol* reader,
+                                                         cocos2d::ui::Widget* widget,
+                                                         const protocolbuffers::NodeTree& nodetree) = 0;
+    /**/
+    
 protected:
     void setAnchorPointForWidget(cocos2d::ui::Widget* widget, const rapidjson::Value&options);
     std::string  getWidgetReaderClassName(const std::string& classname);
@@ -170,6 +198,13 @@ public:
     virtual void setPropsForAllCustomWidgetFromJsonDictionary(const std::string& classType,
                                                               cocos2d::ui::Widget* widget,
                                                               const rapidjson::Value& customOptions);
+    
+    /* peterson protocol buffers */
+    virtual cocos2d::ui::Widget* widgetFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree) { return NULL; };
+    virtual void setPropsForAllWidgetFromProtocolBuffers(WidgetReaderProtocol* reader,
+                                                         cocos2d::ui::Widget* widget,
+                                                         const protocolbuffers::NodeTree& nodetree) {};
+    /**/
 };
    
 class CC_STUDIO_DLL WidgetPropertiesReader0300 : public WidgetPropertiesReader
@@ -214,6 +249,13 @@ public:
     virtual void setPropsForAllCustomWidgetFromJsonDictionary(const std::string& classType,
                                                               cocos2d::ui::Widget* widget,
                                                               const rapidjson::Value& customOptions);
+    
+    /* peterson protocol buffers */
+    virtual cocos2d::ui::Widget* widgetFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree);
+    virtual void setPropsForAllWidgetFromProtocolBuffers(WidgetReaderProtocol* reader,
+                                                         cocos2d::ui::Widget* widget,
+                                                         const protocolbuffers::NodeTree& nodetree);    
+    /**/
 };
 
 
