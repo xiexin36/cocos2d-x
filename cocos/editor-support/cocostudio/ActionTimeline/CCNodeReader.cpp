@@ -648,7 +648,6 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
         
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
         reader->setPropsFromProtocolBuffers(widget, nodetree);
-        CC_SAFE_DELETE(reader);
         
         const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
         int actionTag = widgetOptions.actiontag();
