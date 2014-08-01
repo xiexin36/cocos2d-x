@@ -33,8 +33,7 @@ NS_CC_BEGIN
 class Sprite;
 
 namespace ui {
-    class Scale9Sprite;
-    
+
 typedef enum
 {
     SLIDER_PERCENTCHANGED
@@ -228,9 +227,10 @@ protected:
     virtual void copySpecialProperties(Widget* model) override;
     virtual void adaptRenderers() override;
 protected:
-    Scale9Sprite*  _barRenderer;
-    Scale9Sprite* _progressBarRenderer;
+    Node*  _barRenderer;
+    Node* _progressBarRenderer;
     Size _progressBarTextureSize;
+    Size _slidBallSize;
     
     Sprite* _slidBallNormalRenderer;
     Sprite* _slidBallPressedRenderer;
