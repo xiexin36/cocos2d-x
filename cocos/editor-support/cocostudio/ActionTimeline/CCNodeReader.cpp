@@ -481,6 +481,8 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     int actionTag = DICTOOL->getIntValue_json(json, ACTION_TAG);
     widget->setUserObject(ActionTimelineData::create(actionTag));
     
+    initNode(widget, json);
+
     return widget;
 }
     // before
