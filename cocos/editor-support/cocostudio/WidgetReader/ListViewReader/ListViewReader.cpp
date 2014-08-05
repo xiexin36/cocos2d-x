@@ -117,7 +117,7 @@ namespace cocostudio
         
         ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 150;
         ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-        ecb = options.has_bgendcolorb() ? options.bgstartcolorb() : 255;
+        ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 255;
         
         float bgcv1 = options.vectorx();
         float bgcv2 = options.has_vectory() ? options.vectory() : -0.5f;
