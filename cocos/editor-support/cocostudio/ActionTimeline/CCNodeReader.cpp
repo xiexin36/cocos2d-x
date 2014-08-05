@@ -436,7 +436,9 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     
     std::string classname = str;
     
-    Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
+    std::string guiClassName = getGUIClassName(classname);
+    
+    Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
     widget->retain();
     
     WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
@@ -594,7 +596,7 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
         std::string png = gpbwp.texturespng(i);
         CCLOG("png = %s", png.c_str());
         plist = _protocolBuffersPath + plist;
-        png = _protocolBuffersPath + plist;
+        png = _protocolBuffersPath + png;
         SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist.c_str(), png.c_str());
     }    
     int fileDesignWidth = gpbwp.designwidth();
