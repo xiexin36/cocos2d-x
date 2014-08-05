@@ -341,7 +341,7 @@ namespace cocostudio
             
             ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 255;
             ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-            ecb = options.has_bgendcolorb() ? options.bgstartcolorb() : 100;
+            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 100;
         }
         else if(dynamic_cast<ui::ListView*>(widget))
         {
@@ -355,7 +355,7 @@ namespace cocostudio
             
             ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 150;
             ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-            ecb = options.has_bgendcolorb() ? options.bgstartcolorb() : 255;
+            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 255;
         }
         else if(dynamic_cast<ui::ScrollView*>(widget))
         {
@@ -369,7 +369,7 @@ namespace cocostudio
             
             ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 255;
             ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-            ecb = options.has_bgendcolorb() ? options.bgstartcolorb() : 100;
+            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 100;
         }
         else
         {
