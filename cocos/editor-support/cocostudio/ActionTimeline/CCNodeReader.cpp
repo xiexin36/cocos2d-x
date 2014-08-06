@@ -249,7 +249,29 @@ Node* NodeReader::loadNode(const rapidjson::Value& json)
             Node* child = loadNode(dic);
             if (child)
             {
-                node->addChild(child);
+                PageView* pageView = dynamic_cast<PageView*>(node);
+                ListView* listView = dynamic_cast<ListView*>(node);
+                if (pageView)
+                {
+                    Layout* layout = dynamic_cast<Layout*>(child);
+                    if (layout)
+                    {
+                        pageView->addPage(layout);
+                    }
+                }
+                else if (listView)
+                {
+                    Widget* widget = dynamic_cast<Widget*>(child);
+                    if (widget)
+                    {
+                        listView->pushBackCustomItem(widget);
+                    }
+                }
+                else
+                {
+                    node->addChild(child);
+                }
+                
                 child->release();
             }
         }
@@ -693,7 +715,28 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
         CCLOG("child = %p", child);
         if (child)
         {
-            node->addChild(child);
+            PageView* pageView = dynamic_cast<PageView*>(node);
+            ListView* listView = dynamic_cast<ListView*>(node);
+            if (pageView)
+            {
+                Layout* layout = dynamic_cast<Layout*>(child);
+                if (layout)
+                {
+                    pageView->addPage(layout);
+                }
+            }
+            else if (listView)
+            {
+                Widget* widget = dynamic_cast<Widget*>(child);
+                if (widget)
+                {
+                    listView->pushBackCustomItem(widget);
+                }
+            }
+            else
+            {
+                node->addChild(child);
+            }
         }
     }
     
