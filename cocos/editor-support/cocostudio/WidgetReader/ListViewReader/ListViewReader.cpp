@@ -161,7 +161,10 @@ namespace cocostudio
         
         
         
-        
+        float innerWidth = options.has_innerwidth() ? options.innerwidth() : 200;
+        float innerHeight = options.has_innerheight() ? options.innerheight() : 200;
+        listView->setInnerContainerSize(Size(innerWidth, innerHeight));
+        listView->setBounceEnabled(options.bounceenable());
         
         int direction = options.has_direction() ? options.direction() : 2;
         listView->setDirection((ScrollView::Direction)direction);
