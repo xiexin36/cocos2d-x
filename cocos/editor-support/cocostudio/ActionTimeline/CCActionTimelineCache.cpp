@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "CCActionTimeline.h"
 
 /* peterson protocol buffers */
-#include "../ProtocolBuffers/CSParseBinary.pb.h"
+#include "../CSParseBinary.pb.h"
 
 #include <fstream>
 /**/

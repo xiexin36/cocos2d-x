@@ -43,7 +43,7 @@ THE SOFTWARE.
 #include "ui/CocosGUI.h"
 
 /* peterson protocol buffers */
-#include "ProtocolBuffers/CSParseBinary.pb.h"
+#include "CSParseBinary.pb.h"
 /**/
 
 using namespace cocos2d;

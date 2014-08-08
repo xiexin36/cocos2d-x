@@ -740,15 +740,15 @@ void protobuf_AssignDesc_CSParseBinary_2eproto() {
       sizeof(TimeLine));
   Frame_descriptor_ = file->message_type(21);
   static const int Frame_offsets_[9] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, visibleframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, zorderframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, rotationframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, eventframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, anchorpointframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, positionframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, scaleframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, colorframes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, textureframes_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, visibleframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, zorderframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, rotationskewframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, eventframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, anchorpointframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, positionframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, scaleframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, colorframe_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, textureframe_),
   };
   Frame_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -1238,38 +1238,38 @@ void protobuf_AddDesc_CSParseBinary_2eproto() {
     "TimeLine\022\014\n\004name\030\001 \001(\t\022\021\n\tclassname\030\002 \001("
     "\t\022\021\n\tframeType\030\003 \001(\t\022\021\n\tactionTag\030\004 \001(\005\022"
     "&\n\006frames\030\005 \003(\0132\026.protocolbuffers.Frame\""
-    "\240\004\n\005Frame\0229\n\rvisibleFrames\030\005 \003(\0132\".proto"
-    "colbuffers.TimeLineBoolFrame\0227\n\014zOrderFr"
-    "ames\030\006 \003(\0132!.protocolbuffers.TimeLineInt"
-    "Frame\0229\n\016rotationFrames\030\007 \003(\0132!.protocol"
-    "buffers.TimeLineIntFrame\0229\n\013eventFrames\030"
-    "\010 \003(\0132$.protocolbuffers.TimeLineStringFr"
-    "ame\022>\n\021anchorPointFrames\030\t \003(\0132#.protoco"
-    "lbuffers.TimeLinePointFrame\022;\n\016positionF"
-    "rames\030\n \003(\0132#.protocolbuffers.TimeLinePo"
-    "intFrame\0228\n\013scaleFrames\030\013 \003(\0132#.protocol"
-    "buffers.TimeLinePointFrame\0228\n\013colorFrame"
-    "s\030\014 \003(\0132#.protocolbuffers.TimeLineColorF"
-    "rame\022<\n\rtextureFrames\030\r \003(\0132%.protocolbu"
-    "ffers.TimeLineTextureFrame\"f\n\021TimeLineBo"
-    "olFrame\022\014\n\004name\030\001 \001(\t\022\021\n\tclassname\030\002 \001(\t"
-    "\022\022\n\nframeIndex\030\003 \001(\005\022\r\n\005tween\030\004 \001(\010\022\r\n\005v"
-    "alue\030\005 \001(\010\"e\n\020TimeLineIntFrame\022\014\n\004name\030\001"
-    " \001(\t\022\021\n\tclassname\030\002 \001(\t\022\022\n\nframeIndex\030\003 "
-    "\001(\005\022\r\n\005tween\030\004 \001(\010\022\r\n\005value\030\005 \001(\005\"h\n\023Tim"
-    "eLineStringFrame\022\014\n\004name\030\001 \001(\t\022\021\n\tclassn"
-    "ame\030\002 \001(\t\022\022\n\nframeIndex\030\003 \001(\005\022\r\n\005tween\030\004"
-    " \001(\010\022\r\n\005value\030\005 \001(\t\"n\n\022TimeLinePointFram"
-    "e\022\014\n\004name\030\001 \001(\t\022\021\n\tclassname\030\002 \001(\t\022\022\n\nfr"
-    "ameIndex\030\003 \001(\005\022\r\n\005tween\030\004 \001(\010\022\t\n\001x\030\005 \001(\002"
-    "\022\t\n\001y\030\006 \001(\002\"\221\001\n\022TimeLineColorFrame\022\014\n\004na"
-    "me\030\001 \001(\t\022\021\n\tclassname\030\002 \001(\t\022\022\n\nframeInde"
-    "x\030\003 \001(\005\022\r\n\005tween\030\004 \001(\010\022\r\n\005alpha\030\005 \001(\005\022\013\n"
-    "\003red\030\006 \001(\005\022\r\n\005green\030\007 \001(\005\022\014\n\004blue\030\010 \001(\005\""
-    "\177\n\024TimeLineTextureFrame\022\014\n\004name\030\001 \001(\t\022\021\n"
-    "\tclassname\030\002 \001(\t\022\022\n\nframeIndex\030\003 \001(\005\022\r\n\005"
-    "tween\030\004 \001(\010\022\020\n\010filePath\030\005 \001(\t\022\021\n\tplistFi"
-    "le\030\006 \001(\t", 10048);
+    "\235\004\n\005Frame\0228\n\014visibleFrame\030\005 \001(\0132\".protoc"
+    "olbuffers.TimeLineBoolFrame\0226\n\013zOrderFra"
+    "me\030\006 \001(\0132!.protocolbuffers.TimeLineIntFr"
+    "ame\022>\n\021rotationSkewFrame\030\007 \001(\0132#.protoco"
+    "lbuffers.TimeLinePointFrame\0228\n\neventFram"
+    "e\030\010 \001(\0132$.protocolbuffers.TimeLineString"
+    "Frame\022=\n\020anchorPointFrame\030\t \001(\0132#.protoc"
+    "olbuffers.TimeLinePointFrame\022:\n\rposition"
+    "Frame\030\n \001(\0132#.protocolbuffers.TimeLinePo"
+    "intFrame\0227\n\nscaleFrame\030\013 \001(\0132#.protocolb"
+    "uffers.TimeLinePointFrame\0227\n\ncolorFrame\030"
+    "\014 \001(\0132#.protocolbuffers.TimeLineColorFra"
+    "me\022;\n\014textureFrame\030\r \001(\0132%.protocolbuffe"
+    "rs.TimeLineTextureFrame\"f\n\021TimeLineBoolF"
+    "rame\022\014\n\004name\030\001 \001(\t\022\021\n\tclassname\030\002 \001(\t\022\022\n"
+    "\nframeIndex\030\003 \001(\005\022\r\n\005tween\030\004 \001(\010\022\r\n\005valu"
+    "e\030\005 \001(\010\"e\n\020TimeLineIntFrame\022\014\n\004name\030\001 \001("
+    "\t\022\021\n\tclassname\030\002 \001(\t\022\022\n\nframeIndex\030\003 \001(\005"
+    "\022\r\n\005tween\030\004 \001(\010\022\r\n\005value\030\005 \001(\005\"h\n\023TimeLi"
+    "neStringFrame\022\014\n\004name\030\001 \001(\t\022\021\n\tclassname"
+    "\030\002 \001(\t\022\022\n\nframeIndex\030\003 \001(\005\022\r\n\005tween\030\004 \001("
+    "\010\022\r\n\005value\030\005 \001(\t\"n\n\022TimeLinePointFrame\022\014"
+    "\n\004name\030\001 \001(\t\022\021\n\tclassname\030\002 \001(\t\022\022\n\nframe"
+    "Index\030\003 \001(\005\022\r\n\005tween\030\004 \001(\010\022\t\n\001x\030\005 \001(\002\022\t\n"
+    "\001y\030\006 \001(\002\"\221\001\n\022TimeLineColorFrame\022\014\n\004name\030"
+    "\001 \001(\t\022\021\n\tclassname\030\002 \001(\t\022\022\n\nframeIndex\030\003"
+    " \001(\005\022\r\n\005tween\030\004 \001(\010\022\r\n\005alpha\030\005 \001(\005\022\013\n\003re"
+    "d\030\006 \001(\005\022\r\n\005green\030\007 \001(\005\022\014\n\004blue\030\010 \001(\005\"\177\n\024"
+    "TimeLineTextureFrame\022\014\n\004name\030\001 \001(\t\022\021\n\tcl"
+    "assname\030\002 \001(\t\022\022\n\nframeIndex\030\003 \001(\005\022\r\n\005twe"
+    "en\030\004 \001(\010\022\020\n\010filePath\030\005 \001(\t\022\021\n\tplistFile\030"
+    "\006 \001(\t", 10045);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "CSParseBinary.proto", &protobuf_RegisterTypes);
   CSParseBinary::default_instance_ = new CSParseBinary();
@@ -19583,15 +19583,15 @@ void TimeLine::Swap(TimeLine* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int Frame::kVisibleFramesFieldNumber;
-const int Frame::kZOrderFramesFieldNumber;
-const int Frame::kRotationFramesFieldNumber;
-const int Frame::kEventFramesFieldNumber;
-const int Frame::kAnchorPointFramesFieldNumber;
-const int Frame::kPositionFramesFieldNumber;
-const int Frame::kScaleFramesFieldNumber;
-const int Frame::kColorFramesFieldNumber;
-const int Frame::kTextureFramesFieldNumber;
+const int Frame::kVisibleFrameFieldNumber;
+const int Frame::kZOrderFrameFieldNumber;
+const int Frame::kRotationSkewFrameFieldNumber;
+const int Frame::kEventFrameFieldNumber;
+const int Frame::kAnchorPointFrameFieldNumber;
+const int Frame::kPositionFrameFieldNumber;
+const int Frame::kScaleFrameFieldNumber;
+const int Frame::kColorFrameFieldNumber;
+const int Frame::kTextureFrameFieldNumber;
 #endif  // !_MSC_VER
 
 Frame::Frame()
@@ -19600,6 +19600,15 @@ Frame::Frame()
 }
 
 void Frame::InitAsDefaultInstance() {
+  visibleframe_ = const_cast< ::protocolbuffers::TimeLineBoolFrame*>(&::protocolbuffers::TimeLineBoolFrame::default_instance());
+  zorderframe_ = const_cast< ::protocolbuffers::TimeLineIntFrame*>(&::protocolbuffers::TimeLineIntFrame::default_instance());
+  rotationskewframe_ = const_cast< ::protocolbuffers::TimeLinePointFrame*>(&::protocolbuffers::TimeLinePointFrame::default_instance());
+  eventframe_ = const_cast< ::protocolbuffers::TimeLineStringFrame*>(&::protocolbuffers::TimeLineStringFrame::default_instance());
+  anchorpointframe_ = const_cast< ::protocolbuffers::TimeLinePointFrame*>(&::protocolbuffers::TimeLinePointFrame::default_instance());
+  positionframe_ = const_cast< ::protocolbuffers::TimeLinePointFrame*>(&::protocolbuffers::TimeLinePointFrame::default_instance());
+  scaleframe_ = const_cast< ::protocolbuffers::TimeLinePointFrame*>(&::protocolbuffers::TimeLinePointFrame::default_instance());
+  colorframe_ = const_cast< ::protocolbuffers::TimeLineColorFrame*>(&::protocolbuffers::TimeLineColorFrame::default_instance());
+  textureframe_ = const_cast< ::protocolbuffers::TimeLineTextureFrame*>(&::protocolbuffers::TimeLineTextureFrame::default_instance());
 }
 
 Frame::Frame(const Frame& from)
@@ -19610,6 +19619,15 @@ Frame::Frame(const Frame& from)
 
 void Frame::SharedCtor() {
   _cached_size_ = 0;
+  visibleframe_ = NULL;
+  zorderframe_ = NULL;
+  rotationskewframe_ = NULL;
+  eventframe_ = NULL;
+  anchorpointframe_ = NULL;
+  positionframe_ = NULL;
+  scaleframe_ = NULL;
+  colorframe_ = NULL;
+  textureframe_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -19619,6 +19637,15 @@ Frame::~Frame() {
 
 void Frame::SharedDtor() {
   if (this != default_instance_) {
+    delete visibleframe_;
+    delete zorderframe_;
+    delete rotationskewframe_;
+    delete eventframe_;
+    delete anchorpointframe_;
+    delete positionframe_;
+    delete scaleframe_;
+    delete colorframe_;
+    delete textureframe_;
   }
 }
 
@@ -19644,15 +19671,37 @@ Frame* Frame::New() const {
 }
 
 void Frame::Clear() {
-  visibleframes_.Clear();
-  zorderframes_.Clear();
-  rotationframes_.Clear();
-  eventframes_.Clear();
-  anchorpointframes_.Clear();
-  positionframes_.Clear();
-  scaleframes_.Clear();
-  colorframes_.Clear();
-  textureframes_.Clear();
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_visibleframe()) {
+      if (visibleframe_ != NULL) visibleframe_->::protocolbuffers::TimeLineBoolFrame::Clear();
+    }
+    if (has_zorderframe()) {
+      if (zorderframe_ != NULL) zorderframe_->::protocolbuffers::TimeLineIntFrame::Clear();
+    }
+    if (has_rotationskewframe()) {
+      if (rotationskewframe_ != NULL) rotationskewframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+    }
+    if (has_eventframe()) {
+      if (eventframe_ != NULL) eventframe_->::protocolbuffers::TimeLineStringFrame::Clear();
+    }
+    if (has_anchorpointframe()) {
+      if (anchorpointframe_ != NULL) anchorpointframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+    }
+    if (has_positionframe()) {
+      if (positionframe_ != NULL) positionframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+    }
+    if (has_scaleframe()) {
+      if (scaleframe_ != NULL) scaleframe_->::protocolbuffers::TimeLinePointFrame::Clear();
+    }
+    if (has_colorframe()) {
+      if (colorframe_ != NULL) colorframe_->::protocolbuffers::TimeLineColorFrame::Clear();
+    }
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (has_textureframe()) {
+      if (textureframe_ != NULL) textureframe_->::protocolbuffers::TimeLineTextureFrame::Clear();
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -19663,137 +19712,127 @@ bool Frame::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .protocolbuffers.TimeLineBoolFrame visibleFrames = 5;
+      // optional .protocolbuffers.TimeLineBoolFrame visibleFrame = 5;
       case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_visibleFrames:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_visibleframes()));
+               input, mutable_visibleframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_visibleFrames;
-        if (input->ExpectTag(50)) goto parse_zOrderFrames;
+        if (input->ExpectTag(50)) goto parse_zOrderFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLineIntFrame zOrderFrames = 6;
+      // optional .protocolbuffers.TimeLineIntFrame zOrderFrame = 6;
       case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_zOrderFrames:
+         parse_zOrderFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_zorderframes()));
+               input, mutable_zorderframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_zOrderFrames;
-        if (input->ExpectTag(58)) goto parse_rotationFrames;
+        if (input->ExpectTag(58)) goto parse_rotationSkewFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLineIntFrame rotationFrames = 7;
+      // optional .protocolbuffers.TimeLinePointFrame rotationSkewFrame = 7;
       case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_rotationFrames:
+         parse_rotationSkewFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_rotationframes()));
+               input, mutable_rotationskewframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(58)) goto parse_rotationFrames;
-        if (input->ExpectTag(66)) goto parse_eventFrames;
+        if (input->ExpectTag(66)) goto parse_eventFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLineStringFrame eventFrames = 8;
+      // optional .protocolbuffers.TimeLineStringFrame eventFrame = 8;
       case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_eventFrames:
+         parse_eventFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_eventframes()));
+               input, mutable_eventframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(66)) goto parse_eventFrames;
-        if (input->ExpectTag(74)) goto parse_anchorPointFrames;
+        if (input->ExpectTag(74)) goto parse_anchorPointFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLinePointFrame anchorPointFrames = 9;
+      // optional .protocolbuffers.TimeLinePointFrame anchorPointFrame = 9;
       case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_anchorPointFrames:
+         parse_anchorPointFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_anchorpointframes()));
+               input, mutable_anchorpointframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(74)) goto parse_anchorPointFrames;
-        if (input->ExpectTag(82)) goto parse_positionFrames;
+        if (input->ExpectTag(82)) goto parse_positionFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLinePointFrame positionFrames = 10;
+      // optional .protocolbuffers.TimeLinePointFrame positionFrame = 10;
       case 10: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_positionFrames:
+         parse_positionFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_positionframes()));
+               input, mutable_positionframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(82)) goto parse_positionFrames;
-        if (input->ExpectTag(90)) goto parse_scaleFrames;
+        if (input->ExpectTag(90)) goto parse_scaleFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLinePointFrame scaleFrames = 11;
+      // optional .protocolbuffers.TimeLinePointFrame scaleFrame = 11;
       case 11: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_scaleFrames:
+         parse_scaleFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_scaleframes()));
+               input, mutable_scaleframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(90)) goto parse_scaleFrames;
-        if (input->ExpectTag(98)) goto parse_colorFrames;
+        if (input->ExpectTag(98)) goto parse_colorFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLineColorFrame colorFrames = 12;
+      // optional .protocolbuffers.TimeLineColorFrame colorFrame = 12;
       case 12: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_colorFrames:
+         parse_colorFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_colorframes()));
+               input, mutable_colorframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(98)) goto parse_colorFrames;
-        if (input->ExpectTag(106)) goto parse_textureFrames;
+        if (input->ExpectTag(106)) goto parse_textureFrame;
         break;
       }
 
-      // repeated .protocolbuffers.TimeLineTextureFrame textureFrames = 13;
+      // optional .protocolbuffers.TimeLineTextureFrame textureFrame = 13;
       case 13: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_textureFrames:
+         parse_textureFrame:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_textureframes()));
+               input, mutable_textureframe()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(106)) goto parse_textureFrames;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -19816,58 +19855,58 @@ bool Frame::MergePartialFromCodedStream(
 
 void Frame::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated .protocolbuffers.TimeLineBoolFrame visibleFrames = 5;
-  for (int i = 0; i < this->visibleframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineBoolFrame visibleFrame = 5;
+  if (has_visibleframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->visibleframes(i), output);
+      5, this->visibleframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLineIntFrame zOrderFrames = 6;
-  for (int i = 0; i < this->zorderframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineIntFrame zOrderFrame = 6;
+  if (has_zorderframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->zorderframes(i), output);
+      6, this->zorderframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLineIntFrame rotationFrames = 7;
-  for (int i = 0; i < this->rotationframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame rotationSkewFrame = 7;
+  if (has_rotationskewframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, this->rotationframes(i), output);
+      7, this->rotationskewframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLineStringFrame eventFrames = 8;
-  for (int i = 0; i < this->eventframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineStringFrame eventFrame = 8;
+  if (has_eventframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      8, this->eventframes(i), output);
+      8, this->eventframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLinePointFrame anchorPointFrames = 9;
-  for (int i = 0; i < this->anchorpointframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame anchorPointFrame = 9;
+  if (has_anchorpointframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      9, this->anchorpointframes(i), output);
+      9, this->anchorpointframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLinePointFrame positionFrames = 10;
-  for (int i = 0; i < this->positionframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame positionFrame = 10;
+  if (has_positionframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      10, this->positionframes(i), output);
+      10, this->positionframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLinePointFrame scaleFrames = 11;
-  for (int i = 0; i < this->scaleframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame scaleFrame = 11;
+  if (has_scaleframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      11, this->scaleframes(i), output);
+      11, this->scaleframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLineColorFrame colorFrames = 12;
-  for (int i = 0; i < this->colorframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineColorFrame colorFrame = 12;
+  if (has_colorframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      12, this->colorframes(i), output);
+      12, this->colorframe(), output);
   }
 
-  // repeated .protocolbuffers.TimeLineTextureFrame textureFrames = 13;
-  for (int i = 0; i < this->textureframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineTextureFrame textureFrame = 13;
+  if (has_textureframe()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      13, this->textureframes(i), output);
+      13, this->textureframe(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -19878,67 +19917,67 @@ void Frame::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Frame::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated .protocolbuffers.TimeLineBoolFrame visibleFrames = 5;
-  for (int i = 0; i < this->visibleframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineBoolFrame visibleFrame = 5;
+  if (has_visibleframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        5, this->visibleframes(i), target);
+        5, this->visibleframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLineIntFrame zOrderFrames = 6;
-  for (int i = 0; i < this->zorderframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineIntFrame zOrderFrame = 6;
+  if (has_zorderframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->zorderframes(i), target);
+        6, this->zorderframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLineIntFrame rotationFrames = 7;
-  for (int i = 0; i < this->rotationframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame rotationSkewFrame = 7;
+  if (has_rotationskewframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        7, this->rotationframes(i), target);
+        7, this->rotationskewframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLineStringFrame eventFrames = 8;
-  for (int i = 0; i < this->eventframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineStringFrame eventFrame = 8;
+  if (has_eventframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        8, this->eventframes(i), target);
+        8, this->eventframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLinePointFrame anchorPointFrames = 9;
-  for (int i = 0; i < this->anchorpointframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame anchorPointFrame = 9;
+  if (has_anchorpointframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        9, this->anchorpointframes(i), target);
+        9, this->anchorpointframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLinePointFrame positionFrames = 10;
-  for (int i = 0; i < this->positionframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame positionFrame = 10;
+  if (has_positionframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        10, this->positionframes(i), target);
+        10, this->positionframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLinePointFrame scaleFrames = 11;
-  for (int i = 0; i < this->scaleframes_size(); i++) {
+  // optional .protocolbuffers.TimeLinePointFrame scaleFrame = 11;
+  if (has_scaleframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        11, this->scaleframes(i), target);
+        11, this->scaleframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLineColorFrame colorFrames = 12;
-  for (int i = 0; i < this->colorframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineColorFrame colorFrame = 12;
+  if (has_colorframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        12, this->colorframes(i), target);
+        12, this->colorframe(), target);
   }
 
-  // repeated .protocolbuffers.TimeLineTextureFrame textureFrames = 13;
-  for (int i = 0; i < this->textureframes_size(); i++) {
+  // optional .protocolbuffers.TimeLineTextureFrame textureFrame = 13;
+  if (has_textureframe()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        13, this->textureframes(i), target);
+        13, this->textureframe(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -19951,78 +19990,73 @@ void Frame::SerializeWithCachedSizes(
 int Frame::ByteSize() const {
   int total_size = 0;
 
-  // repeated .protocolbuffers.TimeLineBoolFrame visibleFrames = 5;
-  total_size += 1 * this->visibleframes_size();
-  for (int i = 0; i < this->visibleframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->visibleframes(i));
-  }
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional .protocolbuffers.TimeLineBoolFrame visibleFrame = 5;
+    if (has_visibleframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->visibleframe());
+    }
 
-  // repeated .protocolbuffers.TimeLineIntFrame zOrderFrames = 6;
-  total_size += 1 * this->zorderframes_size();
-  for (int i = 0; i < this->zorderframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->zorderframes(i));
-  }
+    // optional .protocolbuffers.TimeLineIntFrame zOrderFrame = 6;
+    if (has_zorderframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->zorderframe());
+    }
 
-  // repeated .protocolbuffers.TimeLineIntFrame rotationFrames = 7;
-  total_size += 1 * this->rotationframes_size();
-  for (int i = 0; i < this->rotationframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->rotationframes(i));
-  }
+    // optional .protocolbuffers.TimeLinePointFrame rotationSkewFrame = 7;
+    if (has_rotationskewframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->rotationskewframe());
+    }
 
-  // repeated .protocolbuffers.TimeLineStringFrame eventFrames = 8;
-  total_size += 1 * this->eventframes_size();
-  for (int i = 0; i < this->eventframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->eventframes(i));
-  }
+    // optional .protocolbuffers.TimeLineStringFrame eventFrame = 8;
+    if (has_eventframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->eventframe());
+    }
 
-  // repeated .protocolbuffers.TimeLinePointFrame anchorPointFrames = 9;
-  total_size += 1 * this->anchorpointframes_size();
-  for (int i = 0; i < this->anchorpointframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->anchorpointframes(i));
-  }
+    // optional .protocolbuffers.TimeLinePointFrame anchorPointFrame = 9;
+    if (has_anchorpointframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->anchorpointframe());
+    }
 
-  // repeated .protocolbuffers.TimeLinePointFrame positionFrames = 10;
-  total_size += 1 * this->positionframes_size();
-  for (int i = 0; i < this->positionframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->positionframes(i));
-  }
+    // optional .protocolbuffers.TimeLinePointFrame positionFrame = 10;
+    if (has_positionframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->positionframe());
+    }
 
-  // repeated .protocolbuffers.TimeLinePointFrame scaleFrames = 11;
-  total_size += 1 * this->scaleframes_size();
-  for (int i = 0; i < this->scaleframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->scaleframes(i));
-  }
+    // optional .protocolbuffers.TimeLinePointFrame scaleFrame = 11;
+    if (has_scaleframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->scaleframe());
+    }
 
-  // repeated .protocolbuffers.TimeLineColorFrame colorFrames = 12;
-  total_size += 1 * this->colorframes_size();
-  for (int i = 0; i < this->colorframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->colorframes(i));
-  }
+    // optional .protocolbuffers.TimeLineColorFrame colorFrame = 12;
+    if (has_colorframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->colorframe());
+    }
 
-  // repeated .protocolbuffers.TimeLineTextureFrame textureFrames = 13;
-  total_size += 1 * this->textureframes_size();
-  for (int i = 0; i < this->textureframes_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->textureframes(i));
   }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional .protocolbuffers.TimeLineTextureFrame textureFrame = 13;
+    if (has_textureframe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->textureframe());
+    }
 
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -20048,15 +20082,37 @@ void Frame::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Frame::MergeFrom(const Frame& from) {
   GOOGLE_CHECK_NE(&from, this);
-  visibleframes_.MergeFrom(from.visibleframes_);
-  zorderframes_.MergeFrom(from.zorderframes_);
-  rotationframes_.MergeFrom(from.rotationframes_);
-  eventframes_.MergeFrom(from.eventframes_);
-  anchorpointframes_.MergeFrom(from.anchorpointframes_);
-  positionframes_.MergeFrom(from.positionframes_);
-  scaleframes_.MergeFrom(from.scaleframes_);
-  colorframes_.MergeFrom(from.colorframes_);
-  textureframes_.MergeFrom(from.textureframes_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_visibleframe()) {
+      mutable_visibleframe()->::protocolbuffers::TimeLineBoolFrame::MergeFrom(from.visibleframe());
+    }
+    if (from.has_zorderframe()) {
+      mutable_zorderframe()->::protocolbuffers::TimeLineIntFrame::MergeFrom(from.zorderframe());
+    }
+    if (from.has_rotationskewframe()) {
+      mutable_rotationskewframe()->::protocolbuffers::TimeLinePointFrame::MergeFrom(from.rotationskewframe());
+    }
+    if (from.has_eventframe()) {
+      mutable_eventframe()->::protocolbuffers::TimeLineStringFrame::MergeFrom(from.eventframe());
+    }
+    if (from.has_anchorpointframe()) {
+      mutable_anchorpointframe()->::protocolbuffers::TimeLinePointFrame::MergeFrom(from.anchorpointframe());
+    }
+    if (from.has_positionframe()) {
+      mutable_positionframe()->::protocolbuffers::TimeLinePointFrame::MergeFrom(from.positionframe());
+    }
+    if (from.has_scaleframe()) {
+      mutable_scaleframe()->::protocolbuffers::TimeLinePointFrame::MergeFrom(from.scaleframe());
+    }
+    if (from.has_colorframe()) {
+      mutable_colorframe()->::protocolbuffers::TimeLineColorFrame::MergeFrom(from.colorframe());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_textureframe()) {
+      mutable_textureframe()->::protocolbuffers::TimeLineTextureFrame::MergeFrom(from.textureframe());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -20079,15 +20135,15 @@ bool Frame::IsInitialized() const {
 
 void Frame::Swap(Frame* other) {
   if (other != this) {
-    visibleframes_.Swap(&other->visibleframes_);
-    zorderframes_.Swap(&other->zorderframes_);
-    rotationframes_.Swap(&other->rotationframes_);
-    eventframes_.Swap(&other->eventframes_);
-    anchorpointframes_.Swap(&other->anchorpointframes_);
-    positionframes_.Swap(&other->positionframes_);
-    scaleframes_.Swap(&other->scaleframes_);
-    colorframes_.Swap(&other->colorframes_);
-    textureframes_.Swap(&other->textureframes_);
+    std::swap(visibleframe_, other->visibleframe_);
+    std::swap(zorderframe_, other->zorderframe_);
+    std::swap(rotationskewframe_, other->rotationskewframe_);
+    std::swap(eventframe_, other->eventframe_);
+    std::swap(anchorpointframe_, other->anchorpointframe_);
+    std::swap(positionframe_, other->positionframe_);
+    std::swap(scaleframe_, other->scaleframe_);
+    std::swap(colorframe_, other->colorframe_);
+    std::swap(textureframe_, other->textureframe_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

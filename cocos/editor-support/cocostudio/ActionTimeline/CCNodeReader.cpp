@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "cocostudio/CCSGUIReader.h"
 
 /* peterson protocol buffers */
-#include "../ProtocolBuffers/CSParseBinary.pb.h"
+#include "../CSParseBinary.pb.h"
 #include "../../cocos/ui/CocosGUI.h"
 
 #include <fstream>
