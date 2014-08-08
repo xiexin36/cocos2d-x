@@ -102,6 +102,10 @@ static const char* VISIBLE          = "visible";
 
 static const char* TEXTURES     = "textures";
 static const char* TEXTURES_PNG = "texturesPng";
+    
+/* peterson cocos2d-x version that mono editor is based on */
+static const char* MONO_COCOS2D_VERSION     = "cocos2dVersion";
+/**/
 
 
 // NodeReader
@@ -129,6 +133,9 @@ NodeReader::NodeReader()
     /* peterson protocol buffers */
     , _recordProtocolBuffersPath(true)
     , _protocolBuffersPath("")
+    /**/
+    /* peterson cocos2d-x version that mono editor is based on */
+    , _monoCocos2dxVersion("")
     /**/
 {
 }
@@ -207,6 +214,10 @@ Node* NodeReader::loadNodeWithContent(const std::string& content)
     {
         CCLOG("GetParseError %s\n", doc.GetParseError());
     }
+    
+    /* peterson cocos2d-x version that mono editor is based on */
+    _monoCocos2dxVersion = DICTOOL->getStringValue_json(doc, MONO_COCOS2D_VERSION, "");
+    /**/
 
     // decode plist 
     int length = DICTOOL->getArrayCount_json(doc, TEXTURES);
@@ -269,6 +280,30 @@ Node* NodeReader::loadNode(const rapidjson::Value& json)
                 }
                 else
                 {
+                    /* peterson if cocos2d-x version is 2.x that mono editor is based on */
+                    if (_monoCocos2dxVersion != "3.x")
+                    {
+                        Widget* widget = dynamic_cast<Widget*>(child);
+                        Widget* parent = dynamic_cast<Widget*>(node);
+                        if (widget
+                            && parent
+                            && !dynamic_cast<Layout*>(parent))
+                        {
+                            if (widget->getPositionType() == ui::Widget::PositionType::PERCENT)
+                            {
+                                widget->setPositionPercent(Vec2(widget->getPositionPercent().x + parent->getAnchorPoint().x, widget->getPositionPercent().y + parent->getAnchorPoint().y));
+                                widget->setPosition(Vec2(widget->getPositionX() + parent->getAnchorPointInPoints().x, widget->getPositionY() + parent->getAnchorPointInPoints().y));
+                            }
+                            else
+                            {
+                                Size parentSize = parent->getContentSize();
+                                widget->setPosition(Vec2(widget->getPositionX() + parentSize.width * parent->getAnchorPoint().x,
+                                                              widget->getPositionY() + parentSize.height * parent->getAnchorPoint().y));
+                            }
+                        }
+                    }
+                    /**/
+                    
                     node->addChild(child);
                 }
                 
@@ -595,6 +630,10 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
      CCLog("designWidth = %d", gpbwp.designwidth());
      CCLog("version = %s", gpbwp.version().c_str());
      */
+    
+    /* peterson mono version */
+//    _monoVersion = gpbwp.monoversion();
+    /**/
     
     // decode plist
     int textureSize = gpbwp.textures_size();

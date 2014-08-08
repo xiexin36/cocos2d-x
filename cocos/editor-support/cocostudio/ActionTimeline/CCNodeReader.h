@@ -75,7 +75,7 @@ public:
     
     void setProtocolBuffersPath(std::string protocolBuffersPath) { _protocolBuffersPath = protocolBuffersPath; }
     std::string getProtocolBuffersPath() const { return _protocolBuffersPath; }
-    /**/
+    /**/    
 
 protected:
 
@@ -119,6 +119,10 @@ protected:
     /* peterson protocol buffers */
     bool _recordProtocolBuffersPath;
     std::string _protocolBuffersPath;
+    /**/
+    
+    /* peterson cocos2d-x version that mono editor is based on */
+    std::string _monoCocos2dxVersion;
     /**/
 };
 
