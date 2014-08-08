@@ -4,7 +4,7 @@
 #include "ui/UITextField.h"
 #include "cocostudio/CocoLoader.h"
 /* peterson protocol buffers */
-#include "../../ProtocolBuffers/CSParseBinary.pb.h"
+#include "../../CSParseBinary.pb.h"
 /**/
 
 USING_NS_CC;
