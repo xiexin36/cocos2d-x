@@ -99,8 +99,8 @@
     <ClCompile Include="..\CCTween.cpp" />
     <ClCompile Include="..\CCUtilMath.cpp" />
     <ClCompile Include="..\CocoLoader.cpp" />
+    <ClCompile Include="..\CSParseBinary.pb.cc" />
     <ClCompile Include="..\DictionaryHelper.cpp" />
-    <ClCompile Include="..\ProtocolBuffers\CSParseBinary.pb.cc" />
     <ClCompile Include="..\TriggerBase.cpp" />
     <ClCompile Include="..\TriggerMng.cpp" />
     <ClCompile Include="..\TriggerObj.cpp" />
@@ -240,9 +240,9 @@
     <ClInclude Include="..\CCUtilMath.h" />
     <ClInclude Include="..\CocoLoader.h" />
     <ClInclude Include="..\CocoStudio.h" />
+    <ClInclude Include="..\CSParseBinary.pb.h" />
     <ClInclude Include="..\DictionaryHelper.h" />
     <ClInclude Include="..\CocosStudioExport.h" />
-    <ClInclude Include="..\ProtocolBuffers\CSParseBinary.pb.h" />
     <ClInclude Include="..\TriggerBase.h" />
     <ClInclude Include="..\TriggerMng.h" />
     <ClInclude Include="..\TriggerObj.h" />
