@@ -140,6 +140,10 @@ namespace cocostudio
         
         const char* text = (options.has_text()) ? options.text().c_str() : "Text Label";
         labelBMFont->setString(text);
+        
+        
+        // other commonly properties
+        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     /**/
 }

@@ -57,6 +57,8 @@ namespace cocostudio
         
         /* peterson protocol buffers */
         virtual void setPropsFromProtocolBuffers(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree);
+        virtual void setColorPropsFromProtocolBuffers(cocos2d::ui::Widget* widget,
+                                                      const protocolbuffers::NodeTree& nodeTree);
         /**/
         
     protected:
