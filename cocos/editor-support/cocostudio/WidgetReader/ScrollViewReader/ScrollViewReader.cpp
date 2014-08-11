@@ -3,9 +3,7 @@
 #include "ScrollViewReader.h"
 #include "ui/UIScrollView.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -86,7 +84,6 @@ namespace cocostudio
         LayoutReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson protocol buffers */
     void ScrollViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -176,7 +173,7 @@ namespace cocostudio
         scrollView->setBounceEnabled(options.bounceenable());
         
         
-        // other commonly properties
+        // other commonly protperties
         setAnchorPointForWidget(widget, nodeTree);
         
         bool flipX = widgetOptions.flipx();
@@ -184,5 +181,4 @@ namespace cocostudio
         widget->setFlippedX(flipX);
         widget->setFlippedY(flipY);
     }
-    /**/
 }

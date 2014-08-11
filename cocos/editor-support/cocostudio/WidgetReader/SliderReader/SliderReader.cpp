@@ -3,9 +3,7 @@
 #include "SliderReader.h"
 #include "ui/UISlider.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -190,7 +188,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson protocol buffers */
     void SliderReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -245,8 +242,7 @@ namespace cocostudio
         slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
         
         
-        // other commonly properties
+        // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
-    /**/
 }

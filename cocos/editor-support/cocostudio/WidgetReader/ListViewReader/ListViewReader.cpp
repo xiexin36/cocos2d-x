@@ -3,9 +3,7 @@
 #include "ListViewReader.h"
 #include "ui/UIListView.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -79,7 +77,6 @@ namespace cocostudio
         listView->setItemsMargin(itemMargin);
     }
     
-    /* peterson protocol buffers */
     void ListViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -177,7 +174,7 @@ namespace cocostudio
         listView->setItemsMargin(itemMargin);
         
         
-        // other commonly properties
+        // other commonly protperties
         setAnchorPointForWidget(widget, nodeTree);
         
         bool flipX = widgetOptions.flipx();
@@ -185,6 +182,5 @@ namespace cocostudio
         widget->setFlippedX(flipX);
         widget->setFlippedY(flipY);
     }
-    /**/
 }
 

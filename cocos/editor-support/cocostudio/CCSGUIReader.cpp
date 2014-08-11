@@ -41,10 +41,7 @@ THE SOFTWARE.
 #include "WidgetReader/ListViewReader/ListViewReader.h"
 #include "cocostudio/CocoLoader.h"
 #include "ui/CocosGUI.h"
-
-/* peterson protocol buffers */
 #include "CSParseBinary.pb.h"
-/**/
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -345,7 +342,8 @@ Widget* GUIReader::widgetFromBinaryFile(const char *fileName)
 {
     std::string jsonpath;
     rapidjson::Document jsonDict;
-    jsonpath = CCFileUtils::getInstance()->fullPathForFilename(fileName);
+    jsonpath = fileName;
+//    jsonpath = CCFileUtils::getInstance()->fullPathForFilename(fileName);
     size_t pos = jsonpath.find_last_of('/');
     m_strFilePath = jsonpath.substr(0,pos+1);
     ssize_t nSize = 0;
@@ -1528,7 +1526,6 @@ void WidgetPropertiesReader0300::setPropsForAllCustomWidgetFromJsonDictionary(co
     }    
 }
     
-/* peterson protocol buffers */
 Widget* WidgetPropertiesReader0300::widgetFromProtocolBuffers(const protocolbuffers::NodeTree &nodetree)
 {
     std::string classname = nodetree.classname();
@@ -1537,7 +1534,7 @@ Widget* WidgetPropertiesReader0300::widgetFromProtocolBuffers(const protocolbuff
     Widget* widget = this->createGUI(classname);
     std::string readerName = this->getWidgetReaderClassName(classname);
     
-    WidgetReaderProtocol* reader = this->createWidgetReaderProtocol(readerName);    
+    WidgetReaderProtocol* reader = this->createWidgetReaderProtocol(readerName);
     
     if (reader)
     {

@@ -3,9 +3,7 @@
 #include "TextReader.h"
 #include "ui/UIText.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -141,7 +139,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson protocol buffers */
     void TextReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -189,8 +186,7 @@ namespace cocostudio
         }
         
         
-        // other commonly properties
+        // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
-    /**/
 }

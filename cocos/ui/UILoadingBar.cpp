@@ -180,6 +180,7 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
             }
             break;
     }
+    this->updateChildrenDisplayedRGBA();
     barRendererScaleChangedWithSize();
     updateContentSizeWithTextureSize(_barRendererTextureSize);
     _barRendererAdaptDirty = true;

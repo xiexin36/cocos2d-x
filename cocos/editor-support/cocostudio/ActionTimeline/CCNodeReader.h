@@ -29,14 +29,12 @@ THE SOFTWARE.
 #include "cocostudio/CocosStudioExport.h"
 #include "cocos2d.h"
 
-/* peterson protocol buffers */
 namespace protocolbuffers
 {
     class NodeTree;
-	class WidgetOptions;    
+	class WidgetOptions;
     class SpriteOptions;
 }
-/**/
 
 namespace cocostudio {
 
@@ -65,7 +63,6 @@ public:
     void setJsonPath(std::string jsonPath) { _jsonPath = jsonPath; }
     std::string getJsonPath() const { return _jsonPath; }
     
-    /* peterson protocol buffers */
     cocos2d::Node* createNodeFromProtocolBuffers(const std::string& filename);
     cocos2d::Node* nodeFromProtocolBuffersFile(const std::string& fileName);
     cocos2d::Node* nodeFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree);
@@ -75,7 +72,6 @@ public:
     
     void setProtocolBuffersPath(std::string protocolBuffersPath) { _protocolBuffersPath = protocolBuffersPath; }
     std::string getProtocolBuffersPath() const { return _protocolBuffersPath; }
-    /**/    
 
 protected:
 
@@ -94,7 +90,6 @@ protected:
     // load gui
     cocos2d::Node* loadWidget(const rapidjson::Value& json);
     
-    /* peterson protocol buffers */
     void setPropsForNodeFromProtocolBuffers(cocos2d::Node* node, const protocolbuffers::WidgetOptions& nodeOptions);
     void setPropsForSpriteFromProtocolBuffers(cocos2d::Node* node,
                                               const protocolbuffers::SpriteOptions& spriteOptions,
@@ -104,8 +99,7 @@ protected:
     bool isCustomWidget(const std::string& type);
     
     std::string getGUIClassName(const std::string &name);
-    std::string getWidgetReaderClassName(cocos2d::ui::Widget *widget);    
-    /**/
+    std::string getWidgetReaderClassName(cocos2d::ui::Widget *widget);
 
     typedef std::function<cocos2d::Node*(const rapidjson::Value& json)> NodeCreateFunc;
     typedef std::pair<std::string, NodeCreateFunc> Pair;
@@ -116,14 +110,10 @@ protected:
 
     std::string _jsonPath;
     
-    /* peterson protocol buffers */
     bool _recordProtocolBuffersPath;
     std::string _protocolBuffersPath;
-    /**/
     
-    /* peterson cocos2d-x version that mono editor is based on */
     std::string _monoCocos2dxVersion;
-    /**/
 };
 
 }

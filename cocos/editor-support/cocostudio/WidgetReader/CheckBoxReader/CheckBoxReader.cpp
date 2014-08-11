@@ -3,9 +3,7 @@
 #include "CheckBoxReader.h"
 #include "ui/UICheckBox.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -154,7 +152,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson protocol buffers */
     void CheckBoxReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -193,10 +190,7 @@ namespace cocostudio
         checkBox->loadTextureFrontCrossDisabled(frontCrossDisabledFileName, (Widget::TextureResType)frontCrossDisabledType);
         
         
-        // other commonly properties
+        // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
-    /**/
-    
-    
 }
