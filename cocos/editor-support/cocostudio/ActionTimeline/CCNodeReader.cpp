@@ -28,12 +28,10 @@ THE SOFTWARE.
 
 #include "cocostudio/CCSGUIReader.h"
 
-/* peterson protocol buffers */
 #include "../CSParseBinary.pb.h"
 #include "../../cocos/ui/CocosGUI.h"
 
 #include <fstream>
-/**/
 
 using namespace cocos2d;
 using namespace ui;
@@ -103,9 +101,7 @@ static const char* VISIBLE          = "visible";
 static const char* TEXTURES     = "textures";
 static const char* TEXTURES_PNG = "texturesPng";
     
-/* peterson cocos2d-x version that mono editor is based on */
 static const char* MONO_COCOS2D_VERSION     = "cocos2dVersion";
-/**/
 
 
 // NodeReader
@@ -130,13 +126,9 @@ void NodeReader::destroyInstance()
 NodeReader::NodeReader()
     : _recordJsonPath(true)
     , _jsonPath("")
-    /* peterson protocol buffers */
     , _recordProtocolBuffersPath(true)
     , _protocolBuffersPath("")
-    /**/
-    /* peterson cocos2d-x version that mono editor is based on */
     , _monoCocos2dxVersion("")
-    /**/
 {
 }
 
@@ -215,9 +207,8 @@ Node* NodeReader::loadNodeWithContent(const std::string& content)
         CCLOG("GetParseError %s\n", doc.GetParseError());
     }
     
-    /* peterson cocos2d-x version that mono editor is based on */
+    // cocos2dx version mono editor is based on
     _monoCocos2dxVersion = DICTOOL->getStringValue_json(doc, MONO_COCOS2D_VERSION, "");
-    /**/
 
     // decode plist 
     int length = DICTOOL->getArrayCount_json(doc, TEXTURES);
@@ -280,7 +271,6 @@ Node* NodeReader::loadNode(const rapidjson::Value& json)
                 }
                 else
                 {
-                    /* peterson if cocos2d-x version is 2.x that mono editor is based on */
                     if (_monoCocos2dxVersion != "3.x")
                     {
                         Widget* widget = dynamic_cast<Widget*>(child);
@@ -298,15 +288,13 @@ Node* NodeReader::loadNode(const rapidjson::Value& json)
                             {
                                 Size parentSize = parent->getContentSize();
                                 widget->setPosition(Vec2(widget->getPositionX() + parentSize.width * parent->getAnchorPoint().x,
-                                                              widget->getPositionY() + parentSize.height * parent->getAnchorPoint().y));
+                                                         widget->getPositionY() + parentSize.height * parent->getAnchorPoint().y));
                             }
                         }
                     }
-                    /**/
                     
                     node->addChild(child);
                 }
-                
                 child->release();
             }
         }
@@ -472,7 +460,6 @@ Node* NodeReader::loadParticle(const rapidjson::Value& json)
     return particle;
 }
 
-    /* peterson */
 Node* NodeReader::loadWidget(const rapidjson::Value& json)
 {
     const char* str = DICTOOL->getStringValue_json(json, CLASSNAME);
@@ -490,7 +477,7 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     {
         std::string readerName = getGUIClassName(classname);
         readerName.append("Reader");
-        
+    
         std::string guiClassName = getGUIClassName(classname);
         widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
         widget->retain();
@@ -547,10 +534,7 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     
     return widget;
 }
-    /**/
-
     
-/* peterson protocol buffers */
 Node* NodeReader::createNodeFromProtocolBuffers(const std::string &filename)
 {
     if(_recordProtocolBuffersPath)
@@ -576,11 +560,11 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
 {
     std::string path = fileName;
     int pos = path.find_last_of('/');
-//    _protocolBuffersPath = path.substr(0, pos + 1);
+    //    _protocolBuffersPath = path.substr(0, pos + 1);
     
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName.c_str());
     std::fstream in(fullPath.c_str(), std::ios::in | std::ios::binary);
-	protocolbuffers::CSParseBinary gpbwp;
+    protocolbuffers::CSParseBinary gpbwp;
     //    protocolbuffers::GUIProtocolBuffersProtobuf gpbwp;
     if (!gpbwp.ParseFromIstream(&in))
     {
@@ -592,11 +576,7 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
      CCLog("designHeight = %d", gpbwp.designheight());
      CCLog("designWidth = %d", gpbwp.designwidth());
      CCLog("version = %s", gpbwp.version().c_str());
-     */
-    
-    /* peterson mono version */
-//    _monoVersion = gpbwp.monoversion();
-    /**/
+     */    
     
     // decode plist
     int textureSize = gpbwp.textures_size();
@@ -610,7 +590,7 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
         plist = _protocolBuffersPath + plist;
         png = _protocolBuffersPath + png;
         SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist.c_str(), png.c_str());
-    }    
+    }
     int fileDesignWidth = gpbwp.designwidth();
     int fileDesignHeight = gpbwp.designheight();
     if (fileDesignWidth <= 0 || fileDesignHeight <= 0)
@@ -641,7 +621,7 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
     if (classname == "Node")
     {
         node = Node::create();
-		const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
+        const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
         setPropsForNodeFromProtocolBuffers(node, options);
     }
     else if (classname == "Sprite")
@@ -653,7 +633,7 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
     }
     else if (isWidget(classname))
     {
-		std::string guiClassName = getGUIClassName(classname);
+        std::string guiClassName = getGUIClassName(classname);
         std::string readerName = guiClassName;
         readerName.append("Reader");
         
@@ -754,8 +734,8 @@ void NodeReader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     float y             = options.y();
     float scalex        = options.scalex();
     float scaley        = options.scaley();
-    float rotation      = options.rotation();    
-	float anchorx       = options.has_anchorpointx() ? options.anchorpointx() : 0.5f;
+    float rotation      = options.rotation();
+    float anchorx       = options.has_anchorpointx() ? options.anchorpointx() : 0.5f;
     float anchory       = options.has_anchorpointy() ? options.anchorpointy() : 0.5f;
     int zorder		    = options.zorder();
     int tag             = options.tag();
@@ -769,7 +749,7 @@ void NodeReader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     if(scaley != 1)
         node->setScaleY(scaley);
     if (rotation != 0)
-        node->setRotation(rotation);        
+        node->setRotation(rotation);
     if(anchorx != 0.5f || anchory != 0.5f)
         node->setAnchorPoint(Point(anchorx, anchory));
     if(zorder != 0)
@@ -815,10 +795,10 @@ void NodeReader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
     
     setPropsForNodeFromProtocolBuffers(sprite, nodeOptions);
     
-	GLubyte alpha       = (GLubyte)nodeOptions.has_opacity() ? nodeOptions.opacity() : 255;
-	GLubyte red         = (GLubyte)nodeOptions.has_colorr() ? nodeOptions.colorr() : 255;
-	GLubyte green       = (GLubyte)nodeOptions.has_colorg() ? nodeOptions.colorg() : 255;
-	GLubyte blue        = (GLubyte)nodeOptions.has_colorb() ? nodeOptions.colorb() : 255;
+    GLubyte alpha       = (GLubyte)nodeOptions.has_opacity() ? nodeOptions.opacity() : 255;
+    GLubyte red         = (GLubyte)nodeOptions.has_colorr() ? nodeOptions.colorr() : 255;
+    GLubyte green       = (GLubyte)nodeOptions.has_colorg() ? nodeOptions.colorg() : 255;
+    GLubyte blue        = (GLubyte)nodeOptions.has_colorb() ? nodeOptions.colorb() : 255;
     
     if (alpha != 255)
     {
@@ -860,7 +840,7 @@ bool NodeReader::isWidget(const std::string &type)
             || type == ClassName_Label);
     
 }
-    
+
 bool NodeReader::isCustomWidget(const std::string &type)
 {
     Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(type));
@@ -872,7 +852,7 @@ bool NodeReader::isCustomWidget(const std::string &type)
     
     return false;
 }
-    
+
 std::string NodeReader::getGUIClassName(const std::string &name)
 {
     std::string convertedClassName = name;
@@ -904,7 +884,7 @@ std::string NodeReader::getGUIClassName(const std::string &name)
     
     return convertedClassName;
 }
-    
+
 std::string NodeReader::getWidgetReaderClassName(Widget* widget)
 {
     std::string readerName;
@@ -970,7 +950,6 @@ std::string NodeReader::getWidgetReaderClassName(Widget* widget)
     
     return readerName;
 }
-/**/
 
 }
 }

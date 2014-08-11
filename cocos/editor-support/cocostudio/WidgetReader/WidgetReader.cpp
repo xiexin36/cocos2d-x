@@ -3,10 +3,7 @@
 #include "WidgetReader.h"
 #include "cocostudio/CocoLoader.h"
 #include "ui/UIButton.h"
-
-/* peterson protocol buffers */
 #include "../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -358,7 +355,6 @@ namespace cocostudio
         this->endSetBasicProperties(widget);
     }
     
-    /* peterson protocol buffers */
     void WidgetReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         
@@ -407,7 +403,7 @@ namespace cocostudio
         }
         
         int z = options.zorder();
-        widget->setLocalZOrder(z);
+        widget->setLocalZOrder(z);        
         
         
         bool layout = options.has_layoutparameter();
@@ -535,7 +531,6 @@ namespace cocostudio
         }
         return imageFileName_tp;
     }
-    /**/
     
 }
 

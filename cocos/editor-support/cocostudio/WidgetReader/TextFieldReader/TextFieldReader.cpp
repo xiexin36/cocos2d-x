@@ -3,9 +3,7 @@
 #include "TextFieldReader.h"
 #include "ui/UITextField.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -138,7 +136,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson protocol buffers */
     void TextFieldReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -164,12 +161,12 @@ namespace cocostudio
         std::string fontName = options.has_fontname() ? options.fontname() : "微软雅黑";
         textField->setFontName(fontName);
         
-//        bool tsw = options.has_touchsizewidth();
-//        bool tsh = options.has_touchsizeheight();
-//        if (tsw && tsh)
-//        {
-//            textField->setTouchSize(Size(options.touchsizewidth(), options.touchsizeheight()));
-//        }
+        //        bool tsw = options.has_touchsizewidth();
+        //        bool tsh = options.has_touchsizeheight();
+        //        if (tsw && tsh)
+        //        {
+        //            textField->setTouchSize(Size(options.touchsizewidth(), options.touchsizeheight()));
+        //        }
         
         //        float dw = DICTOOL->getFloatValue_json(options, "width");
         //        float dh = DICTOOL->getFloatValue_json(options, "height");
@@ -194,8 +191,7 @@ namespace cocostudio
         }
         
         
-        // other commonly properties
+        // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
-    /**/
 }

@@ -3,9 +3,7 @@
 #include "ButtonReader.h"
 #include "ui/UIButton.h"
 #include "cocostudio/CocoLoader.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -236,7 +234,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson protocol buffers */
     void ButtonReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -250,7 +247,7 @@ namespace cocostudio
         button->setScale9Enabled(scale9Enable);
         
         
-		const protocolbuffers::ResourceData& normalDic = options.normaldata();        
+		const protocolbuffers::ResourceData& normalDic = options.normaldata();
         int normalType = normalDic.resourcetype();
         std::string normalTexturePath = this->getResourcePath(normalDic.path(), (Widget::TextureResType)normalType);
         button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
@@ -311,8 +308,7 @@ namespace cocostudio
         button->setTitleFontName(fontName);
         
         
-        // other commonly properties
+        // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
-    /**/
 }

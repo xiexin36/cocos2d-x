@@ -6,9 +6,7 @@
 #include "ui/UIScrollView.h"
 #include "ui/UIPageView.h"
 #include "ui/UIListView.h"
-/* peterson protocol buffers */
 #include "../../CSParseBinary.pb.h"
-/**/
 
 USING_NS_CC;
 using namespace ui;
@@ -308,10 +306,9 @@ namespace cocostudio
         bool flipX = DICTOOL->getBooleanValue_json(options, P_FlipX);
         bool flipY = DICTOOL->getBooleanValue_json(options, P_FlipY);
         widget->setFlippedX(flipX);
-        widget->setFlippedY(flipY);
+        widget->setFlippedY(flipY);                
     }
     
-    /* peterson protocol buffers */
     void LayoutReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -432,8 +429,8 @@ namespace cocostudio
         int bgimgopacity = widgetOptions.has_opacity() ? widgetOptions.opacity() : 255;
         panel->setBackGroundImageOpacity(bgimgopacity);
         
-
-        // other commonly properties
+        
+        // other commonly protperties
         setAnchorPointForWidget(widget, nodeTree);
         
         bool flipX = widgetOptions.flipx();
@@ -441,5 +438,4 @@ namespace cocostudio
         widget->setFlippedX(flipX);
         widget->setFlippedY(flipY);
     }
-    /**/
 }
