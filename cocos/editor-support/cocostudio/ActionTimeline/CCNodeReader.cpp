@@ -481,17 +481,19 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     
     std::string classname = str;
     
-    std::string guiClassName = getGUIClassName(classname);
     
-    Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-    widget->retain();
     
     WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
+    Widget* widget = nullptr;
     
     if (isWidget(classname))
     {
         std::string readerName = getGUIClassName(classname);
         readerName.append("Reader");
+        
+        std::string guiClassName = getGUIClassName(classname);
+        widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
+        widget->retain();
         
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
         
@@ -499,6 +501,9 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     }
     else if (isCustomWidget(classname))
     {
+        widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
+        widget->retain();
+        
         //
         // 1st., custom widget parse properties of parent widget with parent widget reader
         std::string readerName = getWidgetReaderClassName(widget);
@@ -525,67 +530,25 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     }
     CC_SAFE_DELETE(widgetPropertiesReader);
     
-    int actionTag = DICTOOL->getIntValue_json(json, ACTION_TAG);
-    widget->setUserObject(ActionTimelineData::create(actionTag));
-    
-    initNode(widget, json);
-
-    return widget;
-}
-    // before
-    /*
-Node* NodeReader::loadWidget(const rapidjson::Value& json)
-{
-    const char* str = DICTOOL->getStringValue_json(json, CLASSNAME);
-    if(str == nullptr)
-        return nullptr;
-
-    std::string classname = str;
-
-    if (classname == "Panel")
+    if (widget)
     {
-        classname = "Layout";
+        float rotationSkewX = DICTOOL->getFloatValue_json(json, ROTATION_SKEW_X);
+        float rotationSkewY = DICTOOL->getFloatValue_json(json, ROTATION_SKEW_Y);
+        float skewx         = DICTOOL->getFloatValue_json(json, SKEW_X);
+        float skewy         = DICTOOL->getFloatValue_json(json, SKEW_Y);
+        widget->setRotationSkewX(rotationSkewX);
+        widget->setRotationSkewY(rotationSkewY);
+        widget->setSkewX(skewx);
+        widget->setSkewY(skewy);
+        
+        int actionTag = DICTOOL->getIntValue_json(json, ACTION_TAG);
+        widget->setUserObject(ActionTimelineData::create(actionTag));
     }
-    else if (classname == "TextArea")
-    {
-        classname = "Text";
-    }
-    else if (classname == "TextButton")
-    {
-        classname = "Button";
-    }
-    else if (classname == "Label")
-    {
-        classname = "Text";
-    }
-    else if (classname == "LabelAtlas")
-    {
-        classname = "TextAtlas";
-    }
-    else if (classname == "LabelBMFont")
-    {
-        classname = "TextBMFont";
-    }
-
-    std::string readerName = classname;
-    readerName.append("Reader");
-    
-    Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-    widget->retain();
-
-    WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-
-    WidgetPropertiesReader0300* guiReader = new WidgetPropertiesReader0300();
-    guiReader->setPropsForAllWidgetFromJsonDictionary(reader, widget, json);
-    CC_SAFE_DELETE(guiReader);
-    
-    int actionTag = DICTOOL->getIntValue_json(json, ACTION_TAG);
-    widget->setUserObject(ActionTimelineData::create(actionTag));
     
     return widget;
 }
-     */
     /**/
+
     
 /* peterson protocol buffers */
 Node* NodeReader::createNodeFromProtocolBuffers(const std::string &filename)

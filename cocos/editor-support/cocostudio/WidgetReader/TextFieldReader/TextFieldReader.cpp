@@ -192,6 +192,10 @@ namespace cocostudio
             std::string passwordStyleText = options.has_passwordstyletext() ? options.passwordstyletext() : "*";
             textField->setPasswordStyleText(passwordStyleText.c_str());
         }
+        
+        
+        // other commonly properties
+        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     /**/
 }

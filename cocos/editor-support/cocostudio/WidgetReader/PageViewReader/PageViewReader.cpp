@@ -121,6 +121,15 @@ namespace cocostudio
         
         int bgimgopacity = widgetOptions.has_opacity() ? widgetOptions.opacity() : 255;
         pageView->setBackGroundImageOpacity(bgimgopacity);
+        
+        
+        // other commonly properties
+        setAnchorPointForWidget(widget, nodeTree);
+        
+        bool flipX = widgetOptions.flipx();
+        bool flipY = widgetOptions.flipy();
+        widget->setFlippedX(flipX);
+        widget->setFlippedY(flipY);
     }
     /**/
 }
