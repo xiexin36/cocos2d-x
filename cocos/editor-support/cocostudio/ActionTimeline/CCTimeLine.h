@@ -60,6 +60,11 @@ public:
     virtual ActionTimeline* getActionTimeline() const { return _ActionTimeline; }
 
     virtual Timeline* clone();
+    
+    /* peterson */
+    void setFrameType(const std::string& type) { _frameType = type; };
+    const std::string& getFrameType() const { return _frameType; };
+    /**/
 
 protected:
     virtual void apply(int frameIndex);
@@ -78,6 +83,10 @@ protected:
 
     ActionTimeline*  _ActionTimeline;
     cocos2d::Node* _node;
+    
+    /* peterson */
+    std::string _frameType;
+    /**/
 };
 
 NS_TIMELINE_END

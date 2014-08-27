@@ -177,6 +177,12 @@ public:
 
     virtual std::string getDescription() const override;
     
+    /* peterson */
+    const std::string getTMXFile() const { return _tmxFile; };
+    const std::string getTMXString() const { return _tmxString; };
+    const std::string getResourcePath() const { return _resourcePath; };
+    /**/
+    
 CC_CONSTRUCTOR_ACCESS:
     /**
      * @js ctor
@@ -212,6 +218,12 @@ protected:
     
     //! tile properties
     ValueMapIntKey _tileProperties;
+    
+    /* peterson */
+    std::string _tmxFile;
+    std::string _tmxString;
+    std::string _resourcePath;
+    /**/
 
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(TMXTiledMap);

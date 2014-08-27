@@ -34,6 +34,12 @@ namespace protocolbuffers
     class NodeTree;
 	class WidgetOptions;
     class SpriteOptions;
+    /* peterson */
+    class ParticleSystemOptions;
+    class TMXTiledMapOptions;
+    class ComponentOptions;
+    class ComAudioOptions;
+    /**/
 }
 
 namespace cocostudio {
@@ -86,14 +92,36 @@ protected:
     cocos2d::Node* loadSubGraph  (const rapidjson::Value& json);
     cocos2d::Node* loadSprite    (const rapidjson::Value& json);
     cocos2d::Node* loadParticle  (const rapidjson::Value& json);
+    /* peterson */
+    cocos2d::Node* loadTMXTiledMap(const rapidjson::Value& json);
+    /**/
 
     // load gui
     cocos2d::Node* loadWidget(const rapidjson::Value& json);
+    
+    /* peterson */
+    // load component
+    cocos2d::Component* loadComponent(const rapidjson::Value& json);
+    cocos2d::Component* loadComAudio(const rapidjson::Value& json);
+    /**/
     
     void setPropsForNodeFromProtocolBuffers(cocos2d::Node* node, const protocolbuffers::WidgetOptions& nodeOptions);
     void setPropsForSpriteFromProtocolBuffers(cocos2d::Node* node,
                                               const protocolbuffers::SpriteOptions& spriteOptions,
                                               const protocolbuffers::WidgetOptions& nodeOptions);
+    /* peterson */
+    void setPropsForParticleFromProtocolBuffers(cocos2d::Node* node,
+                                                const protocolbuffers::ParticleSystemOptions& particleSystemOptions,
+                                                const protocolbuffers::WidgetOptions& nodeOptions);
+    void setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node* node,
+                                                   const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
+                                                   const protocolbuffers::WidgetOptions& nodeOptions);
+    
+    void setPropsForComponentFromProtocolBuffers(cocos2d::Component* component, const protocolbuffers::ComponentOptions& componentOptions);
+    
+    void setPropsForComAudioFromProtocolBuffers(cocos2d::Component* component,
+                                                const protocolbuffers::ComAudioOptions& comAudioOptions);
+    /**/
     
     bool isWidget(const std::string& type);
     bool isCustomWidget(const std::string& type);
@@ -105,6 +133,13 @@ protected:
     typedef std::pair<std::string, NodeCreateFunc> Pair;
 
     std::unordered_map<std::string, NodeCreateFunc> _funcs;
+    
+    /* peterson */
+    typedef std::function<cocos2d::Component*(const rapidjson::Value& json)> ComponentCreateFunc;
+    typedef std::pair<std::string, ComponentCreateFunc> ComponentPair;
+    
+    std::unordered_map<std::string, ComponentCreateFunc> _componentFuncs;
+    /**/
 
     bool _recordJsonPath;
 

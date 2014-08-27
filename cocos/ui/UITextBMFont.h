@@ -87,6 +87,11 @@ public:
      * Returns the "class name" of widget.
      */
     virtual std::string getDescription() const override;
+    
+    /* peterson */
+    const std::string& getFntFileName() const { return _fntFileName; };
+    /**/
+    
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

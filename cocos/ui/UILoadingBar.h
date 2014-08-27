@@ -139,6 +139,12 @@ public:
      * Returns the "class name" of widget.
      */
     virtual std::string getDescription() const override;
+    
+    /* peterson */
+    const std::string& getTextureFile() const { return _textureFile; };
+    const TextureResType getTextureResType() const { return _renderBarTexType; };
+    /**/
+    
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

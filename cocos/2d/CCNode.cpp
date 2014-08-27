@@ -1861,6 +1861,18 @@ void Node::removeAllComponents()
         _componentContainer->removeAll();
 }
 
+/* peterson */
+const Map<std::string, Component*>* Node::getAllComponents() const
+{
+    if (_componentContainer)
+    {
+        return _componentContainer->getAllComponents();
+    }
+    
+    return nullptr;
+}
+/**/
+
 #if CC_USE_PHYSICS
 void Node::updatePhysicsBodyTransform(Scene* scene)
 {

@@ -31,6 +31,10 @@ THE SOFTWARE.
 #include "../CSParseBinary.pb.h"
 #include "../../cocos/ui/CocosGUI.h"
 
+/* peterson */
+#include "cocostudio/CocoStudio.h"
+/**/
+
 #include <fstream>
 
 using namespace cocos2d;
@@ -44,6 +48,9 @@ static const char* ClassName_Node     = "Node";
 static const char* ClassName_SubGraph = "SubGraph";
 static const char* ClassName_Sprite   = "Sprite";
 static const char* ClassName_Particle = "Particle";
+/* peterson */
+static const char* ClassName_TMXTiledMap = "TMXTiledMap";
+/**/
 
 static const char* ClassName_Panel      = "Panel";
 static const char* ClassName_Button     = "Button";
@@ -63,6 +70,10 @@ static const char* ClassName_ListView   = "ListView";
 static const char* ClassName_PageView   = "PageView";
 static const char* ClassName_Widget     = "Widget";
 static const char* ClassName_Label      = "Label";
+    
+/* peterson */
+static const char* ClassName_ComAudio = "ComAudio";
+/**/
 
 
 static const char* NODE        = "nodeTree";
@@ -70,6 +81,18 @@ static const char* CHILDREN    = "children";
 static const char* CLASSNAME   = "classname";
 static const char* FILE_PATH   = "fileName";
 static const char* PLIST_FILE  = "plistFile";
+/* peterson */
+static const char* TMX_FILE  = "tmxFile";
+static const char* TMX_STRING  = "tmxString";
+static const char* RESOURCE_PATH  = "resourcePath";
+
+static const char* COMPONENTS     = "components";
+static const char* COMPONENT_TYPE     = "componentType";
+static const char* COMPONENT_NAME  = "componentName";
+static const char* COMPONENT_ENABLED  = "componentEnabled";
+static const char* COMPONENT_AUDIO_FILE_PATH  = "comAudioFilePath";
+static const char* COMPONENT_LOOP  = "comAudioloop";
+/**/
 static const char* TAG         = "tag";
 static const char* ACTION_TAG  = "actionTag";
 
@@ -144,6 +167,9 @@ void NodeReader::init()
     _funcs.insert(Pair(ClassName_SubGraph,  std::bind(&NodeReader::loadSubGraph,   this, _1)));
     _funcs.insert(Pair(ClassName_Sprite,    std::bind(&NodeReader::loadSprite,     this, _1)));
     _funcs.insert(Pair(ClassName_Particle,  std::bind(&NodeReader::loadParticle,   this, _1)));
+    /* peterson */
+    _funcs.insert(Pair(ClassName_TMXTiledMap,  std::bind(&NodeReader::loadTMXTiledMap,   this, _1)));
+    /**/
     _funcs.insert(Pair(ClassName_LabelAtlas,std::bind(&NodeReader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_LabelBMFont,std::bind(&NodeReader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_Panel,     std::bind(&NodeReader::loadWidget,   this, _1)));
@@ -162,6 +188,10 @@ void NodeReader::init()
     _funcs.insert(Pair(ClassName_PageView,  std::bind(&NodeReader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_Widget,    std::bind(&NodeReader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_Label,     std::bind(&NodeReader::loadWidget,   this, _1)));
+    
+    /* peterson */
+    _componentFuncs.insert(ComponentPair(ClassName_ComAudio, std::bind(&NodeReader::loadComAudio, this, _1)));
+    /**/
 
 }
 
@@ -240,6 +270,24 @@ Node* NodeReader::loadNode(const rapidjson::Value& json)
     {
         const rapidjson::Value& options = DICTOOL->getSubDictionary_json(json, OPTIONS);
         node = func(options);
+        
+        /* peterson */
+        // component
+        if (node)
+        {
+            const rapidjson::Value& components = DICTOOL->getSubDictionary_json(options, COMPONENTS);
+            int componentSize = DICTOOL->getArrayCount_json(options, COMPONENTS, 0);
+            for (int i = 0; i < componentSize; ++i)
+            {
+                const rapidjson::Value &dic = DICTOOL->getSubDictionary_json(components, COMPONENTS, i);
+                Component* component = loadComponent(dic);
+                if (component)
+                {
+                    node->addComponent(component);
+                }
+            }
+        }
+        /**/
     }
     
     if(node)
@@ -459,6 +507,30 @@ Node* NodeReader::loadParticle(const rapidjson::Value& json)
 
     return particle;
 }
+    
+/* peterson */
+Node* NodeReader::loadTMXTiledMap(const rapidjson::Value &json)
+{
+    const char* tmxFile = DICTOOL->getStringValue_json(json, TMX_FILE);
+    const char* tmxString = DICTOOL->getStringValue_json(json, TMX_STRING);
+    const char* resourcePath = DICTOOL->getStringValue_json(json, RESOURCE_PATH);
+    
+    TMXTiledMap* tmx = nullptr;
+    
+    if (tmxFile && strcmp("", tmxFile) != 0)
+    {
+        tmx = TMXTiledMap::create(tmxFile);
+    }
+    else if ((tmxString && strcmp("", tmxString) != 0)
+             && (resourcePath && strcmp("", resourcePath) != 0))
+    {
+        tmx = TMXTiledMap::createWithXML(tmxString, resourcePath);
+    }
+    
+    return tmx;
+    
+}
+/**/
 
 Node* NodeReader::loadWidget(const rapidjson::Value& json)
 {
@@ -538,6 +610,44 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     
     return widget;
 }
+    
+/* peterson */
+Component* NodeReader::loadComponent(const rapidjson::Value &json)
+{
+    Component* component = nullptr;
+    
+    std::string componentType = DICTOOL->getStringValue_json(json, COMPONENT_TYPE);
+    
+    ComponentCreateFunc func = _componentFuncs[componentType];
+    
+    if (func != nullptr)
+    {
+        component = func(json);
+    }
+    
+    return component;
+}
+
+Component* NodeReader::loadComAudio(const rapidjson::Value &json)
+{
+    ComAudio* audio = ComAudio::create();
+    
+    const char* name = DICTOOL->getStringValue_json(json, COMPONENT_NAME);
+    bool enabled = DICTOOL->getBooleanValue_json(json, COMPONENT_ENABLED);
+    
+    audio->setName(name);
+    audio->setEnabled(enabled);
+    
+    const char* filePath = DICTOOL->getStringValue_json(json, COMPONENT_AUDIO_FILE_PATH);
+    bool loop = DICTOOL->getBooleanValue_json(json, COMPONENT_LOOP);
+    
+    audio->setFile(filePath);
+    audio->setLoop(loop);
+    
+    
+    return audio;
+}
+/**/
     
 Node* NodeReader::createNodeFromProtocolBuffers(const std::string &filename)
 {
@@ -621,6 +731,10 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
     std::string classname = nodetree.classname();
     CCLOG("classname = %s", classname.c_str());
     
+    /* peterson */
+    protocolbuffers::WidgetOptions curOptions;
+    /**/
+    
     if (classname == "Node")
     {
         node = Node::create();
@@ -634,6 +748,25 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
         const protocolbuffers::SpriteOptions& options = nodetree.spriteoptions();
         setPropsForSpriteFromProtocolBuffers(node, options, nodeOptions);
     }
+    /* peterson */
+    else if (classname == "ParticleSystem")
+    {
+        node = ParticleSystemQuad::create();
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::ParticleSystemOptions& options = nodetree.particlesystemoptions();
+        setPropsForParticleFromProtocolBuffers(node, options, nodeOptions);
+        
+        curOptions = nodeOptions;
+    }
+    else if (classname == "TMXTiledMap")
+    {
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
+        setPropsForTMXTiledMapFromProtocolBuffers(node, options, nodeOptions);
+        
+        curOptions = nodeOptions;
+    }
+    /**/
     else if (isWidget(classname))
     {
         std::string guiClassName = getGUIClassName(classname);
@@ -691,6 +824,24 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
         node = widget;
     }
     
+    /* peterson */
+    // component
+    int componentSize = curOptions.componentoptions_size();
+    for (int i = 0; i < componentSize; ++i)
+    {
+        
+        Component* component = nullptr;
+        const protocolbuffers::ComponentOptions& componentOptions = curOptions.componentoptions(i);
+        setPropsForComponentFromProtocolBuffers(component, componentOptions);
+        
+        if (component)
+        {
+            node->addComponent(component);
+        }
+    }
+    /**/
+    
+    // children
     int size = nodetree.children_size();
     CCLOG("size = %d", size);
     for (int i = 0; i < size; ++i)
@@ -733,6 +884,9 @@ void NodeReader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
 {
     const protocolbuffers::WidgetOptions& options = nodeOptions;
     
+    /* peterson */
+    std::string name = options.name();
+    /**/
     float x             = options.x();
     float y             = options.y();
     float scalex        = options.scalex();
@@ -744,6 +898,10 @@ void NodeReader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     int tag             = options.tag();
     int actionTag       = options.actiontag();
     bool visible        = options.visible();
+    
+    /* peterson */
+    node->setName(name);
+    /**/
     
     if(x != 0 || y != 0)
         node->setPosition(Point(x, y));
@@ -820,6 +978,80 @@ void NodeReader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
     if(flipY != false)
         sprite->setFlippedY(flipY);
 }
+    
+/* peterson */
+void NodeReader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
+                                                        const protocolbuffers::ParticleSystemOptions &particleSystemOptions,
+                                                        const protocolbuffers::WidgetOptions &nodeOptions)
+{
+    const protocolbuffers::ParticleSystemOptions& options = particleSystemOptions;
+    
+    const std::string& filePath = options.plistfile();
+    int num = options.totalparticles();
+    
+    ParticleSystemQuad* particle = static_cast<ParticleSystemQuad*>(node);
+    particle->setTexture( Director::getInstance()->getTextureCache()->addImage(filePath) );
+    particle->setTotalParticles(num);
+    particle->retain();
+    
+    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+}
+
+void NodeReader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
+                                                           const protocolbuffers::TMXTiledMapOptions &tmxTiledMapOptions,
+                                                           const protocolbuffers::WidgetOptions &nodeOptions)
+{
+    const protocolbuffers::TMXTiledMapOptions& options = tmxTiledMapOptions;
+    
+    const char* tmxFile = options.tmxfile().c_str();
+    const char* tmxString = options.tmxstring().c_str();
+    const char* resourcePath = options.resourcepath().c_str();
+    
+    if (tmxFile && strcmp("", tmxFile) != 0)
+    {
+        node = TMXTiledMap::create(tmxFile);
+    }
+    else if ((tmxString && strcmp("", tmxString) != 0)
+             && (resourcePath && strcmp("", resourcePath) != 0))
+    {
+        node = TMXTiledMap::createWithXML(tmxString, resourcePath);
+    }
+    
+    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+}
+
+void NodeReader::setPropsForComponentFromProtocolBuffers(cocos2d::Component *component,
+                                                         const protocolbuffers::ComponentOptions &componentOptions)
+{
+    std::string componentType = componentOptions.type();
+    
+    if (componentType == "ComAudio")
+    {
+        component = ComAudio::create();
+        const protocolbuffers::ComAudioOptions& options = componentOptions.comaudiooptions();
+        setPropsForComAudioFromProtocolBuffers(component, options);
+    }
+}
+
+void NodeReader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *component,
+                                                        const protocolbuffers::ComAudioOptions &comAudioOptions)
+{
+    const protocolbuffers::ComAudioOptions& options = comAudioOptions;
+    ComAudio* audio = static_cast<ComAudio*>(component);
+    
+    const char* filePath = options.filepath().c_str();
+    if (filePath && strcmp("", filePath) != 0)
+    {
+        audio->setFile(filePath);
+    }
+    
+    bool loop = options.loop();
+    audio->setLoop(loop);
+    
+    audio->setName(options.name());
+    audio->setLoop(options.loop());
+}
+/**/
 
 bool NodeReader::isWidget(const std::string &type)
 {

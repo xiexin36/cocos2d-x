@@ -39,6 +39,10 @@
 #include "renderer/ccGLStateCache.h"
 #include "CCGL.h"
 
+/* peterson */
+#include "base/CCMap.h"
+/**/
+
 NS_CC_BEGIN
 
 class GridBase;
@@ -1442,6 +1446,10 @@ public:
      */
     virtual void removeAllComponents();
     /// @} end of component functions
+    
+    /* peterson */
+    const Map<std::string, Component*>* getAllComponents() const;
+    /**/
 
 
 #if CC_USE_PHYSICS

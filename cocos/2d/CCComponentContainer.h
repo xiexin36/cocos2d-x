@@ -53,6 +53,11 @@ public:
     virtual bool remove(Component *com);
     virtual void removeAll();
     virtual void visit(float delta);
+    
+    /* peterson */
+    virtual const Map<std::string, Component*>* getAllComponents() const { return _components; };
+    /**/
+    
 public:
     bool isEmpty() const;
     

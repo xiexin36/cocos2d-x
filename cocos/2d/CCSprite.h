@@ -426,6 +426,11 @@ public:
     virtual bool isOpacityModifyRGB(void) const override;
     /// @}
 
+    /* peterson */
+    void setFileName(const std::string& fileName) { _fileName = fileName; };
+    const std::string& getFileName() const { return _fileName; };
+    /**/
+
 CC_CONSTRUCTOR_ACCESS:
 
     Sprite(void);
@@ -571,6 +576,11 @@ protected:
     bool _flippedY;                         /// Whether the sprite is flipped vertically or not
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
+
+    /* peterson */
+    std::string _fileName;
+    /**/
+
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(Sprite);
 };

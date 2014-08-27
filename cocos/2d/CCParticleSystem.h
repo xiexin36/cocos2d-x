@@ -373,6 +373,10 @@ public:
     */
     virtual const BlendFunc &getBlendFunc() const override;
     
+    /* peterson */
+    const std::string getPlistFile () const { return _plistFile; };
+    /**/
+    
 CC_CONSTRUCTOR_ACCESS:
     /**
      * @js ctor

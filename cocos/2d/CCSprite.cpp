@@ -169,6 +169,10 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect)
 bool Sprite::initWithFile(const std::string& filename)
 {
     CCASSERT(filename.size()>0, "Invalid filename for sprite");
+    
+    /* peterson */
+    _fileName = filename;
+    /**/
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -275,6 +279,9 @@ Sprite::Sprite(void)
 : _shouldBeHidden(false)
 , _texture(nullptr)
 , _insideBounds(true)
+/* peterson */
+, _fileName("")
+/**/
 {
 }
 

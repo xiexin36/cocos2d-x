@@ -111,6 +111,11 @@ public:
     virtual const Size& getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
     
+    /* peterson */
+    const std::string& getTextureFile() const { return _textureFile; };
+    const TextureResType getTextureResType() const { return _imageTexType; };
+    /**/
+    
 CC_CONSTRUCTOR_ACCESS:
     //initializes state of widget.
     virtual bool init() override;

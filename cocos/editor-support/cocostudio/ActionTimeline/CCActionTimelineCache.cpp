@@ -241,6 +241,10 @@ Timeline* ActionTimelineCache::loadTimeline(const rapidjson::Value& json)
     if(frameType && _funcs.find(frameType) != _funcs.end())
     {
         timeline = Timeline::create();
+        
+        /* peterson */
+        timeline->setFrameType(frameType);
+        /**/
 
         int actionTag = DICTOOL->getIntValue_json(json, ACTION_TAG);
         timeline->setActionTag(actionTag);
@@ -443,6 +447,10 @@ Timeline*  ActionTimelineCache::loadTimelineFromProtocolBuffers(const protocolbu
         
         int actionTag = timelineProtobuf.actiontag();
         timeline->setActionTag(actionTag);
+        
+        /* peterson */
+        timeline->setFrameType(frameType);
+        /**/
         
         
         int length = timelineProtobuf.frames_size();
