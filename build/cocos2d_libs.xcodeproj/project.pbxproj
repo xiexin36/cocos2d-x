@@ -574,6 +574,14 @@
 		3EA47871195478E00068D9D1 /* CCBundleReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EA4786E195478E00068D9D1 /* CCBundleReader.cpp */; };
 		3EA47872195478E00068D9D1 /* CCBundleReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA4786F195478E00068D9D1 /* CCBundleReader.h */; };
 		3EA47873195478E00068D9D1 /* CCBundleReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA4786F195478E00068D9D1 /* CCBundleReader.h */; };
+		430B0DAB19AF103200D6C795 /* UILayoutComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 430B0DA719AF103200D6C795 /* UILayoutComponent.cpp */; };
+		430B0DAC19AF103200D6C795 /* UILayoutComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 430B0DA719AF103200D6C795 /* UILayoutComponent.cpp */; };
+		430B0DAD19AF103200D6C795 /* UILayoutComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DA819AF103200D6C795 /* UILayoutComponent.h */; };
+		430B0DAE19AF103200D6C795 /* UILayoutComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DA819AF103200D6C795 /* UILayoutComponent.h */; };
+		430B0DAF19AF103200D6C795 /* UIScale9Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */; };
+		430B0DB019AF103200D6C795 /* UIScale9Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */; };
+		430B0DB119AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
+		430B0DB219AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
 		43A0B1F319A6010C001CDF96 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 43A0B1C519A6010C001CDF96 /* config.h */; };
 		43A0B1F419A6010C001CDF96 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 43A0B1C519A6010C001CDF96 /* config.h */; };
 		43A0B1F519A6010C001CDF96 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 43A0B1C519A6010C001CDF96 /* config.h */; };
@@ -2552,6 +2560,10 @@
 		3EA0FB6A191C841D00B170C8 /* UIVideoPlayerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIVideoPlayerIOS.mm; sourceTree = "<group>"; };
 		3EA4786E195478E00068D9D1 /* CCBundleReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCBundleReader.cpp; sourceTree = "<group>"; };
 		3EA4786F195478E00068D9D1 /* CCBundleReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBundleReader.h; sourceTree = "<group>"; };
+		430B0DA719AF103200D6C795 /* UILayoutComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UILayoutComponent.cpp; sourceTree = "<group>"; };
+		430B0DA819AF103200D6C795 /* UILayoutComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILayoutComponent.h; sourceTree = "<group>"; };
+		430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIScale9Sprite.cpp; sourceTree = "<group>"; };
+		430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScale9Sprite.h; sourceTree = "<group>"; };
 		43A0B1C519A6010C001CDF96 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		43A0B1C619A6010C001CDF96 /* extension_set.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = extension_set.cc; sourceTree = "<group>"; };
 		43A0B1C719A6010C001CDF96 /* extension_set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = extension_set.h; sourceTree = "<group>"; };
@@ -4420,6 +4432,10 @@
 		29CB8F511929D64500C841D6 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				430B0DA719AF103200D6C795 /* UILayoutComponent.cpp */,
+				430B0DA819AF103200D6C795 /* UILayoutComponent.h */,
+				430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */,
+				430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */,
 				29080DEB191B82CE0066F8DF /* UIDeprecated.h */,
 				29BDBA52195D597A003225C9 /* UIDeprecated.cpp */,
 				2905FA1318CF08D100240AA3 /* UIWidget.cpp */,
@@ -6226,6 +6242,7 @@
 				B2DB478F1976666100411E16 /* UIText.h in Headers */,
 				B2DB47901976666100411E16 /* UITextAtlas.h in Headers */,
 				B2DB47911976666100411E16 /* UITextBMFont.h in Headers */,
+				430B0DAD19AF103200D6C795 /* UILayoutComponent.h in Headers */,
 				B2DB47921976666100411E16 /* UITextField.h in Headers */,
 				B2DB476A1976653000411E16 /* UILayout.h in Headers */,
 				B2DB477A197665D000411E16 /* UIListView.h in Headers */,
@@ -6234,6 +6251,7 @@
 				B2DB476C1976654D00411E16 /* UILayoutManager.h in Headers */,
 				B2DB476E1976655C00411E16 /* UILayoutParameter.h in Headers */,
 				B2DB47701976657000411E16 /* UIRelativeBox.h in Headers */,
+				430B0DB119AF103200D6C795 /* UIScale9Sprite.h in Headers */,
 				B2DB47721976658000411E16 /* UIVBox.h in Headers */,
 				B2DB47741976659800411E16 /* CocosGUI.h in Headers */,
 				B2DB4776197665AA00411E16 /* UIDeprecated.h in Headers */,
@@ -6248,6 +6266,8 @@
 				B2C59A3519777EB600B452DF /* UILoadingBar.h in Headers */,
 				B2C59A3619777EB600B452DF /* UIPageView.h in Headers */,
 				B2C59A3719777EB600B452DF /* UIRichText.h in Headers */,
+				430B0DAE19AF103200D6C795 /* UILayoutComponent.h in Headers */,
+				430B0DB219AF103200D6C795 /* UIScale9Sprite.h in Headers */,
 				B2C59A3819777EB600B452DF /* UIScrollView.h in Headers */,
 				B2C59A3919777EB600B452DF /* UISlider.h in Headers */,
 				B2C59A3A19777EB600B452DF /* UIText.h in Headers */,
@@ -7697,9 +7717,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2DB4763197661CD00411E16 /* CCProtectedNode.cpp in Sources */,
+				430B0DAF19AF103200D6C795 /* UIScale9Sprite.cpp in Sources */,
 				B2DB4764197661D500411E16 /* UIWidget.cpp in Sources */,
 				B2DB4765197661E400411E16 /* UIHBox.cpp in Sources */,
 				B2DB4766197661EE00411E16 /* UILayout.cpp in Sources */,
+				430B0DAB19AF103200D6C795 /* UILayoutComponent.cpp in Sources */,
 				B2DB476B1976654800411E16 /* UILayoutManager.cpp in Sources */,
 				B2DB477F1976660000411E16 /* UIButton.cpp in Sources */,
 				B2DB476D1976655700411E16 /* UILayoutParameter.cpp in Sources */,
@@ -7736,7 +7758,9 @@
 				B2C59A2219777E7500B452DF /* UIText.cpp in Sources */,
 				B2C59A2319777E7500B452DF /* UITextAtlas.cpp in Sources */,
 				B2C59A2419777E7500B452DF /* UITextBMFont.cpp in Sources */,
+				430B0DAC19AF103200D6C795 /* UILayoutComponent.cpp in Sources */,
 				B2C59A2519777E7500B452DF /* UITextField.cpp in Sources */,
+				430B0DB019AF103200D6C795 /* UIScale9Sprite.cpp in Sources */,
 				B2C59A2619777E7500B452DF /* UIButton.cpp in Sources */,
 				B2C59ACB197782FF00B452DF /* UIVideoPlayerIOS.mm in Sources */,
 				B2C59A2719777E7500B452DF /* UICheckBox.cpp in Sources */,
