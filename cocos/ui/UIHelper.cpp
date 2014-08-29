@@ -184,10 +184,13 @@ namespace ui {
                     Size adaptedContentSize = Size(parentContentSize.width * percentContentSize.x, parentContentSize.height * percentContentSize.y);
                     node->setContentSize(adaptedContentSize);
                 }
+                
+                Widget* uiWidget = dynamic_cast<Widget*>(node);
+                if ( nullptr == uiWidget )
+                {
+                    doLayout(node);
+                }
             }
-            
-            doLayout(node);
-            
         }
     }
     
