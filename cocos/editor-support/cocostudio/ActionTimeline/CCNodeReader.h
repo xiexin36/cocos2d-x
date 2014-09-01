@@ -61,6 +61,9 @@ public:
 
     cocos2d::Node* createNode(const std::string& filename);
 
+    /* peterson */
+    cocos2d::Node* createNodeFromJson(const std::string& filename);
+    /**/
     cocos2d::Node* loadNodeWithFile(const std::string& fileName);
     cocos2d::Node* loadNodeWithContent(const std::string& content);
 
