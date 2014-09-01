@@ -120,15 +120,50 @@ void ActionTimelineCache::removeAction(const std::string& fileName)
     }
 }
 
-ActionTimeline* ActionTimelineCache::createAction(const std::string& fileName)
-{
-    ActionTimeline* action = _animationActions.at(fileName);
-    if (action == nullptr)
+    /* peterson */
+    ActionTimeline* ActionTimelineCache::createAction(const std::string& filename)
     {
-        action = loadAnimationActionWithFile(fileName);
+        std::string path = filename;
+        int pos = path.find_last_of('.');
+        std::string suffix = path.substr(pos + 1, path.length());
+        CCLOG("suffix = %s", suffix.c_str());
+        
+        if (suffix == "csb")
+        {
+            return createActionFromProtocolBuffers(filename);
+        }
+        else if (suffix == "json" || suffix == "ExportJson")
+        {
+            return createActionFromJson(filename);
+        }
+        
+        return nullptr;
     }
-    return action->clone();
-}
+    /**/
+    
+    /* peterson */
+    ActionTimeline* ActionTimelineCache::createActionFromJson(const std::string& fileName)
+    {
+        ActionTimeline* action = _animationActions.at(fileName);
+        if (action == nullptr)
+        {
+            action = loadAnimationActionWithFile(fileName);
+        }
+        return action->clone();
+    }
+    // before
+    /*
+     ActionTimeline* ActionTimelineCache::createAction(const std::string& fileName)
+     {
+        ActionTimeline* action = _animationActions.at(fileName);
+        if (action == nullptr)
+        {
+            action = loadAnimationActionWithFile(fileName);
+        }
+            return action->clone();
+    }
+     */
+    /**/
 
 ActionTimeline* ActionTimelineCache::loadAnimationActionWithFile(const std::string& fileName)
 {

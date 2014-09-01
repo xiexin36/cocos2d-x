@@ -1,48 +1,45 @@
 /****************************************************************************
-Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2013 cocos2d-x.org
+ 
+ http://www.cocos2d-x.org
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ ****************************************************************************/
 
-http://www.cocos2d-x.org
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-****************************************************************************/
-
-#include "CCNodeReader.h"
+#include "CSLoader.h"
 #include "CCActionTimelineCache.h"
 #include "CCActionTimeline.h"
-
-#include "cocostudio/CCSGUIReader.h"
-
-#include "../CSParseBinary.pb.h"
+#include "CCSGUIReader.h"
 #include "../../cocos/ui/CocosGUI.h"
-
 /* peterson */
 #include "cocostudio/CocoStudio.h"
 /**/
 
+#include "../CSParseBinary.pb.h"
+
 #include <fstream>
 
-using namespace cocos2d;
-using namespace ui;
+using namespace cocos2d::ui;
+using namespace cocostudio;
+using namespace cocostudio::timeline;
 
-namespace cocostudio {
-namespace timeline{
-
+NS_CC_BEGIN
 
 static const char* ClassName_Node     = "Node";
 static const char* ClassName_SubGraph = "SubGraph";
@@ -70,7 +67,7 @@ static const char* ClassName_ListView   = "ListView";
 static const char* ClassName_PageView   = "PageView";
 static const char* ClassName_Widget     = "Widget";
 static const char* ClassName_Label      = "Label";
-    
+
 /* peterson */
 static const char* ClassName_ComAudio = "ComAudio";
 /**/
@@ -123,85 +120,105 @@ static const char* VISIBLE          = "visible";
 
 static const char* TEXTURES     = "textures";
 static const char* TEXTURES_PNG = "texturesPng";
-    
+
 static const char* MONO_COCOS2D_VERSION     = "cocos2dVersion";
 
 
-// NodeReader
-static NodeReader* _sharedNodeReader = nullptr;
+// CSLoader
+static CSLoader* _sharedCSLoader = nullptr;
 
-NodeReader* NodeReader::getInstance()
+CSLoader* CSLoader::getInstance()
 {
-    if (! _sharedNodeReader)
+    if (! _sharedCSLoader)
     {
-        _sharedNodeReader = new NodeReader();
-        _sharedNodeReader->init();
+        _sharedCSLoader = new CSLoader();
+        _sharedCSLoader->init();
     }
-
-    return _sharedNodeReader;
+    
+    return _sharedCSLoader;
 }
 
-void NodeReader::destroyInstance()
+void CSLoader::destroyInstance()
 {
-    CC_SAFE_DELETE(_sharedNodeReader);
+    CC_SAFE_DELETE(_sharedCSLoader);
 }
 
-NodeReader::NodeReader()
-    : _recordJsonPath(true)
-    , _jsonPath("")
-    , _recordProtocolBuffersPath(true)
-    , _protocolBuffersPath("")
-    , _monoCocos2dxVersion("")
-{
-}
-
-void NodeReader::purge()
+CSLoader::CSLoader()
+: _recordJsonPath(true)
+, _jsonPath("")
+, _recordProtocolBuffersPath(true)
+, _protocolBuffersPath("")
+, _monoCocos2dxVersion("")
 {
 }
 
-void NodeReader::init()
+void CSLoader::purge()
+{
+}
+
+void CSLoader::init()
 {
     using namespace std::placeholders;
-
-    _funcs.insert(Pair(ClassName_Node,      std::bind(&NodeReader::loadSimpleNode, this, _1)));
-    _funcs.insert(Pair(ClassName_SubGraph,  std::bind(&NodeReader::loadSubGraph,   this, _1)));
-    _funcs.insert(Pair(ClassName_Sprite,    std::bind(&NodeReader::loadSprite,     this, _1)));
-    _funcs.insert(Pair(ClassName_Particle,  std::bind(&NodeReader::loadParticle,   this, _1)));
+    
+    _funcs.insert(Pair(ClassName_Node,      std::bind(&CSLoader::loadSimpleNode, this, _1)));
+    _funcs.insert(Pair(ClassName_SubGraph,  std::bind(&CSLoader::loadSubGraph,   this, _1)));
+    _funcs.insert(Pair(ClassName_Sprite,    std::bind(&CSLoader::loadSprite,     this, _1)));
+    _funcs.insert(Pair(ClassName_Particle,  std::bind(&CSLoader::loadParticle,   this, _1)));
     /* peterson */
-    _funcs.insert(Pair(ClassName_TMXTiledMap,  std::bind(&NodeReader::loadTMXTiledMap,   this, _1)));
+    _funcs.insert(Pair(ClassName_TMXTiledMap,  std::bind(&CSLoader::loadTMXTiledMap,   this, _1)));
     /**/
-    _funcs.insert(Pair(ClassName_LabelAtlas,std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_LabelBMFont,std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Panel,     std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Button,    std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_CheckBox,  std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_ImageView, std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_TextAtlas, std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_TextBMFont,std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Text,      std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_LoadingBar,std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_TextField, std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Slider,    std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Layout,    std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_ScrollView,std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_ListView,  std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_PageView,  std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Widget,    std::bind(&NodeReader::loadWidget,   this, _1)));
-    _funcs.insert(Pair(ClassName_Label,     std::bind(&NodeReader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_LabelAtlas,std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_LabelBMFont,std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Panel,     std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Button,    std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_CheckBox,  std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_ImageView, std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_TextAtlas, std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_TextBMFont,std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Text,      std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_LoadingBar,std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_TextField, std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Slider,    std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Layout,    std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_ScrollView,std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_ListView,  std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_PageView,  std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Widget,    std::bind(&CSLoader::loadWidget,   this, _1)));
+    _funcs.insert(Pair(ClassName_Label,     std::bind(&CSLoader::loadWidget,   this, _1)));
     
     /* peterson */
-    _componentFuncs.insert(ComponentPair(ClassName_ComAudio, std::bind(&NodeReader::loadComAudio, this, _1)));
+    _componentFuncs.insert(ComponentPair(ClassName_ComAudio, std::bind(&CSLoader::loadComAudio, this, _1)));
     /**/
-
+    
 }
 
-Node* NodeReader::createNode(const std::string& filename)
+Node* CSLoader::createNode(const std::string& filename)
 {
-    if(_recordJsonPath)
+    std::string path = filename;
+    int pos = path.find_last_of('.');
+    std::string suffix = path.substr(pos + 1, path.length());
+    CCLOG("suffix = %s", suffix.c_str());
+    
+    if (suffix == "csb")
+    {
+        return createNodeFromProtocolBuffers(filename);
+    }
+    else if (suffix == "json" || suffix == "ExportJson")
+    {
+        return createNodeFromJson(filename);
+    }
+    
+    return nullptr;
+}
+
+/* peterson */
+Node* CSLoader::createNodeFromJson(const std::string& filename)
+{
+    if (_recordJsonPath)
     {
         std::string jsonPath = filename.substr(0, filename.find_last_of('/') + 1);
         GUIReader::getInstance()->setFilePath(jsonPath);
-
+        
         _jsonPath = jsonPath;
     }
     else
@@ -209,40 +226,41 @@ Node* NodeReader::createNode(const std::string& filename)
         GUIReader::getInstance()->setFilePath("");
         _jsonPath = "";
     }
-
+    
     Node* node = loadNodeWithFile(filename);
-
+    
     return node;
 }
+/**/
 
-Node* NodeReader::loadNodeWithFile(const std::string& fileName)
+Node* CSLoader::loadNodeWithFile(const std::string& fileName)
 {
     // Read content from file
     std::string contentStr = FileUtils::getInstance()->getStringFromFile(fileName);
-
+    
     Node* node = loadNodeWithContent(contentStr);
-
+    
     // Load animation data from file
     ActionTimelineCache::getInstance()->loadAnimationActionWithContent(fileName, contentStr);
-
+    
     return node;
 }
 
-Node* NodeReader::loadNodeWithContent(const std::string& content)
+Node* CSLoader::loadNodeWithContent(const std::string& content)
 {
     rapidjson::Document doc;
     doc.Parse<0>(content.c_str());
-    if (doc.HasParseError()) 
+    if (doc.HasParseError())
     {
         CCLOG("GetParseError %s\n", doc.GetParseError());
     }
     
     // cocos2dx version mono editor is based on
     _monoCocos2dxVersion = DICTOOL->getStringValue_json(doc, MONO_COCOS2D_VERSION, "");
-
-    // decode plist 
+    
+    // decode plist
     int length = DICTOOL->getArrayCount_json(doc, TEXTURES);
-
+    
     for(int i=0; i<length; i++)
     {
         std::string plist = DICTOOL->getStringValueFromArray_json(doc, TEXTURES, i);
@@ -251,20 +269,20 @@ Node* NodeReader::loadNodeWithContent(const std::string& content)
         png   = _jsonPath + png;
         SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist, png);
     }
-
+    
     // decode node tree
     const rapidjson::Value& subJson = DICTOOL->getSubDictionary_json(doc, NODE);
     Node* root = loadNode(subJson);
     root->release();
-
+    
     return root;
 }
 
-Node* NodeReader::loadNode(const rapidjson::Value& json)
+Node* CSLoader::loadNode(const rapidjson::Value& json)
 {
     Node* node = nullptr;
     std::string nodeType = DICTOOL->getStringValue_json(json, CLASSNAME);
-
+    
     NodeCreateFunc func = _funcs[nodeType];
     if (func != nullptr)
     {
@@ -355,7 +373,7 @@ Node* NodeReader::loadNode(const rapidjson::Value& json)
     return node;
 }
 
-void NodeReader::initNode(Node* node, const rapidjson::Value& json)
+void CSLoader::initNode(Node* node, const rapidjson::Value& json)
 {
     float width         = DICTOOL->getFloatValue_json(json, WIDTH);
     float height        = DICTOOL->getFloatValue_json(json, HEIGHT);
@@ -378,7 +396,7 @@ void NodeReader::initNode(Node* node, const rapidjson::Value& json)
     int tag             = DICTOOL->getIntValue_json(json, TAG);
     int actionTag       = DICTOOL->getIntValue_json(json, ACTION_TAG);
     bool visible        = DICTOOL->getBooleanValue_json(json, VISIBLE);
-
+    
     if(x != 0 || y != 0)
         node->setPosition(Point(x, y));
     if(scalex != 1)
@@ -403,7 +421,7 @@ void NodeReader::initNode(Node* node, const rapidjson::Value& json)
         node->setLocalZOrder(zorder);
     if(visible != true)
         node->setVisible(visible);
-
+    
     if(alpha != 255)
     {
         node->setOpacity(alpha);
@@ -412,25 +430,25 @@ void NodeReader::initNode(Node* node, const rapidjson::Value& json)
     {
         node->setColor(Color3B(red, green, blue));
     }
-
-
+    
+    
     node->setTag(tag);
     node->setUserObject(ActionTimelineData::create(actionTag));
 }
 
-Node* NodeReader::loadSimpleNode(const rapidjson::Value& json)
+Node* CSLoader::loadSimpleNode(const rapidjson::Value& json)
 {
     Node* node = Node::create();
     node->retain();
     initNode(node, json);
-
+    
     return node;
 }
 
-Node* NodeReader::loadSubGraph(const rapidjson::Value& json)
+Node* CSLoader::loadSubGraph(const rapidjson::Value& json)
 {
     const char* filePath = DICTOOL->getStringValue_json(json, FILE_PATH);
-
+    
     Node* node = nullptr;
     if (filePath && strcmp("", filePath) != 0)
     {
@@ -440,23 +458,23 @@ Node* NodeReader::loadSubGraph(const rapidjson::Value& json)
     {
         node = Node::create();
     }
-
+    
     node->retain();
-
+    
     initNode(node, json);
-
+    
     return node;
 }
 
-Node* NodeReader::loadSprite(const rapidjson::Value& json)
+Node* CSLoader::loadSprite(const rapidjson::Value& json)
 {
     const char* filePath = DICTOOL->getStringValue_json(json, FILE_PATH);
     Sprite *sprite = nullptr;
-
+    
     if(filePath != nullptr)
     {
         std::string path = filePath;
-
+        
         SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
         if(!spriteFrame)
         {
@@ -466,8 +484,9 @@ Node* NodeReader::loadSprite(const rapidjson::Value& json)
         else
         {
             sprite = Sprite::createWithSpriteFrame(spriteFrame);
+            sprite->setFileName(path);
         }
-
+        
         if(!sprite)
         {
             sprite = CCSprite::create();
@@ -478,38 +497,38 @@ Node* NodeReader::loadSprite(const rapidjson::Value& json)
     {
         sprite = Sprite::create();
     }
-
+    
     sprite->retain();
-
+    
     initNode(sprite, json);
-
+    
     bool flipX          = DICTOOL->getBooleanValue_json(json, FLIPX);
     bool flipY          = DICTOOL->getBooleanValue_json(json, FLIPY);
-
+    
     if(flipX != false)
         sprite->setFlippedX(flipX);
     if(flipY != false)
         sprite->setFlippedY(flipY);
-
+    
     return sprite;
 }
 
-Node* NodeReader::loadParticle(const rapidjson::Value& json)
+Node* CSLoader::loadParticle(const rapidjson::Value& json)
 {
     const char* filePath = DICTOOL->getStringValue_json(json, PLIST_FILE);
     int num = DICTOOL->getIntValue_json(json, PARTICLE_NUM);
-
+    
     ParticleSystemQuad* particle = ParticleSystemQuad::create(filePath);
     particle->setTotalParticles(num);
     particle->retain();
-
+    
     initNode(particle, json);
-
+    
     return particle;
 }
-    
+
 /* peterson */
-Node* NodeReader::loadTMXTiledMap(const rapidjson::Value &json)
+Node* CSLoader::loadTMXTiledMap(const rapidjson::Value &json)
 {
     const char* tmxFile = DICTOOL->getStringValue_json(json, TMX_FILE);
     const char* tmxString = DICTOOL->getStringValue_json(json, TMX_STRING);
@@ -532,7 +551,7 @@ Node* NodeReader::loadTMXTiledMap(const rapidjson::Value &json)
 }
 /**/
 
-Node* NodeReader::loadWidget(const rapidjson::Value& json)
+Node* CSLoader::loadWidget(const rapidjson::Value& json)
 {
     const char* str = DICTOOL->getStringValue_json(json, CLASSNAME);
     if(str == nullptr)
@@ -549,7 +568,7 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     {
         std::string readerName = getGUIClassName(classname);
         readerName.append("Reader");
-    
+        
         std::string guiClassName = getGUIClassName(classname);
         widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
         widget->retain();
@@ -610,9 +629,9 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     
     return widget;
 }
-    
+
 /* peterson */
-Component* NodeReader::loadComponent(const rapidjson::Value &json)
+Component* CSLoader::loadComponent(const rapidjson::Value &json)
 {
     Component* component = nullptr;
     
@@ -628,7 +647,7 @@ Component* NodeReader::loadComponent(const rapidjson::Value &json)
     return component;
 }
 
-Component* NodeReader::loadComAudio(const rapidjson::Value &json)
+Component* CSLoader::loadComAudio(const rapidjson::Value &json)
 {
     ComAudio* audio = ComAudio::create();
     
@@ -648,8 +667,8 @@ Component* NodeReader::loadComAudio(const rapidjson::Value &json)
     return audio;
 }
 /**/
-    
-Node* NodeReader::createNodeFromProtocolBuffers(const std::string &filename)
+
+Node* CSLoader::createNodeFromProtocolBuffers(const std::string &filename)
 {
     if(_recordProtocolBuffersPath)
     {
@@ -670,17 +689,17 @@ Node* NodeReader::createNodeFromProtocolBuffers(const std::string &filename)
     return node;
 }
 
-Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
+Node* CSLoader::nodeFromProtocolBuffersFile(const std::string &fileName)
 {
     std::string path = fileName;
     int pos = path.find_last_of('/');
     //    _protocolBuffersPath = path.substr(0, pos + 1);
     
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName.c_str());
-  	Data content = FileUtils::getInstance()->getDataFromFile(fullPath);
+    Data content = FileUtils::getInstance()->getDataFromFile(fullPath);
     protocolbuffers::CSParseBinary gpbwp;
     //    protocolbuffers::GUIProtocolBuffersProtobuf gpbwp;
-	if (!gpbwp.ParseFromArray(content.getBytes(), content.getSize()))
+    if (!gpbwp.ParseFromArray(content.getBytes(), content.getSize()))
     {
         return NULL;
     }
@@ -689,7 +708,7 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
      CCLog("designHeight = %d", gpbwp.designheight());
      CCLog("designWidth = %d", gpbwp.designwidth());
      CCLog("version = %s", gpbwp.version().c_str());
-     */    
+     */
     
     // decode plist
     int textureSize = gpbwp.textures_size();
@@ -724,9 +743,9 @@ Node* NodeReader::nodeFromProtocolBuffersFile(const std::string &fileName)
     return node;
 }
 
-Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetree)
+Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetree)
 {
-    Node* node = NULL;
+    Node* node = nullptr;
     
     std::string classname = nodetree.classname();
     CCLOG("classname = %s", classname.c_str());
@@ -740,6 +759,8 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
         node = Node::create();
         const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
         setPropsForNodeFromProtocolBuffers(node, options);
+        
+        curOptions = options;
     }
     else if (classname == "Sprite")
     {
@@ -747,6 +768,21 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::SpriteOptions& options = nodetree.spriteoptions();
         setPropsForSpriteFromProtocolBuffers(node, options, nodeOptions);
+        
+        curOptions = nodeOptions;
+    }
+    else if (classname == "ProjectNode")
+    {
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::ProjectNodeOptions& options = nodetree.projectnodeoptions();
+        
+        std::string filePath = options.filename();
+        CCLOG("filePath = %s", filePath.c_str());
+        node = createNodeFromProtocolBuffers(_protocolBuffersPath + filePath);
+        
+        setPropsForProjectNodeFromProtocolBuffers(node, options, nodeOptions);
+        
+        curOptions = nodeOptions;
     }
     /* peterson */
     else if (classname == "ParticleSystem")
@@ -841,7 +877,6 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
     }
     /**/
     
-    // children
     int size = nodetree.children_size();
     CCLOG("size = %d", size);
     for (int i = 0; i < size; ++i)
@@ -879,7 +914,7 @@ Node* NodeReader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodet
     return node;
 }
 
-void NodeReader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
+void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
                                                     const protocolbuffers::WidgetOptions &nodeOptions)
 {
     const protocolbuffers::WidgetOptions& options = nodeOptions;
@@ -923,34 +958,60 @@ void NodeReader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     
 }
 
-void NodeReader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
+void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
                                                       const protocolbuffers::SpriteOptions &spriteOptions,
                                                       const protocolbuffers::WidgetOptions &nodeOptions)
 {
+    Sprite *sprite = static_cast<Sprite*>(node);
     const protocolbuffers::SpriteOptions& options = spriteOptions;
     
-    const char* filePath = options.filename().c_str();
-    Sprite *sprite = static_cast<Sprite*>(node);
-    
-    if(filePath != nullptr && strcmp(filePath, "") != 0)
+    const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
+    int resourceType = fileNameData.resourcetype();
+    switch (resourceType)
     {
-        std::string path = filePath;
-        
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
-        if(!spriteFrame)
+        case 0:
         {
-            path = _protocolBuffersPath + path;
+            std::string path = _protocolBuffersPath + fileNameData.path();
             sprite->setTexture(path);
+            break;
         }
-        else
+            
+        case 1:
         {
-            sprite->setSpriteFrame(spriteFrame);
+            std::string path = fileNameData.path();
+            sprite->setSpriteFrame(path);
+            break;
         }
+            
+        default:
+            break;
     }
-    else
-    {
-        CCLOG("filePath is empty. Create a sprite with no texture");
-    }
+    
+    /*
+     const char* filePath = options.filename().c_str();
+     CCLOG("filePath = %s", filePath);
+     Sprite *sprite = static_cast<Sprite*>(node);
+     
+     if(filePath != nullptr && strcmp(filePath, "") != 0)
+     {
+     std::string path = filePath;
+     
+     SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
+     if(!spriteFrame)
+     {
+     path = _protocolBuffersPath + path;
+     sprite->setTexture(path);
+     }
+     else
+     {
+     sprite->setSpriteFrame(spriteFrame);
+     }
+     }
+     else
+     {
+     CCLOG("filePath is empty. Create a sprite with no texture");
+     }
+     */
     
     sprite->retain();
     
@@ -978,22 +1039,22 @@ void NodeReader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
     if(flipY != false)
         sprite->setFlippedY(flipY);
 }
-    
+
 /* peterson */
-void NodeReader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
+void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
                                                         const protocolbuffers::ParticleSystemOptions &particleSystemOptions,
                                                         const protocolbuffers::WidgetOptions &nodeOptions)
 {
     const protocolbuffers::ParticleSystemOptions& options = particleSystemOptions;
     
     /*
-     const std::string& filePath = options.plistfile();
-     int num = options.totalparticles();
+    const std::string& filePath = options.plistfile();
+    int num = options.totalparticles();
      */
     
     ParticleSystemQuad* particle = static_cast<ParticleSystemQuad*>(node);
-    //    particle->setTexture( Director::getInstance()->getTextureCache()->addImage(filePath) );
-    //    particle->setTotalParticles(num);
+//    particle->setTexture( Director::getInstance()->getTextureCache()->addImage(filePath) );
+//    particle->setTotalParticles(num);
     particle->retain();
     
     const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
@@ -1014,26 +1075,26 @@ void NodeReader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
     setPropsForNodeFromProtocolBuffers(node, nodeOptions);
 }
 
-void NodeReader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
+void CSLoader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
                                                            const protocolbuffers::TMXTiledMapOptions &tmxTiledMapOptions,
                                                            const protocolbuffers::WidgetOptions &nodeOptions)
 {
     const protocolbuffers::TMXTiledMapOptions& options = tmxTiledMapOptions;
     
     /*
-     const char* tmxFile = options.tmxfile().c_str();
-     const char* tmxString = options.tmxstring().c_str();
-     const char* resourcePath = options.resourcepath().c_str();
-     
-     if (tmxFile && strcmp("", tmxFile) != 0)
-     {
-     node = TMXTiledMap::create(tmxFile);
-     }
-     else if ((tmxString && strcmp("", tmxString) != 0)
-     && (resourcePath && strcmp("", resourcePath) != 0))
-     {
-     node = TMXTiledMap::createWithXML(tmxString, resourcePath);
-     }
+    const char* tmxFile = options.tmxfile().c_str();
+    const char* tmxString = options.tmxstring().c_str();
+    const char* resourcePath = options.resourcepath().c_str();
+    
+    if (tmxFile && strcmp("", tmxFile) != 0)
+    {
+        node = TMXTiledMap::create(tmxFile);
+    }
+    else if ((tmxString && strcmp("", tmxString) != 0)
+             && (resourcePath && strcmp("", resourcePath) != 0))
+    {
+        node = TMXTiledMap::createWithXML(tmxString, resourcePath);
+    }
      */
     
     const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
@@ -1059,7 +1120,16 @@ void NodeReader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
     setPropsForNodeFromProtocolBuffers(node, nodeOptions);
 }
 
-void NodeReader::setPropsForComponentFromProtocolBuffers(cocos2d::Component *component,
+void CSLoader::setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node *node,
+                                                           const protocolbuffers::ProjectNodeOptions &projectNodeOptions,
+                                                           const protocolbuffers::WidgetOptions &nodeOptions)
+{
+    const protocolbuffers::ProjectNodeOptions& options = projectNodeOptions;
+    
+    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+}
+
+void CSLoader::setPropsForComponentFromProtocolBuffers(cocos2d::Component *component,
                                                          const protocolbuffers::ComponentOptions &componentOptions)
 {
     std::string componentType = componentOptions.type();
@@ -1072,7 +1142,7 @@ void NodeReader::setPropsForComponentFromProtocolBuffers(cocos2d::Component *com
     }
 }
 
-void NodeReader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *component,
+void CSLoader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *component,
                                                         const protocolbuffers::ComAudioOptions &comAudioOptions)
 {
     const protocolbuffers::ComAudioOptions& options = comAudioOptions;
@@ -1101,7 +1171,7 @@ void NodeReader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *comp
 }
 /**/
 
-bool NodeReader::isWidget(const std::string &type)
+bool CSLoader::isWidget(const std::string &type)
 {
     return (type == ClassName_Panel
             || type == ClassName_Button
@@ -1124,7 +1194,7 @@ bool NodeReader::isWidget(const std::string &type)
     
 }
 
-bool NodeReader::isCustomWidget(const std::string &type)
+bool CSLoader::isCustomWidget(const std::string &type)
 {
     Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(type));
     if (widget)
@@ -1136,7 +1206,7 @@ bool NodeReader::isCustomWidget(const std::string &type)
     return false;
 }
 
-std::string NodeReader::getGUIClassName(const std::string &name)
+std::string CSLoader::getGUIClassName(const std::string &name)
 {
     std::string convertedClassName = name;
     if (name == "Panel")
@@ -1168,7 +1238,7 @@ std::string NodeReader::getGUIClassName(const std::string &name)
     return convertedClassName;
 }
 
-std::string NodeReader::getWidgetReaderClassName(Widget* widget)
+std::string CSLoader::getWidgetReaderClassName(Widget* widget)
 {
     std::string readerName;
     
@@ -1234,5 +1304,4 @@ std::string NodeReader::getWidgetReaderClassName(Widget* widget)
     return readerName;
 }
 
-}
-}
+NS_CC_END
