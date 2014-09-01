@@ -195,6 +195,49 @@ void NodeReader::init()
 
 }
 
+    /* peterson */
+    Node* NodeReader::createNode(const std::string& filename)
+    {
+        std::string path = filename;
+        size_t pos = path.find_last_of('.');
+        std::string suffix = path.substr(pos + 1, path.length());
+        CCLOG("suffix = %s", suffix.c_str());
+        
+        if (suffix == "csb")
+        {
+            return createNodeFromProtocolBuffers(filename);
+        }
+        else if (suffix == "json" || suffix == "ExportJson")
+        {
+            return createNodeFromJson(filename);
+        }
+        
+        return nullptr;
+    }
+    /**/
+    
+    /* peterson */
+    Node* NodeReader::createNodeFromJson(const std::string& filename)
+    {
+        if(_recordJsonPath)
+        {
+            std::string jsonPath = filename.substr(0, filename.find_last_of('/') + 1);
+            GUIReader::getInstance()->setFilePath(jsonPath);
+            
+            _jsonPath = jsonPath;
+        }
+        else
+        {
+            GUIReader::getInstance()->setFilePath("");
+            _jsonPath = "";
+        }
+        
+        Node* node = loadNodeWithFile(filename);
+        
+        return node;
+    }
+    // before
+    /*
 Node* NodeReader::createNode(const std::string& filename)
 {
     if(_recordJsonPath)
@@ -214,6 +257,8 @@ Node* NodeReader::createNode(const std::string& filename)
 
     return node;
 }
+     */
+    /**/
 
 Node* NodeReader::loadNodeWithFile(const std::string& fileName)
 {
