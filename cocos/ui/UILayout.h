@@ -317,6 +317,11 @@ public:
      * @return return the index of widget in the layout
      */
     std::function<int(FocusDirection, Widget*)> onPassFocusToChild;
+    
+    /* peterson */
+    const std::string& getBackGroundImageFileName() const { return _backGroundImageFileName; };
+    const TextureResType getBackGroundImageTextureResType() const { return _bgImageTexType; };
+    /**/
 
 CC_CONSTRUCTOR_ACCESS:
     //override "init" method of widget.

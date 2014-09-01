@@ -189,6 +189,15 @@ public:
     void setTitleFontName(const std::string& fontName);
     const std::string& getTitleFontName() const;
     
+    /* peterson */
+    const std::string& getNormalFileName() const { return _normalFileName; };
+    const std::string& getPressedFileName() const { return _clickedFileName; };
+    const std::string& getDisableFileName() const { return _disabledFileName; };
+    const TextureResType getNormalTextureResType() const { return _normalTexType; };
+    const TextureResType getPressedTextureResType() const { return _pressedTexType; };
+    const TextureResType getDisabledTextureResType() const { return _disabledTexType; };
+    /**/
+    
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
     virtual bool init(const std::string& normalImage,

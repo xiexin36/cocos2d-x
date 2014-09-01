@@ -74,6 +74,10 @@ bool TMXTiledMap::initWithTMXFile(const std::string& tmxFile)
     }
     CCASSERT( !mapInfo->getTilesets().empty(), "TMXTiledMap: Map not found. Please check the filename.");
     buildWithMapInfo(mapInfo);
+    
+    /* peterson */
+    _tmxFile = tmxFile;
+    /**/
 
     return true;
 }
@@ -86,13 +90,23 @@ bool TMXTiledMap::initWithXML(const std::string& tmxString, const std::string& r
 
     CCASSERT( !mapInfo->getTilesets().empty(), "TMXTiledMap: Map not found. Please check the filename.");
     buildWithMapInfo(mapInfo);
+    
+    /* peterson */
+    _tmxString = tmxString;
+    _resourcePath = resourcePath;
+    /**/
 
     return true;
 }
 
 TMXTiledMap::TMXTiledMap()
     :_mapSize(Size::ZERO)
-    ,_tileSize(Size::ZERO)        
+    ,_tileSize(Size::ZERO)
+    /* peterson */
+    ,_tmxFile("")
+    ,_tmxString("")
+    ,_resourcePath("")
+    /**/
 {
 }
 

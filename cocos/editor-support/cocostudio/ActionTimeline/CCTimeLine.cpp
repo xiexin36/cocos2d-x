@@ -50,6 +50,9 @@ Timeline::Timeline()
     , _actionTag(0)
     , _ActionTimeline(nullptr)
     , _node(nullptr)
+    /* peterson */
+    , _frameType("")
+    /**/
 {
 }
 
@@ -79,6 +82,9 @@ Timeline* Timeline::clone()
 {
     Timeline* timeline = Timeline::create();
     timeline->_actionTag = _actionTag;
+    /* peterson */
+    timeline->_frameType = _frameType;
+    /**/
 
     for (auto frame : _frames)
     {
