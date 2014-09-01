@@ -50,12 +50,14 @@ THE SOFTWARE.
 #endif
 #include "ui/UIDeprecated.h"
 #include "ui/GUIExport.h"
+#include "ui/UIScale9Sprite.h"
+#include "ui/UILayoutComponent.h"
 
 
 NS_CC_BEGIN
 namespace ui {
 
- CC_GUI_DLL const char*  CocosGUIVersion();
+CC_GUI_DLL const char* CocosGUIVersion();
 
 }
 NS_CC_END
