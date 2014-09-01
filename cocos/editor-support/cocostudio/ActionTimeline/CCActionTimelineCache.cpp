@@ -23,7 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "CCActionTimelineCache.h"
-#include "CCNodeReader.h"
+#include "CSLoader.h"
 #include "CCFrame.h"
 #include "CCTimeLine.h"
 #include "CCActionTimeline.h"
@@ -434,7 +434,7 @@ Frame* ActionTimelineCache::loadTextureFrame(const rapidjson::Value& json)
         SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
         if(spriteFrame == nullptr)
         {
-            std::string jsonPath = NodeReader::getInstance()->getJsonPath();
+            std::string jsonPath = cocos2d::CSLoader::getInstance()->getJsonPath();
             path = jsonPath + texture;
         }
 

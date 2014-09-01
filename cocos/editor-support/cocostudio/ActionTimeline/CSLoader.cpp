@@ -25,7 +25,7 @@
 #include "CSLoader.h"
 #include "CCActionTimelineCache.h"
 #include "CCActionTimeline.h"
-#include "CCSGUIReader.h"
+#include "../CCSGUIReader.h"
 #include "../../cocos/ui/CocosGUI.h"
 /* peterson */
 #include "cocostudio/CocoStudio.h"

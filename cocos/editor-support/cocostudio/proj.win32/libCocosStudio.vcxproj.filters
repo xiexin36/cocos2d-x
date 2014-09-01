@@ -243,9 +243,6 @@
     <ClCompile Include="..\CocoLoader.cpp">
       <Filter>json</Filter>
     </ClCompile>
-    <ClCompile Include="..\ActionTimeline\CCNodeReader.cpp">
-      <Filter>TimelineAction</Filter>
-    </ClCompile>
     <ClCompile Include="..\ActionTimeline\CCActionTimelineCache.cpp">
       <Filter>TimelineAction</Filter>
     </ClCompile>
@@ -302,6 +299,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\external\protocolBuf\src\google\protobuf\stubs\stringprintf.cc">
       <Filter>json\protocolBuf\stubs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ProtocolBuffersSerialize.cpp">
+      <Filter>TimelineAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ActionTimeline\CSLoader.cpp">
+      <Filter>TimelineAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,9 +494,6 @@
     <ClInclude Include="..\CocoStudio.h">
       <Filter>json</Filter>
     </ClInclude>
-    <ClInclude Include="..\ActionTimeline\CCNodeReader.h">
-      <Filter>TimelineAction</Filter>
-    </ClInclude>
     <ClInclude Include="..\ActionTimeline\CCActionTimelineCache.h">
       <Filter>TimelineAction</Filter>
     </ClInclude>
@@ -599,6 +599,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\external\protocolBuf\src\google\protobuf\stubs\type_traits.h">
       <Filter>json\protocolBuf\stubs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ProtocolBuffersSerialize.h">
+      <Filter>TimelineAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ActionTimeline\CSLoader.h">
+      <Filter>TimelineAction</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

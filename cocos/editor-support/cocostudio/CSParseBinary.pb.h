@@ -49,8 +49,8 @@ class PageViewOptions;
 class PanelOptions;
 class ScrollViewOptions;
 class SliderOptions;
-class TextFieldOptions;
 class SpriteOptions;
+class TextFieldOptions;
 class TMXTiledMapOptions;
 class ParticleSystemOptions;
 class ProjectNodeOptions;
@@ -157,12 +157,12 @@ class CSParseBinary : public ::google::protobuf::MessageLite {
   inline ::std::string* release_editortype();
   inline void set_allocated_editortype(::std::string* editortype);
 
-  // optional int32 designWidth = 4;
-  inline bool has_designwidth() const;
-  inline void clear_designwidth();
-  static const int kDesignWidthFieldNumber = 4;
-  inline ::google::protobuf::int32 designwidth() const;
-  inline void set_designwidth(::google::protobuf::int32 value);
+  // optional float dataScale = 4;
+  inline bool has_datascale() const;
+  inline void clear_datascale();
+  static const int kDataScaleFieldNumber = 4;
+  inline float datascale() const;
+  inline void set_datascale(float value);
 
   // optional int32 designHeight = 5;
   inline bool has_designheight() const;
@@ -171,12 +171,12 @@ class CSParseBinary : public ::google::protobuf::MessageLite {
   inline ::google::protobuf::int32 designheight() const;
   inline void set_designheight(::google::protobuf::int32 value);
 
-  // optional float dataScale = 6;
-  inline bool has_datascale() const;
-  inline void clear_datascale();
-  static const int kDataScaleFieldNumber = 6;
-  inline float datascale() const;
-  inline void set_datascale(float value);
+  // optional int32 designWidth = 6;
+  inline bool has_designwidth() const;
+  inline void clear_designwidth();
+  static const int kDesignWidthFieldNumber = 6;
+  inline ::google::protobuf::int32 designwidth() const;
+  inline void set_designwidth(::google::protobuf::int32 value);
 
   // repeated string textures = 7;
   inline int textures_size() const;
@@ -236,12 +236,12 @@ class CSParseBinary : public ::google::protobuf::MessageLite {
   inline void clear_has_cocos2dversion();
   inline void set_has_editortype();
   inline void clear_has_editortype();
-  inline void set_has_designwidth();
-  inline void clear_has_designwidth();
-  inline void set_has_designheight();
-  inline void clear_has_designheight();
   inline void set_has_datascale();
   inline void clear_has_datascale();
+  inline void set_has_designheight();
+  inline void clear_has_designheight();
+  inline void set_has_designwidth();
+  inline void clear_has_designwidth();
   inline void set_has_nodetree();
   inline void clear_has_nodetree();
   inline void set_has_action();
@@ -250,13 +250,13 @@ class CSParseBinary : public ::google::protobuf::MessageLite {
   ::std::string* version_;
   ::std::string* cocos2dversion_;
   ::std::string* editortype_;
-  ::google::protobuf::int32 designwidth_;
+  float datascale_;
   ::google::protobuf::int32 designheight_;
   ::google::protobuf::RepeatedPtrField< ::std::string> textures_;
   ::google::protobuf::RepeatedPtrField< ::std::string> texturespng_;
   ::protocolbuffers::NodeTree* nodetree_;
   ::protocolbuffers::NodeAction* action_;
-  float datascale_;
+  ::google::protobuf::int32 designwidth_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
@@ -4722,6 +4722,273 @@ class SliderOptions : public ::google::protobuf::MessageLite {
 };
 // -------------------------------------------------------------------
 
+class SpriteOptions : public ::google::protobuf::MessageLite {
+ public:
+  SpriteOptions();
+  virtual ~SpriteOptions();
+
+  SpriteOptions(const SpriteOptions& from);
+
+  inline SpriteOptions& operator=(const SpriteOptions& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const SpriteOptions& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const SpriteOptions* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
+
+  void Swap(SpriteOptions* other);
+
+  // implements Message ----------------------------------------------
+
+  SpriteOptions* New() const;
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
+  void CopyFrom(const SpriteOptions& from);
+  void MergeFrom(const SpriteOptions& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::std::string GetTypeName() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // optional string classname = 2;
+  inline bool has_classname() const;
+  inline void clear_classname();
+  static const int kClassnameFieldNumber = 2;
+  inline const ::std::string& classname() const;
+  inline void set_classname(const ::std::string& value);
+  inline void set_classname(const char* value);
+  inline void set_classname(const char* value, size_t size);
+  inline ::std::string* mutable_classname();
+  inline ::std::string* release_classname();
+  inline void set_allocated_classname(::std::string* classname);
+
+  // optional bool touchAble = 3;
+  inline bool has_touchable() const;
+  inline void clear_touchable();
+  static const int kTouchAbleFieldNumber = 3;
+  inline bool touchable() const;
+  inline void set_touchable(bool value);
+
+  // optional int32 positionType = 4;
+  inline bool has_positiontype() const;
+  inline void clear_positiontype();
+  static const int kPositionTypeFieldNumber = 4;
+  inline ::google::protobuf::int32 positiontype() const;
+  inline void set_positiontype(::google::protobuf::int32 value);
+
+  // optional float positionPercentX = 5;
+  inline bool has_positionpercentx() const;
+  inline void clear_positionpercentx();
+  static const int kPositionPercentXFieldNumber = 5;
+  inline float positionpercentx() const;
+  inline void set_positionpercentx(float value);
+
+  // optional float positionPercentY = 6;
+  inline bool has_positionpercenty() const;
+  inline void clear_positionpercenty();
+  static const int kPositionPercentYFieldNumber = 6;
+  inline float positionpercenty() const;
+  inline void set_positionpercenty(float value);
+
+  // optional int32 sizeType = 7;
+  inline bool has_sizetype() const;
+  inline void clear_sizetype();
+  static const int kSizeTypeFieldNumber = 7;
+  inline ::google::protobuf::int32 sizetype() const;
+  inline void set_sizetype(::google::protobuf::int32 value);
+
+  // optional float sizePercentX = 8;
+  inline bool has_sizepercentx() const;
+  inline void clear_sizepercentx();
+  static const int kSizePercentXFieldNumber = 8;
+  inline float sizepercentx() const;
+  inline void set_sizepercentx(float value);
+
+  // optional float sizePercentY = 9;
+  inline bool has_sizepercenty() const;
+  inline void clear_sizepercenty();
+  static const int kSizePercentYFieldNumber = 9;
+  inline float sizepercenty() const;
+  inline void set_sizepercenty(float value);
+
+  // optional bool useMergedTexture = 10;
+  inline bool has_usemergedtexture() const;
+  inline void clear_usemergedtexture();
+  static const int kUseMergedTextureFieldNumber = 10;
+  inline bool usemergedtexture() const;
+  inline void set_usemergedtexture(bool value);
+
+  // optional bool ignoreSize = 11;
+  inline bool has_ignoresize() const;
+  inline void clear_ignoresize();
+  static const int kIgnoreSizeFieldNumber = 11;
+  inline bool ignoresize() const;
+  inline void set_ignoresize(bool value);
+
+  // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
+  inline bool has_layoutparameter() const;
+  inline void clear_layoutparameter();
+  static const int kLayoutParameterFieldNumber = 12;
+  inline const ::protocolbuffers::LayoutParameter& layoutparameter() const;
+  inline ::protocolbuffers::LayoutParameter* mutable_layoutparameter();
+  inline ::protocolbuffers::LayoutParameter* release_layoutparameter();
+  inline void set_allocated_layoutparameter(::protocolbuffers::LayoutParameter* layoutparameter);
+
+  // optional string customProperty = 13;
+  inline bool has_customproperty() const;
+  inline void clear_customproperty();
+  static const int kCustomPropertyFieldNumber = 13;
+  inline const ::std::string& customproperty() const;
+  inline void set_customproperty(const ::std::string& value);
+  inline void set_customproperty(const char* value);
+  inline void set_customproperty(const char* value, size_t size);
+  inline ::std::string* mutable_customproperty();
+  inline ::std::string* release_customproperty();
+  inline void set_allocated_customproperty(::std::string* customproperty);
+
+  // optional string fileName = 14;
+  inline bool has_filename() const;
+  inline void clear_filename();
+  static const int kFileNameFieldNumber = 14;
+  inline const ::std::string& filename() const;
+  inline void set_filename(const ::std::string& value);
+  inline void set_filename(const char* value);
+  inline void set_filename(const char* value, size_t size);
+  inline ::std::string* mutable_filename();
+  inline ::std::string* release_filename();
+  inline void set_allocated_filename(::std::string* filename);
+
+  // optional bool flippedX = 15;
+  inline bool has_flippedx() const;
+  inline void clear_flippedx();
+  static const int kFlippedXFieldNumber = 15;
+  inline bool flippedx() const;
+  inline void set_flippedx(bool value);
+
+  // optional bool flippedY = 16;
+  inline bool has_flippedy() const;
+  inline void clear_flippedy();
+  static const int kFlippedYFieldNumber = 16;
+  inline bool flippedy() const;
+  inline void set_flippedy(bool value);
+
+  // optional .protocolbuffers.ResourceData fileNameData = 17;
+  inline bool has_filenamedata() const;
+  inline void clear_filenamedata();
+  static const int kFileNameDataFieldNumber = 17;
+  inline const ::protocolbuffers::ResourceData& filenamedata() const;
+  inline ::protocolbuffers::ResourceData* mutable_filenamedata();
+  inline ::protocolbuffers::ResourceData* release_filenamedata();
+  inline void set_allocated_filenamedata(::protocolbuffers::ResourceData* filenamedata);
+
+  // @@protoc_insertion_point(class_scope:protocolbuffers.SpriteOptions)
+ private:
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_classname();
+  inline void clear_has_classname();
+  inline void set_has_touchable();
+  inline void clear_has_touchable();
+  inline void set_has_positiontype();
+  inline void clear_has_positiontype();
+  inline void set_has_positionpercentx();
+  inline void clear_has_positionpercentx();
+  inline void set_has_positionpercenty();
+  inline void clear_has_positionpercenty();
+  inline void set_has_sizetype();
+  inline void clear_has_sizetype();
+  inline void set_has_sizepercentx();
+  inline void clear_has_sizepercentx();
+  inline void set_has_sizepercenty();
+  inline void clear_has_sizepercenty();
+  inline void set_has_usemergedtexture();
+  inline void clear_has_usemergedtexture();
+  inline void set_has_ignoresize();
+  inline void clear_has_ignoresize();
+  inline void set_has_layoutparameter();
+  inline void clear_has_layoutparameter();
+  inline void set_has_customproperty();
+  inline void clear_has_customproperty();
+  inline void set_has_filename();
+  inline void clear_has_filename();
+  inline void set_has_flippedx();
+  inline void clear_has_flippedx();
+  inline void set_has_flippedy();
+  inline void clear_has_flippedy();
+  inline void set_has_filenamedata();
+  inline void clear_has_filenamedata();
+
+  ::std::string* name_;
+  ::std::string* classname_;
+  ::google::protobuf::int32 positiontype_;
+  float positionpercentx_;
+  float positionpercenty_;
+  ::google::protobuf::int32 sizetype_;
+  float sizepercentx_;
+  float sizepercenty_;
+  bool touchable_;
+  bool usemergedtexture_;
+  bool ignoresize_;
+  bool flippedx_;
+  bool flippedy_;
+  ::protocolbuffers::LayoutParameter* layoutparameter_;
+  ::std::string* customproperty_;
+  ::std::string* filename_;
+  ::protocolbuffers::ResourceData* filenamedata_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(17 + 31) / 32];
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
+  #else
+  friend void  protobuf_AddDesc_CSParseBinary_2eproto();
+  #endif
+  friend void protobuf_AssignDesc_CSParseBinary_2eproto();
+  friend void protobuf_ShutdownFile_CSParseBinary_2eproto();
+
+  void InitAsDefaultInstance();
+  static SpriteOptions* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class TextFieldOptions : public ::google::protobuf::MessageLite {
  public:
   TextFieldOptions();
@@ -4966,273 +5233,6 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
 
   void InitAsDefaultInstance();
   static TextFieldOptions* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class SpriteOptions : public ::google::protobuf::MessageLite {
- public:
-  SpriteOptions();
-  virtual ~SpriteOptions();
-
-  SpriteOptions(const SpriteOptions& from);
-
-  inline SpriteOptions& operator=(const SpriteOptions& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const SpriteOptions& default_instance();
-
-  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  // Returns the internal default instance pointer. This function can
-  // return NULL thus should not be used by the user. This is intended
-  // for Protobuf internal code. Please use default_instance() declared
-  // above instead.
-  static inline const SpriteOptions* internal_default_instance() {
-    return default_instance_;
-  }
-  #endif
-
-  void Swap(SpriteOptions* other);
-
-  // implements Message ----------------------------------------------
-
-  SpriteOptions* New() const;
-  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
-  void CopyFrom(const SpriteOptions& from);
-  void MergeFrom(const SpriteOptions& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-
-  ::std::string GetTypeName() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // optional string name = 1;
-  inline bool has_name() const;
-  inline void clear_name();
-  static const int kNameFieldNumber = 1;
-  inline const ::std::string& name() const;
-  inline void set_name(const ::std::string& value);
-  inline void set_name(const char* value);
-  inline void set_name(const char* value, size_t size);
-  inline ::std::string* mutable_name();
-  inline ::std::string* release_name();
-  inline void set_allocated_name(::std::string* name);
-
-  // optional string classname = 2;
-  inline bool has_classname() const;
-  inline void clear_classname();
-  static const int kClassnameFieldNumber = 2;
-  inline const ::std::string& classname() const;
-  inline void set_classname(const ::std::string& value);
-  inline void set_classname(const char* value);
-  inline void set_classname(const char* value, size_t size);
-  inline ::std::string* mutable_classname();
-  inline ::std::string* release_classname();
-  inline void set_allocated_classname(::std::string* classname);
-
-  // optional bool touchAble = 3;
-  inline bool has_touchable() const;
-  inline void clear_touchable();
-  static const int kTouchAbleFieldNumber = 3;
-  inline bool touchable() const;
-  inline void set_touchable(bool value);
-
-  // optional int32 positionType = 4;
-  inline bool has_positiontype() const;
-  inline void clear_positiontype();
-  static const int kPositionTypeFieldNumber = 4;
-  inline ::google::protobuf::int32 positiontype() const;
-  inline void set_positiontype(::google::protobuf::int32 value);
-
-  // optional float positionPercentX = 5;
-  inline bool has_positionpercentx() const;
-  inline void clear_positionpercentx();
-  static const int kPositionPercentXFieldNumber = 5;
-  inline float positionpercentx() const;
-  inline void set_positionpercentx(float value);
-
-  // optional float positionPercentY = 6;
-  inline bool has_positionpercenty() const;
-  inline void clear_positionpercenty();
-  static const int kPositionPercentYFieldNumber = 6;
-  inline float positionpercenty() const;
-  inline void set_positionpercenty(float value);
-
-  // optional int32 sizeType = 7;
-  inline bool has_sizetype() const;
-  inline void clear_sizetype();
-  static const int kSizeTypeFieldNumber = 7;
-  inline ::google::protobuf::int32 sizetype() const;
-  inline void set_sizetype(::google::protobuf::int32 value);
-
-  // optional float sizePercentX = 8;
-  inline bool has_sizepercentx() const;
-  inline void clear_sizepercentx();
-  static const int kSizePercentXFieldNumber = 8;
-  inline float sizepercentx() const;
-  inline void set_sizepercentx(float value);
-
-  // optional float sizePercentY = 9;
-  inline bool has_sizepercenty() const;
-  inline void clear_sizepercenty();
-  static const int kSizePercentYFieldNumber = 9;
-  inline float sizepercenty() const;
-  inline void set_sizepercenty(float value);
-
-  // optional bool useMergedTexture = 10;
-  inline bool has_usemergedtexture() const;
-  inline void clear_usemergedtexture();
-  static const int kUseMergedTextureFieldNumber = 10;
-  inline bool usemergedtexture() const;
-  inline void set_usemergedtexture(bool value);
-
-  // optional bool ignoreSize = 11;
-  inline bool has_ignoresize() const;
-  inline void clear_ignoresize();
-  static const int kIgnoreSizeFieldNumber = 11;
-  inline bool ignoresize() const;
-  inline void set_ignoresize(bool value);
-
-  // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
-  inline bool has_layoutparameter() const;
-  inline void clear_layoutparameter();
-  static const int kLayoutParameterFieldNumber = 12;
-  inline const ::protocolbuffers::LayoutParameter& layoutparameter() const;
-  inline ::protocolbuffers::LayoutParameter* mutable_layoutparameter();
-  inline ::protocolbuffers::LayoutParameter* release_layoutparameter();
-  inline void set_allocated_layoutparameter(::protocolbuffers::LayoutParameter* layoutparameter);
-
-  // optional string customProperty = 13;
-  inline bool has_customproperty() const;
-  inline void clear_customproperty();
-  static const int kCustomPropertyFieldNumber = 13;
-  inline const ::std::string& customproperty() const;
-  inline void set_customproperty(const ::std::string& value);
-  inline void set_customproperty(const char* value);
-  inline void set_customproperty(const char* value, size_t size);
-  inline ::std::string* mutable_customproperty();
-  inline ::std::string* release_customproperty();
-  inline void set_allocated_customproperty(::std::string* customproperty);
-
-  // optional string fileName = 14;
-  inline bool has_filename() const;
-  inline void clear_filename();
-  static const int kFileNameFieldNumber = 14;
-  inline const ::std::string& filename() const;
-  inline void set_filename(const ::std::string& value);
-  inline void set_filename(const char* value);
-  inline void set_filename(const char* value, size_t size);
-  inline ::std::string* mutable_filename();
-  inline ::std::string* release_filename();
-  inline void set_allocated_filename(::std::string* filename);
-
-  // optional .protocolbuffers.ResourceData fileNameData = 15;
-  inline bool has_filenamedata() const;
-  inline void clear_filenamedata();
-  static const int kFileNameDataFieldNumber = 15;
-  inline const ::protocolbuffers::ResourceData& filenamedata() const;
-  inline ::protocolbuffers::ResourceData* mutable_filenamedata();
-  inline ::protocolbuffers::ResourceData* release_filenamedata();
-  inline void set_allocated_filenamedata(::protocolbuffers::ResourceData* filenamedata);
-
-  // optional bool flippedX = 16;
-  inline bool has_flippedx() const;
-  inline void clear_flippedx();
-  static const int kFlippedXFieldNumber = 16;
-  inline bool flippedx() const;
-  inline void set_flippedx(bool value);
-
-  // optional bool flippedY = 17;
-  inline bool has_flippedy() const;
-  inline void clear_flippedy();
-  static const int kFlippedYFieldNumber = 17;
-  inline bool flippedy() const;
-  inline void set_flippedy(bool value);
-
-  // @@protoc_insertion_point(class_scope:protocolbuffers.SpriteOptions)
- private:
-  inline void set_has_name();
-  inline void clear_has_name();
-  inline void set_has_classname();
-  inline void clear_has_classname();
-  inline void set_has_touchable();
-  inline void clear_has_touchable();
-  inline void set_has_positiontype();
-  inline void clear_has_positiontype();
-  inline void set_has_positionpercentx();
-  inline void clear_has_positionpercentx();
-  inline void set_has_positionpercenty();
-  inline void clear_has_positionpercenty();
-  inline void set_has_sizetype();
-  inline void clear_has_sizetype();
-  inline void set_has_sizepercentx();
-  inline void clear_has_sizepercentx();
-  inline void set_has_sizepercenty();
-  inline void clear_has_sizepercenty();
-  inline void set_has_usemergedtexture();
-  inline void clear_has_usemergedtexture();
-  inline void set_has_ignoresize();
-  inline void clear_has_ignoresize();
-  inline void set_has_layoutparameter();
-  inline void clear_has_layoutparameter();
-  inline void set_has_customproperty();
-  inline void clear_has_customproperty();
-  inline void set_has_filename();
-  inline void clear_has_filename();
-  inline void set_has_filenamedata();
-  inline void clear_has_filenamedata();
-  inline void set_has_flippedx();
-  inline void clear_has_flippedx();
-  inline void set_has_flippedy();
-  inline void clear_has_flippedy();
-
-  ::std::string* name_;
-  ::std::string* classname_;
-  ::google::protobuf::int32 positiontype_;
-  float positionpercentx_;
-  float positionpercenty_;
-  ::google::protobuf::int32 sizetype_;
-  float sizepercentx_;
-  float sizepercenty_;
-  bool touchable_;
-  bool usemergedtexture_;
-  bool ignoresize_;
-  bool flippedx_;
-  bool flippedy_;
-  ::protocolbuffers::LayoutParameter* layoutparameter_;
-  ::std::string* customproperty_;
-  ::std::string* filename_;
-  ::protocolbuffers::ResourceData* filenamedata_;
-
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(17 + 31) / 32];
-
-  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
-  #else
-  friend void  protobuf_AddDesc_CSParseBinary_2eproto();
-  #endif
-  friend void protobuf_AssignDesc_CSParseBinary_2eproto();
-  friend void protobuf_ShutdownFile_CSParseBinary_2eproto();
-
-  void InitAsDefaultInstance();
-  static SpriteOptions* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -7330,26 +7330,26 @@ inline void CSParseBinary::set_allocated_editortype(::std::string* editortype) {
   }
 }
 
-// optional int32 designWidth = 4;
-inline bool CSParseBinary::has_designwidth() const {
+// optional float dataScale = 4;
+inline bool CSParseBinary::has_datascale() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void CSParseBinary::set_has_designwidth() {
+inline void CSParseBinary::set_has_datascale() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void CSParseBinary::clear_has_designwidth() {
+inline void CSParseBinary::clear_has_datascale() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void CSParseBinary::clear_designwidth() {
-  designwidth_ = 0;
-  clear_has_designwidth();
+inline void CSParseBinary::clear_datascale() {
+  datascale_ = 0;
+  clear_has_datascale();
 }
-inline ::google::protobuf::int32 CSParseBinary::designwidth() const {
-  return designwidth_;
+inline float CSParseBinary::datascale() const {
+  return datascale_;
 }
-inline void CSParseBinary::set_designwidth(::google::protobuf::int32 value) {
-  set_has_designwidth();
-  designwidth_ = value;
+inline void CSParseBinary::set_datascale(float value) {
+  set_has_datascale();
+  datascale_ = value;
 }
 
 // optional int32 designHeight = 5;
@@ -7374,26 +7374,26 @@ inline void CSParseBinary::set_designheight(::google::protobuf::int32 value) {
   designheight_ = value;
 }
 
-// optional float dataScale = 6;
-inline bool CSParseBinary::has_datascale() const {
+// optional int32 designWidth = 6;
+inline bool CSParseBinary::has_designwidth() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void CSParseBinary::set_has_datascale() {
+inline void CSParseBinary::set_has_designwidth() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void CSParseBinary::clear_has_datascale() {
+inline void CSParseBinary::clear_has_designwidth() {
   _has_bits_[0] &= ~0x00000020u;
 }
-inline void CSParseBinary::clear_datascale() {
-  datascale_ = 0;
-  clear_has_datascale();
+inline void CSParseBinary::clear_designwidth() {
+  designwidth_ = 0;
+  clear_has_designwidth();
 }
-inline float CSParseBinary::datascale() const {
-  return datascale_;
+inline ::google::protobuf::int32 CSParseBinary::designwidth() const {
+  return designwidth_;
 }
-inline void CSParseBinary::set_datascale(float value) {
-  set_has_datascale();
-  datascale_ = value;
+inline void CSParseBinary::set_designwidth(::google::protobuf::int32 value) {
+  set_has_designwidth();
+  designwidth_ = value;
 }
 
 // repeated string textures = 7;
@@ -17718,6 +17718,616 @@ inline void SliderOptions::set_length(float value) {
 
 // -------------------------------------------------------------------
 
+// SpriteOptions
+
+// optional string name = 1;
+inline bool SpriteOptions::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SpriteOptions::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SpriteOptions::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SpriteOptions::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& SpriteOptions::name() const {
+  return *name_;
+}
+inline void SpriteOptions::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void SpriteOptions::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void SpriteOptions::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SpriteOptions::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* SpriteOptions::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SpriteOptions::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (name) {
+    set_has_name();
+    name_ = name;
+  } else {
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string classname = 2;
+inline bool SpriteOptions::has_classname() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SpriteOptions::set_has_classname() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SpriteOptions::clear_has_classname() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SpriteOptions::clear_classname() {
+  if (classname_ != &::google::protobuf::internal::kEmptyString) {
+    classname_->clear();
+  }
+  clear_has_classname();
+}
+inline const ::std::string& SpriteOptions::classname() const {
+  return *classname_;
+}
+inline void SpriteOptions::set_classname(const ::std::string& value) {
+  set_has_classname();
+  if (classname_ == &::google::protobuf::internal::kEmptyString) {
+    classname_ = new ::std::string;
+  }
+  classname_->assign(value);
+}
+inline void SpriteOptions::set_classname(const char* value) {
+  set_has_classname();
+  if (classname_ == &::google::protobuf::internal::kEmptyString) {
+    classname_ = new ::std::string;
+  }
+  classname_->assign(value);
+}
+inline void SpriteOptions::set_classname(const char* value, size_t size) {
+  set_has_classname();
+  if (classname_ == &::google::protobuf::internal::kEmptyString) {
+    classname_ = new ::std::string;
+  }
+  classname_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SpriteOptions::mutable_classname() {
+  set_has_classname();
+  if (classname_ == &::google::protobuf::internal::kEmptyString) {
+    classname_ = new ::std::string;
+  }
+  return classname_;
+}
+inline ::std::string* SpriteOptions::release_classname() {
+  clear_has_classname();
+  if (classname_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = classname_;
+    classname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SpriteOptions::set_allocated_classname(::std::string* classname) {
+  if (classname_ != &::google::protobuf::internal::kEmptyString) {
+    delete classname_;
+  }
+  if (classname) {
+    set_has_classname();
+    classname_ = classname;
+  } else {
+    clear_has_classname();
+    classname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional bool touchAble = 3;
+inline bool SpriteOptions::has_touchable() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void SpriteOptions::set_has_touchable() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void SpriteOptions::clear_has_touchable() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void SpriteOptions::clear_touchable() {
+  touchable_ = false;
+  clear_has_touchable();
+}
+inline bool SpriteOptions::touchable() const {
+  return touchable_;
+}
+inline void SpriteOptions::set_touchable(bool value) {
+  set_has_touchable();
+  touchable_ = value;
+}
+
+// optional int32 positionType = 4;
+inline bool SpriteOptions::has_positiontype() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SpriteOptions::set_has_positiontype() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SpriteOptions::clear_has_positiontype() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SpriteOptions::clear_positiontype() {
+  positiontype_ = 0;
+  clear_has_positiontype();
+}
+inline ::google::protobuf::int32 SpriteOptions::positiontype() const {
+  return positiontype_;
+}
+inline void SpriteOptions::set_positiontype(::google::protobuf::int32 value) {
+  set_has_positiontype();
+  positiontype_ = value;
+}
+
+// optional float positionPercentX = 5;
+inline bool SpriteOptions::has_positionpercentx() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SpriteOptions::set_has_positionpercentx() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SpriteOptions::clear_has_positionpercentx() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void SpriteOptions::clear_positionpercentx() {
+  positionpercentx_ = 0;
+  clear_has_positionpercentx();
+}
+inline float SpriteOptions::positionpercentx() const {
+  return positionpercentx_;
+}
+inline void SpriteOptions::set_positionpercentx(float value) {
+  set_has_positionpercentx();
+  positionpercentx_ = value;
+}
+
+// optional float positionPercentY = 6;
+inline bool SpriteOptions::has_positionpercenty() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void SpriteOptions::set_has_positionpercenty() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void SpriteOptions::clear_has_positionpercenty() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void SpriteOptions::clear_positionpercenty() {
+  positionpercenty_ = 0;
+  clear_has_positionpercenty();
+}
+inline float SpriteOptions::positionpercenty() const {
+  return positionpercenty_;
+}
+inline void SpriteOptions::set_positionpercenty(float value) {
+  set_has_positionpercenty();
+  positionpercenty_ = value;
+}
+
+// optional int32 sizeType = 7;
+inline bool SpriteOptions::has_sizetype() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void SpriteOptions::set_has_sizetype() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void SpriteOptions::clear_has_sizetype() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void SpriteOptions::clear_sizetype() {
+  sizetype_ = 0;
+  clear_has_sizetype();
+}
+inline ::google::protobuf::int32 SpriteOptions::sizetype() const {
+  return sizetype_;
+}
+inline void SpriteOptions::set_sizetype(::google::protobuf::int32 value) {
+  set_has_sizetype();
+  sizetype_ = value;
+}
+
+// optional float sizePercentX = 8;
+inline bool SpriteOptions::has_sizepercentx() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void SpriteOptions::set_has_sizepercentx() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void SpriteOptions::clear_has_sizepercentx() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void SpriteOptions::clear_sizepercentx() {
+  sizepercentx_ = 0;
+  clear_has_sizepercentx();
+}
+inline float SpriteOptions::sizepercentx() const {
+  return sizepercentx_;
+}
+inline void SpriteOptions::set_sizepercentx(float value) {
+  set_has_sizepercentx();
+  sizepercentx_ = value;
+}
+
+// optional float sizePercentY = 9;
+inline bool SpriteOptions::has_sizepercenty() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void SpriteOptions::set_has_sizepercenty() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void SpriteOptions::clear_has_sizepercenty() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void SpriteOptions::clear_sizepercenty() {
+  sizepercenty_ = 0;
+  clear_has_sizepercenty();
+}
+inline float SpriteOptions::sizepercenty() const {
+  return sizepercenty_;
+}
+inline void SpriteOptions::set_sizepercenty(float value) {
+  set_has_sizepercenty();
+  sizepercenty_ = value;
+}
+
+// optional bool useMergedTexture = 10;
+inline bool SpriteOptions::has_usemergedtexture() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void SpriteOptions::set_has_usemergedtexture() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void SpriteOptions::clear_has_usemergedtexture() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void SpriteOptions::clear_usemergedtexture() {
+  usemergedtexture_ = false;
+  clear_has_usemergedtexture();
+}
+inline bool SpriteOptions::usemergedtexture() const {
+  return usemergedtexture_;
+}
+inline void SpriteOptions::set_usemergedtexture(bool value) {
+  set_has_usemergedtexture();
+  usemergedtexture_ = value;
+}
+
+// optional bool ignoreSize = 11;
+inline bool SpriteOptions::has_ignoresize() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void SpriteOptions::set_has_ignoresize() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void SpriteOptions::clear_has_ignoresize() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void SpriteOptions::clear_ignoresize() {
+  ignoresize_ = false;
+  clear_has_ignoresize();
+}
+inline bool SpriteOptions::ignoresize() const {
+  return ignoresize_;
+}
+inline void SpriteOptions::set_ignoresize(bool value) {
+  set_has_ignoresize();
+  ignoresize_ = value;
+}
+
+// optional .protocolbuffers.LayoutParameter layoutParameter = 12;
+inline bool SpriteOptions::has_layoutparameter() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void SpriteOptions::set_has_layoutparameter() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void SpriteOptions::clear_has_layoutparameter() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void SpriteOptions::clear_layoutparameter() {
+  if (layoutparameter_ != NULL) layoutparameter_->::protocolbuffers::LayoutParameter::Clear();
+  clear_has_layoutparameter();
+}
+inline const ::protocolbuffers::LayoutParameter& SpriteOptions::layoutparameter() const {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  return layoutparameter_ != NULL ? *layoutparameter_ : *default_instance().layoutparameter_;
+#else
+  return layoutparameter_ != NULL ? *layoutparameter_ : *default_instance_->layoutparameter_;
+#endif
+}
+inline ::protocolbuffers::LayoutParameter* SpriteOptions::mutable_layoutparameter() {
+  set_has_layoutparameter();
+  if (layoutparameter_ == NULL) layoutparameter_ = new ::protocolbuffers::LayoutParameter;
+  return layoutparameter_;
+}
+inline ::protocolbuffers::LayoutParameter* SpriteOptions::release_layoutparameter() {
+  clear_has_layoutparameter();
+  ::protocolbuffers::LayoutParameter* temp = layoutparameter_;
+  layoutparameter_ = NULL;
+  return temp;
+}
+inline void SpriteOptions::set_allocated_layoutparameter(::protocolbuffers::LayoutParameter* layoutparameter) {
+  delete layoutparameter_;
+  layoutparameter_ = layoutparameter;
+  if (layoutparameter) {
+    set_has_layoutparameter();
+  } else {
+    clear_has_layoutparameter();
+  }
+}
+
+// optional string customProperty = 13;
+inline bool SpriteOptions::has_customproperty() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void SpriteOptions::set_has_customproperty() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void SpriteOptions::clear_has_customproperty() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void SpriteOptions::clear_customproperty() {
+  if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
+    customproperty_->clear();
+  }
+  clear_has_customproperty();
+}
+inline const ::std::string& SpriteOptions::customproperty() const {
+  return *customproperty_;
+}
+inline void SpriteOptions::set_customproperty(const ::std::string& value) {
+  set_has_customproperty();
+  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
+    customproperty_ = new ::std::string;
+  }
+  customproperty_->assign(value);
+}
+inline void SpriteOptions::set_customproperty(const char* value) {
+  set_has_customproperty();
+  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
+    customproperty_ = new ::std::string;
+  }
+  customproperty_->assign(value);
+}
+inline void SpriteOptions::set_customproperty(const char* value, size_t size) {
+  set_has_customproperty();
+  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
+    customproperty_ = new ::std::string;
+  }
+  customproperty_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SpriteOptions::mutable_customproperty() {
+  set_has_customproperty();
+  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
+    customproperty_ = new ::std::string;
+  }
+  return customproperty_;
+}
+inline ::std::string* SpriteOptions::release_customproperty() {
+  clear_has_customproperty();
+  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = customproperty_;
+    customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SpriteOptions::set_allocated_customproperty(::std::string* customproperty) {
+  if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
+    delete customproperty_;
+  }
+  if (customproperty) {
+    set_has_customproperty();
+    customproperty_ = customproperty;
+  } else {
+    clear_has_customproperty();
+    customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string fileName = 14;
+inline bool SpriteOptions::has_filename() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void SpriteOptions::set_has_filename() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void SpriteOptions::clear_has_filename() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void SpriteOptions::clear_filename() {
+  if (filename_ != &::google::protobuf::internal::kEmptyString) {
+    filename_->clear();
+  }
+  clear_has_filename();
+}
+inline const ::std::string& SpriteOptions::filename() const {
+  return *filename_;
+}
+inline void SpriteOptions::set_filename(const ::std::string& value) {
+  set_has_filename();
+  if (filename_ == &::google::protobuf::internal::kEmptyString) {
+    filename_ = new ::std::string;
+  }
+  filename_->assign(value);
+}
+inline void SpriteOptions::set_filename(const char* value) {
+  set_has_filename();
+  if (filename_ == &::google::protobuf::internal::kEmptyString) {
+    filename_ = new ::std::string;
+  }
+  filename_->assign(value);
+}
+inline void SpriteOptions::set_filename(const char* value, size_t size) {
+  set_has_filename();
+  if (filename_ == &::google::protobuf::internal::kEmptyString) {
+    filename_ = new ::std::string;
+  }
+  filename_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SpriteOptions::mutable_filename() {
+  set_has_filename();
+  if (filename_ == &::google::protobuf::internal::kEmptyString) {
+    filename_ = new ::std::string;
+  }
+  return filename_;
+}
+inline ::std::string* SpriteOptions::release_filename() {
+  clear_has_filename();
+  if (filename_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = filename_;
+    filename_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SpriteOptions::set_allocated_filename(::std::string* filename) {
+  if (filename_ != &::google::protobuf::internal::kEmptyString) {
+    delete filename_;
+  }
+  if (filename) {
+    set_has_filename();
+    filename_ = filename;
+  } else {
+    clear_has_filename();
+    filename_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional bool flippedX = 15;
+inline bool SpriteOptions::has_flippedx() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void SpriteOptions::set_has_flippedx() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void SpriteOptions::clear_has_flippedx() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void SpriteOptions::clear_flippedx() {
+  flippedx_ = false;
+  clear_has_flippedx();
+}
+inline bool SpriteOptions::flippedx() const {
+  return flippedx_;
+}
+inline void SpriteOptions::set_flippedx(bool value) {
+  set_has_flippedx();
+  flippedx_ = value;
+}
+
+// optional bool flippedY = 16;
+inline bool SpriteOptions::has_flippedy() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void SpriteOptions::set_has_flippedy() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void SpriteOptions::clear_has_flippedy() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void SpriteOptions::clear_flippedy() {
+  flippedy_ = false;
+  clear_has_flippedy();
+}
+inline bool SpriteOptions::flippedy() const {
+  return flippedy_;
+}
+inline void SpriteOptions::set_flippedy(bool value) {
+  set_has_flippedy();
+  flippedy_ = value;
+}
+
+// optional .protocolbuffers.ResourceData fileNameData = 17;
+inline bool SpriteOptions::has_filenamedata() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void SpriteOptions::set_has_filenamedata() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void SpriteOptions::clear_has_filenamedata() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void SpriteOptions::clear_filenamedata() {
+  if (filenamedata_ != NULL) filenamedata_->::protocolbuffers::ResourceData::Clear();
+  clear_has_filenamedata();
+}
+inline const ::protocolbuffers::ResourceData& SpriteOptions::filenamedata() const {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  return filenamedata_ != NULL ? *filenamedata_ : *default_instance().filenamedata_;
+#else
+  return filenamedata_ != NULL ? *filenamedata_ : *default_instance_->filenamedata_;
+#endif
+}
+inline ::protocolbuffers::ResourceData* SpriteOptions::mutable_filenamedata() {
+  set_has_filenamedata();
+  if (filenamedata_ == NULL) filenamedata_ = new ::protocolbuffers::ResourceData;
+  return filenamedata_;
+}
+inline ::protocolbuffers::ResourceData* SpriteOptions::release_filenamedata() {
+  clear_has_filenamedata();
+  ::protocolbuffers::ResourceData* temp = filenamedata_;
+  filenamedata_ = NULL;
+  return temp;
+}
+inline void SpriteOptions::set_allocated_filenamedata(::protocolbuffers::ResourceData* filenamedata) {
+  delete filenamedata_;
+  filenamedata_ = filenamedata;
+  if (filenamedata) {
+    set_has_filenamedata();
+  } else {
+    clear_has_filenamedata();
+  }
+}
+
+// -------------------------------------------------------------------
+
 // TextFieldOptions
 
 // optional string name = 1;
@@ -18354,616 +18964,6 @@ inline void TextFieldOptions::set_allocated_fontresource(::protocolbuffers::Reso
   } else {
     clear_has_fontresource();
   }
-}
-
-// -------------------------------------------------------------------
-
-// SpriteOptions
-
-// optional string name = 1;
-inline bool SpriteOptions::has_name() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void SpriteOptions::set_has_name() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void SpriteOptions::clear_has_name() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void SpriteOptions::clear_name() {
-  if (name_ != &::google::protobuf::internal::kEmptyString) {
-    name_->clear();
-  }
-  clear_has_name();
-}
-inline const ::std::string& SpriteOptions::name() const {
-  return *name_;
-}
-inline void SpriteOptions::set_name(const ::std::string& value) {
-  set_has_name();
-  if (name_ == &::google::protobuf::internal::kEmptyString) {
-    name_ = new ::std::string;
-  }
-  name_->assign(value);
-}
-inline void SpriteOptions::set_name(const char* value) {
-  set_has_name();
-  if (name_ == &::google::protobuf::internal::kEmptyString) {
-    name_ = new ::std::string;
-  }
-  name_->assign(value);
-}
-inline void SpriteOptions::set_name(const char* value, size_t size) {
-  set_has_name();
-  if (name_ == &::google::protobuf::internal::kEmptyString) {
-    name_ = new ::std::string;
-  }
-  name_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* SpriteOptions::mutable_name() {
-  set_has_name();
-  if (name_ == &::google::protobuf::internal::kEmptyString) {
-    name_ = new ::std::string;
-  }
-  return name_;
-}
-inline ::std::string* SpriteOptions::release_name() {
-  clear_has_name();
-  if (name_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = name_;
-    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void SpriteOptions::set_allocated_name(::std::string* name) {
-  if (name_ != &::google::protobuf::internal::kEmptyString) {
-    delete name_;
-  }
-  if (name) {
-    set_has_name();
-    name_ = name;
-  } else {
-    clear_has_name();
-    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  }
-}
-
-// optional string classname = 2;
-inline bool SpriteOptions::has_classname() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void SpriteOptions::set_has_classname() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void SpriteOptions::clear_has_classname() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void SpriteOptions::clear_classname() {
-  if (classname_ != &::google::protobuf::internal::kEmptyString) {
-    classname_->clear();
-  }
-  clear_has_classname();
-}
-inline const ::std::string& SpriteOptions::classname() const {
-  return *classname_;
-}
-inline void SpriteOptions::set_classname(const ::std::string& value) {
-  set_has_classname();
-  if (classname_ == &::google::protobuf::internal::kEmptyString) {
-    classname_ = new ::std::string;
-  }
-  classname_->assign(value);
-}
-inline void SpriteOptions::set_classname(const char* value) {
-  set_has_classname();
-  if (classname_ == &::google::protobuf::internal::kEmptyString) {
-    classname_ = new ::std::string;
-  }
-  classname_->assign(value);
-}
-inline void SpriteOptions::set_classname(const char* value, size_t size) {
-  set_has_classname();
-  if (classname_ == &::google::protobuf::internal::kEmptyString) {
-    classname_ = new ::std::string;
-  }
-  classname_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* SpriteOptions::mutable_classname() {
-  set_has_classname();
-  if (classname_ == &::google::protobuf::internal::kEmptyString) {
-    classname_ = new ::std::string;
-  }
-  return classname_;
-}
-inline ::std::string* SpriteOptions::release_classname() {
-  clear_has_classname();
-  if (classname_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = classname_;
-    classname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void SpriteOptions::set_allocated_classname(::std::string* classname) {
-  if (classname_ != &::google::protobuf::internal::kEmptyString) {
-    delete classname_;
-  }
-  if (classname) {
-    set_has_classname();
-    classname_ = classname;
-  } else {
-    clear_has_classname();
-    classname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  }
-}
-
-// optional bool touchAble = 3;
-inline bool SpriteOptions::has_touchable() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void SpriteOptions::set_has_touchable() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void SpriteOptions::clear_has_touchable() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void SpriteOptions::clear_touchable() {
-  touchable_ = false;
-  clear_has_touchable();
-}
-inline bool SpriteOptions::touchable() const {
-  return touchable_;
-}
-inline void SpriteOptions::set_touchable(bool value) {
-  set_has_touchable();
-  touchable_ = value;
-}
-
-// optional int32 positionType = 4;
-inline bool SpriteOptions::has_positiontype() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void SpriteOptions::set_has_positiontype() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void SpriteOptions::clear_has_positiontype() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void SpriteOptions::clear_positiontype() {
-  positiontype_ = 0;
-  clear_has_positiontype();
-}
-inline ::google::protobuf::int32 SpriteOptions::positiontype() const {
-  return positiontype_;
-}
-inline void SpriteOptions::set_positiontype(::google::protobuf::int32 value) {
-  set_has_positiontype();
-  positiontype_ = value;
-}
-
-// optional float positionPercentX = 5;
-inline bool SpriteOptions::has_positionpercentx() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void SpriteOptions::set_has_positionpercentx() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void SpriteOptions::clear_has_positionpercentx() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void SpriteOptions::clear_positionpercentx() {
-  positionpercentx_ = 0;
-  clear_has_positionpercentx();
-}
-inline float SpriteOptions::positionpercentx() const {
-  return positionpercentx_;
-}
-inline void SpriteOptions::set_positionpercentx(float value) {
-  set_has_positionpercentx();
-  positionpercentx_ = value;
-}
-
-// optional float positionPercentY = 6;
-inline bool SpriteOptions::has_positionpercenty() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void SpriteOptions::set_has_positionpercenty() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void SpriteOptions::clear_has_positionpercenty() {
-  _has_bits_[0] &= ~0x00000020u;
-}
-inline void SpriteOptions::clear_positionpercenty() {
-  positionpercenty_ = 0;
-  clear_has_positionpercenty();
-}
-inline float SpriteOptions::positionpercenty() const {
-  return positionpercenty_;
-}
-inline void SpriteOptions::set_positionpercenty(float value) {
-  set_has_positionpercenty();
-  positionpercenty_ = value;
-}
-
-// optional int32 sizeType = 7;
-inline bool SpriteOptions::has_sizetype() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void SpriteOptions::set_has_sizetype() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void SpriteOptions::clear_has_sizetype() {
-  _has_bits_[0] &= ~0x00000040u;
-}
-inline void SpriteOptions::clear_sizetype() {
-  sizetype_ = 0;
-  clear_has_sizetype();
-}
-inline ::google::protobuf::int32 SpriteOptions::sizetype() const {
-  return sizetype_;
-}
-inline void SpriteOptions::set_sizetype(::google::protobuf::int32 value) {
-  set_has_sizetype();
-  sizetype_ = value;
-}
-
-// optional float sizePercentX = 8;
-inline bool SpriteOptions::has_sizepercentx() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void SpriteOptions::set_has_sizepercentx() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void SpriteOptions::clear_has_sizepercentx() {
-  _has_bits_[0] &= ~0x00000080u;
-}
-inline void SpriteOptions::clear_sizepercentx() {
-  sizepercentx_ = 0;
-  clear_has_sizepercentx();
-}
-inline float SpriteOptions::sizepercentx() const {
-  return sizepercentx_;
-}
-inline void SpriteOptions::set_sizepercentx(float value) {
-  set_has_sizepercentx();
-  sizepercentx_ = value;
-}
-
-// optional float sizePercentY = 9;
-inline bool SpriteOptions::has_sizepercenty() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void SpriteOptions::set_has_sizepercenty() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void SpriteOptions::clear_has_sizepercenty() {
-  _has_bits_[0] &= ~0x00000100u;
-}
-inline void SpriteOptions::clear_sizepercenty() {
-  sizepercenty_ = 0;
-  clear_has_sizepercenty();
-}
-inline float SpriteOptions::sizepercenty() const {
-  return sizepercenty_;
-}
-inline void SpriteOptions::set_sizepercenty(float value) {
-  set_has_sizepercenty();
-  sizepercenty_ = value;
-}
-
-// optional bool useMergedTexture = 10;
-inline bool SpriteOptions::has_usemergedtexture() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void SpriteOptions::set_has_usemergedtexture() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void SpriteOptions::clear_has_usemergedtexture() {
-  _has_bits_[0] &= ~0x00000200u;
-}
-inline void SpriteOptions::clear_usemergedtexture() {
-  usemergedtexture_ = false;
-  clear_has_usemergedtexture();
-}
-inline bool SpriteOptions::usemergedtexture() const {
-  return usemergedtexture_;
-}
-inline void SpriteOptions::set_usemergedtexture(bool value) {
-  set_has_usemergedtexture();
-  usemergedtexture_ = value;
-}
-
-// optional bool ignoreSize = 11;
-inline bool SpriteOptions::has_ignoresize() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void SpriteOptions::set_has_ignoresize() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void SpriteOptions::clear_has_ignoresize() {
-  _has_bits_[0] &= ~0x00000400u;
-}
-inline void SpriteOptions::clear_ignoresize() {
-  ignoresize_ = false;
-  clear_has_ignoresize();
-}
-inline bool SpriteOptions::ignoresize() const {
-  return ignoresize_;
-}
-inline void SpriteOptions::set_ignoresize(bool value) {
-  set_has_ignoresize();
-  ignoresize_ = value;
-}
-
-// optional .protocolbuffers.LayoutParameter layoutParameter = 12;
-inline bool SpriteOptions::has_layoutparameter() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void SpriteOptions::set_has_layoutparameter() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void SpriteOptions::clear_has_layoutparameter() {
-  _has_bits_[0] &= ~0x00000800u;
-}
-inline void SpriteOptions::clear_layoutparameter() {
-  if (layoutparameter_ != NULL) layoutparameter_->::protocolbuffers::LayoutParameter::Clear();
-  clear_has_layoutparameter();
-}
-inline const ::protocolbuffers::LayoutParameter& SpriteOptions::layoutparameter() const {
-#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  return layoutparameter_ != NULL ? *layoutparameter_ : *default_instance().layoutparameter_;
-#else
-  return layoutparameter_ != NULL ? *layoutparameter_ : *default_instance_->layoutparameter_;
-#endif
-}
-inline ::protocolbuffers::LayoutParameter* SpriteOptions::mutable_layoutparameter() {
-  set_has_layoutparameter();
-  if (layoutparameter_ == NULL) layoutparameter_ = new ::protocolbuffers::LayoutParameter;
-  return layoutparameter_;
-}
-inline ::protocolbuffers::LayoutParameter* SpriteOptions::release_layoutparameter() {
-  clear_has_layoutparameter();
-  ::protocolbuffers::LayoutParameter* temp = layoutparameter_;
-  layoutparameter_ = NULL;
-  return temp;
-}
-inline void SpriteOptions::set_allocated_layoutparameter(::protocolbuffers::LayoutParameter* layoutparameter) {
-  delete layoutparameter_;
-  layoutparameter_ = layoutparameter;
-  if (layoutparameter) {
-    set_has_layoutparameter();
-  } else {
-    clear_has_layoutparameter();
-  }
-}
-
-// optional string customProperty = 13;
-inline bool SpriteOptions::has_customproperty() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void SpriteOptions::set_has_customproperty() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void SpriteOptions::clear_has_customproperty() {
-  _has_bits_[0] &= ~0x00001000u;
-}
-inline void SpriteOptions::clear_customproperty() {
-  if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
-    customproperty_->clear();
-  }
-  clear_has_customproperty();
-}
-inline const ::std::string& SpriteOptions::customproperty() const {
-  return *customproperty_;
-}
-inline void SpriteOptions::set_customproperty(const ::std::string& value) {
-  set_has_customproperty();
-  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
-    customproperty_ = new ::std::string;
-  }
-  customproperty_->assign(value);
-}
-inline void SpriteOptions::set_customproperty(const char* value) {
-  set_has_customproperty();
-  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
-    customproperty_ = new ::std::string;
-  }
-  customproperty_->assign(value);
-}
-inline void SpriteOptions::set_customproperty(const char* value, size_t size) {
-  set_has_customproperty();
-  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
-    customproperty_ = new ::std::string;
-  }
-  customproperty_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* SpriteOptions::mutable_customproperty() {
-  set_has_customproperty();
-  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
-    customproperty_ = new ::std::string;
-  }
-  return customproperty_;
-}
-inline ::std::string* SpriteOptions::release_customproperty() {
-  clear_has_customproperty();
-  if (customproperty_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = customproperty_;
-    customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void SpriteOptions::set_allocated_customproperty(::std::string* customproperty) {
-  if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
-    delete customproperty_;
-  }
-  if (customproperty) {
-    set_has_customproperty();
-    customproperty_ = customproperty;
-  } else {
-    clear_has_customproperty();
-    customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  }
-}
-
-// optional string fileName = 14;
-inline bool SpriteOptions::has_filename() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void SpriteOptions::set_has_filename() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void SpriteOptions::clear_has_filename() {
-  _has_bits_[0] &= ~0x00002000u;
-}
-inline void SpriteOptions::clear_filename() {
-  if (filename_ != &::google::protobuf::internal::kEmptyString) {
-    filename_->clear();
-  }
-  clear_has_filename();
-}
-inline const ::std::string& SpriteOptions::filename() const {
-  return *filename_;
-}
-inline void SpriteOptions::set_filename(const ::std::string& value) {
-  set_has_filename();
-  if (filename_ == &::google::protobuf::internal::kEmptyString) {
-    filename_ = new ::std::string;
-  }
-  filename_->assign(value);
-}
-inline void SpriteOptions::set_filename(const char* value) {
-  set_has_filename();
-  if (filename_ == &::google::protobuf::internal::kEmptyString) {
-    filename_ = new ::std::string;
-  }
-  filename_->assign(value);
-}
-inline void SpriteOptions::set_filename(const char* value, size_t size) {
-  set_has_filename();
-  if (filename_ == &::google::protobuf::internal::kEmptyString) {
-    filename_ = new ::std::string;
-  }
-  filename_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* SpriteOptions::mutable_filename() {
-  set_has_filename();
-  if (filename_ == &::google::protobuf::internal::kEmptyString) {
-    filename_ = new ::std::string;
-  }
-  return filename_;
-}
-inline ::std::string* SpriteOptions::release_filename() {
-  clear_has_filename();
-  if (filename_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = filename_;
-    filename_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void SpriteOptions::set_allocated_filename(::std::string* filename) {
-  if (filename_ != &::google::protobuf::internal::kEmptyString) {
-    delete filename_;
-  }
-  if (filename) {
-    set_has_filename();
-    filename_ = filename;
-  } else {
-    clear_has_filename();
-    filename_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  }
-}
-
-// optional .protocolbuffers.ResourceData fileNameData = 15;
-inline bool SpriteOptions::has_filenamedata() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void SpriteOptions::set_has_filenamedata() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void SpriteOptions::clear_has_filenamedata() {
-  _has_bits_[0] &= ~0x00004000u;
-}
-inline void SpriteOptions::clear_filenamedata() {
-  if (filenamedata_ != NULL) filenamedata_->::protocolbuffers::ResourceData::Clear();
-  clear_has_filenamedata();
-}
-inline const ::protocolbuffers::ResourceData& SpriteOptions::filenamedata() const {
-#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  return filenamedata_ != NULL ? *filenamedata_ : *default_instance().filenamedata_;
-#else
-  return filenamedata_ != NULL ? *filenamedata_ : *default_instance_->filenamedata_;
-#endif
-}
-inline ::protocolbuffers::ResourceData* SpriteOptions::mutable_filenamedata() {
-  set_has_filenamedata();
-  if (filenamedata_ == NULL) filenamedata_ = new ::protocolbuffers::ResourceData;
-  return filenamedata_;
-}
-inline ::protocolbuffers::ResourceData* SpriteOptions::release_filenamedata() {
-  clear_has_filenamedata();
-  ::protocolbuffers::ResourceData* temp = filenamedata_;
-  filenamedata_ = NULL;
-  return temp;
-}
-inline void SpriteOptions::set_allocated_filenamedata(::protocolbuffers::ResourceData* filenamedata) {
-  delete filenamedata_;
-  filenamedata_ = filenamedata;
-  if (filenamedata) {
-    set_has_filenamedata();
-  } else {
-    clear_has_filenamedata();
-  }
-}
-
-// optional bool flippedX = 16;
-inline bool SpriteOptions::has_flippedx() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void SpriteOptions::set_has_flippedx() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void SpriteOptions::clear_has_flippedx() {
-  _has_bits_[0] &= ~0x00008000u;
-}
-inline void SpriteOptions::clear_flippedx() {
-  flippedx_ = false;
-  clear_has_flippedx();
-}
-inline bool SpriteOptions::flippedx() const {
-  return flippedx_;
-}
-inline void SpriteOptions::set_flippedx(bool value) {
-  set_has_flippedx();
-  flippedx_ = value;
-}
-
-// optional bool flippedY = 17;
-inline bool SpriteOptions::has_flippedy() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void SpriteOptions::set_has_flippedy() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void SpriteOptions::clear_has_flippedy() {
-  _has_bits_[0] &= ~0x00010000u;
-}
-inline void SpriteOptions::clear_flippedy() {
-  flippedy_ = false;
-  clear_has_flippedy();
-}
-inline bool SpriteOptions::flippedy() const {
-  return flippedy_;
-}
-inline void SpriteOptions::set_flippedy(bool value) {
-  set_has_flippedy();
-  flippedy_ = value;
 }
 
 // -------------------------------------------------------------------

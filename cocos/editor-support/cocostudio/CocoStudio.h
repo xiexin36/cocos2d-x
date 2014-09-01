@@ -66,6 +66,7 @@ THE SOFTWARE.
 #include "cocostudio/CocosStudioExport.h"
 /* peterson */
 #include "cocostudio/ActionTimeline/CSLoader.h"
+#include "cocostudio/ProtocolBuffersSerialize.h"
 /**/
 
 #endif

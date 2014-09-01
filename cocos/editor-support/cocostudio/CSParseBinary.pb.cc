@@ -32,8 +32,8 @@ void protobuf_ShutdownFile_CSParseBinary_2eproto() {
   delete PanelOptions::default_instance_;
   delete ScrollViewOptions::default_instance_;
   delete SliderOptions::default_instance_;
-  delete TextFieldOptions::default_instance_;
   delete SpriteOptions::default_instance_;
+  delete TextFieldOptions::default_instance_;
   delete TMXTiledMapOptions::default_instance_;
   delete ParticleSystemOptions::default_instance_;
   delete ProjectNodeOptions::default_instance_;
@@ -79,8 +79,8 @@ void protobuf_AddDesc_CSParseBinary_2eproto() {
   PanelOptions::default_instance_ = new PanelOptions();
   ScrollViewOptions::default_instance_ = new ScrollViewOptions();
   SliderOptions::default_instance_ = new SliderOptions();
-  TextFieldOptions::default_instance_ = new TextFieldOptions();
   SpriteOptions::default_instance_ = new SpriteOptions();
+  TextFieldOptions::default_instance_ = new TextFieldOptions();
   TMXTiledMapOptions::default_instance_ = new TMXTiledMapOptions();
   ParticleSystemOptions::default_instance_ = new ParticleSystemOptions();
   ProjectNodeOptions::default_instance_ = new ProjectNodeOptions();
@@ -112,8 +112,8 @@ void protobuf_AddDesc_CSParseBinary_2eproto() {
   PanelOptions::default_instance_->InitAsDefaultInstance();
   ScrollViewOptions::default_instance_->InitAsDefaultInstance();
   SliderOptions::default_instance_->InitAsDefaultInstance();
-  TextFieldOptions::default_instance_->InitAsDefaultInstance();
   SpriteOptions::default_instance_->InitAsDefaultInstance();
+  TextFieldOptions::default_instance_->InitAsDefaultInstance();
   TMXTiledMapOptions::default_instance_->InitAsDefaultInstance();
   ParticleSystemOptions::default_instance_->InitAsDefaultInstance();
   ProjectNodeOptions::default_instance_->InitAsDefaultInstance();
@@ -152,9 +152,9 @@ struct StaticDescriptorInitializer_CSParseBinary_2eproto {
 const int CSParseBinary::kVersionFieldNumber;
 const int CSParseBinary::kCocos2DVersionFieldNumber;
 const int CSParseBinary::kEditorTypeFieldNumber;
-const int CSParseBinary::kDesignWidthFieldNumber;
-const int CSParseBinary::kDesignHeightFieldNumber;
 const int CSParseBinary::kDataScaleFieldNumber;
+const int CSParseBinary::kDesignHeightFieldNumber;
+const int CSParseBinary::kDesignWidthFieldNumber;
 const int CSParseBinary::kTexturesFieldNumber;
 const int CSParseBinary::kTexturesPngFieldNumber;
 const int CSParseBinary::kNodeTreeFieldNumber;
@@ -192,9 +192,9 @@ void CSParseBinary::SharedCtor() {
   version_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   cocos2dversion_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   editortype_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  designwidth_ = 0;
-  designheight_ = 0;
   datascale_ = 0;
+  designheight_ = 0;
+  designwidth_ = 0;
   nodetree_ = NULL;
   action_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -261,9 +261,9 @@ void CSParseBinary::Clear() {
         editortype_->clear();
       }
     }
-    designwidth_ = 0;
-    designheight_ = 0;
     datascale_ = 0;
+    designheight_ = 0;
+    designwidth_ = 0;
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (has_nodetree()) {
@@ -321,19 +321,19 @@ bool CSParseBinary::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_designWidth;
+        if (input->ExpectTag(37)) goto parse_dataScale;
         break;
       }
 
-      // optional int32 designWidth = 4;
+      // optional float dataScale = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_designWidth:
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_dataScale:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &designwidth_)));
-          set_has_designwidth();
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &datascale_)));
+          set_has_datascale();
         } else {
           goto handle_uninterpreted;
         }
@@ -353,19 +353,19 @@ bool CSParseBinary::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(53)) goto parse_dataScale;
+        if (input->ExpectTag(48)) goto parse_designWidth;
         break;
       }
 
-      // optional float dataScale = 6;
+      // optional int32 designWidth = 6;
       case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_dataScale:
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_designWidth:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &datascale_)));
-          set_has_datascale();
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &designwidth_)));
+          set_has_designwidth();
         } else {
           goto handle_uninterpreted;
         }
@@ -466,9 +466,9 @@ void CSParseBinary::SerializeWithCachedSizes(
       3, this->editortype(), output);
   }
 
-  // optional int32 designWidth = 4;
-  if (has_designwidth()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->designwidth(), output);
+  // optional float dataScale = 4;
+  if (has_datascale()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->datascale(), output);
   }
 
   // optional int32 designHeight = 5;
@@ -476,9 +476,9 @@ void CSParseBinary::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->designheight(), output);
   }
 
-  // optional float dataScale = 6;
-  if (has_datascale()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->datascale(), output);
+  // optional int32 designWidth = 6;
+  if (has_designwidth()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->designwidth(), output);
   }
 
   // repeated string textures = 7;
@@ -532,11 +532,9 @@ int CSParseBinary::ByteSize() const {
           this->editortype());
     }
 
-    // optional int32 designWidth = 4;
-    if (has_designwidth()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->designwidth());
+    // optional float dataScale = 4;
+    if (has_datascale()) {
+      total_size += 1 + 4;
     }
 
     // optional int32 designHeight = 5;
@@ -546,9 +544,11 @@ int CSParseBinary::ByteSize() const {
           this->designheight());
     }
 
-    // optional float dataScale = 6;
-    if (has_datascale()) {
-      total_size += 1 + 4;
+    // optional int32 designWidth = 6;
+    if (has_designwidth()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->designwidth());
     }
 
   }
@@ -607,14 +607,14 @@ void CSParseBinary::MergeFrom(const CSParseBinary& from) {
     if (from.has_editortype()) {
       set_editortype(from.editortype());
     }
-    if (from.has_designwidth()) {
-      set_designwidth(from.designwidth());
+    if (from.has_datascale()) {
+      set_datascale(from.datascale());
     }
     if (from.has_designheight()) {
       set_designheight(from.designheight());
     }
-    if (from.has_datascale()) {
-      set_datascale(from.datascale());
+    if (from.has_designwidth()) {
+      set_designwidth(from.designwidth());
     }
   }
   if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
@@ -643,9 +643,9 @@ void CSParseBinary::Swap(CSParseBinary* other) {
     std::swap(version_, other->version_);
     std::swap(cocos2dversion_, other->cocos2dversion_);
     std::swap(editortype_, other->editortype_);
-    std::swap(designwidth_, other->designwidth_);
-    std::swap(designheight_, other->designheight_);
     std::swap(datascale_, other->datascale_);
+    std::swap(designheight_, other->designheight_);
+    std::swap(designwidth_, other->designwidth_);
     textures_.Swap(&other->textures_);
     texturespng_.Swap(&other->texturespng_);
     std::swap(nodetree_, other->nodetree_);
@@ -13543,6 +13543,767 @@ void SliderOptions::Swap(SliderOptions* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int SpriteOptions::kNameFieldNumber;
+const int SpriteOptions::kClassnameFieldNumber;
+const int SpriteOptions::kTouchAbleFieldNumber;
+const int SpriteOptions::kPositionTypeFieldNumber;
+const int SpriteOptions::kPositionPercentXFieldNumber;
+const int SpriteOptions::kPositionPercentYFieldNumber;
+const int SpriteOptions::kSizeTypeFieldNumber;
+const int SpriteOptions::kSizePercentXFieldNumber;
+const int SpriteOptions::kSizePercentYFieldNumber;
+const int SpriteOptions::kUseMergedTextureFieldNumber;
+const int SpriteOptions::kIgnoreSizeFieldNumber;
+const int SpriteOptions::kLayoutParameterFieldNumber;
+const int SpriteOptions::kCustomPropertyFieldNumber;
+const int SpriteOptions::kFileNameFieldNumber;
+const int SpriteOptions::kFlippedXFieldNumber;
+const int SpriteOptions::kFlippedYFieldNumber;
+const int SpriteOptions::kFileNameDataFieldNumber;
+#endif  // !_MSC_VER
+
+SpriteOptions::SpriteOptions()
+  : ::google::protobuf::MessageLite() {
+  SharedCtor();
+}
+
+void SpriteOptions::InitAsDefaultInstance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  layoutparameter_ = const_cast< ::protocolbuffers::LayoutParameter*>(
+      ::protocolbuffers::LayoutParameter::internal_default_instance());
+#else
+  layoutparameter_ = const_cast< ::protocolbuffers::LayoutParameter*>(&::protocolbuffers::LayoutParameter::default_instance());
+#endif
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  filenamedata_ = const_cast< ::protocolbuffers::ResourceData*>(
+      ::protocolbuffers::ResourceData::internal_default_instance());
+#else
+  filenamedata_ = const_cast< ::protocolbuffers::ResourceData*>(&::protocolbuffers::ResourceData::default_instance());
+#endif
+}
+
+SpriteOptions::SpriteOptions(const SpriteOptions& from)
+  : ::google::protobuf::MessageLite() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SpriteOptions::SharedCtor() {
+  _cached_size_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  classname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  touchable_ = false;
+  positiontype_ = 0;
+  positionpercentx_ = 0;
+  positionpercenty_ = 0;
+  sizetype_ = 0;
+  sizepercentx_ = 0;
+  sizepercenty_ = 0;
+  usemergedtexture_ = false;
+  ignoresize_ = false;
+  layoutparameter_ = NULL;
+  customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  filename_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  flippedx_ = false;
+  flippedy_ = false;
+  filenamedata_ = NULL;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SpriteOptions::~SpriteOptions() {
+  SharedDtor();
+}
+
+void SpriteOptions::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (classname_ != &::google::protobuf::internal::kEmptyString) {
+    delete classname_;
+  }
+  if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
+    delete customproperty_;
+  }
+  if (filename_ != &::google::protobuf::internal::kEmptyString) {
+    delete filename_;
+  }
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
+  if (this != default_instance_) {
+  #endif
+    delete layoutparameter_;
+    delete filenamedata_;
+  }
+}
+
+void SpriteOptions::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const SpriteOptions& SpriteOptions::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_CSParseBinary_2eproto();
+#else
+  if (default_instance_ == NULL) protobuf_AddDesc_CSParseBinary_2eproto();
+#endif
+  return *default_instance_;
+}
+
+SpriteOptions* SpriteOptions::default_instance_ = NULL;
+
+SpriteOptions* SpriteOptions::New() const {
+  return new SpriteOptions;
+}
+
+void SpriteOptions::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+    if (has_classname()) {
+      if (classname_ != &::google::protobuf::internal::kEmptyString) {
+        classname_->clear();
+      }
+    }
+    touchable_ = false;
+    positiontype_ = 0;
+    positionpercentx_ = 0;
+    positionpercenty_ = 0;
+    sizetype_ = 0;
+    sizepercentx_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    sizepercenty_ = 0;
+    usemergedtexture_ = false;
+    ignoresize_ = false;
+    if (has_layoutparameter()) {
+      if (layoutparameter_ != NULL) layoutparameter_->::protocolbuffers::LayoutParameter::Clear();
+    }
+    if (has_customproperty()) {
+      if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
+        customproperty_->clear();
+      }
+    }
+    if (has_filename()) {
+      if (filename_ != &::google::protobuf::internal::kEmptyString) {
+        filename_->clear();
+      }
+    }
+    flippedx_ = false;
+    flippedy_ = false;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (has_filenamedata()) {
+      if (filenamedata_ != NULL) filenamedata_->::protocolbuffers::ResourceData::Clear();
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+bool SpriteOptions::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string name = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_classname;
+        break;
+      }
+
+      // optional string classname = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_classname:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_classname()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_touchAble;
+        break;
+      }
+
+      // optional bool touchAble = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_touchAble:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &touchable_)));
+          set_has_touchable();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_positionType;
+        break;
+      }
+
+      // optional int32 positionType = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_positionType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &positiontype_)));
+          set_has_positiontype();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(45)) goto parse_positionPercentX;
+        break;
+      }
+
+      // optional float positionPercentX = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_positionPercentX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &positionpercentx_)));
+          set_has_positionpercentx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(53)) goto parse_positionPercentY;
+        break;
+      }
+
+      // optional float positionPercentY = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_positionPercentY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &positionpercenty_)));
+          set_has_positionpercenty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(56)) goto parse_sizeType;
+        break;
+      }
+
+      // optional int32 sizeType = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_sizeType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &sizetype_)));
+          set_has_sizetype();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(69)) goto parse_sizePercentX;
+        break;
+      }
+
+      // optional float sizePercentX = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_sizePercentX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &sizepercentx_)));
+          set_has_sizepercentx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(77)) goto parse_sizePercentY;
+        break;
+      }
+
+      // optional float sizePercentY = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_sizePercentY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &sizepercenty_)));
+          set_has_sizepercenty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(80)) goto parse_useMergedTexture;
+        break;
+      }
+
+      // optional bool useMergedTexture = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_useMergedTexture:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &usemergedtexture_)));
+          set_has_usemergedtexture();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(88)) goto parse_ignoreSize;
+        break;
+      }
+
+      // optional bool ignoreSize = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_ignoreSize:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &ignoresize_)));
+          set_has_ignoresize();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(98)) goto parse_layoutParameter;
+        break;
+      }
+
+      // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_layoutParameter:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_layoutparameter()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(106)) goto parse_customProperty;
+        break;
+      }
+
+      // optional string customProperty = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_customProperty:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_customproperty()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(114)) goto parse_fileName;
+        break;
+      }
+
+      // optional string fileName = 14;
+      case 14: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_fileName:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_filename()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(120)) goto parse_flippedX;
+        break;
+      }
+
+      // optional bool flippedX = 15;
+      case 15: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_flippedX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &flippedx_)));
+          set_has_flippedx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(128)) goto parse_flippedY;
+        break;
+      }
+
+      // optional bool flippedY = 16;
+      case 16: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_flippedY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &flippedy_)));
+          set_has_flippedy();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(138)) goto parse_fileNameData;
+        break;
+      }
+
+      // optional .protocolbuffers.ResourceData fileNameData = 17;
+      case 17: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_fileNameData:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_filenamedata()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SpriteOptions::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->name(), output);
+  }
+
+  // optional string classname = 2;
+  if (has_classname()) {
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->classname(), output);
+  }
+
+  // optional bool touchAble = 3;
+  if (has_touchable()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->touchable(), output);
+  }
+
+  // optional int32 positionType = 4;
+  if (has_positiontype()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->positiontype(), output);
+  }
+
+  // optional float positionPercentX = 5;
+  if (has_positionpercentx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(5, this->positionpercentx(), output);
+  }
+
+  // optional float positionPercentY = 6;
+  if (has_positionpercenty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->positionpercenty(), output);
+  }
+
+  // optional int32 sizeType = 7;
+  if (has_sizetype()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->sizetype(), output);
+  }
+
+  // optional float sizePercentX = 8;
+  if (has_sizepercentx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(8, this->sizepercentx(), output);
+  }
+
+  // optional float sizePercentY = 9;
+  if (has_sizepercenty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(9, this->sizepercenty(), output);
+  }
+
+  // optional bool useMergedTexture = 10;
+  if (has_usemergedtexture()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->usemergedtexture(), output);
+  }
+
+  // optional bool ignoreSize = 11;
+  if (has_ignoresize()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->ignoresize(), output);
+  }
+
+  // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
+  if (has_layoutparameter()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessage(
+      12, this->layoutparameter(), output);
+  }
+
+  // optional string customProperty = 13;
+  if (has_customproperty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      13, this->customproperty(), output);
+  }
+
+  // optional string fileName = 14;
+  if (has_filename()) {
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      14, this->filename(), output);
+  }
+
+  // optional bool flippedX = 15;
+  if (has_flippedx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(15, this->flippedx(), output);
+  }
+
+  // optional bool flippedY = 16;
+  if (has_flippedy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(16, this->flippedy(), output);
+  }
+
+  // optional .protocolbuffers.ResourceData fileNameData = 17;
+  if (has_filenamedata()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessage(
+      17, this->filenamedata(), output);
+  }
+
+}
+
+int SpriteOptions::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string name = 1;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+
+    // optional string classname = 2;
+    if (has_classname()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->classname());
+    }
+
+    // optional bool touchAble = 3;
+    if (has_touchable()) {
+      total_size += 1 + 1;
+    }
+
+    // optional int32 positionType = 4;
+    if (has_positiontype()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->positiontype());
+    }
+
+    // optional float positionPercentX = 5;
+    if (has_positionpercentx()) {
+      total_size += 1 + 4;
+    }
+
+    // optional float positionPercentY = 6;
+    if (has_positionpercenty()) {
+      total_size += 1 + 4;
+    }
+
+    // optional int32 sizeType = 7;
+    if (has_sizetype()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->sizetype());
+    }
+
+    // optional float sizePercentX = 8;
+    if (has_sizepercentx()) {
+      total_size += 1 + 4;
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional float sizePercentY = 9;
+    if (has_sizepercenty()) {
+      total_size += 1 + 4;
+    }
+
+    // optional bool useMergedTexture = 10;
+    if (has_usemergedtexture()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool ignoreSize = 11;
+    if (has_ignoresize()) {
+      total_size += 1 + 1;
+    }
+
+    // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
+    if (has_layoutparameter()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->layoutparameter());
+    }
+
+    // optional string customProperty = 13;
+    if (has_customproperty()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->customproperty());
+    }
+
+    // optional string fileName = 14;
+    if (has_filename()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->filename());
+    }
+
+    // optional bool flippedX = 15;
+    if (has_flippedx()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool flippedY = 16;
+    if (has_flippedy()) {
+      total_size += 2 + 1;
+    }
+
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // optional .protocolbuffers.ResourceData fileNameData = 17;
+    if (has_filenamedata()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->filenamedata());
+    }
+
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SpriteOptions::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const SpriteOptions*>(&from));
+}
+
+void SpriteOptions::MergeFrom(const SpriteOptions& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_classname()) {
+      set_classname(from.classname());
+    }
+    if (from.has_touchable()) {
+      set_touchable(from.touchable());
+    }
+    if (from.has_positiontype()) {
+      set_positiontype(from.positiontype());
+    }
+    if (from.has_positionpercentx()) {
+      set_positionpercentx(from.positionpercentx());
+    }
+    if (from.has_positionpercenty()) {
+      set_positionpercenty(from.positionpercenty());
+    }
+    if (from.has_sizetype()) {
+      set_sizetype(from.sizetype());
+    }
+    if (from.has_sizepercentx()) {
+      set_sizepercentx(from.sizepercentx());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_sizepercenty()) {
+      set_sizepercenty(from.sizepercenty());
+    }
+    if (from.has_usemergedtexture()) {
+      set_usemergedtexture(from.usemergedtexture());
+    }
+    if (from.has_ignoresize()) {
+      set_ignoresize(from.ignoresize());
+    }
+    if (from.has_layoutparameter()) {
+      mutable_layoutparameter()->::protocolbuffers::LayoutParameter::MergeFrom(from.layoutparameter());
+    }
+    if (from.has_customproperty()) {
+      set_customproperty(from.customproperty());
+    }
+    if (from.has_filename()) {
+      set_filename(from.filename());
+    }
+    if (from.has_flippedx()) {
+      set_flippedx(from.flippedx());
+    }
+    if (from.has_flippedy()) {
+      set_flippedy(from.flippedy());
+    }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_filenamedata()) {
+      mutable_filenamedata()->::protocolbuffers::ResourceData::MergeFrom(from.filenamedata());
+    }
+  }
+}
+
+void SpriteOptions::CopyFrom(const SpriteOptions& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SpriteOptions::IsInitialized() const {
+
+  return true;
+}
+
+void SpriteOptions::Swap(SpriteOptions* other) {
+  if (other != this) {
+    std::swap(name_, other->name_);
+    std::swap(classname_, other->classname_);
+    std::swap(touchable_, other->touchable_);
+    std::swap(positiontype_, other->positiontype_);
+    std::swap(positionpercentx_, other->positionpercentx_);
+    std::swap(positionpercenty_, other->positionpercenty_);
+    std::swap(sizetype_, other->sizetype_);
+    std::swap(sizepercentx_, other->sizepercentx_);
+    std::swap(sizepercenty_, other->sizepercenty_);
+    std::swap(usemergedtexture_, other->usemergedtexture_);
+    std::swap(ignoresize_, other->ignoresize_);
+    std::swap(layoutparameter_, other->layoutparameter_);
+    std::swap(customproperty_, other->customproperty_);
+    std::swap(filename_, other->filename_);
+    std::swap(flippedx_, other->flippedx_);
+    std::swap(flippedy_, other->flippedy_);
+    std::swap(filenamedata_, other->filenamedata_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::std::string SpriteOptions::GetTypeName() const {
+  return "protocolbuffers.SpriteOptions";
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int TextFieldOptions::kNameFieldNumber;
 const int TextFieldOptions::kClassnameFieldNumber;
 const int TextFieldOptions::kFontNameFieldNumber;
@@ -14209,767 +14970,6 @@ void TextFieldOptions::Swap(TextFieldOptions* other) {
 
 ::std::string TextFieldOptions::GetTypeName() const {
   return "protocolbuffers.TextFieldOptions";
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int SpriteOptions::kNameFieldNumber;
-const int SpriteOptions::kClassnameFieldNumber;
-const int SpriteOptions::kTouchAbleFieldNumber;
-const int SpriteOptions::kPositionTypeFieldNumber;
-const int SpriteOptions::kPositionPercentXFieldNumber;
-const int SpriteOptions::kPositionPercentYFieldNumber;
-const int SpriteOptions::kSizeTypeFieldNumber;
-const int SpriteOptions::kSizePercentXFieldNumber;
-const int SpriteOptions::kSizePercentYFieldNumber;
-const int SpriteOptions::kUseMergedTextureFieldNumber;
-const int SpriteOptions::kIgnoreSizeFieldNumber;
-const int SpriteOptions::kLayoutParameterFieldNumber;
-const int SpriteOptions::kCustomPropertyFieldNumber;
-const int SpriteOptions::kFileNameFieldNumber;
-const int SpriteOptions::kFileNameDataFieldNumber;
-const int SpriteOptions::kFlippedXFieldNumber;
-const int SpriteOptions::kFlippedYFieldNumber;
-#endif  // !_MSC_VER
-
-SpriteOptions::SpriteOptions()
-  : ::google::protobuf::MessageLite() {
-  SharedCtor();
-}
-
-void SpriteOptions::InitAsDefaultInstance() {
-#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  layoutparameter_ = const_cast< ::protocolbuffers::LayoutParameter*>(
-      ::protocolbuffers::LayoutParameter::internal_default_instance());
-#else
-  layoutparameter_ = const_cast< ::protocolbuffers::LayoutParameter*>(&::protocolbuffers::LayoutParameter::default_instance());
-#endif
-#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  filenamedata_ = const_cast< ::protocolbuffers::ResourceData*>(
-      ::protocolbuffers::ResourceData::internal_default_instance());
-#else
-  filenamedata_ = const_cast< ::protocolbuffers::ResourceData*>(&::protocolbuffers::ResourceData::default_instance());
-#endif
-}
-
-SpriteOptions::SpriteOptions(const SpriteOptions& from)
-  : ::google::protobuf::MessageLite() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void SpriteOptions::SharedCtor() {
-  _cached_size_ = 0;
-  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  classname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  touchable_ = false;
-  positiontype_ = 0;
-  positionpercentx_ = 0;
-  positionpercenty_ = 0;
-  sizetype_ = 0;
-  sizepercentx_ = 0;
-  sizepercenty_ = 0;
-  usemergedtexture_ = false;
-  ignoresize_ = false;
-  layoutparameter_ = NULL;
-  customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  filename_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  filenamedata_ = NULL;
-  flippedx_ = false;
-  flippedy_ = false;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-SpriteOptions::~SpriteOptions() {
-  SharedDtor();
-}
-
-void SpriteOptions::SharedDtor() {
-  if (name_ != &::google::protobuf::internal::kEmptyString) {
-    delete name_;
-  }
-  if (classname_ != &::google::protobuf::internal::kEmptyString) {
-    delete classname_;
-  }
-  if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
-    delete customproperty_;
-  }
-  if (filename_ != &::google::protobuf::internal::kEmptyString) {
-    delete filename_;
-  }
-  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  if (this != &default_instance()) {
-  #else
-  if (this != default_instance_) {
-  #endif
-    delete layoutparameter_;
-    delete filenamedata_;
-  }
-}
-
-void SpriteOptions::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const SpriteOptions& SpriteOptions::default_instance() {
-#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
-  protobuf_AddDesc_CSParseBinary_2eproto();
-#else
-  if (default_instance_ == NULL) protobuf_AddDesc_CSParseBinary_2eproto();
-#endif
-  return *default_instance_;
-}
-
-SpriteOptions* SpriteOptions::default_instance_ = NULL;
-
-SpriteOptions* SpriteOptions::New() const {
-  return new SpriteOptions;
-}
-
-void SpriteOptions::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_name()) {
-      if (name_ != &::google::protobuf::internal::kEmptyString) {
-        name_->clear();
-      }
-    }
-    if (has_classname()) {
-      if (classname_ != &::google::protobuf::internal::kEmptyString) {
-        classname_->clear();
-      }
-    }
-    touchable_ = false;
-    positiontype_ = 0;
-    positionpercentx_ = 0;
-    positionpercenty_ = 0;
-    sizetype_ = 0;
-    sizepercentx_ = 0;
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    sizepercenty_ = 0;
-    usemergedtexture_ = false;
-    ignoresize_ = false;
-    if (has_layoutparameter()) {
-      if (layoutparameter_ != NULL) layoutparameter_->::protocolbuffers::LayoutParameter::Clear();
-    }
-    if (has_customproperty()) {
-      if (customproperty_ != &::google::protobuf::internal::kEmptyString) {
-        customproperty_->clear();
-      }
-    }
-    if (has_filename()) {
-      if (filename_ != &::google::protobuf::internal::kEmptyString) {
-        filename_->clear();
-      }
-    }
-    if (has_filenamedata()) {
-      if (filenamedata_ != NULL) filenamedata_->::protocolbuffers::ResourceData::Clear();
-    }
-    flippedx_ = false;
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    flippedy_ = false;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-bool SpriteOptions::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string name = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_classname;
-        break;
-      }
-
-      // optional string classname = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_classname:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_classname()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(24)) goto parse_touchAble;
-        break;
-      }
-
-      // optional bool touchAble = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_touchAble:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &touchable_)));
-          set_has_touchable();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(32)) goto parse_positionType;
-        break;
-      }
-
-      // optional int32 positionType = 4;
-      case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_positionType:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &positiontype_)));
-          set_has_positiontype();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(45)) goto parse_positionPercentX;
-        break;
-      }
-
-      // optional float positionPercentX = 5;
-      case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_positionPercentX:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &positionpercentx_)));
-          set_has_positionpercentx();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(53)) goto parse_positionPercentY;
-        break;
-      }
-
-      // optional float positionPercentY = 6;
-      case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_positionPercentY:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &positionpercenty_)));
-          set_has_positionpercenty();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(56)) goto parse_sizeType;
-        break;
-      }
-
-      // optional int32 sizeType = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_sizeType:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &sizetype_)));
-          set_has_sizetype();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(69)) goto parse_sizePercentX;
-        break;
-      }
-
-      // optional float sizePercentX = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_sizePercentX:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &sizepercentx_)));
-          set_has_sizepercentx();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(77)) goto parse_sizePercentY;
-        break;
-      }
-
-      // optional float sizePercentY = 9;
-      case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
-         parse_sizePercentY:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &sizepercenty_)));
-          set_has_sizepercenty();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(80)) goto parse_useMergedTexture;
-        break;
-      }
-
-      // optional bool useMergedTexture = 10;
-      case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_useMergedTexture:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &usemergedtexture_)));
-          set_has_usemergedtexture();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(88)) goto parse_ignoreSize;
-        break;
-      }
-
-      // optional bool ignoreSize = 11;
-      case 11: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_ignoreSize:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &ignoresize_)));
-          set_has_ignoresize();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(98)) goto parse_layoutParameter;
-        break;
-      }
-
-      // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
-      case 12: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_layoutParameter:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_layoutparameter()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(106)) goto parse_customProperty;
-        break;
-      }
-
-      // optional string customProperty = 13;
-      case 13: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_customProperty:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_customproperty()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(114)) goto parse_fileName;
-        break;
-      }
-
-      // optional string fileName = 14;
-      case 14: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_fileName:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_filename()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(122)) goto parse_fileNameData;
-        break;
-      }
-
-      // optional .protocolbuffers.ResourceData fileNameData = 15;
-      case 15: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_fileNameData:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_filenamedata()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(128)) goto parse_flippedX;
-        break;
-      }
-
-      // optional bool flippedX = 16;
-      case 16: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_flippedX:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &flippedx_)));
-          set_has_flippedx();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(136)) goto parse_flippedY;
-        break;
-      }
-
-      // optional bool flippedY = 17;
-      case 17: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_flippedY:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &flippedy_)));
-          set_has_flippedy();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void SpriteOptions::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string name = 1;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->name(), output);
-  }
-
-  // optional string classname = 2;
-  if (has_classname()) {
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->classname(), output);
-  }
-
-  // optional bool touchAble = 3;
-  if (has_touchable()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->touchable(), output);
-  }
-
-  // optional int32 positionType = 4;
-  if (has_positiontype()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->positiontype(), output);
-  }
-
-  // optional float positionPercentX = 5;
-  if (has_positionpercentx()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(5, this->positionpercentx(), output);
-  }
-
-  // optional float positionPercentY = 6;
-  if (has_positionpercenty()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->positionpercenty(), output);
-  }
-
-  // optional int32 sizeType = 7;
-  if (has_sizetype()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->sizetype(), output);
-  }
-
-  // optional float sizePercentX = 8;
-  if (has_sizepercentx()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(8, this->sizepercentx(), output);
-  }
-
-  // optional float sizePercentY = 9;
-  if (has_sizepercenty()) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(9, this->sizepercenty(), output);
-  }
-
-  // optional bool useMergedTexture = 10;
-  if (has_usemergedtexture()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->usemergedtexture(), output);
-  }
-
-  // optional bool ignoreSize = 11;
-  if (has_ignoresize()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->ignoresize(), output);
-  }
-
-  // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
-  if (has_layoutparameter()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      12, this->layoutparameter(), output);
-  }
-
-  // optional string customProperty = 13;
-  if (has_customproperty()) {
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      13, this->customproperty(), output);
-  }
-
-  // optional string fileName = 14;
-  if (has_filename()) {
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      14, this->filename(), output);
-  }
-
-  // optional .protocolbuffers.ResourceData fileNameData = 15;
-  if (has_filenamedata()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      15, this->filenamedata(), output);
-  }
-
-  // optional bool flippedX = 16;
-  if (has_flippedx()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(16, this->flippedx(), output);
-  }
-
-  // optional bool flippedY = 17;
-  if (has_flippedy()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(17, this->flippedy(), output);
-  }
-
-}
-
-int SpriteOptions::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string name = 1;
-    if (has_name()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->name());
-    }
-
-    // optional string classname = 2;
-    if (has_classname()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->classname());
-    }
-
-    // optional bool touchAble = 3;
-    if (has_touchable()) {
-      total_size += 1 + 1;
-    }
-
-    // optional int32 positionType = 4;
-    if (has_positiontype()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->positiontype());
-    }
-
-    // optional float positionPercentX = 5;
-    if (has_positionpercentx()) {
-      total_size += 1 + 4;
-    }
-
-    // optional float positionPercentY = 6;
-    if (has_positionpercenty()) {
-      total_size += 1 + 4;
-    }
-
-    // optional int32 sizeType = 7;
-    if (has_sizetype()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->sizetype());
-    }
-
-    // optional float sizePercentX = 8;
-    if (has_sizepercentx()) {
-      total_size += 1 + 4;
-    }
-
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional float sizePercentY = 9;
-    if (has_sizepercenty()) {
-      total_size += 1 + 4;
-    }
-
-    // optional bool useMergedTexture = 10;
-    if (has_usemergedtexture()) {
-      total_size += 1 + 1;
-    }
-
-    // optional bool ignoreSize = 11;
-    if (has_ignoresize()) {
-      total_size += 1 + 1;
-    }
-
-    // optional .protocolbuffers.LayoutParameter layoutParameter = 12;
-    if (has_layoutparameter()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->layoutparameter());
-    }
-
-    // optional string customProperty = 13;
-    if (has_customproperty()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->customproperty());
-    }
-
-    // optional string fileName = 14;
-    if (has_filename()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->filename());
-    }
-
-    // optional .protocolbuffers.ResourceData fileNameData = 15;
-    if (has_filenamedata()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->filenamedata());
-    }
-
-    // optional bool flippedX = 16;
-    if (has_flippedx()) {
-      total_size += 2 + 1;
-    }
-
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    // optional bool flippedY = 17;
-    if (has_flippedy()) {
-      total_size += 2 + 1;
-    }
-
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void SpriteOptions::CheckTypeAndMergeFrom(
-    const ::google::protobuf::MessageLite& from) {
-  MergeFrom(*::google::protobuf::down_cast<const SpriteOptions*>(&from));
-}
-
-void SpriteOptions::MergeFrom(const SpriteOptions& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_name()) {
-      set_name(from.name());
-    }
-    if (from.has_classname()) {
-      set_classname(from.classname());
-    }
-    if (from.has_touchable()) {
-      set_touchable(from.touchable());
-    }
-    if (from.has_positiontype()) {
-      set_positiontype(from.positiontype());
-    }
-    if (from.has_positionpercentx()) {
-      set_positionpercentx(from.positionpercentx());
-    }
-    if (from.has_positionpercenty()) {
-      set_positionpercenty(from.positionpercenty());
-    }
-    if (from.has_sizetype()) {
-      set_sizetype(from.sizetype());
-    }
-    if (from.has_sizepercentx()) {
-      set_sizepercentx(from.sizepercentx());
-    }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_sizepercenty()) {
-      set_sizepercenty(from.sizepercenty());
-    }
-    if (from.has_usemergedtexture()) {
-      set_usemergedtexture(from.usemergedtexture());
-    }
-    if (from.has_ignoresize()) {
-      set_ignoresize(from.ignoresize());
-    }
-    if (from.has_layoutparameter()) {
-      mutable_layoutparameter()->::protocolbuffers::LayoutParameter::MergeFrom(from.layoutparameter());
-    }
-    if (from.has_customproperty()) {
-      set_customproperty(from.customproperty());
-    }
-    if (from.has_filename()) {
-      set_filename(from.filename());
-    }
-    if (from.has_filenamedata()) {
-      mutable_filenamedata()->::protocolbuffers::ResourceData::MergeFrom(from.filenamedata());
-    }
-    if (from.has_flippedx()) {
-      set_flippedx(from.flippedx());
-    }
-  }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    if (from.has_flippedy()) {
-      set_flippedy(from.flippedy());
-    }
-  }
-}
-
-void SpriteOptions::CopyFrom(const SpriteOptions& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool SpriteOptions::IsInitialized() const {
-
-  return true;
-}
-
-void SpriteOptions::Swap(SpriteOptions* other) {
-  if (other != this) {
-    std::swap(name_, other->name_);
-    std::swap(classname_, other->classname_);
-    std::swap(touchable_, other->touchable_);
-    std::swap(positiontype_, other->positiontype_);
-    std::swap(positionpercentx_, other->positionpercentx_);
-    std::swap(positionpercenty_, other->positionpercenty_);
-    std::swap(sizetype_, other->sizetype_);
-    std::swap(sizepercentx_, other->sizepercentx_);
-    std::swap(sizepercenty_, other->sizepercenty_);
-    std::swap(usemergedtexture_, other->usemergedtexture_);
-    std::swap(ignoresize_, other->ignoresize_);
-    std::swap(layoutparameter_, other->layoutparameter_);
-    std::swap(customproperty_, other->customproperty_);
-    std::swap(filename_, other->filename_);
-    std::swap(filenamedata_, other->filenamedata_);
-    std::swap(flippedx_, other->flippedx_);
-    std::swap(flippedy_, other->flippedy_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::std::string SpriteOptions::GetTypeName() const {
-  return "protocolbuffers.SpriteOptions";
 }
 
 
