@@ -1090,6 +1090,10 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
     
     std::string name = widgetObjectData->Name();
     
+    options->set_visible(true);
+	options->set_scalex(1.0f);
+	options->set_scaley(1.0f);
+    
     // attributes
     const tinyxml2::XMLAttribute* attribute = widgetObjectData->FirstAttribute();
     while (attribute)
