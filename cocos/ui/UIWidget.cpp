@@ -381,14 +381,15 @@ const Size& Widget::getVirtualRendererSize() const
     
 void Widget::updateContentSizeWithTextureSize(const cocos2d::Size &size)
 {
-    if (_ignoreSize)
-    {
-        this->setContentSize(size);
-    }
-    else
-    {
-        this->setContentSize(_customSize);
-    }
+    this->setContentSize(size);
+    //if (_ignoreSize)
+    //{
+    //    this->setContentSize(size);
+    //}
+    //else
+    //{
+    //    this->setContentSize(_customSize);
+    //}
 }
 
 void Widget::setTouchEnabled(bool enable)
