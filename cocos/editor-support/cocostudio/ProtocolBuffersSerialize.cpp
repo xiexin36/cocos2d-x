@@ -226,8 +226,10 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
 {
     std::string result = "";
     
+    /*
     size_t pos = protocolbuffersFileName.find_last_of('/');
     _protocolbuffersDir = protocolbuffersFileName.substr(0, pos + 1);
+     */
     
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
     
@@ -3133,14 +3135,16 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                 
                 if (name == "PathStr")
                 {
-                    int pos = value.find_last_of('.');
+                    size_t pos = value.find_last_of('.');
                     std::string convert = value.substr(0, pos).append(".csb");
                     
                     options->set_filename(convert);
                     
+                    /*
                     std::string protocolBuffersFileName = _protocolbuffersDir.append(convert);
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
                     serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value);
+                     */
                 }
                 
                 attribute = attribute->Next();

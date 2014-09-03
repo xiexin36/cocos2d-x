@@ -60,7 +60,7 @@ public:
     
     void init();
     
-    cocos2d::Node* createNode(const std::string& filename);
+    static cocos2d::Node* createNode(const std::string& filename);
     
     /* peterson */
     cocos2d::Node* createNodeFromJson(const std::string& filename);

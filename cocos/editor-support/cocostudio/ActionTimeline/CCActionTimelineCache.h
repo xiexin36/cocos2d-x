@@ -66,7 +66,7 @@ public:
     void removeAction(const std::string& fileName);
     
     /* peterson */
-    ActionTimeline* createAction(const std::string& fileName);
+    static ActionTimeline* createAction(const std::string& fileName);
     /**/
 
     /* peterson */
