@@ -787,7 +787,7 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         curOptions = nodeOptions;
     }
     /* peterson */
-    else if (classname == "ParticleSystem")
+    else if (classname == "Particle")
     {
         node = ParticleSystemQuad::create();
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
@@ -796,7 +796,7 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         
         curOptions = nodeOptions;
     }
-    else if (classname == "TMXTiledMap")
+    else if (classname == "GameMap")
     {
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
