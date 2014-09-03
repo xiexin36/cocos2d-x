@@ -195,17 +195,19 @@ void CSLoader::init()
 Node* CSLoader::createNode(const std::string& filename)
 {
     std::string path = filename;
-    int pos = path.find_last_of('.');
+    size_t pos = path.find_last_of('.');
     std::string suffix = path.substr(pos + 1, path.length());
     CCLOG("suffix = %s", suffix.c_str());
     
+    CSLoader* load = CSLoader::getInstance();
+    
     if (suffix == "csb")
     {
-        return createNodeFromProtocolBuffers(filename);
+        return load->createNodeFromProtocolBuffers(filename);
     }
     else if (suffix == "json" || suffix == "ExportJson")
     {
-        return createNodeFromJson(filename);
+        return load->createNodeFromJson(filename);
     }
     
     return nullptr;
