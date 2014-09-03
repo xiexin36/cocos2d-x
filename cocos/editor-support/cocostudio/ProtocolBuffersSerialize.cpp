@@ -2939,6 +2939,8 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                             options->set_gravity(2);
                         }
                     }
+
+					attribute = attribute->Next();
                 }
             }
             else if (value == "Horizontal")
@@ -2966,6 +2968,8 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                             options->set_gravity(5);
                         }
                     }
+
+					attribute = attribute->Next();
                 }
             }
         }
