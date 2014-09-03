@@ -862,11 +862,11 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "ScaleX")
+                if (name == "X")
                 {
                     options->set_width(atof(value.c_str()));
                 }
-                else if (name == "ScaleY")
+                else if (name == "Y")
                 {
                     options->set_height(atof(value.c_str()));
                 }
@@ -1262,11 +1262,11 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "ScaleX")
+                if (name == "X")
                 {
                     options->set_width(atof(value.c_str()));
                 }
-                else if (name == "ScaleY")
+                else if (name == "Y")
                 {
                     options->set_height(atof(value.c_str()));
                 }
@@ -1287,6 +1287,8 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
     
     ButtonOptions* options = buttonOptions;
     
+    bool scale9Enabled = false;
+    
     // attributes
     const tinyxml2::XMLAttribute* attribute = buttonObjectData->FirstAttribute();
     while (attribute)
@@ -1296,6 +1298,10 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         
         if (name == "Scale9Enable")
         {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
             options->set_scale9enable((value == "True") ? true : false);
         }
         else if (name == "LeftEage")
@@ -1332,7 +1338,28 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
     {
         std::string name = child->Name();
         
-        if (name == "TextColor")
+        if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "TextColor")
         {
             while (attribute)
             {
@@ -1618,6 +1645,8 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
     
     ImageViewOptions* options = imageViewOptions;
     
+    bool scale9Enabled = false;
+    
     // attributes
     const tinyxml2::XMLAttribute* attribute = imageViewObjectData->FirstAttribute();
     while (attribute)
@@ -1627,6 +1656,10 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
         
         if (name == "Scale9Enable")
         {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
             options->set_scale9enable((value == "True") ? true : false);
         }
         else if (name == "LeftEage")
@@ -1659,7 +1692,28 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
     {
         std::string name = child->Name();
         
-        if (name == "FileData")
+        if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "FileData")
         {
             ResourceData* resourceData = options->mutable_filenamedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
@@ -2070,24 +2124,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
     {
         std::string name = child->Name();
         
-        if (name == "Size")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ScaleX")
-                {
-                    options->set_length(atof(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "BackGroundData")
+        if (name == "BackGroundData")
         {
             ResourceData* barFileNameData = options->mutable_barfilenamedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
@@ -2293,28 +2330,7 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
     {
         std::string name = child->Name();
         
-        if (name == "Size")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ScaleX")
-                {
-                    options->set_areawidth(atof(value.c_str()));
-                }
-                else if (name == "ScaleY")
-                {
-                    options->set_areaheight(atof(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "FontResource")
+        if (name == "FontResource")
         {
             ResourceData* resourceData = options->mutable_fontresource();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
