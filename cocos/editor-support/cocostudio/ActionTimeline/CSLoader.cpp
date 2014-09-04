@@ -788,11 +788,10 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     }
     /* peterson */
     else if (classname == "Particle")
-    {
-        node = ParticleSystemQuad::create();
+    {        
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::ParticleSystemOptions& options = nodetree.particlesystemoptions();
-        setPropsForParticleFromProtocolBuffers(node, options, nodeOptions);
+		node = createParticleFromProtocolBuffers(options, nodeOptions);        
         
         curOptions = nodeOptions;
     }
@@ -1062,21 +1061,17 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
 }
 
 /* peterson */
-void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
-                                                        const protocolbuffers::ParticleSystemOptions &particleSystemOptions,
-                                                        const protocolbuffers::WidgetOptions &nodeOptions)
+cocos2d::Node* CSLoader::createParticleFromProtocolBuffers(const protocolbuffers::ParticleSystemOptions& particleSystemOptions,
+												 const protocolbuffers::WidgetOptions& nodeOptions)
 {
-    const protocolbuffers::ParticleSystemOptions& options = particleSystemOptions;
+	Node* node = nullptr;
+
+	const protocolbuffers::ParticleSystemOptions& options = particleSystemOptions;
     
     /*
     const std::string& filePath = options.plistfile();
     int num = options.totalparticles();
-     */
-    
-    ParticleSystemQuad* particle = static_cast<ParticleSystemQuad*>(node);
-//    particle->setTexture( Director::getInstance()->getTextureCache()->addImage(filePath) );
-//    particle->setTotalParticles(num);
-    particle->retain();
+     */            
     
     const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
     int resourceType = fileNameData.resourcetype();
@@ -1087,7 +1082,7 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
             std::string path = _protocolBuffersPath + fileNameData.path();
 			if (path != "")
 			{
-				particle->initWithFile(path);
+				node = ParticleSystemQuad::create(path);				
 			}            
             break;
         }
@@ -1096,10 +1091,14 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
             break;
     }
     
-    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	if (node)
+	{
+		setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	}    
+
+	return node;
 }
 
-/* peterson */
 cocos2d::Node* CSLoader::createTMXTiledMapFromProtocolBuffers(const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
 														const protocolbuffers::WidgetOptions& nodeOptions)
 {
