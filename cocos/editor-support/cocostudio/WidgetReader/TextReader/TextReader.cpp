@@ -184,6 +184,12 @@ namespace cocostudio
         {
             label->setTextVerticalAlignment((TextVAlignment)options.valignment());
         }
+
+		if (options.has_fontresource())
+		{
+			const protocolbuffers::ResourceData& resourceData = options.fontresource();
+		    label->setFontName(resourceData.path());
+		}
         
         
         // other commonly protperties

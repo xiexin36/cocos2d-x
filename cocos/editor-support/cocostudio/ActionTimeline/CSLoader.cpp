@@ -797,13 +797,19 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         curOptions = nodeOptions;
     }
     else if (classname == "GameMap")
-    {
+    {		
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
-        setPropsForTMXTiledMapFromProtocolBuffers(node, options, nodeOptions);
+		node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);        
         
         curOptions = nodeOptions;
     }
+	else if (classname == "SimpleAudio")
+	{
+		const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();		
+
+		curOptions = nodeOptions;
+	}
     /**/
     else if (isWidget(classname))
     {
@@ -1066,7 +1072,10 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
         case 0:
         {
             std::string path = _protocolBuffersPath + fileNameData.path();
-            particle->setTexture( Director::getInstance()->getTextureCache()->addImage(path) );
+			if (path != "")
+			{
+				particle->initWithFile(path);
+			}            
             break;
         }
             
@@ -1077,29 +1086,13 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
     setPropsForNodeFromProtocolBuffers(node, nodeOptions);
 }
 
-void CSLoader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
-                                                           const protocolbuffers::TMXTiledMapOptions &tmxTiledMapOptions,
-                                                           const protocolbuffers::WidgetOptions &nodeOptions)
+cocos2d::Node* CSLoader::createTMXTiledMapFromProtocolBuffers(const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
+														const protocolbuffers::WidgetOptions& nodeOptions)
 {
-    const protocolbuffers::TMXTiledMapOptions& options = tmxTiledMapOptions;
-    
-    /*
-    const char* tmxFile = options.tmxfile().c_str();
-    const char* tmxString = options.tmxstring().c_str();
-    const char* resourcePath = options.resourcepath().c_str();
-    
-    if (tmxFile && strcmp("", tmxFile) != 0)
-    {
-        node = TMXTiledMap::create(tmxFile);
-    }
-    else if ((tmxString && strcmp("", tmxString) != 0)
-             && (resourcePath && strcmp("", resourcePath) != 0))
-    {
-        node = TMXTiledMap::createWithXML(tmxString, resourcePath);
-    }
-     */
-    
-    const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
+	Node* node = nullptr;
+	const protocolbuffers::TMXTiledMapOptions& options = tmxTiledMapOptions;
+
+	const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
     int resourceType = fileNameData.resourcetype();
     switch (resourceType)
     {
@@ -1119,7 +1112,12 @@ void CSLoader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
             break;
     }
     
-    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	if (node)
+	{
+		setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	}
+
+	return node;
 }
 
 void CSLoader::setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node *node,

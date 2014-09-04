@@ -118,9 +118,8 @@ protected:
     void setPropsForParticleFromProtocolBuffers(cocos2d::Node* node,
                                                 const protocolbuffers::ParticleSystemOptions& particleSystemOptions,
                                                 const protocolbuffers::WidgetOptions& nodeOptions);
-    void setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node* node,
-                                                   const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
-                                                   const protocolbuffers::WidgetOptions& nodeOptions);
+	cocos2d::Node* createTMXTiledMapFromProtocolBuffers(const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
+														const protocolbuffers::WidgetOptions& nodeOptions);    
     void setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node* node,
                                                    const protocolbuffers::ProjectNodeOptions& projectNodeOptions,
                                                    const protocolbuffers::WidgetOptions& nodeOptions);

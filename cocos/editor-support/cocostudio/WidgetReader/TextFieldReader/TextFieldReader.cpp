@@ -190,6 +190,11 @@ namespace cocostudio
             textField->setPasswordStyleText(passwordStyleText.c_str());
         }
         
+		if (options.has_fontresource())
+		{
+			const protocolbuffers::ResourceData& resourceData = options.fontresource();
+		    textField->setFontName(resourceData.path());
+		}
         
         // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
