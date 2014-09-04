@@ -158,24 +158,49 @@ namespace ui {
                 
                 Size parentContentSize = parent->getContentSize();
                 Vec2 nodePosition = node->getPosition();
-                LayoutComponent::ReferencePoint referencePoint = layoutComponent->getReferencePoint();
-                Vec2 normalizedPosition = node->getNormalizedPosition();
-                
-                Mat4 additionalMatrix;
-                switch (referencePoint) {
-                    case LayoutComponent::ReferencePoint::TOP_LEFT:
-                        additionalMatrix.translate(0, parentContentSize.height - nodePosition.y * 2, 0);
-                        break;
-                    case LayoutComponent::ReferencePoint::BOTTOM_RIGHT:
-                        additionalMatrix.translate(parentContentSize.width - nodePosition.x * 2, 0, 0);
-                        break;
-                    case LayoutComponent::ReferencePoint::TOP_RIGHT:
-                        additionalMatrix.translate(parentContentSize.width - nodePosition.x * 2, parentContentSize.height - nodePosition.y * 2, 0);
-                        break;
-                    default:
-                        break;
+                //LayoutComponent::ReferencePoint referencePoint = layoutComponent->getReferencePoint();
+                //Vec2 normalizedPosition = node->getNormalizedPosition();
+                //
+                //Mat4 additionalMatrix;
+                //switch (referencePoint) {
+                //    case LayoutComponent::ReferencePoint::TOP_LEFT:
+                //        additionalMatrix.translate(0, parentContentSize.height - nodePosition.y * 2, 0);
+                //        break;
+                //    case LayoutComponent::ReferencePoint::BOTTOM_RIGHT:
+                //        additionalMatrix.translate(parentContentSize.width - nodePosition.x * 2, 0, 0);
+                //        break;
+                //    case LayoutComponent::ReferencePoint::TOP_RIGHT:
+                //        additionalMatrix.translate(parentContentSize.width - nodePosition.x * 2, parentContentSize.height - nodePosition.y * 2, 0);
+                //        break;
+                //    default:
+                //        break;
+                //}
+                //node->setAdditionalTransform(&additionalMatrix);
+
+                //apater position
+                bool isUsingPercentPosition = layoutComponent->isUsingPercentPosition();
+                Vec2 percentPosition = layoutComponent->getPercentPosition();
+                Point adaptedPosition = layoutComponent->getReferencePosition();
+                if (isUsingPercentPosition) {
+                    adaptedPosition = Point(parentContentSize.width * percentPosition.x, parentContentSize.height * percentPosition.y);
                 }
-                node->setAdditionalTransform(&additionalMatrix);
+
+                LayoutComponent::ReferencePoint referencePoint = layoutComponent->getReferencePoint();
+                switch (referencePoint) {
+                case LayoutComponent::ReferencePoint::TOP_LEFT:
+                    adaptedPosition.y = parentContentSize.height - adaptedPosition.y;
+                    break;
+                case LayoutComponent::ReferencePoint::BOTTOM_RIGHT:
+                    adaptedPosition.x = parentContentSize.width - adaptedPosition.x;
+                    break;
+                case LayoutComponent::ReferencePoint::TOP_RIGHT:
+                    adaptedPosition.x = parentContentSize.width - adaptedPosition.x;
+                    adaptedPosition.y = parentContentSize.height - adaptedPosition.y;
+                    break;
+                default:
+                    break;
+                }
+                node->setPosition(adaptedPosition);
                 
                 //apater content size
                 bool isUsingPercentContentSize = layoutComponent->isUsingPercentContentSize();

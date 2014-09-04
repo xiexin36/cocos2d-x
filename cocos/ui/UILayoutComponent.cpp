@@ -32,6 +32,7 @@ NS_CC_BEGIN
 namespace ui {
     LayoutComponent::LayoutComponent()
     :_usingPercentContentSize(false)
+    ,_usingPercentPosition(false)
     ,_referencePoint(ReferencePoint::BOTTOM_LEFT)
     {
         _name = __LAYOUT_COMPONENT_NAME;
@@ -69,6 +70,43 @@ namespace ui {
         _percentContentSize = percent;
     }
     
+    bool LayoutComponent::isUsingPercentContentSize()
+    {
+        return _usingPercentContentSize;
+    }
+
+    void LayoutComponent::setUsingPercentContentSize(bool flag)
+    {
+        _usingPercentContentSize = flag;
+    }
+
+    bool LayoutComponent::isUsingPercentPosition()
+    {
+        return _usingPercentPosition;
+    }
+    void LayoutComponent::setUsingPercentPosition(bool flag)
+    {
+        _usingPercentPosition = flag;
+    }
+
+    const Vec2& LayoutComponent::getPercentPosition()
+    {
+        return _percentPosition;
+    }
+    void LayoutComponent::setPercentPosition(const Vec2& percent)
+    {
+        _percentPosition = percent;
+    }
+
+    const Vec2& LayoutComponent::getReferencePosition()
+    {
+        return _referencePosition;
+    }
+    void LayoutComponent::setRefrencePosition(const Vec2& position)
+    {
+        _referencePosition = position;
+    }
+
     void LayoutComponent::setReferencePoint(ReferencePoint point)
     {
         _referencePoint = point;
@@ -79,16 +117,6 @@ namespace ui {
         return _referencePoint;
     }
 
-    
-    bool LayoutComponent::isUsingPercentContentSize()
-    {
-        return _usingPercentContentSize;
-    }
-    
-    void LayoutComponent::setUsingPercentContentSize(bool flag)
-    {
-        _usingPercentContentSize = flag;
-    }
 }
 
 NS_CC_END
