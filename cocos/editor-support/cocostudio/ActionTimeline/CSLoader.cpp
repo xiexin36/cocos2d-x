@@ -800,16 +800,20 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     {		
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
-		node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);        
+		/* peterson */
+		node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);  
+		/**/
         
         curOptions = nodeOptions;
     }
+	/* peterson */
 	else if (classname == "SimpleAudio")
 	{
 		const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();		
 
 		curOptions = nodeOptions;
 	}
+	/**/
     /**/
     else if (isWidget(classname))
     {
@@ -980,14 +984,23 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
         case 0:
         {
             std::string path = _protocolBuffersPath + fileNameData.path();
-            sprite->setTexture(path);
+			if (path != "")
+			{
+				sprite->setTexture(path);
+			}
             break;
         }
             
         case 1:
         {
+			/* peterson */
+			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(_protocolBuffersPath + fileNameData.plistfile());						
+			/**/
             std::string path = fileNameData.path();
-            sprite->setSpriteFrame(path);
+			if (path != "")
+			{
+				sprite->setSpriteFrame(path);
+			}
             break;
         }
             
@@ -1086,6 +1099,7 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
     setPropsForNodeFromProtocolBuffers(node, nodeOptions);
 }
 
+/* peterson */
 cocos2d::Node* CSLoader::createTMXTiledMapFromProtocolBuffers(const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
 														const protocolbuffers::WidgetOptions& nodeOptions)
 {
@@ -1119,6 +1133,7 @@ cocos2d::Node* CSLoader::createTMXTiledMapFromProtocolBuffers(const protocolbuff
 
 	return node;
 }
+/**/
 
 void CSLoader::setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node *node,
                                                            const protocolbuffers::ProjectNodeOptions &projectNodeOptions,
