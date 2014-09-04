@@ -1079,6 +1079,7 @@ cocos2d::Node* CSLoader::createParticleFromProtocolBuffers(const protocolbuffers
     {
         case 0:
         {
+
             std::string path = _protocolBuffersPath + fileNameData.path();
 			if (path != "")
 			{
