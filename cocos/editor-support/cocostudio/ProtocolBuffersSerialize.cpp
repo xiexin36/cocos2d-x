@@ -3164,11 +3164,11 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                     
                     options->set_filename(convert);
                     
-                    /*
+                    
                     std::string protocolBuffersFileName = _protocolbuffersDir.append(convert);
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
                     serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value);
-                     */
+                     
                 }
                 
                 attribute = attribute->Next();
