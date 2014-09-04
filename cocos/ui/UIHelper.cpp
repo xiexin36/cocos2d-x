@@ -28,136 +28,134 @@ THE SOFTWARE.
 
 NS_CC_BEGIN
 
-namespace ui {
+    namespace ui {
 
-    Widget* Helper::seekWidgetByTag(Widget* root, int tag)
-    {
-        if (!root)
+        Widget* Helper::seekWidgetByTag(Widget* root, int tag)
         {
-            return nullptr;
-        }
-        if (root->getTag() == tag)
-        {
-            return root;
-        }
-        const auto& arrayRootChildren = root->getChildren();
-        ssize_t length = arrayRootChildren.size();
-        for (ssize_t i=0;i<length;i++)
-        {
-            Widget* child = dynamic_cast<Widget*>(arrayRootChildren.at(i));
-            if (child)
+            if (!root)
             {
-                Widget* res = seekWidgetByTag(child,tag);
-                if (res != nullptr)
+                return nullptr;
+            }
+            if (root->getTag() == tag)
+            {
+                return root;
+            }
+            const auto& arrayRootChildren = root->getChildren();
+            ssize_t length = arrayRootChildren.size();
+            for (ssize_t i=0;i<length;i++)
+            {
+                Widget* child = dynamic_cast<Widget*>(arrayRootChildren.at(i));
+                if (child)
                 {
-                    return res;
+                    Widget* res = seekWidgetByTag(child,tag);
+                    if (res != nullptr)
+                    {
+                        return res;
+                    }
                 }
             }
-        }
-        return nullptr;
-    }
-    
-    Widget* Helper::seekWidgetByName(Widget* root, const std::string& name)
-    {
-        if (!root)
-        {
             return nullptr;
         }
-        if (root->getName() == name)
+
+        Widget* Helper::seekWidgetByName(Widget* root, const std::string& name)
         {
-            return root;
-        }
-        const auto& arrayRootChildren = root->getChildren();
-        for (auto& subWidget : arrayRootChildren)
-        {
-            Widget* child = dynamic_cast<Widget*>(subWidget);
-            if (child)
+            if (!root)
             {
-                Widget* res = seekWidgetByName(child,name);
-                if (res != nullptr)
+                return nullptr;
+            }
+            if (root->getName() == name)
+            {
+                return root;
+            }
+            const auto& arrayRootChildren = root->getChildren();
+            for (auto& subWidget : arrayRootChildren)
+            {
+                Widget* child = dynamic_cast<Widget*>(subWidget);
+                if (child)
                 {
-                    return res;
+                    Widget* res = seekWidgetByName(child,name);
+                    if (res != nullptr)
+                    {
+                        return res;
+                    }
                 }
             }
-        }
-        return nullptr;
-    }
-    
-    /*temp action*/
-    Widget* Helper::seekActionWidgetByActionTag(Widget* root, int tag)
-    {
-        if (!root)
-        {
             return nullptr;
         }
-        if (root->getActionTag() == tag)
+
+        /*temp action*/
+        Widget* Helper::seekActionWidgetByActionTag(Widget* root, int tag)
         {
-            return root;
-        }
-        const auto& arrayRootChildren = root->getChildren();
-        for (auto& subWidget : arrayRootChildren)
-        {
-            Widget* child = dynamic_cast<Widget*>(subWidget);
-            if (child)
+            if (!root)
             {
-                Widget* res = seekActionWidgetByActionTag(child,tag);
-                if (res != nullptr)
+                return nullptr;
+            }
+            if (root->getActionTag() == tag)
+            {
+                return root;
+            }
+            const auto& arrayRootChildren = root->getChildren();
+            for (auto& subWidget : arrayRootChildren)
+            {
+                Widget* child = dynamic_cast<Widget*>(subWidget);
+                if (child)
                 {
-                    return res;
+                    Widget* res = seekActionWidgetByActionTag(child,tag);
+                    if (res != nullptr)
+                    {
+                        return res;
+                    }
                 }
             }
+            return nullptr;
         }
-        return nullptr;
-    }
-    
-    std::string Helper::getSubStringOfUTF8String(const std::string& str, std::string::size_type start, std::string::size_type length)
-    {
-        if (length==0)
+
+        std::string Helper::getSubStringOfUTF8String(const std::string& str, std::string::size_type start, std::string::size_type length)
         {
-            return "";
-        }
-        std::string::size_type c, i, ix, q, min=std::string::npos, max=std::string::npos;
-        for (q=0, i=0, ix=str.length(); i < ix; i++, q++)
-        {
-            if (q==start)
+            if (length==0)
             {
-                min = i;
+                return "";
             }
-            if (q <= start+length || length==std::string::npos)
+            std::string::size_type c, i, ix, q, min=std::string::npos, max=std::string::npos;
+            for (q=0, i=0, ix=str.length(); i < ix; i++, q++)
+            {
+                if (q==start)
+                {
+                    min = i;
+                }
+                if (q <= start+length || length==std::string::npos)
+                {
+                    max = i;
+                }
+
+                c = (unsigned char) str[i];
+
+                if      (c<=127) i+=0;
+                else if ((c & 0xE0) == 0xC0) i+=1;
+                else if ((c & 0xF0) == 0xE0) i+=2;
+                else if ((c & 0xF8) == 0xF0) i+=3;
+                else return "";//invalid utf8
+            }
+            if (q <= start+length || length == std::string::npos)
             {
                 max = i;
             }
-            
-            c = (unsigned char) str[i];
-            
-            if      (c<=127) i+=0;
-            else if ((c & 0xE0) == 0xC0) i+=1;
-            else if ((c & 0xF0) == 0xE0) i+=2;
-            else if ((c & 0xF8) == 0xF0) i+=3;
-            else return "";//invalid utf8
+            if (min==std::string::npos || max==std::string::npos)
+            {
+                return "";
+            }
+            return str.substr(min,max);
         }
-        if (q <= start+length || length == std::string::npos)
+
+        void Helper::doLayout(cocos2d::Node *rootNode,bool onlySelf)
         {
-            max = i;
-        }
-        if (min==std::string::npos || max==std::string::npos)
-        {
-            return "";
-        }
-        return str.substr(min,max);
-    }
-    
-    void Helper::doLayout(cocos2d::Node *rootNode)
-    {
-        for(auto& node : rootNode->getChildren())
-        {
-            auto com = node->getComponent(__LAYOUT_COMPONENT_NAME);
-            Node *parent = node->getParent();
+            auto com = rootNode->getComponent(__LAYOUT_COMPONENT_NAME);
+            Node *parent = rootNode->getParent();
             if (nullptr != com && nullptr != parent) {
                 LayoutComponent* layoutComponent = (LayoutComponent*)com;
-                
+
                 Size parentContentSize = parent->getContentSize();
-                Vec2 nodePosition = node->getPosition();
+                Vec2 nodePosition = rootNode->getPosition();
                 //LayoutComponent::ReferencePoint referencePoint = layoutComponent->getReferencePoint();
                 //Vec2 normalizedPosition = node->getNormalizedPosition();
                 //
@@ -200,25 +198,31 @@ namespace ui {
                 default:
                     break;
                 }
-                node->setPosition(adaptedPosition);
-                
+                rootNode->setPosition(adaptedPosition);
+
                 //apater content size
                 bool isUsingPercentContentSize = layoutComponent->isUsingPercentContentSize();
                 Vec2 percentContentSize = layoutComponent->getPercentContentSize();
                 if (isUsingPercentContentSize) {
                     Size adaptedContentSize = Size(parentContentSize.width * percentContentSize.x, parentContentSize.height * percentContentSize.y);
-                    node->setContentSize(adaptedContentSize);
+                    rootNode->setContentSize(adaptedContentSize);
                 }
-                
-                Widget* uiWidget = dynamic_cast<Widget*>(node);
-                if ( nullptr == uiWidget )
+
+                if (onlySelf)
                 {
-                    doLayout(node);
+                    return;
+                }
+                for(auto& node : rootNode->getChildren())
+                {
+                    Widget* uiWidget = dynamic_cast<Widget*>(node);
+                    if ( nullptr == uiWidget )
+                    {
+                        doLayout(node);
+                    }
                 }
             }
         }
-    }
-    
+
 }
 
 NS_CC_END
