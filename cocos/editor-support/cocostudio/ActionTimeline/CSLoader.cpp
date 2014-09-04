@@ -788,22 +788,31 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     }
     /* peterson */
     else if (classname == "Particle")
-    {
-        node = ParticleSystemQuad::create();
+    {        
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::ParticleSystemOptions& options = nodetree.particlesystemoptions();
-        setPropsForParticleFromProtocolBuffers(node, options, nodeOptions);
+		node = createParticleFromProtocolBuffers(options, nodeOptions);        
         
         curOptions = nodeOptions;
     }
     else if (classname == "GameMap")
-    {
+    {		
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
-        setPropsForTMXTiledMapFromProtocolBuffers(node, options, nodeOptions);
+		/* peterson */
+		node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);  
+		/**/
         
         curOptions = nodeOptions;
     }
+	/* peterson */
+	else if (classname == "SimpleAudio")
+	{
+		const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();		
+
+		curOptions = nodeOptions;
+	}
+	/**/
     /**/
     else if (isWidget(classname))
     {
@@ -974,14 +983,23 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
         case 0:
         {
             std::string path = _protocolBuffersPath + fileNameData.path();
-            sprite->setTexture(path);
+			if (path != "")
+			{
+				sprite->setTexture(path);
+			}
             break;
         }
             
         case 1:
         {
+			/* peterson */
+			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(_protocolBuffersPath + fileNameData.plistfile());						
+			/**/
             std::string path = fileNameData.path();
-            sprite->setSpriteFrame(path);
+			if (path != "")
+			{
+				sprite->setSpriteFrame(path);
+			}
             break;
         }
             
@@ -1043,21 +1061,17 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
 }
 
 /* peterson */
-void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
-                                                        const protocolbuffers::ParticleSystemOptions &particleSystemOptions,
-                                                        const protocolbuffers::WidgetOptions &nodeOptions)
+cocos2d::Node* CSLoader::createParticleFromProtocolBuffers(const protocolbuffers::ParticleSystemOptions& particleSystemOptions,
+												 const protocolbuffers::WidgetOptions& nodeOptions)
 {
-    const protocolbuffers::ParticleSystemOptions& options = particleSystemOptions;
+	Node* node = nullptr;
+
+	const protocolbuffers::ParticleSystemOptions& options = particleSystemOptions;
     
     /*
     const std::string& filePath = options.plistfile();
     int num = options.totalparticles();
-     */
-    
-    ParticleSystemQuad* particle = static_cast<ParticleSystemQuad*>(node);
-//    particle->setTexture( Director::getInstance()->getTextureCache()->addImage(filePath) );
-//    particle->setTotalParticles(num);
-    particle->retain();
+     */            
     
     const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
     int resourceType = fileNameData.resourcetype();
@@ -1065,8 +1079,12 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
     {
         case 0:
         {
+
             std::string path = _protocolBuffersPath + fileNameData.path();
-            particle->setTexture( Director::getInstance()->getTextureCache()->addImage(path) );
+			if (path != "")
+			{
+				node = ParticleSystemQuad::create(path);				
+			}            
             break;
         }
             
@@ -1074,32 +1092,21 @@ void CSLoader::setPropsForParticleFromProtocolBuffers(cocos2d::Node *node,
             break;
     }
     
-    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	if (node)
+	{
+		setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	}    
+
+	return node;
 }
 
-void CSLoader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
-                                                           const protocolbuffers::TMXTiledMapOptions &tmxTiledMapOptions,
-                                                           const protocolbuffers::WidgetOptions &nodeOptions)
+cocos2d::Node* CSLoader::createTMXTiledMapFromProtocolBuffers(const protocolbuffers::TMXTiledMapOptions& tmxTiledMapOptions,
+														const protocolbuffers::WidgetOptions& nodeOptions)
 {
-    const protocolbuffers::TMXTiledMapOptions& options = tmxTiledMapOptions;
-    
-    /*
-    const char* tmxFile = options.tmxfile().c_str();
-    const char* tmxString = options.tmxstring().c_str();
-    const char* resourcePath = options.resourcepath().c_str();
-    
-    if (tmxFile && strcmp("", tmxFile) != 0)
-    {
-        node = TMXTiledMap::create(tmxFile);
-    }
-    else if ((tmxString && strcmp("", tmxString) != 0)
-             && (resourcePath && strcmp("", resourcePath) != 0))
-    {
-        node = TMXTiledMap::createWithXML(tmxString, resourcePath);
-    }
-     */
-    
-    const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
+	Node* node = nullptr;
+	const protocolbuffers::TMXTiledMapOptions& options = tmxTiledMapOptions;
+
+	const protocolbuffers::ResourceData& fileNameData = options.filenamedata();
     int resourceType = fileNameData.resourcetype();
     switch (resourceType)
     {
@@ -1119,8 +1126,14 @@ void CSLoader::setPropsForTMXTiledMapFromProtocolBuffers(cocos2d::Node *node,
             break;
     }
     
-    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	if (node)
+	{
+		setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+	}
+
+	return node;
 }
+/**/
 
 void CSLoader::setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node *node,
                                                            const protocolbuffers::ProjectNodeOptions &projectNodeOptions,

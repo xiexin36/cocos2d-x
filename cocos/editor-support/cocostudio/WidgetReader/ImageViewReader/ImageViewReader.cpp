@@ -149,12 +149,21 @@ namespace cocostudio
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
         
-        const protocolbuffers::ImageViewOptions& options = nodeTree.imageviewoptions();
-        
+        const protocolbuffers::ImageViewOptions& options = nodeTree.imageviewoptions();        
         ImageView* imageView = static_cast<ImageView*>(widget);
+
+		/* peterson */
+		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
+		/**/
         
         const protocolbuffers::ResourceData& imageFileNameDic = options.filenamedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
+		/* peterson */
+		if (imageFileNameType == 1)
+		{
+			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(protocolBuffersPath + imageFileNameDic.plistfile());			
+		}
+		/**/
         std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
         imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
