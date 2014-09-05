@@ -499,6 +499,11 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
         setNodeOptions(nodeOptions, objectData);
     }
+    else if (classname == "SingleNode")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setSingleNodeOptions(nodeOptions, objectData);
+    }
     else if (classname == "Sprite")
     {
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
@@ -606,6 +611,8 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
         // process as component options
         
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setSimpleAudioOptions(nodeOptions, objectData);
+        
         protocolbuffers::ComponentOptions* componentOptions = nodeOptions->add_componentoptions();
         protocolbuffers::ComAudioOptions* options = componentOptions->mutable_comaudiooptions();
         
@@ -877,6 +884,12 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         
         child = child->NextSiblingElement();
     }
+}
+
+void ProtocolBuffersSerialize::setSingleNodeOptions(protocolbuffers::WidgetOptions *nodeOptions,
+                                                    const tinyxml2::XMLElement *nodeObjectData)
+{
+    setNodeOptions(nodeOptions, nodeObjectData);
 }
 
 void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *spriteOptions,
@@ -3177,6 +3190,12 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
         
         child = child->NextSiblingElement();
     }
+}
+
+void ProtocolBuffersSerialize::setSimpleAudioOptions(protocolbuffers::WidgetOptions *nodeOptions,
+                                                     const tinyxml2::XMLElement *nodeObjectData)
+{
+    setNodeOptions(nodeOptions, nodeObjectData);
 }
 
 // component
