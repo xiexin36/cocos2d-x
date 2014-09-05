@@ -499,6 +499,11 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
         setNodeOptions(nodeOptions, objectData);
     }
+    else if (classname == "SingleNode")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setSingleNodeOptions(nodeOptions, objectData);
+    }
     else if (classname == "Sprite")
     {
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
@@ -606,6 +611,8 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
         // process as component options
         
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setSimpleAudioOptions(nodeOptions, objectData);
+        
         protocolbuffers::ComponentOptions* componentOptions = nodeOptions->add_componentoptions();
         protocolbuffers::ComAudioOptions* options = componentOptions->mutable_comaudiooptions();
         
@@ -879,6 +886,12 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
     }
 }
 
+void ProtocolBuffersSerialize::setSingleNodeOptions(protocolbuffers::WidgetOptions *nodeOptions,
+                                                    const tinyxml2::XMLElement *nodeObjectData)
+{
+    setNodeOptions(nodeOptions, nodeObjectData);
+}
+
 void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *spriteOptions,
                                                 protocolbuffers::WidgetOptions *nodeOptions,
                                                 const tinyxml2::XMLElement *spriteObjectData)
@@ -923,16 +936,16 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -994,16 +1007,16 @@ void ProtocolBuffersSerialize::setTMXTiledMapOptions(protocolbuffers::TMXTiledMa
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -1032,7 +1045,7 @@ void ProtocolBuffersSerialize::setParticleSystemOptions(protocolbuffers::Particl
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "PlistFile")
+        if (name == "Plist")
         {
             options->set_plistfile(value);
         }
@@ -1061,16 +1074,16 @@ void ProtocolBuffersSerialize::setParticleSystemOptions(protocolbuffers::Particl
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -1396,16 +1409,16 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     disabledFileData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-					int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+					int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     disabledFileData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     disabledFileData->set_plistfile(value);
                 }
@@ -1423,16 +1436,16 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     pressedFileData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     pressedFileData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     pressedFileData->set_plistfile(value);
                 }
@@ -1450,16 +1463,16 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     normalFileData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     normalFileData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     normalFileData->set_plistfile(value);
                 }
@@ -1511,16 +1524,16 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     backgroundboxData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     backgroundboxData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     backgroundboxData->set_plistfile(value);
                 }
@@ -1538,16 +1551,16 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     backGroundBoxSelectedData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     backGroundBoxSelectedData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     backGroundBoxSelectedData->set_plistfile(value);
                 }
@@ -1565,16 +1578,16 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     frontCrossData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     frontCrossData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     frontCrossData->set_plistfile(value);
                 }
@@ -1592,16 +1605,16 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     backGroundBoxDisabledData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     backGroundBoxDisabledData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     backGroundBoxDisabledData->set_plistfile(value);
                 }
@@ -1619,16 +1632,16 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     frontCrossDisabledData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     frontCrossDisabledData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     frontCrossDisabledData->set_plistfile(value);
                 }
@@ -1727,16 +1740,16 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -1800,16 +1813,16 @@ void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOpt
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -1861,16 +1874,16 @@ void ProtocolBuffersSerialize::setTextBMFontOptions(protocolbuffers::TextBMFontO
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -1968,16 +1981,16 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -2053,16 +2066,16 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -2138,16 +2151,16 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     barFileNameData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     barFileNameData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     barFileNameData->set_plistfile(value);
                 }
@@ -2165,16 +2178,16 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     ballNormalData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     ballNormalData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     ballNormalData->set_plistfile(value);
                 }
@@ -2192,16 +2205,16 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     ballPressedData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     ballPressedData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     ballPressedData->set_plistfile(value);
                 }
@@ -2219,16 +2232,16 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     ballDisabledData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     ballDisabledData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     ballDisabledData->set_plistfile(value);
                 }
@@ -2246,16 +2259,16 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     progressBarData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     progressBarData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     progressBarData->set_plistfile(value);
                 }
@@ -2344,16 +2357,16 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -2504,16 +2517,16 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -2664,16 +2677,16 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -2863,16 +2876,16 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -3112,16 +3125,16 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -3157,18 +3170,18 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     size_t pos = value.find_last_of('.');
                     std::string convert = value.substr(0, pos).append(".csb");
                     
                     options->set_filename(convert);
                     
-                    /*
+                    
                     std::string protocolBuffersFileName = _protocolbuffersDir.append(convert);
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
                     serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value);
-                     */
+                     
                 }
                 
                 attribute = attribute->Next();
@@ -3177,6 +3190,12 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
         
         child = child->NextSiblingElement();
     }
+}
+
+void ProtocolBuffersSerialize::setSimpleAudioOptions(protocolbuffers::WidgetOptions *nodeOptions,
+                                                     const tinyxml2::XMLElement *nodeObjectData)
+{
+    setNodeOptions(nodeOptions, nodeObjectData);
 }
 
 // component
@@ -3225,16 +3244,16 @@ void ProtocolBuffersSerialize::setComAudioOptions(protocolbuffers::ComAudioOptio
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "PathStr")
+                if (name == "Path")
                 {
                     resourceData->set_path(value);
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "DefaultFile") ? 0 : 1;
+                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
                     resourceData->set_resourcetype(resourceType);
                 }
-                else if (name == "PlistFile")
+                else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
                 }
@@ -3572,7 +3591,7 @@ void ProtocolBuffersSerialize::setTextureFrame(protocolbuffers::TimeLineTextureF
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "PathStr") // to be gonna modify
+        if (name == "Path") // to be gonna modify
         {
             textureFrame->set_name(value);
         }

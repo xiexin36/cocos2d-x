@@ -764,6 +764,14 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         
         curOptions = options;
     }
+    else if (classname == "SingleNode")
+    {
+        node = Node::create();
+        const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
+        setPropsForSingleNodeFromProtocolBuffers(node, options);
+        
+        curOptions = options;
+    }
     else if (classname == "Sprite")
     {
         node = CCSprite::create();
@@ -808,9 +816,11 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
 	/* peterson */
 	else if (classname == "SimpleAudio")
 	{
-		const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();		
+        node = Node::create();
+        const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
+        setPropsForSimpleAudioFromProtocolBuffers(node, options);                
 
-		curOptions = nodeOptions;
+		curOptions = options;
 	}
 	/**/
     /**/
@@ -877,9 +887,8 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     for (int i = 0; i < componentSize; ++i)
     {
         
-        Component* component = nullptr;
         const protocolbuffers::ComponentOptions& componentOptions = curOptions.componentoptions(i);
-        setPropsForComponentFromProtocolBuffers(component, componentOptions);
+        Component* component = createComponentFromProtocolBuffers(componentOptions);
         
         if (component)
         {
@@ -967,6 +976,12 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     node->setTag(tag);
     node->setUserObject(ActionTimelineData::create(actionTag));
     
+}
+
+void CSLoader::setPropsForSingleNodeFromProtocolBuffers(cocos2d::Node *node,
+                                                        const protocolbuffers::WidgetOptions &nodeOptions)
+{
+    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
 }
 
 void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
@@ -1142,6 +1157,28 @@ void CSLoader::setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node *node,
     const protocolbuffers::ProjectNodeOptions& options = projectNodeOptions;
     
     setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+}
+
+void CSLoader::setPropsForSimpleAudioFromProtocolBuffers(cocos2d::Node *node,
+                                                         const protocolbuffers::WidgetOptions &nodeOptions)
+{
+    setPropsForNodeFromProtocolBuffers(node, nodeOptions);
+}
+
+Component* CSLoader::createComponentFromProtocolBuffers(const protocolbuffers::ComponentOptions &componentOptions)
+{
+    Component* component = nullptr;
+    
+    std::string componentType = componentOptions.type();
+    
+    if (componentType == "ComAudio")
+    {
+        component = ComAudio::create();
+        const protocolbuffers::ComAudioOptions& options = componentOptions.comaudiooptions();
+        setPropsForComAudioFromProtocolBuffers(component, options);
+    }
+    
+    return component;
 }
 
 void CSLoader::setPropsForComponentFromProtocolBuffers(cocos2d::Component *component,
