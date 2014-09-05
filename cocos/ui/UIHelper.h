@@ -79,7 +79,7 @@ public:
                                    std::string::size_type start,
                                    std::string::size_type length);
     
-    static void doLayout(Node *rootNode,bool onlySelf = false);
+    static void doLayout(Node *rootNode);
 
 };
 }

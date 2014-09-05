@@ -147,73 +147,29 @@ NS_CC_BEGIN
             return str.substr(min,max);
         }
 
-        void Helper::doLayout(cocos2d::Node *rootNode,bool onlySelf)
+        void Helper::doLayout(cocos2d::Node *rootNode)
         {
-            auto com = rootNode->getComponent(__LAYOUT_COMPONENT_NAME);
-            Node *parent = rootNode->getParent();
-            if (nullptr != com && nullptr != parent) {
-                LayoutComponent* layoutComponent = (LayoutComponent*)com;
+            for(auto& node : rootNode->getChildren())
+            {
+                auto com = node->getComponent(__LAYOUT_COMPONENT_NAME);
+                Node *parent = node->getParent();
+                if (nullptr != com && nullptr != parent) {
+                    LayoutComponent* layoutComponent = (LayoutComponent*)com;
 
-                Size parentContentSize = parent->getContentSize();
-                Vec2 nodePosition = rootNode->getPosition();
-                //LayoutComponent::ReferencePoint referencePoint = layoutComponent->getReferencePoint();
-                //Vec2 normalizedPosition = node->getNormalizedPosition();
-                //
-                //Mat4 additionalMatrix;
-                //switch (referencePoint) {
-                //    case LayoutComponent::ReferencePoint::TOP_LEFT:
-                //        additionalMatrix.translate(0, parentContentSize.height - nodePosition.y * 2, 0);
-                //        break;
-                //    case LayoutComponent::ReferencePoint::BOTTOM_RIGHT:
-                //        additionalMatrix.translate(parentContentSize.width - nodePosition.x * 2, 0, 0);
-                //        break;
-                //    case LayoutComponent::ReferencePoint::TOP_RIGHT:
-                //        additionalMatrix.translate(parentContentSize.width - nodePosition.x * 2, parentContentSize.height - nodePosition.y * 2, 0);
-                //        break;
-                //    default:
-                //        break;
-                //}
-                //node->setAdditionalTransform(&additionalMatrix);
+                    if (layoutComponent->isUsingPercentPosition())
+                    {
+                        layoutComponent->RefreshLayoutPosition(LayoutComponent::PositionType::PreRelativePosition,layoutComponent->getPercentPosition());
+                    }
+                    else if (layoutComponent->getReferencePoint() != LayoutComponent::ReferencePoint::BOTTOM_LEFT)
+                    {
+                        layoutComponent->RefreshLayoutPosition(LayoutComponent::PositionType::RelativePosition,layoutComponent->getRelativePosition());
+                    }
 
-                //apater position
-                bool isUsingPercentPosition = layoutComponent->isUsingPercentPosition();
-                Vec2 percentPosition = layoutComponent->getPercentPosition();
-                Point adaptedPosition = layoutComponent->getReferencePosition();
-                if (isUsingPercentPosition) {
-                    adaptedPosition = Point(parentContentSize.width * percentPosition.x, parentContentSize.height * percentPosition.y);
-                }
+                    if (layoutComponent->isUsingPercentContentSize())
+                    {
+                        layoutComponent->RefreshLayoutSize(LayoutComponent::SizeType::PreSize,layoutComponent->getPercentContentSize());
+                    }
 
-                LayoutComponent::ReferencePoint referencePoint = layoutComponent->getReferencePoint();
-                switch (referencePoint) {
-                case LayoutComponent::ReferencePoint::TOP_LEFT:
-                    adaptedPosition.y = parentContentSize.height - adaptedPosition.y;
-                    break;
-                case LayoutComponent::ReferencePoint::BOTTOM_RIGHT:
-                    adaptedPosition.x = parentContentSize.width - adaptedPosition.x;
-                    break;
-                case LayoutComponent::ReferencePoint::TOP_RIGHT:
-                    adaptedPosition.x = parentContentSize.width - adaptedPosition.x;
-                    adaptedPosition.y = parentContentSize.height - adaptedPosition.y;
-                    break;
-                default:
-                    break;
-                }
-                rootNode->setPosition(adaptedPosition);
-
-                //apater content size
-                bool isUsingPercentContentSize = layoutComponent->isUsingPercentContentSize();
-                Vec2 percentContentSize = layoutComponent->getPercentContentSize();
-                if (isUsingPercentContentSize) {
-                    Size adaptedContentSize = Size(parentContentSize.width * percentContentSize.x, parentContentSize.height * percentContentSize.y);
-                    rootNode->setContentSize(adaptedContentSize);
-                }
-
-                if (onlySelf)
-                {
-                    return;
-                }
-                for(auto& node : rootNode->getChildren())
-                {
                     Widget* uiWidget = dynamic_cast<Widget*>(node);
                     if ( nullptr == uiWidget )
                     {
@@ -222,7 +178,6 @@ NS_CC_BEGIN
                 }
             }
         }
-
 }
 
 NS_CC_END

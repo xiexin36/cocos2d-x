@@ -53,30 +53,53 @@ NS_CC_BEGIN
                 TOP_RIGHT
             };
 
+            enum class PositionType
+            {
+                Position,
+                RelativePosition,
+                PreRelativePosition
+            };
+
+            enum class SizeType
+            {
+                Size,
+                PreSize
+            };
+
             bool isUsingPercentPosition();
             void setUsingPercentPosition(bool flag);
 
             const Vec2& getPercentPosition();
             void setPercentPosition(const Vec2& percent);
 
-            const Vec2& getReferencePosition();
-            void setRefrencePosition(const Vec2& position);
+            const Vec2& getRelativePosition();
+            void setRelativePosition(const Vec2& position);
 
             void setReferencePoint(ReferencePoint point);
             ReferencePoint getReferencePoint();
+
+            const Vec2& getOwnerPosition()const;
+            void setOwnerPosition(const Vec2& point); 
+
+            void RefreshLayoutPosition(PositionType pType,const Vec2& point);
+
+            const Vec2& getOwnerContentSize()const;
+            void setOwnerContentSize(const Vec2& percent);
 
             const Vec2& getPercentContentSize()const;
             void setPercentContentSize(const Vec2& percent);
 
             bool isUsingPercentContentSize();
             void setUsingPercentContentSize(bool flag);
+
+            void RefreshLayoutSize(SizeType sType, const Vec2& size);
         private:
 
             Vec2 _percentContentSize;
             bool _usingPercentContentSize;
 
             ReferencePoint _referencePoint;
-            Vec2 _referencePosition;
+            Vec2 _relativePosition;
             Vec2 _percentPosition;
             bool _usingPercentPosition;
         };
