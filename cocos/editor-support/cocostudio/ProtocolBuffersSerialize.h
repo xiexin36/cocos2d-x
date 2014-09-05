@@ -165,6 +165,8 @@ public:
     
     void setNodeOptions(protocolbuffers::WidgetOptions* nodeOptions,
                         const tinyxml2::XMLElement* nodeObjectData);
+    void setSingleNodeOptions(protocolbuffers::WidgetOptions* nodeOptions,
+                              const tinyxml2::XMLElement* nodeObjectData);
     void setSpriteOptions(protocolbuffers::SpriteOptions* spriteOptions,
                           protocolbuffers::WidgetOptions* nodeOptions,
                           const tinyxml2::XMLElement* spriteObjectData);
@@ -218,6 +220,8 @@ public:
     void setProjectNodeOptions(protocolbuffers::ProjectNodeOptions* projectNodeOptions,
                                protocolbuffers::WidgetOptions* nodeOptions,
                                const tinyxml2::XMLElement* projectNodeObjectData);
+    void setSimpleAudioOptions(protocolbuffers::WidgetOptions* nodeOptions,
+                               const tinyxml2::XMLElement* nodeObjectData);
     
     // component
     void setComAudioOptions(protocolbuffers::ComAudioOptions* comAudioOptions,
