@@ -1321,19 +1321,19 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
             }
             options->set_scale9enable((value == "True") ? true : false);
         }
-        else if (name == "LeftEage")
+        else if (name == "Scale9OriginX")
         {
             options->set_capinsetsx(atof(value.c_str()));
         }
-        else if (name == "TopEage")
+        else if (name == "Scale9OriginY")
         {
             options->set_capinsetsy(atof(value.c_str()));
         }
-        else if (name == "RightEage")
+        else if (name == "Scale9Width")
         {
             options->set_capinsetswidth(atof(value.c_str()));
         }
-        else if (name == "BottomEage")
+        else if (name == "Scale9Height")
         {
             options->set_capinsetsheight(atof(value.c_str()));
         }
@@ -1679,19 +1679,19 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
             }
             options->set_scale9enable((value == "True") ? true : false);
         }
-        else if (name == "LeftEage")
+        else if (name == "Scale9OriginX")
         {
             options->set_capinsetsx(atof(value.c_str()));
         }
-        else if (name == "TopEage")
+        else if (name == "Scale9OriginY")
         {
             options->set_capinsetsy(atof(value.c_str()));
         }
-        else if (name == "RightEage")
+        else if (name == "Scale9Width")
         {
             options->set_capinsetswidth(atof(value.c_str()));
         }
-        else if (name == "BottomEage")
+        else if (name == "Scale9Height")
         {
             options->set_capinsetsheight(atof(value.c_str()));
         }
@@ -2030,19 +2030,19 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
         {
             options->set_scale9enable((value == "True") ? true : false);
         }
-        else if (name == "LeftEage")
+        else if (name == "Scale9OriginX")
         {
             options->set_capinsetsx(atof(value.c_str()));
         }
-        else if (name == "TopEage")
+        else if (name == "Scale9OriginY")
         {
             options->set_capinsetsy(atof(value.c_str()));
         }
-        else if (name == "RightEage")
+        else if (name == "Scale9Width")
         {
             options->set_capinsetswidth(atof(value.c_str()));
         }
-        else if (name == "BottomEage")
+        else if (name == "Scale9Height")
         {
             options->set_capinsetsheight(atof(value.c_str()));
         }
@@ -2107,19 +2107,19 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
         {
             options->set_scale9enable((value == "True") ? true : false);
         }
-        else if (name == "LeftEage")
+        else if (name == "Scale9OriginX")
         {
             options->set_capinsetsx(atof(value.c_str()));
         }
-        else if (name == "TopEage")
+        else if (name == "Scale9OriginY")
         {
             options->set_capinsetsy(atof(value.c_str()));
         }
-        else if (name == "RightEage")
+        else if (name == "Scale9Width")
         {
             options->set_capinsetswidth(atof(value.c_str()));
         }
-        else if (name == "BottomEage")
+        else if (name == "Scale9Height")
         {
             options->set_capinsetsheight(atof(value.c_str()));
         }
