@@ -593,6 +593,17 @@ CC_CONSTRUCTOR_ACCESS:
      *@return void
      */
     void  dispatchFocusEvent(Widget* widgetLoseFocus, Widget* widgetGetFocus);
+
+    /**
+     *@return true represent the widget use Unify Size, false represent the widget couldn't use Unify Size
+     */
+    bool isUnifySizeEnabled()const;
+    
+    /**
+     *@param enable Unify Size of a widget
+     *@return void
+     */
+    void setUnifySizeEnabled(bool enable);
     
 protected:
     //call back function called when size changed.
@@ -633,7 +644,9 @@ protected:
 
     void cleanupWidget();
     LayoutComponent* getOrCreateLayoutComponent();
+
 protected:
+    bool _unifySize;
     bool _enabled;
     bool _bright;
     bool _touchEnabled;
