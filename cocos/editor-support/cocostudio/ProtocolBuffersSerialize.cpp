@@ -98,6 +98,7 @@ static ProtocolBuffersSerialize* sharedProtocolBuffersSerialize = nullptr;
 
 ProtocolBuffersSerialize::ProtocolBuffersSerialize()
 : _protocolbuffersDir("")
+, _isSimulator(false)
 {
     
 }
@@ -222,7 +223,7 @@ void ProtocolBuffersSerialize::XMLTest(const std::string &fileName)
 
 
 std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const std::string &protocolbuffersFileName,
-                                                              const std::string &xmlFileName)
+                                                              const std::string &xmlFileName, bool isSimulator/* = false*/)
 {
     std::string result = "";
     
@@ -250,6 +251,8 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     bool serializeEnabled = false;
     std::string rootType = "";
     
+	_isSimulator = isSimulator;
+
     while (element)
     {
         CCLOG("entity name = %s", element->Name());
@@ -942,7 +945,7 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1013,7 +1016,7 @@ void ProtocolBuffersSerialize::setTMXTiledMapOptions(protocolbuffers::TMXTiledMa
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1080,7 +1083,7 @@ void ProtocolBuffersSerialize::setParticleSystemOptions(protocolbuffers::Particl
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1415,7 +1418,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-					int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+					int resourceType = getResourceType(value);
                     disabledFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1442,7 +1445,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     pressedFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1469,7 +1472,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     normalFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1530,7 +1533,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     backgroundboxData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1557,7 +1560,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     backGroundBoxSelectedData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1584,7 +1587,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     frontCrossData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1611,7 +1614,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     backGroundBoxDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1638,7 +1641,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     frontCrossDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1746,7 +1749,7 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1819,7 +1822,7 @@ void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1880,7 +1883,7 @@ void ProtocolBuffersSerialize::setTextBMFontOptions(protocolbuffers::TextBMFontO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1987,7 +1990,7 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2072,7 +2075,7 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2157,7 +2160,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     barFileNameData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2184,7 +2187,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     ballNormalData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2211,7 +2214,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     ballPressedData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2238,7 +2241,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     ballDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2265,7 +2268,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     progressBarData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2363,7 +2366,7 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2523,7 +2526,7 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2683,7 +2686,7 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2882,7 +2885,7 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -3131,7 +3134,7 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -3250,7 +3253,7 @@ void ProtocolBuffersSerialize::setComAudioOptions(protocolbuffers::ComAudioOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -4971,4 +4974,22 @@ void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame 
     
     bool tween = frame->isTween();
     protoBufFrame->set_tween(tween);
+}
+
+
+int ProtocolBuffersSerialize::getResourceType(std::string key)
+{
+	if(key == "Normal" || key == "Default")
+	{
+		return 	0;	
+	}
+	
+	if(_isSimulator)
+	{
+		if(key == "MarkedSubImage")
+		{
+			return 0;
+		}
+	}
+	return 1;
 }
