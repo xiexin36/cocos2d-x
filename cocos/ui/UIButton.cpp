@@ -496,7 +496,11 @@ Node* Button::getVirtualRenderer()
 
 void Button::normalTextureScaleChangedWithSize()
 {
-    if (_ignoreSize)
+    if (_unifySize)
+    {
+        _buttonNormalRenderer->setPreferredSize(_contentSize);
+    }
+    else if (_ignoreSize)
     {
         if (!_scale9Enabled)
         {
@@ -533,7 +537,11 @@ void Button::normalTextureScaleChangedWithSize()
 
 void Button::pressedTextureScaleChangedWithSize()
 {
-    if (_ignoreSize)
+    if (_unifySize)
+    {
+        _buttonClickedRenderer->setPreferredSize(_contentSize);
+    }
+    else if (_ignoreSize)
     {
         if (!_scale9Enabled)
         {
@@ -570,7 +578,11 @@ void Button::pressedTextureScaleChangedWithSize()
 
 void Button::disabledTextureScaleChangedWithSize()
 {
-    if (_ignoreSize)
+    if (_unifySize)
+    {
+        _buttonDisableRenderer->setPreferredSize(_contentSize);
+    }
+    else if (_ignoreSize)
     {
         if (!_scale9Enabled)
         {

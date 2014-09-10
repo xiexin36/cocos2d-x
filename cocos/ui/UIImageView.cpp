@@ -180,7 +180,7 @@ void ImageView::setScale9Enabled(bool able)
     
     _scale9Enabled = able;
     _imageRenderer->setScale9Enabled(_scale9Enabled);
-    
+
     if (_scale9Enabled)
     {
         bool ignoreBefore = _ignoreSize;
@@ -191,6 +191,7 @@ void ImageView::setScale9Enabled(bool able)
     {
         ignoreContentAdaptWithSize(_prevIgnoreSize);
     }
+
     setCapInsets(_capInsets);
 }
     
@@ -250,7 +251,11 @@ Node* ImageView::getVirtualRenderer()
 
 void ImageView::imageTextureScaleChangedWithSize()
 {
-    if (_ignoreSize)
+    if (_unifySize)
+    {
+        _imageRenderer->setPreferredSize(_contentSize);
+    }
+    else if (_ignoreSize)
     {
         if (!_scale9Enabled)
         {

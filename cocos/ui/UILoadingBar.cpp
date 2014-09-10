@@ -277,7 +277,13 @@ Node* LoadingBar::getVirtualRenderer()
 
 void LoadingBar::barRendererScaleChangedWithSize()
 {
-    if (_ignoreSize)
+    if (_unifySize)
+    {
+        //_barRenderer->setPreferredSize(_contentSize);
+        _totalLength = _contentSize.width;
+        setScale9Scale();
+    }
+    else if (_ignoreSize)
     {
         if (!_scale9Enabled)
         {

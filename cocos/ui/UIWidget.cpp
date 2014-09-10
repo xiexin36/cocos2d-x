@@ -135,6 +135,7 @@ Widget* Widget::_focusedWidget = nullptr;
 Widget::FocusNavigationController* Widget::_focusNavigationController = nullptr;
     
 Widget::Widget():
+_unifySize(false),
 _enabled(true),
 _bright(true),
 _touchEnabled(false),
@@ -271,7 +272,11 @@ void Widget::setContentSize(const cocos2d::Size &contentSize)
     ProtectedNode::setContentSize(contentSize);
     
     _customSize = contentSize;
-    if (_ignoreSize)
+    if (_unifySize)
+    {
+        //unify Size logic
+    }
+    else if (_ignoreSize)
     {
         _contentSize = getVirtualRendererSize();
     }
@@ -321,6 +326,11 @@ Widget::SizeType Widget::getSizeType() const
 
 void Widget::ignoreContentAdaptWithSize(bool ignore)
 {
+    if (_unifySize)
+    {
+        this->setContentSize(_customSize);
+        return;
+    }
     if (_ignoreSize == ignore)
     {
         return;
@@ -381,15 +391,19 @@ const Size& Widget::getVirtualRendererSize() const
     
 void Widget::updateContentSizeWithTextureSize(const cocos2d::Size &size)
 {
-    this->setContentSize(size);
-    //if (_ignoreSize)
-    //{
-    //    this->setContentSize(size);
-    //}
-    //else
-    //{
-    //    this->setContentSize(_customSize);
-    //}
+    if (_unifySize)
+    {
+        this->setContentSize(size);
+        return;
+    }
+    if (_ignoreSize)
+    {
+        this->setContentSize(size);
+    }
+    else
+    {
+        this->setContentSize(_customSize);
+    }
 }
 
 void Widget::setTouchEnabled(bool enable)
@@ -1103,6 +1117,17 @@ void Widget::enableDpadNavigation(bool enable)
         CC_SAFE_DELETE(_focusNavigationController);
     }
     _focusNavigationController->enableFocusNavigation(enable);
+}
+
+
+bool Widget::isUnifySizeEnabled()const
+{
+    return _unifySize;
+}
+
+void Widget::setUnifySizeEnabled(bool enable)
+{
+    _unifySize = enable;
 }
 
 
