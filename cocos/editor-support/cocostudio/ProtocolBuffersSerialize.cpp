@@ -235,6 +235,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
     
     // xml read
+
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
     ssize_t size;
     std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
@@ -652,6 +653,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
             protocolbuffers::NodeTree* subNodeTree = nodetree->add_children();
             
             const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+			bool bHasType = false;
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -660,12 +662,17 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
                 if (name == "ctype")
                 {
                     convertNodeTreeProtocolBuffersWithXML(subNodeTree, objectData, value);
+					bHasType = true;
                     break;
                 }
                 
                 attribute = attribute->Next();
             }
             
+			if(!bHasType)
+			{
+				convertNodeTreeProtocolBuffersWithXML(subNodeTree, objectData, "NodeObjectData");
+			}
 //            convertNodeTreeProtocolBuffersWithXML(subNodeTree, objectData, objectData->Name());
             
             objectData = objectData->NextSiblingElement();
@@ -2493,6 +2500,7 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
         }
         else if (name == "ColorVector")
         {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
