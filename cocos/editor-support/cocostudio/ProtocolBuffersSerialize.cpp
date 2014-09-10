@@ -2661,6 +2661,7 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
         }
         else if (name == "ColorVector")
         {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -2860,6 +2861,7 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
         }
         else if (name == "ColorVector")
         {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -3109,6 +3111,7 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
         }
         else if (name == "ColorVector")
         {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
