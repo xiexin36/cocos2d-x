@@ -93,6 +93,8 @@ NS_CC_BEGIN
             void setUsingPercentContentSize(bool flag);
 
             void RefreshLayoutSize(SizeType sType, const Vec2& size);
+
+            void SetActiveEnable(bool enable);
         private:
 
             Vec2 _percentContentSize;
@@ -102,6 +104,7 @@ NS_CC_BEGIN
             Vec2 _relativePosition;
             Vec2 _percentPosition;
             bool _usingPercentPosition;
+            bool _actived;
         };
 }
 

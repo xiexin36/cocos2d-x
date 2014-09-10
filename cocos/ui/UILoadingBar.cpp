@@ -216,11 +216,11 @@ void LoadingBar::setPercent(float percent)
     {
         return;
     }
+     _percent = percent;
     if (_totalLength <= 0)
     {
         return;
     }
-    _percent = percent;
     float res = _percent / 100.0f;
     
     if (_scale9Enabled)
@@ -281,7 +281,7 @@ void LoadingBar::barRendererScaleChangedWithSize()
     {
         //_barRenderer->setPreferredSize(_contentSize);
         _totalLength = _contentSize.width;
-        setScale9Scale();
+        this->setPercent(_percent);
     }
     else if (_ignoreSize)
     {

@@ -31,7 +31,8 @@ NS_CC_BEGIN
 
 namespace ui {
     LayoutComponent::LayoutComponent()
-    :_usingPercentContentSize(false)
+    :_actived(true)
+    ,_usingPercentContentSize(false)
     ,_usingPercentPosition(false)
     ,_referencePoint(ReferencePoint::BOTTOM_LEFT)
     {
@@ -88,13 +89,13 @@ namespace ui {
     void LayoutComponent::setUsingPercentContentSize(bool flag)
     {
         _usingPercentContentSize = flag;
-        this->RefreshLayoutSize(SizeType::Size,_percentContentSize);
+        this->RefreshLayoutSize(SizeType::PreSize,_percentContentSize);
     }
 
     void LayoutComponent::RefreshLayoutSize(SizeType sType, const Vec2& size)
     {
         Node* parentNode = this->getOwner()->getParent();
-        if (parentNode != NULL)
+        if (parentNode != NULL && _actived)
         {
             Size parentSize = parentNode->getContentSize();
 
@@ -187,7 +188,7 @@ namespace ui {
     {
         Node* parentNode = this->getOwner()->getParent();
         Point basePoint = point;
-        if (parentNode != NULL)
+        if (parentNode != NULL && _actived)
         {
             Size parentSize = parentNode->getContentSize();
             
@@ -265,6 +266,11 @@ namespace ui {
                 break;
             }
         }
+    }
+
+    void LayoutComponent::SetActiveEnable(bool enable)
+    {
+        _actived = enable;
     }
 }
 
