@@ -1528,6 +1528,13 @@ class ButtonOptions : public ::google::protobuf::MessageLite {
   inline bool scale9enable() const;
   inline void set_scale9enable(bool value);
 
+  // optional bool displaystate = 22;
+  inline bool has_displaystate() const;
+  inline void clear_displaystate();
+  static const int kDisplaystateFieldNumber = 22;
+  inline bool displaystate() const;
+  inline void set_displaystate(bool value);
+
   // @@protoc_insertion_point(class_scope:protocolbuffers.ButtonOptions)
  private:
   inline void set_has_name();
@@ -1572,6 +1579,8 @@ class ButtonOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_scale9height();
   inline void set_has_scale9enable();
   inline void clear_has_scale9enable();
+  inline void set_has_displaystate();
+  inline void clear_has_displaystate();
 
   ::std::string* name_;
   ::std::string* classname_;
@@ -1594,9 +1603,10 @@ class ButtonOptions : public ::google::protobuf::MessageLite {
   float scale9width_;
   float scale9height_;
   bool scale9enable_;
+  bool displaystate_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(21 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(22 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -1913,6 +1923,13 @@ class CheckBoxOptions : public ::google::protobuf::MessageLite {
   inline bool selectedstate() const;
   inline void set_selectedstate(bool value);
 
+  // optional bool displaystate = 14;
+  inline bool has_displaystate() const;
+  inline void clear_displaystate();
+  static const int kDisplaystateFieldNumber = 14;
+  inline bool displaystate() const;
+  inline void set_displaystate(bool value);
+
   // @@protoc_insertion_point(class_scope:protocolbuffers.CheckBoxOptions)
  private:
   inline void set_has_name();
@@ -1941,6 +1958,8 @@ class CheckBoxOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_frontcrossdisableddata();
   inline void set_has_selectedstate();
   inline void clear_has_selectedstate();
+  inline void set_has_displaystate();
+  inline void clear_has_displaystate();
 
   ::std::string* name_;
   ::std::string* classname_;
@@ -1955,9 +1974,10 @@ class CheckBoxOptions : public ::google::protobuf::MessageLite {
   ::protocolbuffers::ResourceData* backgroundboxdisableddata_;
   ::protocolbuffers::ResourceData* frontcrossdisableddata_;
   bool selectedstate_;
+  bool displaystate_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -4612,6 +4632,13 @@ class SliderOptions : public ::google::protobuf::MessageLite {
   inline float length() const;
   inline void set_length(float value);
 
+  // optional bool displaystate = 31;
+  inline bool has_displaystate() const;
+  inline void clear_displaystate();
+  static const int kDisplaystateFieldNumber = 31;
+  inline bool displaystate() const;
+  inline void set_displaystate(bool value);
+
   // @@protoc_insertion_point(class_scope:protocolbuffers.SliderOptions)
  private:
   inline void set_has_name();
@@ -4674,6 +4701,8 @@ class SliderOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_slidballanchorpointy();
   inline void set_has_length();
   inline void clear_has_length();
+  inline void set_has_displaystate();
+  inline void clear_has_displaystate();
 
   ::std::string* name_;
   ::std::string* classname_;
@@ -4701,13 +4730,14 @@ class SliderOptions : public ::google::protobuf::MessageLite {
   float progressbarcapinsetsheight_;
   float scale9width_;
   float scale9height_;
-  bool scale9enable_;
   float slidballanchorpointx_;
   float slidballanchorpointy_;
+  bool scale9enable_;
+  bool displaystate_;
   float length_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(30 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(31 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -10774,6 +10804,28 @@ inline void ButtonOptions::set_scale9enable(bool value) {
   scale9enable_ = value;
 }
 
+// optional bool displaystate = 22;
+inline bool ButtonOptions::has_displaystate() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void ButtonOptions::set_has_displaystate() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void ButtonOptions::clear_has_displaystate() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void ButtonOptions::clear_displaystate() {
+  displaystate_ = false;
+  clear_has_displaystate();
+}
+inline bool ButtonOptions::displaystate() const {
+  return displaystate_;
+}
+inline void ButtonOptions::set_displaystate(bool value) {
+  set_has_displaystate();
+  displaystate_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ResourceData
@@ -11664,6 +11716,28 @@ inline bool CheckBoxOptions::selectedstate() const {
 inline void CheckBoxOptions::set_selectedstate(bool value) {
   set_has_selectedstate();
   selectedstate_ = value;
+}
+
+// optional bool displaystate = 14;
+inline bool CheckBoxOptions::has_displaystate() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void CheckBoxOptions::set_has_displaystate() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void CheckBoxOptions::clear_has_displaystate() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void CheckBoxOptions::clear_displaystate() {
+  displaystate_ = false;
+  clear_has_displaystate();
+}
+inline bool CheckBoxOptions::displaystate() const {
+  return displaystate_;
+}
+inline void CheckBoxOptions::set_displaystate(bool value) {
+  set_has_displaystate();
+  displaystate_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -17714,6 +17788,28 @@ inline float SliderOptions::length() const {
 inline void SliderOptions::set_length(float value) {
   set_has_length();
   length_ = value;
+}
+
+// optional bool displaystate = 31;
+inline bool SliderOptions::has_displaystate() const {
+  return (_has_bits_[0] & 0x40000000u) != 0;
+}
+inline void SliderOptions::set_has_displaystate() {
+  _has_bits_[0] |= 0x40000000u;
+}
+inline void SliderOptions::clear_has_displaystate() {
+  _has_bits_[0] &= ~0x40000000u;
+}
+inline void SliderOptions::clear_displaystate() {
+  displaystate_ = false;
+  clear_has_displaystate();
+}
+inline bool SliderOptions::displaystate() const {
+  return displaystate_;
+}
+inline void SliderOptions::set_displaystate(bool value) {
+  set_has_displaystate();
+  displaystate_ = value;
 }
 
 // -------------------------------------------------------------------

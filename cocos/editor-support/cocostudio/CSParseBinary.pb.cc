@@ -3762,6 +3762,7 @@ const int ButtonOptions::kCapInsetsHeightFieldNumber;
 const int ButtonOptions::kScale9WidthFieldNumber;
 const int ButtonOptions::kScale9HeightFieldNumber;
 const int ButtonOptions::kScale9EnableFieldNumber;
+const int ButtonOptions::kDisplaystateFieldNumber;
 #endif  // !_MSC_VER
 
 ButtonOptions::ButtonOptions()
@@ -3819,6 +3820,7 @@ void ButtonOptions::SharedCtor() {
   scale9width_ = 0;
   scale9height_ = 0;
   scale9enable_ = false;
+  displaystate_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3940,6 +3942,7 @@ void ButtonOptions::Clear() {
     scale9width_ = 0;
     scale9height_ = 0;
     scale9enable_ = false;
+    displaystate_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -4261,6 +4264,22 @@ bool ButtonOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(176)) goto parse_displaystate;
+        break;
+      }
+
+      // optional bool displaystate = 22;
+      case 22: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_displaystate:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &displaystate_)));
+          set_has_displaystate();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -4395,6 +4414,11 @@ void ButtonOptions::SerializeWithCachedSizes(
   // optional bool scale9Enable = 21;
   if (has_scale9enable()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(21, this->scale9enable(), output);
+  }
+
+  // optional bool displaystate = 22;
+  if (has_displaystate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(22, this->displaystate(), output);
   }
 
 }
@@ -4540,6 +4564,11 @@ int ButtonOptions::ByteSize() const {
       total_size += 2 + 1;
     }
 
+    // optional bool displaystate = 22;
+    if (has_displaystate()) {
+      total_size += 2 + 1;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -4622,6 +4651,9 @@ void ButtonOptions::MergeFrom(const ButtonOptions& from) {
     if (from.has_scale9enable()) {
       set_scale9enable(from.scale9enable());
     }
+    if (from.has_displaystate()) {
+      set_displaystate(from.displaystate());
+    }
   }
 }
 
@@ -4659,6 +4691,7 @@ void ButtonOptions::Swap(ButtonOptions* other) {
     std::swap(scale9width_, other->scale9width_);
     std::swap(scale9height_, other->scale9height_);
     std::swap(scale9enable_, other->scale9enable_);
+    std::swap(displaystate_, other->displaystate_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -4934,6 +4967,7 @@ const int CheckBoxOptions::kFrontCrossDataFieldNumber;
 const int CheckBoxOptions::kBackGroundBoxDisabledDataFieldNumber;
 const int CheckBoxOptions::kFrontCrossDisabledDataFieldNumber;
 const int CheckBoxOptions::kSelectedStateFieldNumber;
+const int CheckBoxOptions::kDisplaystateFieldNumber;
 #endif  // !_MSC_VER
 
 CheckBoxOptions::CheckBoxOptions()
@@ -4995,6 +5029,7 @@ void CheckBoxOptions::SharedCtor() {
   backgroundboxdisableddata_ = NULL;
   frontcrossdisableddata_ = NULL;
   selectedstate_ = false;
+  displaystate_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5112,6 +5147,7 @@ void CheckBoxOptions::Clear() {
       if (frontcrossdisableddata_ != NULL) frontcrossdisableddata_->::protocolbuffers::ResourceData::Clear();
     }
     selectedstate_ = false;
+    displaystate_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -5301,6 +5337,22 @@ bool CheckBoxOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(112)) goto parse_displaystate;
+        break;
+      }
+
+      // optional bool displaystate = 14;
+      case 14: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_displaystate:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &displaystate_)));
+          set_has_displaystate();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -5397,6 +5449,11 @@ void CheckBoxOptions::SerializeWithCachedSizes(
   // optional bool selectedState = 13;
   if (has_selectedstate()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->selectedstate(), output);
+  }
+
+  // optional bool displaystate = 14;
+  if (has_displaystate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(14, this->displaystate(), output);
   }
 
 }
@@ -5496,6 +5553,11 @@ int CheckBoxOptions::ByteSize() const {
       total_size += 1 + 1;
     }
 
+    // optional bool displaystate = 14;
+    if (has_displaystate()) {
+      total_size += 1 + 1;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -5552,6 +5614,9 @@ void CheckBoxOptions::MergeFrom(const CheckBoxOptions& from) {
     if (from.has_selectedstate()) {
       set_selectedstate(from.selectedstate());
     }
+    if (from.has_displaystate()) {
+      set_displaystate(from.displaystate());
+    }
   }
 }
 
@@ -5581,6 +5646,7 @@ void CheckBoxOptions::Swap(CheckBoxOptions* other) {
     std::swap(backgroundboxdisableddata_, other->backgroundboxdisableddata_);
     std::swap(frontcrossdisableddata_, other->frontcrossdisableddata_);
     std::swap(selectedstate_, other->selectedstate_);
+    std::swap(displaystate_, other->displaystate_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -12333,6 +12399,7 @@ const int SliderOptions::kScale9EnableFieldNumber;
 const int SliderOptions::kSlidBallAnchorPointXFieldNumber;
 const int SliderOptions::kSlidBallAnchorPointYFieldNumber;
 const int SliderOptions::kLengthFieldNumber;
+const int SliderOptions::kDisplaystateFieldNumber;
 #endif  // !_MSC_VER
 
 SliderOptions::SliderOptions()
@@ -12411,6 +12478,7 @@ void SliderOptions::SharedCtor() {
   slidballanchorpointx_ = 0;
   slidballanchorpointy_ = 0;
   length_ = 0;
+  displaystate_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -12542,6 +12610,7 @@ void SliderOptions::Clear() {
     slidballanchorpointx_ = 0;
     slidballanchorpointy_ = 0;
     length_ = 0;
+    displaystate_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -13005,6 +13074,22 @@ bool SliderOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(248)) goto parse_displaystate;
+        break;
+      }
+
+      // optional bool displaystate = 31;
+      case 31: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_displaystate:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &displaystate_)));
+          set_has_displaystate();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -13185,6 +13270,11 @@ void SliderOptions::SerializeWithCachedSizes(
   // optional float length = 30;
   if (has_length()) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(30, this->length(), output);
+  }
+
+  // optional bool displaystate = 31;
+  if (has_displaystate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(31, this->displaystate(), output);
   }
 
 }
@@ -13373,6 +13463,11 @@ int SliderOptions::ByteSize() const {
       total_size += 2 + 4;
     }
 
+    // optional bool displaystate = 31;
+    if (has_displaystate()) {
+      total_size += 2 + 1;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -13484,6 +13579,9 @@ void SliderOptions::MergeFrom(const SliderOptions& from) {
     if (from.has_length()) {
       set_length(from.length());
     }
+    if (from.has_displaystate()) {
+      set_displaystate(from.displaystate());
+    }
   }
 }
 
@@ -13530,6 +13628,7 @@ void SliderOptions::Swap(SliderOptions* other) {
     std::swap(slidballanchorpointx_, other->slidballanchorpointx_);
     std::swap(slidballanchorpointy_, other->slidballanchorpointy_);
     std::swap(length_, other->length_);
+    std::swap(displaystate_, other->displaystate_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }

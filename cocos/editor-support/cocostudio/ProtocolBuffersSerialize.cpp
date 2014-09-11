@@ -1355,6 +1355,10 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         {
             options->set_fontsize(atoi(value.c_str()));
         }
+		else if (name == "DiplayState" || name == "DisplayState")
+		{
+			options->set_displaystate((value == "True") ? true : false);
+		}
         
         attribute = attribute->Next();
     }
@@ -1388,6 +1392,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         }
         else if (name == "TextColor")
         {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -1514,7 +1519,10 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
         {
             options->set_selectedstate((value == "True") ? true : false);
         }
-        
+        else if (name == "DiplayState" || name == "DisplayState")
+        {
+            options->set_displaystate((value == "True") ? true : false);
+        }
         attribute = attribute->Next();
     }
     
@@ -2141,6 +2149,11 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
         {
             options->set_percent(atoi(value.c_str()));
         }
+        else if (name == "DiplayState" || name == "DisplayState")
+        {
+            options->set_displaystate((value == "True") ? true : false);
+        }
+        
         
         attribute = attribute->Next();
     }
