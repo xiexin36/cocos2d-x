@@ -926,6 +926,13 @@ class WidgetOptions : public ::google::protobuf::MessageLite {
   inline ::std::string* release_name();
   inline void set_allocated_name(::std::string* name);
 
+  // optional int32 Alpha = 37;
+  inline bool has_alpha() const;
+  inline void clear_alpha();
+  static const int kAlphaFieldNumber = 37;
+  inline ::google::protobuf::int32 alpha() const;
+  inline void set_alpha(::google::protobuf::int32 value);
+
   // repeated .protocolbuffers.ComponentOptions componentOptions = 36;
   inline int componentoptions_size() const;
   inline void clear_componentoptions();
@@ -1010,6 +1017,8 @@ class WidgetOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_frameevent();
   inline void set_has_name();
   inline void clear_has_name();
+  inline void set_has_alpha();
+  inline void clear_has_alpha();
 
   float x_;
   float y_;
@@ -1047,9 +1056,10 @@ class WidgetOptions : public ::google::protobuf::MessageLite {
   ::std::string* frameevent_;
   ::std::string* name_;
   ::google::protobuf::RepeatedPtrField< ::protocolbuffers::ComponentOptions > componentoptions_;
+  ::google::protobuf::int32 alpha_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(36 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(37 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -2139,6 +2149,20 @@ class ImageViewOptions : public ::google::protobuf::MessageLite {
   inline bool scale9enable() const;
   inline void set_scale9enable(bool value);
 
+  // optional bool flippedX = 12;
+  inline bool has_flippedx() const;
+  inline void clear_flippedx();
+  static const int kFlippedXFieldNumber = 12;
+  inline bool flippedx() const;
+  inline void set_flippedx(bool value);
+
+  // optional bool flippedY = 13;
+  inline bool has_flippedy() const;
+  inline void clear_flippedy();
+  static const int kFlippedYFieldNumber = 13;
+  inline bool flippedy() const;
+  inline void set_flippedy(bool value);
+
   // @@protoc_insertion_point(class_scope:protocolbuffers.ImageViewOptions)
  private:
   inline void set_has_name();
@@ -2163,6 +2187,10 @@ class ImageViewOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_scale9height();
   inline void set_has_scale9enable();
   inline void clear_has_scale9enable();
+  inline void set_has_flippedx();
+  inline void clear_has_flippedx();
+  inline void set_has_flippedy();
+  inline void clear_has_flippedy();
 
   ::std::string* name_;
   ::std::string* classname_;
@@ -2175,9 +2203,11 @@ class ImageViewOptions : public ::google::protobuf::MessageLite {
   float scale9width_;
   float scale9height_;
   bool scale9enable_;
+  bool flippedx_;
+  bool flippedy_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(11 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -9609,6 +9639,28 @@ inline void WidgetOptions::set_allocated_name(::std::string* name) {
   }
 }
 
+// optional int32 Alpha = 37;
+inline bool WidgetOptions::has_alpha() const {
+  return (_has_bits_[1] & 0x00000008u) != 0;
+}
+inline void WidgetOptions::set_has_alpha() {
+  _has_bits_[1] |= 0x00000008u;
+}
+inline void WidgetOptions::clear_has_alpha() {
+  _has_bits_[1] &= ~0x00000008u;
+}
+inline void WidgetOptions::clear_alpha() {
+  alpha_ = 0;
+  clear_has_alpha();
+}
+inline ::google::protobuf::int32 WidgetOptions::alpha() const {
+  return alpha_;
+}
+inline void WidgetOptions::set_alpha(::google::protobuf::int32 value) {
+  set_has_alpha();
+  alpha_ = value;
+}
+
 // repeated .protocolbuffers.ComponentOptions componentOptions = 36;
 inline int WidgetOptions::componentoptions_size() const {
   return componentoptions_.size();
@@ -12248,6 +12300,50 @@ inline bool ImageViewOptions::scale9enable() const {
 inline void ImageViewOptions::set_scale9enable(bool value) {
   set_has_scale9enable();
   scale9enable_ = value;
+}
+
+// optional bool flippedX = 12;
+inline bool ImageViewOptions::has_flippedx() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void ImageViewOptions::set_has_flippedx() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void ImageViewOptions::clear_has_flippedx() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void ImageViewOptions::clear_flippedx() {
+  flippedx_ = false;
+  clear_has_flippedx();
+}
+inline bool ImageViewOptions::flippedx() const {
+  return flippedx_;
+}
+inline void ImageViewOptions::set_flippedx(bool value) {
+  set_has_flippedx();
+  flippedx_ = value;
+}
+
+// optional bool flippedY = 13;
+inline bool ImageViewOptions::has_flippedy() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void ImageViewOptions::set_has_flippedy() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void ImageViewOptions::clear_has_flippedy() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void ImageViewOptions::clear_flippedy() {
+  flippedy_ = false;
+  clear_has_flippedy();
+}
+inline bool ImageViewOptions::flippedy() const {
+  return flippedy_;
+}
+inline void ImageViewOptions::set_flippedy(bool value) {
+  set_has_flippedy();
+  flippedy_ = value;
 }
 
 // -------------------------------------------------------------------

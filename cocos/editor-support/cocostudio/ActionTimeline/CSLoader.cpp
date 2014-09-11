@@ -1066,8 +1066,8 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
         sprite->setColor(Color3B(red, green, blue));
     }
     
-    bool flipX          = nodeOptions.flipx();
-    bool flipY          = nodeOptions.flipy();
+	bool flipX   = spriteOptions.flippedx();
+    bool flipY   = spriteOptions.flippedy();
     
     if(flipX != false)
         sprite->setFlippedX(flipX);

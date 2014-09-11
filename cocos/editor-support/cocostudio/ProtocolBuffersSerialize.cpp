@@ -760,7 +760,7 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         }
         else if (name == "Alpha")
         {
-            options->set_opacity(atoi(value.c_str()));
+            options->set_alpha(atoi(value.c_str()));
         }
         else if (name == "Tag")
         {
@@ -917,11 +917,11 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "FlipX")
+        if (name == "FlipX" || name == "FilpX" )
         {
             options->set_flippedx((value == "True") ? true : false);
         }
-        else if (name == "FlipY")
+        else if (name == "FlipY" || name == "FilpY")
         {
             options->set_flippedy((value == "True") ? true : false);
         }
@@ -1154,7 +1154,7 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
         }
         else if (name == "Alpha")
         {
-            options->set_opacity(atoi(value.c_str()));
+			options->set_alpha(atoi(value.c_str()));
         }
         else if (name == "Tag")
         {
@@ -1716,6 +1716,14 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
         else if (name == "FontSize")
         {
             options->set_scale9height(atof(value.c_str()));
+        } 
+		else if (name == "FlipX" || name == "FilpX" )
+        {
+            options->set_flippedx((value == "True") ? true : false);
+        }
+        else if (name == "FlipY" || name == "FilpY")
+        {
+            options->set_flippedy((value == "True") ? true : false);
         }
         
         attribute = attribute->Next();

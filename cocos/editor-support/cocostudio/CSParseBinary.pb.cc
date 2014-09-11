@@ -1731,6 +1731,7 @@ const int WidgetOptions::kLayoutParameterFieldNumber;
 const int WidgetOptions::kCustomPropertyFieldNumber;
 const int WidgetOptions::kFrameEventFieldNumber;
 const int WidgetOptions::kNameFieldNumber;
+const int WidgetOptions::kAlphaFieldNumber;
 const int WidgetOptions::kComponentOptionsFieldNumber;
 #endif  // !_MSC_VER
 
@@ -1791,6 +1792,7 @@ void WidgetOptions::SharedCtor() {
   customproperty_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   frameevent_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  alpha_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1903,6 +1905,7 @@ void WidgetOptions::Clear() {
         name_->clear();
       }
     }
+    alpha_ = 0;
   }
   componentoptions_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -2474,6 +2477,22 @@ bool WidgetOptions::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(290)) goto parse_componentOptions;
+        if (input->ExpectTag(296)) goto parse_Alpha;
+        break;
+      }
+
+      // optional int32 Alpha = 37;
+      case 37: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Alpha:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &alpha_)));
+          set_has_alpha();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -2679,6 +2698,11 @@ void WidgetOptions::SerializeWithCachedSizes(
   for (int i = 0; i < this->componentoptions_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       36, this->componentoptions(i), output);
+  }
+
+  // optional int32 Alpha = 37;
+  if (has_alpha()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(37, this->alpha(), output);
   }
 
 }
@@ -2898,6 +2922,13 @@ int WidgetOptions::ByteSize() const {
           this->name());
     }
 
+    // optional int32 Alpha = 37;
+    if (has_alpha()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->alpha());
+    }
+
   }
   // repeated .protocolbuffers.ComponentOptions componentOptions = 36;
   total_size += 2 * this->componentoptions_size();
@@ -3035,6 +3066,9 @@ void WidgetOptions::MergeFrom(const WidgetOptions& from) {
     if (from.has_name()) {
       set_name(from.name());
     }
+    if (from.has_alpha()) {
+      set_alpha(from.alpha());
+    }
   }
 }
 
@@ -3086,6 +3120,7 @@ void WidgetOptions::Swap(WidgetOptions* other) {
     std::swap(customproperty_, other->customproperty_);
     std::swap(frameevent_, other->frameevent_);
     std::swap(name_, other->name_);
+    std::swap(alpha_, other->alpha_);
     componentoptions_.Swap(&other->componentoptions_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_has_bits_[1], other->_has_bits_[1]);
@@ -5671,6 +5706,8 @@ const int ImageViewOptions::kCapInsetsWidthFieldNumber;
 const int ImageViewOptions::kScale9WidthFieldNumber;
 const int ImageViewOptions::kScale9HeightFieldNumber;
 const int ImageViewOptions::kScale9EnableFieldNumber;
+const int ImageViewOptions::kFlippedXFieldNumber;
+const int ImageViewOptions::kFlippedYFieldNumber;
 #endif  // !_MSC_VER
 
 ImageViewOptions::ImageViewOptions()
@@ -5706,6 +5743,8 @@ void ImageViewOptions::SharedCtor() {
   scale9width_ = 0;
   scale9height_ = 0;
   scale9enable_ = false;
+  flippedx_ = false;
+  flippedy_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5781,6 +5820,8 @@ void ImageViewOptions::Clear() {
     scale9width_ = 0;
     scale9height_ = 0;
     scale9enable_ = false;
+    flippedx_ = false;
+    flippedy_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -5954,6 +5995,38 @@ bool ImageViewOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(96)) goto parse_flippedX;
+        break;
+      }
+
+      // optional bool flippedX = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_flippedX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &flippedx_)));
+          set_has_flippedx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(104)) goto parse_flippedY;
+        break;
+      }
+
+      // optional bool flippedY = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_flippedY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &flippedy_)));
+          set_has_flippedy();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -6034,6 +6107,16 @@ void ImageViewOptions::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->scale9enable(), output);
   }
 
+  // optional bool flippedX = 12;
+  if (has_flippedx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->flippedx(), output);
+  }
+
+  // optional bool flippedY = 13;
+  if (has_flippedy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->flippedy(), output);
+  }
+
 }
 
 int ImageViewOptions::ByteSize() const {
@@ -6105,6 +6188,16 @@ int ImageViewOptions::ByteSize() const {
       total_size += 1 + 1;
     }
 
+    // optional bool flippedX = 12;
+    if (has_flippedx()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool flippedY = 13;
+    if (has_flippedy()) {
+      total_size += 1 + 1;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -6155,6 +6248,12 @@ void ImageViewOptions::MergeFrom(const ImageViewOptions& from) {
     if (from.has_scale9enable()) {
       set_scale9enable(from.scale9enable());
     }
+    if (from.has_flippedx()) {
+      set_flippedx(from.flippedx());
+    }
+    if (from.has_flippedy()) {
+      set_flippedy(from.flippedy());
+    }
   }
 }
 
@@ -6182,6 +6281,8 @@ void ImageViewOptions::Swap(ImageViewOptions* other) {
     std::swap(scale9width_, other->scale9width_);
     std::swap(scale9height_, other->scale9height_);
     std::swap(scale9enable_, other->scale9enable_);
+    std::swap(flippedx_, other->flippedx_);
+    std::swap(flippedy_, other->flippedy_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
