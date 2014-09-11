@@ -123,6 +123,8 @@ void TextureFrame::onEnter(Frame *nextFrame)
 {
     if(_sprite)
     {
+		if(_textureName == "")
+			return;
         SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(_textureName);
 
         if(spriteFrame != nullptr)

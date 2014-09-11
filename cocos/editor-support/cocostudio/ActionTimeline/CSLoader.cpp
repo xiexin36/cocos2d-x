@@ -788,10 +788,12 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         
         std::string filePath = options.filename();
         CCLOG("filePath = %s", filePath.c_str());
-        node = createNodeFromProtocolBuffers(_protocolBuffersPath + filePath);
-        
-        setPropsForProjectNodeFromProtocolBuffers(node, options, nodeOptions);
-        
+		if(filePath != "")
+		{
+            node = createNodeFromProtocolBuffers(_protocolBuffersPath + filePath);
+            setPropsForProjectNodeFromProtocolBuffers(node, options, nodeOptions);
+		}
+     
         curOptions = nodeOptions;
     }
     /* peterson */
