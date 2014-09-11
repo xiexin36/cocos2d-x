@@ -155,7 +155,7 @@ public:
     
     /* serialize protocol buffers from XML */
     void XMLTest(const std::string& fileName);
-    std::string serializeProtocolBuffersWithXMLFile(const std::string& protocolbuffersFileName, const std::string& xmlFileName);
+    std::string serializeProtocolBuffersWithXMLFile(const std::string& protocolbuffersFileName, const std::string& xmlFileName, bool isSimulator = false);
 //    void serializeProtocolBuffersWithXMLFile(const std::string& protocolbuffersFileName, const std::string& xmlFileName);
     
     // nodeTree
@@ -351,10 +351,13 @@ public:
     /* Scene */
     /**/
     
+	int getResourceType(std::string key);
+
 protected:
 //    std::string m_filePath;
     std::string _protocolbuffersFileName;
     std::string _protocolbuffersDir;
+	bool _isSimulator;
 };
 
 #endif /* defined(__ProtobufTest__GUIProtocolBuffers__) */

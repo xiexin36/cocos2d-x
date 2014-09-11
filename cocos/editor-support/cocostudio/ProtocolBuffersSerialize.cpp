@@ -98,6 +98,7 @@ static ProtocolBuffersSerialize* sharedProtocolBuffersSerialize = nullptr;
 
 ProtocolBuffersSerialize::ProtocolBuffersSerialize()
 : _protocolbuffersDir("")
+, _isSimulator(false)
 {
     
 }
@@ -222,7 +223,7 @@ void ProtocolBuffersSerialize::XMLTest(const std::string &fileName)
 
 
 std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const std::string &protocolbuffersFileName,
-                                                              const std::string &xmlFileName)
+                                                              const std::string &xmlFileName, bool isSimulator/* = false*/)
 {
     std::string result = "";
     
@@ -234,6 +235,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
     
     // xml read
+
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
     ssize_t size;
     std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
@@ -250,6 +252,8 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     bool serializeEnabled = false;
     std::string rootType = "";
     
+	_isSimulator = isSimulator;
+
     while (element)
     {
         CCLOG("entity name = %s", element->Name());
@@ -649,6 +653,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
             protocolbuffers::NodeTree* subNodeTree = nodetree->add_children();
             
             const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+			bool bHasType = false;
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -657,12 +662,17 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
                 if (name == "ctype")
                 {
                     convertNodeTreeProtocolBuffersWithXML(subNodeTree, objectData, value);
+					bHasType = true;
                     break;
                 }
                 
                 attribute = attribute->Next();
             }
             
+			if(!bHasType)
+			{
+				convertNodeTreeProtocolBuffersWithXML(subNodeTree, objectData, "NodeObjectData");
+			}
 //            convertNodeTreeProtocolBuffersWithXML(subNodeTree, objectData, objectData->Name());
             
             objectData = objectData->NextSiblingElement();
@@ -942,7 +952,7 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1013,7 +1023,7 @@ void ProtocolBuffersSerialize::setTMXTiledMapOptions(protocolbuffers::TMXTiledMa
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1080,7 +1090,7 @@ void ProtocolBuffersSerialize::setParticleSystemOptions(protocolbuffers::Particl
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1345,6 +1355,10 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         {
             options->set_fontsize(atoi(value.c_str()));
         }
+		else if (name == "DiplayState" || name == "DisplayState")
+		{
+			options->set_displaystate((value == "True") ? true : false);
+		}
         
         attribute = attribute->Next();
     }
@@ -1378,6 +1392,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         }
         else if (name == "TextColor")
         {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -1415,7 +1430,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-					int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+					int resourceType = getResourceType(value);
                     disabledFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1442,7 +1457,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     pressedFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1469,7 +1484,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     normalFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1504,7 +1519,10 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
         {
             options->set_selectedstate((value == "True") ? true : false);
         }
-        
+        else if (name == "DiplayState" || name == "DisplayState")
+        {
+            options->set_displaystate((value == "True") ? true : false);
+        }
         attribute = attribute->Next();
     }
     
@@ -1530,7 +1548,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     backgroundboxData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1557,7 +1575,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     backGroundBoxSelectedData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1584,7 +1602,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     frontCrossData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1611,7 +1629,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     backGroundBoxDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1638,7 +1656,7 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     frontCrossDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1746,7 +1764,7 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1819,7 +1837,7 @@ void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1880,7 +1898,7 @@ void ProtocolBuffersSerialize::setTextBMFontOptions(protocolbuffers::TextBMFontO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -1987,7 +2005,7 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2072,7 +2090,7 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2131,6 +2149,11 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
         {
             options->set_percent(atoi(value.c_str()));
         }
+        else if (name == "DiplayState" || name == "DisplayState")
+        {
+            options->set_displaystate((value == "True") ? true : false);
+        }
+        
         
         attribute = attribute->Next();
     }
@@ -2157,7 +2180,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     barFileNameData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2184,7 +2207,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     ballNormalData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2211,7 +2234,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     ballPressedData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2238,7 +2261,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     ballDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2265,7 +2288,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     progressBarData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2363,7 +2386,7 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2387,6 +2410,8 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     
     PanelOptions* options = layoutOptions;
     
+	bool scale9Enabled = false;
+
     // attributes
     const tinyxml2::XMLAttribute* attribute = layoutObjectData->FirstAttribute();
     while (attribute)
@@ -2406,6 +2431,30 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
         {
             options->set_bgcoloropacity(atoi(value.c_str()));
         }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
+        }
         
         attribute = attribute->Next();
     }
@@ -2416,100 +2465,8 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     {
         std::string name = child->Name();
         
-        if (name == "SingleColor")
+       if (name == "Size" && scale9Enabled)
         {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "R")
-                {
-                    options->set_bgcolorr(atoi(value.c_str()));
-                }
-                else if (name == "G")
-                {
-                    options->set_bgcolorg(atoi(value.c_str()));
-                }
-                else if (name == "B")
-                {
-                    options->set_bgcolorb(atoi(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "EndColor")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "R")
-                {
-                    options->set_bgendcolorr(atoi(value.c_str()));
-                }
-                else if (name == "G")
-                {
-                    options->set_bgendcolorg(atoi(value.c_str()));
-                }
-                else if (name == "B")
-                {
-                    options->set_bgendcolorb(atoi(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "FirstColor")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "R")
-                {
-                    options->set_bgstartcolorr(atoi(value.c_str()));
-                }
-                else if (name == "G")
-                {
-                    options->set_bgstartcolorg(atoi(value.c_str()));
-                }
-                else if (name == "B")
-                {
-                    options->set_bgstartcolorb(atoi(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "ColorVector")
-        {
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ScaleX")
-                {
-                    options->set_vectorx(atof(value.c_str()));
-                }
-                else if (name == "ScaleY")
-                {
-                    options->set_vectory(atof(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "FileData")
-        {
-            ResourceData* resourceData = options->mutable_backgroundimagedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
             while (attribute)
@@ -2517,259 +2474,13 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
                 std::string name = attribute->Name();
                 std::string value = attribute->Value();
                 
-                if (name == "Path")
+                if (name == "X")
                 {
-                    resourceData->set_path(value);
+                    options->set_scale9width(atof(value.c_str()));
                 }
-                else if (name == "Type")
+                else if (name == "Y")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
-                    resourceData->set_resourcetype(resourceType);
-                }
-                else if (name == "Plist")
-                {
-                    resourceData->set_plistfile(value);
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        
-        child = child->NextSiblingElement();
-    }
-}
-
-void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptions *pageViewOptions,
-                                                  protocolbuffers::WidgetOptions *widgetOptions,
-                                                  const tinyxml2::XMLElement *pageViewObjectData)
-{
-    setWidgetOptions(widgetOptions, pageViewObjectData);
-    
-    PageViewOptions* options = pageViewOptions;
-    
-    // attributes
-    const tinyxml2::XMLAttribute* attribute = pageViewObjectData->FirstAttribute();
-    while (attribute)
-    {
-        std::string name = attribute->Name();
-        std::string value = attribute->Value();
-        
-        if (name == "ClipAble")
-        {
-            options->set_clipable((value == "True") ? true : false);
-        }
-        else if (name == "ComboBoxIndex")
-        {
-            options->set_colortype(atoi(value.c_str()));
-        }
-        else if (name == "BackColorAlpha")
-        {
-            options->set_bgcoloropacity(atoi(value.c_str()));
-        }
-        
-        attribute = attribute->Next();
-    }
-    
-    // child elements
-    const tinyxml2::XMLElement* child = pageViewObjectData->FirstChildElement();
-    while (child)
-    {
-        std::string name = child->Name();
-        
-        if (name == "SingleColor")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "R")
-                {
-                    options->set_bgcolorr(atoi(value.c_str()));
-                }
-                else if (name == "G")
-                {
-                    options->set_bgcolorg(atoi(value.c_str()));
-                }
-                else if (name == "B")
-                {
-                    options->set_bgcolorb(atoi(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "EndColor")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "R")
-                {
-                    options->set_bgendcolorr(atoi(value.c_str()));
-                }
-                else if (name == "G")
-                {
-                    options->set_bgendcolorg(atoi(value.c_str()));
-                }
-                else if (name == "B")
-                {
-                    options->set_bgendcolorb(atoi(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "FirstColor")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "R")
-                {
-                    options->set_bgstartcolorr(atoi(value.c_str()));
-                }
-                else if (name == "G")
-                {
-                    options->set_bgstartcolorg(atoi(value.c_str()));
-                }
-                else if (name == "B")
-                {
-                    options->set_bgstartcolorb(atoi(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "ColorVector")
-        {
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ScaleX")
-                {
-                    options->set_vectorx(atof(value.c_str()));
-                }
-                else if (name == "ScaleY")
-                {
-                    options->set_vectory(atof(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "FileData")
-        {
-            ResourceData* resourceData = options->mutable_backgroundimagedata();
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "Path")
-                {
-                    resourceData->set_path(value);
-                }
-                else if (name == "Type")
-                {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
-                    resourceData->set_resourcetype(resourceType);
-                }
-                else if (name == "Plist")
-                {
-                    resourceData->set_plistfile(value);
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        
-        child = child->NextSiblingElement();
-    }
-}
-
-void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewOptions *scrollViewOptions,
-                                                    protocolbuffers::WidgetOptions *widgetOptions,
-                                                    const tinyxml2::XMLElement *scrollViewObjectData)
-{
-    setWidgetOptions(widgetOptions, scrollViewObjectData);
-    
-    ScrollViewOptions* options = scrollViewOptions;
-    
-    // attributes
-    const tinyxml2::XMLAttribute* attribute = scrollViewObjectData->FirstAttribute();
-    while (attribute)
-    {
-        std::string name = attribute->Name();
-        std::string value = attribute->Value();
-        
-        if (name == "ClipAble")
-        {
-            options->set_clipable((value == "True") ? true : false);
-        }
-        else if (name == "ComboBoxIndex")
-        {
-            options->set_colortype(atoi(value.c_str()));
-        }
-        else if (name == "BackColorAlpha")
-        {
-            options->set_bgcoloropacity(atoi(value.c_str()));
-        }
-        else if (name == "ScrollDirectionType")
-        {
-            if (value == "Vertical")
-            {
-                options->set_direction(1);
-            }
-            else if (value == "Horizontal")
-            {
-                options->set_direction(2);
-            }
-            else if (value == "Both")
-            {
-                options->set_direction(3);
-            }
-        }
-        else if (name == "IsBounceEnabled")
-        {
-            options->set_bounceenable((value == "True") ? true : false);
-        }
-        
-        attribute = attribute->Next();
-    }
-    
-    // child elements
-    const tinyxml2::XMLElement* child = scrollViewObjectData->FirstChildElement();
-    while (child)
-    {
-        std::string name = child->Name();
-        
-        if (name == "InnerNodeSize")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            while (attribute)
-            {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "Width")
-                {
-                    options->set_innerwidth(atof(value.c_str()));
-                }
-                else if (name == "Height")
-                {
-                    options->set_innerheight(atof(value.c_str()));
+                    options->set_scale9height(atof(value.c_str()));
                 }
                 
                 attribute = attribute->Next();
@@ -2849,6 +2560,7 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
         }
         else if (name == "ColorVector")
         {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -2882,7 +2594,461 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
+                    resourceData->set_resourcetype(resourceType);
+                }
+                else if (name == "Plist")
+                {
+                    resourceData->set_plistfile(value);
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        
+        child = child->NextSiblingElement();
+    }
+}
+
+void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptions *pageViewOptions,
+                                                  protocolbuffers::WidgetOptions *widgetOptions,
+                                                  const tinyxml2::XMLElement *pageViewObjectData)
+{
+    setWidgetOptions(widgetOptions, pageViewObjectData);
+    
+    PageViewOptions* options = pageViewOptions;
+    
+    bool scale9Enabled = false;
+
+    // attributes
+    const tinyxml2::XMLAttribute* attribute = pageViewObjectData->FirstAttribute();
+    while (attribute)
+    {
+        std::string name = attribute->Name();
+        std::string value = attribute->Value();
+        
+        if (name == "ClipAble")
+        {
+            options->set_clipable((value == "True") ? true : false);
+        }
+        else if (name == "ComboBoxIndex")
+        {
+            options->set_colortype(atoi(value.c_str()));
+        }
+        else if (name == "BackColorAlpha")
+        {
+            options->set_bgcoloropacity(atoi(value.c_str()));
+        }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
+        }
+        attribute = attribute->Next();
+    }
+    
+    // child elements
+    const tinyxml2::XMLElement* child = pageViewObjectData->FirstChildElement();
+    while (child)
+    {
+        std::string name = child->Name();
+        
+        if (name == "SingleColor")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "R")
+                {
+                    options->set_bgcolorr(atoi(value.c_str()));
+                }
+                else if (name == "G")
+                {
+                    options->set_bgcolorg(atoi(value.c_str()));
+                }
+                else if (name == "B")
+                {
+                    options->set_bgcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "EndColor")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "R")
+                {
+                    options->set_bgendcolorr(atoi(value.c_str()));
+                }
+                else if (name == "G")
+                {
+                    options->set_bgendcolorg(atoi(value.c_str()));
+                }
+                else if (name == "B")
+                {
+                    options->set_bgendcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "FirstColor")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "R")
+                {
+                    options->set_bgstartcolorr(atoi(value.c_str()));
+                }
+                else if (name == "G")
+                {
+                    options->set_bgstartcolorg(atoi(value.c_str()));
+                }
+                else if (name == "B")
+                {
+                    options->set_bgstartcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "ColorVector")
+        {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "ScaleX")
+                {
+                    options->set_vectorx(atof(value.c_str()));
+                }
+                else if (name == "ScaleY")
+                {
+                    options->set_vectory(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "FileData")
+        {
+            ResourceData* resourceData = options->mutable_backgroundimagedata();
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "Path")
+                {
+                    resourceData->set_path(value);
+                }
+                else if (name == "Type")
+                {
+                    int resourceType = getResourceType(value);
+                    resourceData->set_resourcetype(resourceType);
+                }
+                else if (name == "Plist")
+                {
+                    resourceData->set_plistfile(value);
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        
+        child = child->NextSiblingElement();
+    }
+}
+
+void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewOptions *scrollViewOptions,
+                                                    protocolbuffers::WidgetOptions *widgetOptions,
+                                                    const tinyxml2::XMLElement *scrollViewObjectData)
+{
+    setWidgetOptions(widgetOptions, scrollViewObjectData);
+    
+    ScrollViewOptions* options = scrollViewOptions;
+    
+    bool scale9Enabled = false;
+
+    // attributes
+    const tinyxml2::XMLAttribute* attribute = scrollViewObjectData->FirstAttribute();
+    while (attribute)
+    {
+        std::string name = attribute->Name();
+        std::string value = attribute->Value();
+        
+        if (name == "ClipAble")
+        {
+            options->set_clipable((value == "True") ? true : false);
+        }
+        else if (name == "ComboBoxIndex")
+        {
+            options->set_colortype(atoi(value.c_str()));
+        }
+        else if (name == "BackColorAlpha")
+        {
+            options->set_bgcoloropacity(atoi(value.c_str()));
+        }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
+        }
+        else if (name == "ScrollDirectionType")
+        {
+            if (value == "Vertical")
+            {
+                options->set_direction(1);
+            }
+            else if (value == "Horizontal")
+            {
+                options->set_direction(2);
+            }
+            else if (value == "Both")
+            {
+                options->set_direction(3);
+            }
+        }
+        else if (name == "IsBounceEnabled")
+        {
+            options->set_bounceenable((value == "True") ? true : false);
+        }
+        
+        attribute = attribute->Next();
+    }
+    
+    // child elements
+    const tinyxml2::XMLElement* child = scrollViewObjectData->FirstChildElement();
+    while (child)
+    {
+        std::string name = child->Name();
+        
+        if (name == "InnerNodeSize")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "Width")
+                {
+                    options->set_innerwidth(atof(value.c_str()));
+                }
+                else if (name == "Height")
+                {
+                    options->set_innerheight(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "SingleColor")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "R")
+                {
+                    options->set_bgcolorr(atoi(value.c_str()));
+                }
+                else if (name == "G")
+                {
+                    options->set_bgcolorg(atoi(value.c_str()));
+                }
+                else if (name == "B")
+                {
+                    options->set_bgcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "EndColor")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "R")
+                {
+                    options->set_bgendcolorr(atoi(value.c_str()));
+                }
+                else if (name == "G")
+                {
+                    options->set_bgendcolorg(atoi(value.c_str()));
+                }
+                else if (name == "B")
+                {
+                    options->set_bgendcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "FirstColor")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "R")
+                {
+                    options->set_bgstartcolorr(atoi(value.c_str()));
+                }
+                else if (name == "G")
+                {
+                    options->set_bgstartcolorg(atoi(value.c_str()));
+                }
+                else if (name == "B")
+                {
+                    options->set_bgstartcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "ColorVector")
+        {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "ScaleX")
+                {
+                    options->set_vectorx(atof(value.c_str()));
+                }
+                else if (name == "ScaleY")
+                {
+                    options->set_vectory(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "FileData")
+        {
+            ResourceData* resourceData = options->mutable_backgroundimagedata();
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "Path")
+                {
+                    resourceData->set_path(value);
+                }
+                else if (name == "Type")
+                {
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2906,6 +3072,8 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     
     ListViewOptions* options = listViewOptions;
     
+    bool scale9Enabled = false;
+
     // attributes
     const tinyxml2::XMLAttribute* attribute = listViewObjectData->FirstAttribute();
     while (attribute)
@@ -2924,6 +3092,30 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
         else if (name == "BackColorAlpha")
         {
             options->set_bgcoloropacity(atoi(value.c_str()));
+        }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
         }
         else if (name == "DirectionType")
         {
@@ -3024,6 +3216,27 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                 attribute = attribute->Next();
             }
         }
+        else if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
         else if (name == "SingleColor")
         {
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
@@ -3098,6 +3311,7 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
         }
         else if (name == "ColorVector")
         {
+			const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
             {
                 std::string name = attribute->Name();
@@ -3131,7 +3345,7 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -3250,7 +3464,7 @@ void ProtocolBuffersSerialize::setComAudioOptions(protocolbuffers::ComAudioOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    int resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -3395,7 +3609,7 @@ void ProtocolBuffersSerialize::setVisibleFrame(protocolbuffers::TimeLineBoolFram
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "value")
+        if (name == "Value")
         {
             visibleFrame->set_value((value == "True") ? true : false);
         }
@@ -3559,11 +3773,11 @@ void ProtocolBuffersSerialize::setColorFrame(protocolbuffers::TimeLineColorFrame
         {
             colorFrame->set_red(atoi(value.c_str()));
         }
-        else if (name == "g")
+        else if (name == "G")
         {
             colorFrame->set_green(atoi(value.c_str()));
         }
-        else if (name == "R")
+        else if (name == "B")
         {
             colorFrame->set_blue(atoi(value.c_str()));
         }
@@ -3591,7 +3805,7 @@ void ProtocolBuffersSerialize::setTextureFrame(protocolbuffers::TimeLineTextureF
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "Path") // to be gonna modify
+        if (name == "Value") // to be gonna modify
         {
             textureFrame->set_name(value);
         }
@@ -3619,7 +3833,7 @@ void ProtocolBuffersSerialize::setEventFrame(protocolbuffers::TimeLineStringFram
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "EventStr") // to be gonna modify
+        if (name == "Value") // to be gonna modify
         {
             eventFrame->set_value(value);
         }
@@ -3647,7 +3861,7 @@ void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame 
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "zorder") // to be gonna modify
+        if (name == "Value") // to be gonna modify
         {
             zorderFrame->set_value(atoi(value.c_str()));
         }
@@ -4971,4 +5185,22 @@ void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame 
     
     bool tween = frame->isTween();
     protoBufFrame->set_tween(tween);
+}
+
+
+int ProtocolBuffersSerialize::getResourceType(std::string key)
+{
+	if(key == "Normal" || key == "Default")
+	{
+		return 	0;	
+	}
+	
+	if(_isSimulator)
+	{
+		if(key == "MarkedSubImage")
+		{
+			return 0;
+		}
+	}
+	return 1;
 }
