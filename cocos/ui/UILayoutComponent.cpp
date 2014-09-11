@@ -255,6 +255,10 @@ namespace ui {
             {
             case PositionType::Position:
                 this->getOwner()->setPosition(basePoint);
+                if (_referencePoint == ReferencePoint::BOTTOM_LEFT)
+                {
+                    _relativePosition = basePoint;
+                }
                 break;
             case PositionType::RelativePosition:
                 _relativePosition = basePoint;
