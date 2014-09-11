@@ -1987,6 +1987,10 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
                 options->set_valignment(2);
             }
         }
+        else if (name == "IsCustomSize")
+        {
+			options->set_iscustomsize((value == "True") ? true : false);
+		}
         
         attribute = attribute->Next();
     }
@@ -2368,6 +2372,11 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
                 options->set_areaheight(areaHeight);
             }
         }
+        else if (name == "IsCustomSize")
+        {
+            options->set_iscustomsize((value == "True") ? true : false);
+        }
+        
         
         attribute = attribute->Next();
     }
@@ -2401,10 +2410,33 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
                 {
                     resourceData->set_plistfile(value);
                 }
+				else if (name == "AnchorPoint")
+				{
+					const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+					while (attribute)
+					{
+						std::string name = attribute->Name();
+						std::string value = attribute->Value();
+                
+						if (name == "ScaleX")
+						{
+							options->set_anchorpointx(atof(value.c_str()));
+						}
+						else if (name == "ScaleY")
+						{
+							options->set_anchorpointy(atof(value.c_str()));
+						}
+                
+						attribute = attribute->Next();
+					}
+				}
                 
                 attribute = attribute->Next();
             }
         }
+
+
         
         child = child->NextSiblingElement();
     }
@@ -3400,7 +3432,7 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                     options->set_filename(convert);
                     
                     
-                    std::string protocolBuffersFileName = _protocolbuffersDir.append(convert);
+                    std::string protocolBuffersFileName = _protocolbuffersDir + convert;
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
                     serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value);
                      
@@ -5211,4 +5243,9 @@ int ProtocolBuffersSerialize::getResourceType(std::string key)
 		}
 	}
 	return 1;
+}
+
+void ProtocolBuffersSerialize::set_protocolbuffersDir(std::string path)
+{
+	_protocolbuffersDir = path;
 }

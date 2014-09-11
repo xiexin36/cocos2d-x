@@ -353,6 +353,8 @@ public:
     
 	int getResourceType(std::string key);
 
+	void set_protocolbuffersDir(std::string path);
+
 protected:
 //    std::string m_filePath;
     std::string _protocolbuffersFileName;

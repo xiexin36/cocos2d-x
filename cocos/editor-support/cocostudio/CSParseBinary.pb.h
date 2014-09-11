@@ -2693,6 +2693,13 @@ class TextOptions : public ::google::protobuf::MessageLite {
   inline ::protocolbuffers::ResourceData* release_fontresource();
   inline void set_allocated_fontresource(::protocolbuffers::ResourceData* fontresource);
 
+  // optional bool IsCustomSize = 13;
+  inline bool has_iscustomsize() const;
+  inline void clear_iscustomsize();
+  static const int kIsCustomSizeFieldNumber = 13;
+  inline bool iscustomsize() const;
+  inline void set_iscustomsize(bool value);
+
   // @@protoc_insertion_point(class_scope:protocolbuffers.TextOptions)
  private:
   inline void set_has_name();
@@ -2719,6 +2726,8 @@ class TextOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_touchscaleenable();
   inline void set_has_fontresource();
   inline void clear_has_fontresource();
+  inline void set_has_iscustomsize();
+  inline void clear_has_iscustomsize();
 
   ::std::string* name_;
   ::std::string* classname_;
@@ -2731,10 +2740,11 @@ class TextOptions : public ::google::protobuf::MessageLite {
   ::google::protobuf::int32 halignment_;
   ::google::protobuf::int32 valignment_;
   bool touchscaleenable_;
+  bool iscustomsize_;
   ::protocolbuffers::ResourceData* fontresource_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -5348,6 +5358,13 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   inline ::protocolbuffers::ResourceData* release_fontresource();
   inline void set_allocated_fontresource(::protocolbuffers::ResourceData* fontresource);
 
+  // optional bool IsCustomSize = 17;
+  inline bool has_iscustomsize() const;
+  inline void clear_iscustomsize();
+  static const int kIsCustomSizeFieldNumber = 17;
+  inline bool iscustomsize() const;
+  inline void set_iscustomsize(bool value);
+
   // @@protoc_insertion_point(class_scope:protocolbuffers.TextFieldOptions)
  private:
   inline void set_has_name();
@@ -5382,6 +5399,8 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_anchorpointy();
   inline void set_has_fontresource();
   inline void clear_has_fontresource();
+  inline void set_has_iscustomsize();
+  inline void clear_has_iscustomsize();
 
   ::std::string* name_;
   ::std::string* classname_;
@@ -5390,10 +5409,11 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   ::std::string* text_;
   ::std::string* placeholder_;
   ::google::protobuf::int32 fontsize_;
+  ::google::protobuf::int32 maxlength_;
+  ::std::string* passwordstyletext_;
   bool passwordenable_;
   bool maxlengthenable_;
-  ::std::string* passwordstyletext_;
-  ::google::protobuf::int32 maxlength_;
+  bool iscustomsize_;
   float areawidth_;
   float areaheight_;
   float anchorpointx_;
@@ -5401,7 +5421,7 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   float anchorpointy_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(16 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(17 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -13562,6 +13582,28 @@ inline void TextOptions::set_allocated_fontresource(::protocolbuffers::ResourceD
   }
 }
 
+// optional bool IsCustomSize = 13;
+inline bool TextOptions::has_iscustomsize() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void TextOptions::set_has_iscustomsize() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void TextOptions::clear_has_iscustomsize() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void TextOptions::clear_iscustomsize() {
+  iscustomsize_ = false;
+  clear_has_iscustomsize();
+}
+inline bool TextOptions::iscustomsize() const {
+  return iscustomsize_;
+}
+inline void TextOptions::set_iscustomsize(bool value) {
+  set_has_iscustomsize();
+  iscustomsize_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // LoadingBarOptions
@@ -19540,6 +19582,28 @@ inline void TextFieldOptions::set_allocated_fontresource(::protocolbuffers::Reso
   } else {
     clear_has_fontresource();
   }
+}
+
+// optional bool IsCustomSize = 17;
+inline bool TextFieldOptions::has_iscustomsize() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void TextFieldOptions::set_has_iscustomsize() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void TextFieldOptions::clear_has_iscustomsize() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void TextFieldOptions::clear_iscustomsize() {
+  iscustomsize_ = false;
+  clear_has_iscustomsize();
+}
+inline bool TextFieldOptions::iscustomsize() const {
+  return iscustomsize_;
+}
+inline void TextFieldOptions::set_iscustomsize(bool value) {
+  set_has_iscustomsize();
+  iscustomsize_ = value;
 }
 
 // -------------------------------------------------------------------
