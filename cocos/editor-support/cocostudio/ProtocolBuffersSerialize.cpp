@@ -2410,6 +2410,8 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     
     PanelOptions* options = layoutOptions;
     
+	bool scale9Enabled = false;
+
     // attributes
     const tinyxml2::XMLAttribute* attribute = layoutObjectData->FirstAttribute();
     while (attribute)
@@ -2429,6 +2431,30 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
         {
             options->set_bgcoloropacity(atoi(value.c_str()));
         }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
+        }
         
         attribute = attribute->Next();
     }
@@ -2439,7 +2465,28 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     {
         std::string name = child->Name();
         
-        if (name == "SingleColor")
+       if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "SingleColor")
         {
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             while (attribute)
@@ -2571,6 +2618,8 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
     
     PageViewOptions* options = pageViewOptions;
     
+    bool scale9Enabled = false;
+
     // attributes
     const tinyxml2::XMLAttribute* attribute = pageViewObjectData->FirstAttribute();
     while (attribute)
@@ -2590,7 +2639,30 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
         {
             options->set_bgcoloropacity(atoi(value.c_str()));
         }
-        
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
+        }
         attribute = attribute->Next();
     }
     
@@ -2619,6 +2691,27 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
                 else if (name == "B")
                 {
                     options->set_bgcolorb(atoi(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
                 }
                 
                 attribute = attribute->Next();
@@ -2732,6 +2825,8 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
     
     ScrollViewOptions* options = scrollViewOptions;
     
+    bool scale9Enabled = false;
+
     // attributes
     const tinyxml2::XMLAttribute* attribute = scrollViewObjectData->FirstAttribute();
     while (attribute)
@@ -2750,6 +2845,30 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
         else if (name == "BackColorAlpha")
         {
             options->set_bgcoloropacity(atoi(value.c_str()));
+        }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
         }
         else if (name == "ScrollDirectionType")
         {
@@ -2795,6 +2914,27 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
                 else if (name == "Height")
                 {
                     options->set_innerheight(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
                 }
                 
                 attribute = attribute->Next();
@@ -2932,6 +3072,8 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     
     ListViewOptions* options = listViewOptions;
     
+    bool scale9Enabled = false;
+
     // attributes
     const tinyxml2::XMLAttribute* attribute = listViewObjectData->FirstAttribute();
     while (attribute)
@@ -2950,6 +3092,30 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
         else if (name == "BackColorAlpha")
         {
             options->set_bgcoloropacity(atoi(value.c_str()));
+        }
+        else if (name == "Scale9Enable")
+        {
+            if (value == "True")
+            {
+                scale9Enabled = true;
+            }
+            options->set_backgroundscale9enable((value == "True") ? true : false);
+        }
+        else if (name == "Scale9OriginX")
+        {
+            options->set_capinsetsx(atof(value.c_str()));
+        }
+        else if (name == "Scale9OriginY")
+        {
+            options->set_capinsetsy(atof(value.c_str()));
+        }
+        else if (name == "Scale9Width")
+        {
+            options->set_capinsetswidth(atof(value.c_str()));
+        }
+        else if (name == "Scale9Height")
+        {
+            options->set_capinsetsheight(atof(value.c_str()));
         }
         else if (name == "DirectionType")
         {
@@ -3045,6 +3211,27 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                 else if (name == "Height")
                 {
                     options->set_innerheight(atof(value.c_str()));
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        else if (name == "Size" && scale9Enabled)
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    options->set_scale9width(atof(value.c_str()));
+                }
+                else if (name == "Y")
+                {
+                    options->set_scale9height(atof(value.c_str()));
                 }
                 
                 attribute = attribute->Next();

@@ -7546,6 +7546,8 @@ const int LoadingBarOptions::kCapInsetsYFieldNumber;
 const int LoadingBarOptions::kCapInsetsWidthFieldNumber;
 const int LoadingBarOptions::kCapInsetsHeightFieldNumber;
 const int LoadingBarOptions::kScale9EnableFieldNumber;
+const int LoadingBarOptions::kScale9WidthFieldNumber;
+const int LoadingBarOptions::kScale9HeightFieldNumber;
 #endif  // !_MSC_VER
 
 LoadingBarOptions::LoadingBarOptions()
@@ -7581,6 +7583,8 @@ void LoadingBarOptions::SharedCtor() {
   capinsetswidth_ = 0;
   capinsetsheight_ = 0;
   scale9enable_ = false;
+  scale9width_ = 0;
+  scale9height_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -7656,6 +7660,8 @@ void LoadingBarOptions::Clear() {
     capinsetswidth_ = 0;
     capinsetsheight_ = 0;
     scale9enable_ = false;
+    scale9width_ = 0;
+    scale9height_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -7829,6 +7835,38 @@ bool LoadingBarOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(101)) goto parse_scale9Width;
+        break;
+      }
+
+      // optional float scale9Width = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Width:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9width_)));
+          set_has_scale9width();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(109)) goto parse_scale9Height;
+        break;
+      }
+
+      // optional float scale9Height = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Height:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9height_)));
+          set_has_scale9height();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -7909,6 +7947,16 @@ void LoadingBarOptions::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->scale9enable(), output);
   }
 
+  // optional float scale9Width = 12;
+  if (has_scale9width()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(12, this->scale9width(), output);
+  }
+
+  // optional float scale9Height = 13;
+  if (has_scale9height()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(13, this->scale9height(), output);
+  }
+
 }
 
 int LoadingBarOptions::ByteSize() const {
@@ -7984,6 +8032,16 @@ int LoadingBarOptions::ByteSize() const {
       total_size += 1 + 1;
     }
 
+    // optional float scale9Width = 12;
+    if (has_scale9width()) {
+      total_size += 1 + 4;
+    }
+
+    // optional float scale9Height = 13;
+    if (has_scale9height()) {
+      total_size += 1 + 4;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -8034,6 +8092,12 @@ void LoadingBarOptions::MergeFrom(const LoadingBarOptions& from) {
     if (from.has_scale9enable()) {
       set_scale9enable(from.scale9enable());
     }
+    if (from.has_scale9width()) {
+      set_scale9width(from.scale9width());
+    }
+    if (from.has_scale9height()) {
+      set_scale9height(from.scale9height());
+    }
   }
 }
 
@@ -8061,6 +8125,8 @@ void LoadingBarOptions::Swap(LoadingBarOptions* other) {
     std::swap(capinsetswidth_, other->capinsetswidth_);
     std::swap(capinsetsheight_, other->capinsetsheight_);
     std::swap(scale9enable_, other->scale9enable_);
+    std::swap(scale9width_, other->scale9width_);
+    std::swap(scale9height_, other->scale9height_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -8103,6 +8169,8 @@ const int ListViewOptions::kBounceEnableFieldNumber;
 const int ListViewOptions::kDirectionFieldNumber;
 const int ListViewOptions::kGravityFieldNumber;
 const int ListViewOptions::kItemMarginFieldNumber;
+const int ListViewOptions::kScale9WidthFieldNumber;
+const int ListViewOptions::kScale9HeightFieldNumber;
 #endif  // !_MSC_VER
 
 ListViewOptions::ListViewOptions()
@@ -8156,6 +8224,8 @@ void ListViewOptions::SharedCtor() {
   direction_ = 0;
   gravity_ = 0;
   itemmargin_ = 0;
+  scale9width_ = 0;
+  scale9height_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -8253,6 +8323,8 @@ void ListViewOptions::Clear() {
     direction_ = 0;
     gravity_ = 0;
     itemmargin_ = 0;
+    scale9width_ = 0;
+    scale9height_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -8714,6 +8786,38 @@ bool ListViewOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(245)) goto parse_scale9Width;
+        break;
+      }
+
+      // optional float scale9Width = 30;
+      case 30: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Width:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9width_)));
+          set_has_scale9width();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(253)) goto parse_scale9Height;
+        break;
+      }
+
+      // optional float scale9Height = 31;
+      case 31: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Height:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9height_)));
+          set_has_scale9height();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -8882,6 +8986,16 @@ void ListViewOptions::SerializeWithCachedSizes(
   // optional int32 itemMargin = 29;
   if (has_itemmargin()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(29, this->itemmargin(), output);
+  }
+
+  // optional float scale9Width = 30;
+  if (has_scale9width()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(30, this->scale9width(), output);
+  }
+
+  // optional float scale9Height = 31;
+  if (has_scale9height()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(31, this->scale9height(), output);
   }
 
 }
@@ -9077,6 +9191,16 @@ int ListViewOptions::ByteSize() const {
           this->itemmargin());
     }
 
+    // optional float scale9Width = 30;
+    if (has_scale9width()) {
+      total_size += 2 + 4;
+    }
+
+    // optional float scale9Height = 31;
+    if (has_scale9height()) {
+      total_size += 2 + 4;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -9185,6 +9309,12 @@ void ListViewOptions::MergeFrom(const ListViewOptions& from) {
     if (from.has_itemmargin()) {
       set_itemmargin(from.itemmargin());
     }
+    if (from.has_scale9width()) {
+      set_scale9width(from.scale9width());
+    }
+    if (from.has_scale9height()) {
+      set_scale9height(from.scale9height());
+    }
   }
 }
 
@@ -9230,6 +9360,8 @@ void ListViewOptions::Swap(ListViewOptions* other) {
     std::swap(direction_, other->direction_);
     std::swap(gravity_, other->gravity_);
     std::swap(itemmargin_, other->itemmargin_);
+    std::swap(scale9width_, other->scale9width_);
+    std::swap(scale9height_, other->scale9height_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -9266,6 +9398,8 @@ const int PageViewOptions::kCapInsetsYFieldNumber;
 const int PageViewOptions::kCapInsetsWidthFieldNumber;
 const int PageViewOptions::kCapInsetsHeightFieldNumber;
 const int PageViewOptions::kBackGroundScale9EnableFieldNumber;
+const int PageViewOptions::kScale9WidthFieldNumber;
+const int PageViewOptions::kScale9HeightFieldNumber;
 #endif  // !_MSC_VER
 
 PageViewOptions::PageViewOptions()
@@ -9313,6 +9447,8 @@ void PageViewOptions::SharedCtor() {
   capinsetswidth_ = 0;
   capinsetsheight_ = 0;
   backgroundscale9enable_ = false;
+  scale9width_ = 0;
+  scale9height_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -9402,6 +9538,10 @@ void PageViewOptions::Clear() {
     capinsetswidth_ = 0;
     capinsetsheight_ = 0;
     backgroundscale9enable_ = false;
+    scale9width_ = 0;
+  }
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    scale9height_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -9767,6 +9907,38 @@ bool PageViewOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(197)) goto parse_scale9Width;
+        break;
+      }
+
+      // optional float scale9Width = 24;
+      case 24: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Width:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9width_)));
+          set_has_scale9width();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(205)) goto parse_scale9Height;
+        break;
+      }
+
+      // optional float scale9Height = 25;
+      case 25: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Height:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9height_)));
+          set_has_scale9height();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -9905,6 +10077,16 @@ void PageViewOptions::SerializeWithCachedSizes(
   // optional bool backGroundScale9Enable = 23;
   if (has_backgroundscale9enable()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(23, this->backgroundscale9enable(), output);
+  }
+
+  // optional float scale9Width = 24;
+  if (has_scale9width()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(24, this->scale9width(), output);
+  }
+
+  // optional float scale9Height = 25;
+  if (has_scale9height()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(25, this->scale9height(), output);
   }
 
 }
@@ -10062,6 +10244,18 @@ int PageViewOptions::ByteSize() const {
       total_size += 2 + 1;
     }
 
+    // optional float scale9Width = 24;
+    if (has_scale9width()) {
+      total_size += 2 + 4;
+    }
+
+  }
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    // optional float scale9Height = 25;
+    if (has_scale9height()) {
+      total_size += 2 + 4;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -10150,6 +10344,14 @@ void PageViewOptions::MergeFrom(const PageViewOptions& from) {
     if (from.has_backgroundscale9enable()) {
       set_backgroundscale9enable(from.backgroundscale9enable());
     }
+    if (from.has_scale9width()) {
+      set_scale9width(from.scale9width());
+    }
+  }
+  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    if (from.has_scale9height()) {
+      set_scale9height(from.scale9height());
+    }
   }
 }
 
@@ -10189,6 +10391,8 @@ void PageViewOptions::Swap(PageViewOptions* other) {
     std::swap(capinsetswidth_, other->capinsetswidth_);
     std::swap(capinsetsheight_, other->capinsetsheight_);
     std::swap(backgroundscale9enable_, other->backgroundscale9enable_);
+    std::swap(scale9width_, other->scale9width_);
+    std::swap(scale9height_, other->scale9height_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -10227,6 +10431,8 @@ const int PanelOptions::kCapInsetsHeightFieldNumber;
 const int PanelOptions::kBackGroundScale9EnableFieldNumber;
 const int PanelOptions::kLayoutTypeFieldNumber;
 const int PanelOptions::kAdaptScreenFieldNumber;
+const int PanelOptions::kScale9WidthFieldNumber;
+const int PanelOptions::kScale9HeightFieldNumber;
 #endif  // !_MSC_VER
 
 PanelOptions::PanelOptions()
@@ -10276,6 +10482,8 @@ void PanelOptions::SharedCtor() {
   backgroundscale9enable_ = false;
   layouttype_ = 0;
   adaptscreen_ = false;
+  scale9width_ = 0;
+  scale9height_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -10369,6 +10577,8 @@ void PanelOptions::Clear() {
   }
   if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     adaptscreen_ = false;
+    scale9width_ = 0;
+    scale9height_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -10766,6 +10976,38 @@ bool PanelOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(213)) goto parse_scale9Width;
+        break;
+      }
+
+      // optional float scale9Width = 26;
+      case 26: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Width:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9width_)));
+          set_has_scale9width();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(221)) goto parse_scale9Height;
+        break;
+      }
+
+      // optional float scale9Height = 27;
+      case 27: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Height:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9height_)));
+          set_has_scale9height();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -10914,6 +11156,16 @@ void PanelOptions::SerializeWithCachedSizes(
   // optional bool adaptScreen = 25;
   if (has_adaptscreen()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(25, this->adaptscreen(), output);
+  }
+
+  // optional float scale9Width = 26;
+  if (has_scale9width()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(26, this->scale9width(), output);
+  }
+
+  // optional float scale9Height = 27;
+  if (has_scale9height()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(27, this->scale9height(), output);
   }
 
 }
@@ -11085,6 +11337,16 @@ int PanelOptions::ByteSize() const {
       total_size += 2 + 1;
     }
 
+    // optional float scale9Width = 26;
+    if (has_scale9width()) {
+      total_size += 2 + 4;
+    }
+
+    // optional float scale9Height = 27;
+    if (has_scale9height()) {
+      total_size += 2 + 4;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -11181,6 +11443,12 @@ void PanelOptions::MergeFrom(const PanelOptions& from) {
     if (from.has_adaptscreen()) {
       set_adaptscreen(from.adaptscreen());
     }
+    if (from.has_scale9width()) {
+      set_scale9width(from.scale9width());
+    }
+    if (from.has_scale9height()) {
+      set_scale9height(from.scale9height());
+    }
   }
 }
 
@@ -11222,6 +11490,8 @@ void PanelOptions::Swap(PanelOptions* other) {
     std::swap(backgroundscale9enable_, other->backgroundscale9enable_);
     std::swap(layouttype_, other->layouttype_);
     std::swap(adaptscreen_, other->adaptscreen_);
+    std::swap(scale9width_, other->scale9width_);
+    std::swap(scale9height_, other->scale9height_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -11263,6 +11533,8 @@ const int ScrollViewOptions::kDirectionFieldNumber;
 const int ScrollViewOptions::kClipAbleFieldNumber;
 const int ScrollViewOptions::kBounceEnableFieldNumber;
 const int ScrollViewOptions::kLayoutTypeFieldNumber;
+const int ScrollViewOptions::kScale9WidthFieldNumber;
+const int ScrollViewOptions::kScale9HeightFieldNumber;
 #endif  // !_MSC_VER
 
 ScrollViewOptions::ScrollViewOptions()
@@ -11315,6 +11587,8 @@ void ScrollViewOptions::SharedCtor() {
   clipable_ = false;
   bounceenable_ = false;
   layouttype_ = 0;
+  scale9width_ = 0;
+  scale9height_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -11411,6 +11685,8 @@ void ScrollViewOptions::Clear() {
     clipable_ = false;
     bounceenable_ = false;
     layouttype_ = 0;
+    scale9width_ = 0;
+    scale9height_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -11856,6 +12132,38 @@ bool ScrollViewOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(237)) goto parse_scale9Width;
+        break;
+      }
+
+      // optional float scale9Width = 29;
+      case 29: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Width:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9width_)));
+          set_has_scale9width();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(245)) goto parse_scale9Height;
+        break;
+      }
+
+      // optional float scale9Height = 30;
+      case 30: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_scale9Height:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &scale9height_)));
+          set_has_scale9height();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -12019,6 +12327,16 @@ void ScrollViewOptions::SerializeWithCachedSizes(
   // optional int32 layoutType = 28;
   if (has_layouttype()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(28, this->layouttype(), output);
+  }
+
+  // optional float scale9Width = 29;
+  if (has_scale9width()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(29, this->scale9width(), output);
+  }
+
+  // optional float scale9Height = 30;
+  if (has_scale9height()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(30, this->scale9height(), output);
   }
 
 }
@@ -12207,6 +12525,16 @@ int ScrollViewOptions::ByteSize() const {
           this->layouttype());
     }
 
+    // optional float scale9Width = 29;
+    if (has_scale9width()) {
+      total_size += 2 + 4;
+    }
+
+    // optional float scale9Height = 30;
+    if (has_scale9height()) {
+      total_size += 2 + 4;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -12312,6 +12640,12 @@ void ScrollViewOptions::MergeFrom(const ScrollViewOptions& from) {
     if (from.has_layouttype()) {
       set_layouttype(from.layouttype());
     }
+    if (from.has_scale9width()) {
+      set_scale9width(from.scale9width());
+    }
+    if (from.has_scale9height()) {
+      set_scale9height(from.scale9height());
+    }
   }
 }
 
@@ -12356,6 +12690,8 @@ void ScrollViewOptions::Swap(ScrollViewOptions* other) {
     std::swap(clipable_, other->clipable_);
     std::swap(bounceenable_, other->bounceenable_);
     std::swap(layouttype_, other->layouttype_);
+    std::swap(scale9width_, other->scale9width_);
+    std::swap(scale9height_, other->scale9height_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
