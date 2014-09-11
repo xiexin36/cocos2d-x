@@ -89,7 +89,7 @@ namespace ui {
     void LayoutComponent::setUsingPercentContentSize(bool flag)
     {
         _usingPercentContentSize = flag;
-        this->RefreshLayoutSize(SizeType::PreSize,_percentContentSize);
+        this->RefreshLayoutSize(SizeType::Size,this->getOwner()->getContentSize());
     }
 
     void LayoutComponent::RefreshLayoutSize(SizeType sType, const Vec2& size)
