@@ -5325,6 +5325,20 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   inline float areaheight() const;
   inline void set_areaheight(float value);
 
+  // optional float anchorPointX = 15;
+  inline bool has_anchorpointx() const;
+  inline void clear_anchorpointx();
+  static const int kAnchorPointXFieldNumber = 15;
+  inline float anchorpointx() const;
+  inline void set_anchorpointx(float value);
+
+  // optional float anchorPointY = 16;
+  inline bool has_anchorpointy() const;
+  inline void clear_anchorpointy();
+  static const int kAnchorPointYFieldNumber = 16;
+  inline float anchorpointy() const;
+  inline void set_anchorpointy(float value);
+
   // optional .protocolbuffers.ResourceData fontResource = 14;
   inline bool has_fontresource() const;
   inline void clear_fontresource();
@@ -5362,6 +5376,10 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   inline void clear_has_areawidth();
   inline void set_has_areaheight();
   inline void clear_has_areaheight();
+  inline void set_has_anchorpointx();
+  inline void clear_has_anchorpointx();
+  inline void set_has_anchorpointy();
+  inline void clear_has_anchorpointy();
   inline void set_has_fontresource();
   inline void clear_has_fontresource();
 
@@ -5377,11 +5395,13 @@ class TextFieldOptions : public ::google::protobuf::MessageLite {
   ::std::string* passwordstyletext_;
   ::google::protobuf::int32 maxlength_;
   float areawidth_;
-  ::protocolbuffers::ResourceData* fontresource_;
   float areaheight_;
+  float anchorpointx_;
+  ::protocolbuffers::ResourceData* fontresource_;
+  float anchorpointy_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(16 + 31) / 32];
 
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_CSParseBinary_2eproto_impl();
@@ -19436,15 +19456,59 @@ inline void TextFieldOptions::set_areaheight(float value) {
   areaheight_ = value;
 }
 
-// optional .protocolbuffers.ResourceData fontResource = 14;
-inline bool TextFieldOptions::has_fontresource() const {
+// optional float anchorPointX = 15;
+inline bool TextFieldOptions::has_anchorpointx() const {
   return (_has_bits_[0] & 0x00002000u) != 0;
 }
-inline void TextFieldOptions::set_has_fontresource() {
+inline void TextFieldOptions::set_has_anchorpointx() {
   _has_bits_[0] |= 0x00002000u;
 }
-inline void TextFieldOptions::clear_has_fontresource() {
+inline void TextFieldOptions::clear_has_anchorpointx() {
   _has_bits_[0] &= ~0x00002000u;
+}
+inline void TextFieldOptions::clear_anchorpointx() {
+  anchorpointx_ = 0;
+  clear_has_anchorpointx();
+}
+inline float TextFieldOptions::anchorpointx() const {
+  return anchorpointx_;
+}
+inline void TextFieldOptions::set_anchorpointx(float value) {
+  set_has_anchorpointx();
+  anchorpointx_ = value;
+}
+
+// optional float anchorPointY = 16;
+inline bool TextFieldOptions::has_anchorpointy() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void TextFieldOptions::set_has_anchorpointy() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void TextFieldOptions::clear_has_anchorpointy() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void TextFieldOptions::clear_anchorpointy() {
+  anchorpointy_ = 0;
+  clear_has_anchorpointy();
+}
+inline float TextFieldOptions::anchorpointy() const {
+  return anchorpointy_;
+}
+inline void TextFieldOptions::set_anchorpointy(float value) {
+  set_has_anchorpointy();
+  anchorpointy_ = value;
+}
+
+// optional .protocolbuffers.ResourceData fontResource = 14;
+inline bool TextFieldOptions::has_fontresource() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void TextFieldOptions::set_has_fontresource() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void TextFieldOptions::clear_has_fontresource() {
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline void TextFieldOptions::clear_fontresource() {
   if (fontresource_ != NULL) fontresource_->::protocolbuffers::ResourceData::Clear();

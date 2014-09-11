@@ -14853,6 +14853,8 @@ const int TextFieldOptions::kMaxLengthEnableFieldNumber;
 const int TextFieldOptions::kMaxLengthFieldNumber;
 const int TextFieldOptions::kAreaWidthFieldNumber;
 const int TextFieldOptions::kAreaHeightFieldNumber;
+const int TextFieldOptions::kAnchorPointXFieldNumber;
+const int TextFieldOptions::kAnchorPointYFieldNumber;
 const int TextFieldOptions::kFontResourceFieldNumber;
 #endif  // !_MSC_VER
 
@@ -14897,6 +14899,8 @@ void TextFieldOptions::SharedCtor() {
   maxlength_ = 0;
   areawidth_ = 0;
   areaheight_ = 0;
+  anchorpointx_ = 0;
+  anchorpointy_ = 0;
   fontresource_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -14997,6 +15001,8 @@ void TextFieldOptions::Clear() {
     maxlength_ = 0;
     areawidth_ = 0;
     areaheight_ = 0;
+    anchorpointx_ = 0;
+    anchorpointy_ = 0;
     if (has_fontresource()) {
       if (fontresource_ != NULL) fontresource_->::protocolbuffers::ResourceData::Clear();
     }
@@ -15213,6 +15219,38 @@ bool TextFieldOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(125)) goto parse_anchorPointX;
+        break;
+      }
+
+      // optional float anchorPointX = 15;
+      case 15: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_anchorPointX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &anchorpointx_)));
+          set_has_anchorpointx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(133)) goto parse_anchorPointY;
+        break;
+      }
+
+      // optional float anchorPointY = 16;
+      case 16: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_anchorPointY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &anchorpointy_)));
+          set_has_anchorpointy();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -15312,6 +15350,16 @@ void TextFieldOptions::SerializeWithCachedSizes(
       14, this->fontresource(), output);
   }
 
+  // optional float anchorPointX = 15;
+  if (has_anchorpointx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(15, this->anchorpointx(), output);
+  }
+
+  // optional float anchorPointY = 16;
+  if (has_anchorpointy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(16, this->anchorpointy(), output);
+  }
+
 }
 
 int TextFieldOptions::ByteSize() const {
@@ -15403,6 +15451,16 @@ int TextFieldOptions::ByteSize() const {
       total_size += 1 + 4;
     }
 
+    // optional float anchorPointX = 15;
+    if (has_anchorpointx()) {
+      total_size += 1 + 4;
+    }
+
+    // optional float anchorPointY = 16;
+    if (has_anchorpointy()) {
+      total_size += 2 + 4;
+    }
+
     // optional .protocolbuffers.ResourceData fontResource = 14;
     if (has_fontresource()) {
       total_size += 1 +
@@ -15466,6 +15524,12 @@ void TextFieldOptions::MergeFrom(const TextFieldOptions& from) {
     if (from.has_areaheight()) {
       set_areaheight(from.areaheight());
     }
+    if (from.has_anchorpointx()) {
+      set_anchorpointx(from.anchorpointx());
+    }
+    if (from.has_anchorpointy()) {
+      set_anchorpointy(from.anchorpointy());
+    }
     if (from.has_fontresource()) {
       mutable_fontresource()->::protocolbuffers::ResourceData::MergeFrom(from.fontresource());
     }
@@ -15498,6 +15562,8 @@ void TextFieldOptions::Swap(TextFieldOptions* other) {
     std::swap(maxlength_, other->maxlength_);
     std::swap(areawidth_, other->areawidth_);
     std::swap(areaheight_, other->areaheight_);
+    std::swap(anchorpointx_, other->anchorpointx_);
+    std::swap(anchorpointy_, other->anchorpointy_);
     std::swap(fontresource_, other->fontresource_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
