@@ -3422,7 +3422,7 @@ void ProtocolBuffersSerialize::setVisibleFrame(protocolbuffers::TimeLineBoolFram
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "value")
+        if (name == "Value")
         {
             visibleFrame->set_value((value == "True") ? true : false);
         }
@@ -3586,11 +3586,11 @@ void ProtocolBuffersSerialize::setColorFrame(protocolbuffers::TimeLineColorFrame
         {
             colorFrame->set_red(atoi(value.c_str()));
         }
-        else if (name == "g")
+        else if (name == "G")
         {
             colorFrame->set_green(atoi(value.c_str()));
         }
-        else if (name == "R")
+        else if (name == "B")
         {
             colorFrame->set_blue(atoi(value.c_str()));
         }
@@ -3618,7 +3618,7 @@ void ProtocolBuffersSerialize::setTextureFrame(protocolbuffers::TimeLineTextureF
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "Path") // to be gonna modify
+        if (name == "Value") // to be gonna modify
         {
             textureFrame->set_name(value);
         }
@@ -3646,7 +3646,7 @@ void ProtocolBuffersSerialize::setEventFrame(protocolbuffers::TimeLineStringFram
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "EventStr") // to be gonna modify
+        if (name == "Value") // to be gonna modify
         {
             eventFrame->set_value(value);
         }
@@ -3674,7 +3674,7 @@ void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame 
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "zorder") // to be gonna modify
+        if (name == "Value") // to be gonna modify
         {
             zorderFrame->set_value(atoi(value.c_str()));
         }
