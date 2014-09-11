@@ -7056,6 +7056,7 @@ const int TextOptions::kHAlignmentFieldNumber;
 const int TextOptions::kVAlignmentFieldNumber;
 const int TextOptions::kTouchScaleEnableFieldNumber;
 const int TextOptions::kFontResourceFieldNumber;
+const int TextOptions::kIsCustomSizeFieldNumber;
 #endif  // !_MSC_VER
 
 TextOptions::TextOptions()
@@ -7098,6 +7099,7 @@ void TextOptions::SharedCtor() {
   valignment_ = 0;
   touchscaleenable_ = false;
   fontresource_ = NULL;
+  iscustomsize_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -7184,6 +7186,7 @@ void TextOptions::Clear() {
     if (has_fontresource()) {
       if (fontresource_ != NULL) fontresource_->::protocolbuffers::ResourceData::Clear();
     }
+    iscustomsize_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -7369,6 +7372,22 @@ bool TextOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(104)) goto parse_IsCustomSize;
+        break;
+      }
+
+      // optional bool IsCustomSize = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_IsCustomSize:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &iscustomsize_)));
+          set_has_iscustomsize();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -7454,6 +7473,11 @@ void TextOptions::SerializeWithCachedSizes(
   if (has_fontresource()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       12, this->fontresource(), output);
+  }
+
+  // optional bool IsCustomSize = 13;
+  if (has_iscustomsize()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->iscustomsize(), output);
   }
 
 }
@@ -7542,6 +7566,11 @@ int TextOptions::ByteSize() const {
           this->fontresource());
     }
 
+    // optional bool IsCustomSize = 13;
+    if (has_iscustomsize()) {
+      total_size += 1 + 1;
+    }
+
   }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
@@ -7595,6 +7624,9 @@ void TextOptions::MergeFrom(const TextOptions& from) {
     if (from.has_fontresource()) {
       mutable_fontresource()->::protocolbuffers::ResourceData::MergeFrom(from.fontresource());
     }
+    if (from.has_iscustomsize()) {
+      set_iscustomsize(from.iscustomsize());
+    }
   }
 }
 
@@ -7623,6 +7655,7 @@ void TextOptions::Swap(TextOptions* other) {
     std::swap(valignment_, other->valignment_);
     std::swap(touchscaleenable_, other->touchscaleenable_);
     std::swap(fontresource_, other->fontresource_);
+    std::swap(iscustomsize_, other->iscustomsize_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -14853,7 +14886,10 @@ const int TextFieldOptions::kMaxLengthEnableFieldNumber;
 const int TextFieldOptions::kMaxLengthFieldNumber;
 const int TextFieldOptions::kAreaWidthFieldNumber;
 const int TextFieldOptions::kAreaHeightFieldNumber;
+const int TextFieldOptions::kAnchorPointXFieldNumber;
+const int TextFieldOptions::kAnchorPointYFieldNumber;
 const int TextFieldOptions::kFontResourceFieldNumber;
+const int TextFieldOptions::kIsCustomSizeFieldNumber;
 #endif  // !_MSC_VER
 
 TextFieldOptions::TextFieldOptions()
@@ -14897,7 +14933,10 @@ void TextFieldOptions::SharedCtor() {
   maxlength_ = 0;
   areawidth_ = 0;
   areaheight_ = 0;
+  anchorpointx_ = 0;
+  anchorpointy_ = 0;
   fontresource_ = NULL;
+  iscustomsize_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -14997,9 +15036,14 @@ void TextFieldOptions::Clear() {
     maxlength_ = 0;
     areawidth_ = 0;
     areaheight_ = 0;
+    anchorpointx_ = 0;
+    anchorpointy_ = 0;
     if (has_fontresource()) {
       if (fontresource_ != NULL) fontresource_->::protocolbuffers::ResourceData::Clear();
     }
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    iscustomsize_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -15213,6 +15257,54 @@ bool TextFieldOptions::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(125)) goto parse_anchorPointX;
+        break;
+      }
+
+      // optional float anchorPointX = 15;
+      case 15: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_anchorPointX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &anchorpointx_)));
+          set_has_anchorpointx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(133)) goto parse_anchorPointY;
+        break;
+      }
+
+      // optional float anchorPointY = 16;
+      case 16: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_anchorPointY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &anchorpointy_)));
+          set_has_anchorpointy();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(136)) goto parse_IsCustomSize;
+        break;
+      }
+
+      // optional bool IsCustomSize = 17;
+      case 17: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_IsCustomSize:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &iscustomsize_)));
+          set_has_iscustomsize();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -15312,6 +15404,21 @@ void TextFieldOptions::SerializeWithCachedSizes(
       14, this->fontresource(), output);
   }
 
+  // optional float anchorPointX = 15;
+  if (has_anchorpointx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(15, this->anchorpointx(), output);
+  }
+
+  // optional float anchorPointY = 16;
+  if (has_anchorpointy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(16, this->anchorpointy(), output);
+  }
+
+  // optional bool IsCustomSize = 17;
+  if (has_iscustomsize()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(17, this->iscustomsize(), output);
+  }
+
 }
 
 int TextFieldOptions::ByteSize() const {
@@ -15403,11 +15510,28 @@ int TextFieldOptions::ByteSize() const {
       total_size += 1 + 4;
     }
 
+    // optional float anchorPointX = 15;
+    if (has_anchorpointx()) {
+      total_size += 1 + 4;
+    }
+
+    // optional float anchorPointY = 16;
+    if (has_anchorpointy()) {
+      total_size += 2 + 4;
+    }
+
     // optional .protocolbuffers.ResourceData fontResource = 14;
     if (has_fontresource()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->fontresource());
+    }
+
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // optional bool IsCustomSize = 17;
+    if (has_iscustomsize()) {
+      total_size += 2 + 1;
     }
 
   }
@@ -15466,8 +15590,19 @@ void TextFieldOptions::MergeFrom(const TextFieldOptions& from) {
     if (from.has_areaheight()) {
       set_areaheight(from.areaheight());
     }
+    if (from.has_anchorpointx()) {
+      set_anchorpointx(from.anchorpointx());
+    }
+    if (from.has_anchorpointy()) {
+      set_anchorpointy(from.anchorpointy());
+    }
     if (from.has_fontresource()) {
       mutable_fontresource()->::protocolbuffers::ResourceData::MergeFrom(from.fontresource());
+    }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_iscustomsize()) {
+      set_iscustomsize(from.iscustomsize());
     }
   }
 }
@@ -15498,7 +15633,10 @@ void TextFieldOptions::Swap(TextFieldOptions* other) {
     std::swap(maxlength_, other->maxlength_);
     std::swap(areawidth_, other->areawidth_);
     std::swap(areaheight_, other->areaheight_);
+    std::swap(anchorpointx_, other->anchorpointx_);
+    std::swap(anchorpointy_, other->anchorpointy_);
     std::swap(fontresource_, other->fontresource_);
+    std::swap(iscustomsize_, other->iscustomsize_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     std::swap(_cached_size_, other->_cached_size_);
   }
