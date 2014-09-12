@@ -57,13 +57,15 @@ NS_CC_BEGIN
             {
                 Position,
                 RelativePosition,
-                PreRelativePosition
+                PreRelativePosition,
+                PreRelativePositionEnable
             };
 
             enum class SizeType
             {
                 Size,
-                PreSize
+                PreSize,
+                PreSizeEnable
             };
 
             bool isUsingPercentPosition();

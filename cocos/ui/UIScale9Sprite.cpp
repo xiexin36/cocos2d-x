@@ -1030,7 +1030,8 @@ y+=ytranslate;                       \
         _flippedX = flippedX;
         if (_scale9Enabled)
         {
-            this->setScaleX(-1);
+            int iScale = _flippedX ? -1:1;
+            this->setScaleX(iScale);
         }
         else
         {
@@ -1046,7 +1047,8 @@ y+=ytranslate;                       \
         _flippedY = flippedY;
         if (_scale9Enabled)
         {
-            this->setScaleY(-1);
+            int iScale = _flippedY ? -1:1;
+            this->setScaleY(iScale);
         }
         else
         {
