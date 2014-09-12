@@ -3434,7 +3434,7 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                     
                     std::string protocolBuffersFileName = _protocolbuffersDir + convert;
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
-                    serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value);
+                    serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value, true);
                      
                 }
                 
