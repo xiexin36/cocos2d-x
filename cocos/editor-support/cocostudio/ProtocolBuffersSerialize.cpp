@@ -3805,26 +3805,14 @@ void ProtocolBuffersSerialize::setColorFrame(protocolbuffers::TimeLineColorFrame
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "A")
-        {
-            colorFrame->set_alpha(atoi(value.c_str()));
-        }
-        else if (name == "R")
-        {
-            colorFrame->set_red(atoi(value.c_str()));
-        }
-        else if (name == "G")
-        {
-            colorFrame->set_green(atoi(value.c_str()));
-        }
-        else if (name == "B")
-        {
-            colorFrame->set_blue(atoi(value.c_str()));
-        }
-        else if (name == "FrameIndex")
+        if (name == "FrameIndex")
         {
             colorFrame->set_frameindex(atoi(value.c_str()));
         }
+		else if (name == "Alpha")
+		{
+			colorFrame->set_alpha(atoi(value.c_str()));
+		}		
         else if (name == "Tween")
         {
             colorFrame->set_tween((value == "True") ? true : false);
@@ -3832,6 +3820,35 @@ void ProtocolBuffersSerialize::setColorFrame(protocolbuffers::TimeLineColorFrame
         
         attribute = attribute->Next();
     }
+
+	// color
+	const tinyxml2::XMLElement* child = frameElement->FirstChildElement();
+	while (child)
+	{
+		const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+		while (attribute)
+		{
+			std::string name = attribute->Name();
+			std::string value = attribute->Value();
+
+			if (name == "R")
+			{
+				colorFrame->set_red(atoi(value.c_str()));
+			}
+			else if (name == "G")
+			{
+				colorFrame->set_green(atoi(value.c_str()));
+			}
+			else if (name == "B")
+			{
+				colorFrame->set_blue(atoi(value.c_str()));
+			}			
+
+			attribute = attribute->Next();
+		}
+
+		child = child->NextSiblingElement();
+	}
 }
 
 void ProtocolBuffersSerialize::setTextureFrame(protocolbuffers::TimeLineTextureFrame *textureFrame,
