@@ -667,6 +667,10 @@ void Button::setTitleFontName(const std::string& fontName)
         _type = FontType::TTF;
     } else{
         _titleRenderer->setSystemFontName(fontName);
+        if (_type == FontType::TTF)
+        {
+            _titleRenderer->requestSystemFontRefresh();
+        }
         _type = FontType::SYSTEM;
     }
     _fontName = fontName;

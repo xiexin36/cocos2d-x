@@ -89,7 +89,7 @@ namespace ui {
     void LayoutComponent::setUsingPercentContentSize(bool flag)
     {
         _usingPercentContentSize = flag;
-        this->RefreshLayoutSize(SizeType::Size,this->getOwner()->getContentSize());
+        this->RefreshLayoutSize(SizeType::PreSizeEnable,Vec2(0,0));
     }
 
     void LayoutComponent::RefreshLayoutSize(SizeType sType, const Vec2& size)
@@ -115,6 +115,33 @@ namespace ui {
             case SizeType::PreSize:
                 _percentContentSize = size;
                 this->getOwner()->setContentSize(Size(size.x*parentSize.width,size.y*parentSize.height));
+                break;
+            case SizeType::PreSizeEnable:
+                if (_usingPercentContentSize)
+                {
+                    Size baseSize = this->getOwner()->getContentSize();
+                    if (parentSize.width != 0)
+                    {
+                        _percentContentSize.x = baseSize.width/parentSize.width;
+                    }
+                    else
+                    {
+                        _percentContentSize.x = 0;
+                        baseSize.width = 0;
+                    }
+
+                    if (parentSize.height != 0)
+                    {
+                        _percentContentSize.y = baseSize.height/parentSize.height;
+                    }
+                    else
+                    {
+                        _percentContentSize.y = 0;
+                        baseSize.height = 0;
+                    }
+
+                    this->getOwner()->setContentSize(baseSize);
+                }
                 break;
             default:
                 break;
@@ -144,7 +171,7 @@ namespace ui {
     void LayoutComponent::setUsingPercentPosition(bool flag)
     {
         _usingPercentPosition = flag;
-        this->RefreshLayoutPosition(PositionType::PreRelativePosition,_percentPosition);
+        this->RefreshLayoutPosition(PositionType::PreRelativePositionEnable,Vec2(0,0));
     }
 
     const Vec2& LayoutComponent::getPercentPosition()
@@ -197,6 +224,32 @@ namespace ui {
                 _percentPosition = point;
                 basePoint = Point(_percentPosition.x*parentSize.width,_percentPosition.y*parentSize.height);
             }
+            else if(pType == PositionType::PreRelativePositionEnable)
+            {
+                if (_usingPercentPosition)
+                {
+                    if (parentSize.width != 0)
+                    {
+                        _percentPosition.x = _relativePosition.x/parentSize.width;
+                    }
+                    else
+                    {
+                        _percentPosition.x = 0;
+                        _relativePosition.x = 0;
+                    }
+
+                    if (parentSize.height != 0)
+                    {
+                        _percentPosition.y = _relativePosition.y/parentSize.height;
+                    }
+                    else
+                    {
+                        _percentPosition.y = 0;
+                        _relativePosition.y = 0;
+                    }
+                }
+                basePoint = _relativePosition;
+            }
             
             Point inversePoint = basePoint;
             switch (_referencePoint)
@@ -242,6 +295,10 @@ namespace ui {
                 }
                 break;
             case PositionType::PreRelativePosition:
+                this->getOwner()->setPosition(inversePoint);
+                _relativePosition = basePoint;
+                break;
+            case PositionType::PreRelativePositionEnable:
                 this->getOwner()->setPosition(inversePoint);
                 _relativePosition = basePoint;
                 break;
