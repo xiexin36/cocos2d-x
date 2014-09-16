@@ -55,6 +55,27 @@ static inline std::string convertPathFormatToUnixStyle(const std::string& path)
     return ret;
 }
 
+static std::string utf8Togbk(const char *src) 
+{
+	int len = MultiByteToWideChar(CP_UTF8, 0, src, -1, NULL, 0);
+	unsigned short * wszGBK = new unsigned short[len + 1];
+	memset(wszGBK, 0, len * 2 + 2);
+	MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)src, -1, (LPWSTR)wszGBK, len);
+
+	len = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)wszGBK, -1, NULL, 0, NULL, NULL);
+	char *szGBK = new char[len + 1];
+	memset(szGBK, 0, len + 1);
+	WideCharToMultiByte(CP_ACP,0, (LPCWSTR)wszGBK, -1, szGBK, len, NULL, NULL);
+	std::string strTemp(szGBK);
+	if (strTemp.find('?') != std::string::npos)
+	{
+		strTemp.assign(src);
+	}
+	delete[]szGBK;
+	delete[]wszGBK;
+	return strTemp;
+}
+
 static void _checkPath()
 {
     if (0 == s_resourcePath.length())
@@ -109,10 +130,12 @@ bool FileUtilsWin32::isFileExistInternal(const std::string& strFilePath) const
         strPath.insert(0, _defaultResRootPath);
     }
 
-    WCHAR utf16Buf[CC_MAX_PATH] = {0};
-    MultiByteToWideChar(CP_UTF8, 0, strPath.c_str(), -1, utf16Buf, sizeof(utf16Buf)/sizeof(utf16Buf[0]));
+	const char *r = strFilePath.c_str();
+	std::string utf16Buf = utf8Togbk(r);
+ //   WCHAR utf16Buf[CC_MAX_PATH] = {0};
+	//MultiByteToWideChar(CP_UTF8, 0, strPath.c_str(), -1, utf16Buf, sizeof(utf16Buf)/sizeof(utf16Buf[0]));
 
-    DWORD attr = GetFileAttributesW(utf16Buf);
+	DWORD attr = GetFileAttributesA(utf16Buf.c_str());
     if(attr == INVALID_FILE_ATTRIBUTES || (attr & FILE_ATTRIBUTE_DIRECTORY))
         return false;   //  not a file
     return true;
@@ -144,10 +167,11 @@ static Data getData(const std::string& filename, bool forString)
         // read the file from hardware
         std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filename);
 
-        WCHAR wszBuf[CC_MAX_PATH] = {0};
-        MultiByteToWideChar(CP_UTF8, 0, fullPath.c_str(), -1, wszBuf, sizeof(wszBuf)/sizeof(wszBuf[0]));
+		std::string wszBuf = utf8Togbk(filename.c_str());
+        //WCHAR wszBuf[CC_MAX_PATH] = {0};
+        //MultiByteToWideChar(CP_UTF8, 0, fullPath.c_str(), -1, wszBuf, sizeof(wszBuf)/sizeof(wszBuf[0]));
 
-        HANDLE fileHandle = ::CreateFileW(wszBuf, GENERIC_READ, 0, NULL, OPEN_EXISTING, NULL, nullptr);
+		HANDLE fileHandle = ::CreateFileA(wszBuf.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, NULL, nullptr);
         CC_BREAK_IF(fileHandle == INVALID_HANDLE_VALUE);
         
         size = ::GetFileSize(fileHandle, nullptr);
