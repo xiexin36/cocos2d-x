@@ -858,6 +858,14 @@ y+=ytranslate;                       \
                 this->updateWithSprite(this->_scale9Image,
                                        this->_spriteRect,
                                        _spriteFrameRotated, _capInsets);
+                _scale9Image->setVisible(false);
+            }
+        }
+        else
+        {
+            if (_scale9Image)
+            {
+                _scale9Image->setVisible(true);
             }
         }
         _positionsAreDirty = true;
