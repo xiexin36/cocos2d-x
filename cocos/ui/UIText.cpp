@@ -155,6 +155,10 @@ void Text::setFontName(const std::string& name)
     }
     else{
         _labelRenderer->setSystemFontName(name);
+        if (_type == Type::TTF)
+        {
+            _labelRenderer->requestSystemFontRefresh();
+        }
         _type = Type::SYSTEM;
     }
     _fontName = name;
