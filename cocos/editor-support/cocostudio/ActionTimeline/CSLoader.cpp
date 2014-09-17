@@ -792,6 +792,13 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
 		{
             node = createNodeFromProtocolBuffers(_protocolBuffersPath + filePath);
             setPropsForProjectNodeFromProtocolBuffers(node, options, nodeOptions);
+            
+            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionFromProtocolBuffers(_protocolBuffersPath + filePath);
+            if(action)
+            {
+                node->runAction(action);
+                action->gotoFrameAndPlay(0);
+            }
 		}
      
         curOptions = nodeOptions;
@@ -949,6 +956,8 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     float scalex        = options.scalex();
     float scaley        = options.scaley();
     float rotation      = options.rotation();
+    float rotationSkewX      = options.has_rotationskewx() ? options.rotationskewx() : 0.0f;
+    float rotationSkewY      = options.has_rotationskewy() ? options.rotationskewy() : 0.0f;
     float anchorx       = options.has_anchorpointx() ? options.anchorpointx() : 0.0f;
     float anchory       = options.has_anchorpointy() ? options.anchorpointy() : 0.0f;
     int zorder		    = options.zorder();
@@ -968,6 +977,10 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
         node->setScaleY(scaley);
     if (rotation != 0)
         node->setRotation(rotation);
+    if (rotationSkewX != 0)
+        node->setRotationSkewX(rotationSkewX);
+    if (rotationSkewY != 0)
+        node->setRotationSkewY(rotationSkewY);
     if(anchorx != 0.5f || anchory != 0.5f)
         node->setAnchorPoint(Point(anchorx, anchory));
     if(zorder != 0)
@@ -1396,8 +1409,15 @@ Node* CSLoader::nodeFromXML(const tinyxml2::XMLElement *objectData, const std::s
                     
                     if (name == "Path")
                     {
-                        node = createNodeFromProtocolBuffers(_protocolBuffersPath + value);
+                        node = createNodeFromXML(_xmlPath + value);
                         setPropsForProjectNodeFromXML(node, objectData);
+                        
+                        cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionFromXML(_xmlPath + value);
+                        if(action)
+                        {
+                            node->runAction(action);
+                            action->gotoFrameAndPlay(0);
+                        }
                         
                         break;
                     }
@@ -1578,7 +1598,7 @@ void CSLoader::setPropsForNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLEl
         }
         else if (name == "Rotation")
         {
-            node->setRotation(atoi(value.c_str()));
+//            node->setRotation(atoi(value.c_str()));
         }
         else if (name == "ZOrder")
         {
