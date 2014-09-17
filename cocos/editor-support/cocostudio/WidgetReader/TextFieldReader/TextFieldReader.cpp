@@ -214,6 +214,11 @@ namespace cocostudio
         
         std::string xmlPath = GUIReader::getInstance()->getFilePath();
         
+        bool isCustomSize = false;
+        float width = 0.0f, height = 0.0f;
+        
+        textField->setFontName("微软雅黑");
+        
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
         while (attribute)
@@ -233,6 +238,10 @@ namespace cocostudio
             {
                 textField->setFontSize(atoi(value.c_str()));
             }
+            else if (name == "FontName")
+            {
+                textField->setFontName(value);
+            }
             else if (name == "MaxLengthEnable")
             {
                 textField->setMaxLengthEnabled((value == "True") ? true : false);
@@ -249,18 +258,19 @@ namespace cocostudio
             {
                 textField->setPasswordStyleText(value.c_str());
             }
-            else if (name == "ControlSizeType")
+            else if (name == "IsCustomSize")
             {
-                if (value == "Custom")
-                {
-                    float areaWidth = 0.0f;
-                    objectData->QueryFloatAttribute("Width", &areaWidth);
-                    
-                    float areaHeight = 0.0f;
-                    objectData->QueryFloatAttribute("Height", &areaHeight);
-                    
-                    textField->setTextAreaSize(Size(areaWidth, areaHeight));
-                }
+                isCustomSize = ((value == "True") ? true : false);
+//                if (value == "Custom")
+//                {
+//                    float areaWidth = 0.0f;
+//                    objectData->QueryFloatAttribute("Width", &areaWidth);
+//                    
+//                    float areaHeight = 0.0f;
+//                    objectData->QueryFloatAttribute("Height", &areaHeight);
+//                    
+//                    textField->setTextAreaSize(Size(areaWidth, areaHeight));
+//                }
             }
             
             attribute = attribute->Next();
@@ -272,7 +282,31 @@ namespace cocostudio
         {
             std::string name = child->Name();
             
-            if (name == "FontResource")
+            if (name == "Size")
+            {
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                float width = 0.0f, height = 0.0f;
+                
+                while (attribute)
+                {
+                    std::string name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "X")
+                    {
+                        width = atof(value.c_str());
+                    }
+                    else if (name == "Y")
+                    {
+                        height = atof(value.c_str());
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+                
+                widget->setContentSize(Size(width, height));
+            }
+            else if (name == "FontResource")
             {
                 const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 int resourceType = 0;
@@ -313,6 +347,12 @@ namespace cocostudio
             }
             
             child = child->NextSiblingElement();
+        }
+        
+        if (isCustomSize)
+        {
+            textField->ignoreContentAdaptWithSize(!isCustomSize);
+            textField->setContentSize(Size(width, height));
         }
     }
     /**/

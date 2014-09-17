@@ -949,8 +949,8 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     float scalex        = options.scalex();
     float scaley        = options.scaley();
     float rotation      = options.rotation();
-    float anchorx       = options.has_anchorpointx() ? options.anchorpointx() : 0.5f;
-    float anchory       = options.has_anchorpointy() ? options.anchorpointy() : 0.5f;
+    float anchorx       = options.has_anchorpointx() ? options.anchorpointx() : 0.0f;
+    float anchory       = options.has_anchorpointy() ? options.anchorpointy() : 0.0f;
     int zorder		    = options.zorder();
     int tag             = options.tag();
     int actionTag       = options.actiontag();
@@ -1588,6 +1588,10 @@ void CSLoader::setPropsForNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLEl
         {
             node->setVisible((value == "True") ? true : false);
         }
+        else if (name == "VisibleForFrame")
+        {
+            node->setVisible((value == "True") ? true : false);
+        }
         else if (name == "Alpha")
         {
             node->setOpacity(atoi(value.c_str()));
@@ -1654,8 +1658,8 @@ void CSLoader::setPropsForNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLEl
         {
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
-            float anchorX = 0.5f;
-            float anchorY = 0.5f;
+            float anchorX = 0.0f;
+            float anchorY = 0.0f;
             
             while (attribute)
             {
