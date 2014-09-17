@@ -215,11 +215,12 @@ namespace cocostudio
         std::string xmlPath = GUIReader::getInstance()->getFilePath();
         
         Layout::BackGroundColorType colorType = Layout::BackGroundColorType::NONE;
-        int color_opacity = 255;
+        int color_opacity = 255, bgimg_opacity = 255;
+        int bgimg_red = 255, bgimg_green = 255, bgimg_blue = 255;
         int red = 255, green = 255, blue = 255;
         int start_red = 255, start_green = 255, start_blue = 255;
         int end_red = 255, end_green = 255, end_blue = 255;
-        float vector_color_x = 0.0f, vector_color_y = 0.5f;
+        float vector_color_x = 0.0f, vector_color_y = -0.5f;
         
         int resourceType = 0;
         std::string path = "", plistFile = "";
@@ -242,6 +243,10 @@ namespace cocostudio
             else if (name == "BackColorAlpha")
             {
                 color_opacity = atoi(value.c_str());
+            }
+            else if (name == "Alpha")
+            {
+                bgimg_opacity = atoi(value.c_str());
             }
             else if (name == "DirectionType")
             {
@@ -345,6 +350,31 @@ namespace cocostudio
                 }
                 
                 listView->setInnerContainerSize(Size(width, height));
+            }
+            else if (name == "CColor")
+            {
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                
+                while (attribute)
+                {
+                    std::string name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "R")
+                    {
+                        bgimg_red = atoi(value.c_str());
+                    }
+                    else if (name == "G")
+                    {
+                        bgimg_green = atoi(value.c_str());
+                    }
+                    else if (name == "B")
+                    {
+                        bgimg_blue = atoi(value.c_str());
+                    }
+                    
+                    attribute = attribute->Next();
+                }
             }
             else if (name == "SingleColor")
             {
@@ -503,6 +533,9 @@ namespace cocostudio
             default:
                 break;
         }
+        
+        listView->setBackGroundImageColor(Color3B(bgimg_red, bgimg_green, bgimg_blue));
+        listView->setBackGroundImageOpacity(bgimg_opacity);
     }
     /**/
 }

@@ -215,6 +215,8 @@ namespace cocostudio
         float areaWidth = 0.0f, areaHeight = 0.0f;
         int halignment = 0, valignment = 0;
         
+        label->setFontName("微软雅黑");
+        
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
         while (attribute)
@@ -233,6 +235,10 @@ namespace cocostudio
             else if (name == "FontSize")
             {
                 label->setFontSize(atoi(value.c_str()));
+            }
+            else if (name == "FontName")
+            {
+                label->setFontName(value);
             }
             else if (name == "AreaWidth")
             {
@@ -331,6 +337,8 @@ namespace cocostudio
             label->setTextHorizontalAlignment((TextHAlignment)halignment);
             label->setTextVerticalAlignment((TextVAlignment)valignment);
         }
+        
+        CCLOG("label->getFontName() = %s", label->getFontName().c_str()) ;
     }
     /**/
 }

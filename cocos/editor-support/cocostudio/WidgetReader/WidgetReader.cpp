@@ -531,6 +531,10 @@ namespace cocostudio
             {
                 widget->setVisible((value == "True") ? true : false);
             }
+            else if (name == "VisibleForFrame")
+            {
+                widget->setVisible((value == "True") ? true : false);
+            }
             else if (name == "Alpha")
             {
                 widget->setOpacity(atoi(value.c_str()));
@@ -612,7 +616,7 @@ namespace cocostudio
             else if (name == "AnchorPoint")
             {
                 const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-                float anchor_x = 0.5f, anchor_y = 0.5f;
+                float anchor_x = 0.0f, anchor_y = 0.0f;
                 
                 while (attribute)
                 {

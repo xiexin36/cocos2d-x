@@ -333,6 +333,12 @@ namespace cocostudio
         button->setTitleFontName(fontName);
         
         
+        
+        const protocolbuffers::WidgetOptions& widgetOption = nodeTree.widgetoptions();
+        button->setColor(Color3B(widgetOption.colorr(), widgetOption.colorg(), widgetOption.colorb()));
+        button->setOpacity(widgetOption.opacity());
+        
+        
         // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
@@ -351,7 +357,9 @@ namespace cocostudio
         float swf = 0.0f, shf = 0.0f;
         std::string text = "";
         int fontSize = 0;
+        int title_color_red = 255, title_color_green = 255, title_color_blue = 255;
         int cri = 255, cgi = 255, cbi = 255;
+        int opacity = 255;
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -391,6 +399,10 @@ namespace cocostudio
             {
                 fontSize = atoi(value.c_str());
             }
+            else if (name == "Alpha")
+            {
+                opacity = atoi(value.c_str());
+            }
             
             attribute = attribute->Next();
         }
@@ -422,7 +434,7 @@ namespace cocostudio
                     attribute = attribute->Next();
                 }
             }
-            else if (name == "TextColor")
+            else if (name == "CColor")
             {
                 const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 while (attribute)
@@ -441,6 +453,30 @@ namespace cocostudio
                     else if (name == "B")
                     {
                         cbi = atoi(value.c_str());
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+            }
+            else if (name == "TextColor")
+            {
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                while (attribute)
+                {
+                    std::string name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "R")
+                    {
+                        title_color_red = atoi(value.c_str());
+                    }
+                    else if (name == "G")
+                    {
+                        title_color_green = atoi(value.c_str());
+                    }
+                    else if (name == "B")
+                    {
+                        title_color_blue = atoi(value.c_str());
                     }
                     
                     attribute = attribute->Next();
@@ -598,8 +634,11 @@ namespace cocostudio
         }
         
         button->setTitleText(text);
-        button->setTitleColor(Color3B(cri,cgi,cbi));
+        button->setTitleColor(Color3B(title_color_red, title_color_green, title_color_blue));
         button->setTitleFontSize(fontSize);
+        
+        button->setColor(Color3B(cri,cgi,cbi));
+        button->setOpacity(opacity);
     }
     /**/
 }

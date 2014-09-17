@@ -758,6 +758,10 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         {
             options->set_visible((value == "True") ? true : false);
         }
+        else if (name == "VisibleForFrame")
+        {
+            options->set_visible((value == "True") ? true : false);
+        }
         else if (name == "Alpha")
         {
             options->set_alpha(atoi(value.c_str()));
@@ -1149,6 +1153,10 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
             options->set_zorder(atoi(value.c_str()));
         }
         else if (name == "Visible")
+        {
+            options->set_visible((value == "True") ? true : false);
+        }
+        else if (name == "VisibleForFrame")
         {
             options->set_visible((value == "True") ? true : false);
         }
@@ -1949,6 +1957,10 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
         {
             options->set_fontsize(atoi(value.c_str()));
         }
+        else if (name == "FontName")
+        {
+            options->set_fontname(value);
+        }
         else if (name == "AreaWidth")
         {
             options->set_areawidth(atoi(value.c_str()));
@@ -2343,6 +2355,10 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
         {
             options->set_fontsize(atoi(value.c_str()));
         }
+        else if (name == "FontName")
+        {
+            options->set_fontname(value);
+        }
         else if (name == "MaxLengthEnable")
         {
             options->set_maxlengthenable((value == "True") ? true : false);
@@ -2359,19 +2375,19 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
         {
             options->set_passwordstyletext(value);
         }
-        else if (name == "ControlSizeType")
-        {
-            if (value == "Custom")
-            {
-                float areaWidth = 0.0f;
-                textFieldObjectData->QueryFloatAttribute("Width", &areaWidth);
-                options->set_areawidth(areaWidth);
-                
-                float areaHeight = 0.0f;
-                textFieldObjectData->QueryFloatAttribute("Height", &areaHeight);
-                options->set_areaheight(areaHeight);
-            }
-        }
+//        else if (name == "ControlSizeType")
+//        {
+//            if (value == "Custom")
+//            {
+//                float areaWidth = 0.0f;
+//                textFieldObjectData->QueryFloatAttribute("Width", &areaWidth);
+//                options->set_areawidth(areaWidth);
+//                
+//                float areaHeight = 0.0f;
+//                textFieldObjectData->QueryFloatAttribute("Height", &areaHeight);
+//                options->set_areaheight(areaHeight);
+//            }
+//        }
         else if (name == "IsCustomSize")
         {
             options->set_iscustomsize((value == "True") ? true : false);
