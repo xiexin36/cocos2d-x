@@ -2920,7 +2920,7 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
             {
                 options->set_direction(2);
             }
-            else if (value == "Both")
+            else if (value == "Vertical_Horizontal")
             {
                 options->set_direction(3);
             }
