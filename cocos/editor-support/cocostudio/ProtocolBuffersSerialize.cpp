@@ -748,7 +748,7 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         }
         else if (name == "Rotation")
         {
-            options->set_rotation(atoi(value.c_str()));
+//            options->set_rotation(atoi(value.c_str()));
         }
         else if (name == "ZOrder")
         {
@@ -1146,7 +1146,7 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
         }
         else if (name == "Rotation")
         {
-            options->set_rotation(atoi(value.c_str()));
+//            options->set_rotation(atoi(value.c_str()));
         }
         else if (name == "ZOrder")
         {

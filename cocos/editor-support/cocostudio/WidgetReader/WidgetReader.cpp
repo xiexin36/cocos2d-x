@@ -521,7 +521,7 @@ namespace cocostudio
             }
             else if (name == "Rotation")
             {
-                widget->setRotation(atoi(value.c_str()));
+//                widget->setRotation(atoi(value.c_str()));
             }
             else if (name == "ZOrder")
             {
