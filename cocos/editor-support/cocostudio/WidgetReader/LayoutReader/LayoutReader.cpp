@@ -675,6 +675,7 @@ namespace cocostudio
             }
             else if (name == "ColorVector")
             {
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 while (attribute)
                 {
                     std::string name = attribute->Name();
