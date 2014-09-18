@@ -3952,6 +3952,1647 @@ void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame 
 }
 /**/
 
+/* peterson json */
+/* serialize protocol buffers from json */
+void ProtocolBuffersSerialize::serializeProtocolBuffersWithJson(const std::string &protocolbuffersFileName,
+                                                           const std::string &jsonFileName)
+{
+    CSParseBinary protobuf;
+    
+    // Read content from file
+    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(jsonFileName);
+    ssize_t size;
+    std::string content = (char*)FileUtils::getInstance()->getFileData(fullPath, "r", &size);
+    
+    rapidjson::Document doc;
+    doc.Parse<0>(content.c_str());
+    if (doc.HasParseError())
+    {
+        CCLOG("GetParseError %s\n", doc.GetParseError());
+    }
+    
+    const rapidjson::Value& nodeTreeJson = DICTOOL->getSubDictionary_json(doc, "nodeTree");
+    protocolbuffers::NodeTree* nodeTree = protobuf.mutable_nodetree();
+    convertNodeTreeProtocolBuffersWithJson(nodeTree, nodeTreeJson);
+    
+    const rapidjson::Value& actionJson = DICTOOL->getSubDictionary_json(doc, "action");
+    protocolbuffers::NodeAction* nodeAction = protobuf.mutable_action();
+    convertActionProtocolBuffersWithJson(nodeAction, actionJson);
+    
+    
+    // out, in for stream
+    const char* temp = protocolbuffersFileName.c_str();
+    FILE* file = fopen(temp, "wb");
+    if (nullptr == file)
+    {
+        return;
+    }
+    std::string serialString = "";
+    if (!protobuf.SerializePartialToString(&serialString))
+    {
+        return;
+    }
+    fwrite(serialString.c_str(), sizeof(char), protobuf.ByteSize(), file);
+    if (file)
+    {
+        fclose(file);
+    }
+    
+}
+
+void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithJson(protocolbuffers::NodeTree *nodetree,
+                                                                      const rapidjson::Value &json)
+{
+    std::string classname = DICTOOL->getStringValue_json(json, "classname");
+    const rapidjson::Value& optionsJson = DICTOOL->getSubDictionary_json(json, "options");
+    
+    if (classname == "Node")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setNodeOptions(nodeOptions, optionsJson);
+    }
+    else if (classname == "Button")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ButtonOptions* buttonOptions = nodetree->mutable_buttonoptions();
+        setButtonOptions(buttonOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "CheckBox")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        CheckBoxOptions* checkBoxOptions = nodetree->mutable_checkboxoptions();
+        setCheckBoxOptions(checkBoxOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "ImageView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ImageViewOptions* imageViewOptions = nodetree->mutable_imageviewoptions();
+        setImageViewOptions(imageViewOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "TextAtlas")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextAtlasOptions* textAtlasOptions = nodetree->mutable_textatlasoptions();
+        setTextAtlasOptions(textAtlasOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "TextBMFont")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextBMFontOptions* textBMFontOptions = nodetree->mutable_textbmfontoptions();
+        setTextBMFontOptions(textBMFontOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "Text")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextOptions* textOptions = nodetree->mutable_textoptions();
+        setTextOptions(textOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "LoadingBar")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        LoadingBarOptions* loadingBarOptions = nodetree->mutable_loadingbaroptions();
+        setLoadingBarOptions(loadingBarOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "Slider")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        SliderOptions* sliderOptions = nodetree->mutable_slideroptions();
+        setSliderOptions(sliderOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "TextField")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextFieldOptions* textFieldOptions = nodetree->mutable_textfieldoptions();
+        setTextFieldOptions(textFieldOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "Panel")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        PanelOptions* layoutOptions = nodetree->mutable_paneloptions();
+        setLayoutOptions(layoutOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "PageView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        PageViewOptions* pageViewOptions = nodetree->mutable_pageviewoptions();
+        setPageViewOptions(pageViewOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "ScrollView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ScrollViewOptions* scrollViewOptions = nodetree->mutable_scrollviewoptions();
+        setScrollViewOptions(scrollViewOptions, widgetOptions, optionsJson);
+    }
+    else if (classname == "ListView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ListViewOptions* listViewOptions = nodetree->mutable_listviewoptions();
+        setListViewOptions(listViewOptions, widgetOptions, optionsJson);
+    }
+    
+    int childrenCount = DICTOOL->getArrayCount_json(json, "children");
+    for (int i = 0; i < childrenCount; i++)
+    {
+        protocolbuffers::NodeTree* childNodeTree = nodetree->add_children();
+        const rapidjson::Value& childJson = DICTOOL->getDictionaryFromArray_json(json, "children", i);
+        convertNodeTreeProtocolBuffersWithJson(childNodeTree, childJson);
+    }
+}
+
+void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *nodeOptions,
+                                              const rapidjson::Value &optionsJson)
+{
+    protocolbuffers::WidgetOptions* options = nodeOptions;
+    bool ignoreSizeExsit = DICTOOL->checkObjectExist_json(optionsJson, "ignoreSize");
+    if (ignoreSizeExsit)
+    {
+        options->set_ignoresize(DICTOOL->getBooleanValue_json(optionsJson, "ignoreSize"));
+    }
+    
+    options->set_sizetype(DICTOOL->getIntValue_json(optionsJson, "sizeType"));
+    options->set_positiontype(DICTOOL->getIntValue_json(optionsJson, "positionType"));
+    
+    options->set_sizepercentx(DICTOOL->getFloatValue_json(optionsJson, "sizePercentX"));
+    options->set_sizepercenty(DICTOOL->getFloatValue_json(options, "sizePercentY"));
+    
+    options->set_positionpercentx(DICTOOL->getFloatValue_json(optionsJson, "positionPercentX"));
+    options->set_positionpercenty(DICTOOL->getFloatValue_json(options, "positionPercentY"));
+    
+    float width = DICTOOL->getFloatValue_json(optionsJson, "width");
+    float height = DICTOOL->getFloatValue_json(optionsJson, "height");
+    options->set_width(width);
+    options->set_height(height);
+    
+    options->set_tag(DICTOOL->getIntValue_json(optionsJson, "tag"));
+    options->set_actiontag(DICTOOL->getIntValue_json(optionsJson, "actiontag"));
+    options->set_touchable(DICTOOL->getBooleanValue_json(optionsJson, "touchAble"));
+    const char* name = DICTOOL->getStringValue_json(optionsJson, "name");
+    const char* nodeName = name ? name:"default";
+    options->set_name(nodeName);
+    
+    float x = DICTOOL->getFloatValue_json(optionsJson, "x");
+    float y = DICTOOL->getFloatValue_json(optionsJson, "y");
+    options->set_x(x);
+    options->set_y(y);
+    
+    options->set_scalex(DICTOOL->getFloatValue_json(optionsJson, "scaleX", 1.0));
+    options->set_scaley(DICTOOL->getFloatValue_json(optionsJson, "scaleY", 1.0));
+    
+    options->set_rotation(DICTOOL->getFloatValue_json(optionsJson, "rotation", 0));
+    
+    options->set_visible(true);
+    bool vb = DICTOOL->checkObjectExist_json(optionsJson, "visible");
+    if (vb)
+    {
+        options->set_visible(DICTOOL->getBooleanValue_json(optionsJson, "visible"));
+    }
+    int z = DICTOOL->getIntValue_json(optionsJson, "ZOrder");
+    options->set_zorder(z);
+    
+    
+    options->set_opacity(255);
+    bool op = DICTOOL->checkObjectExist_json(optionsJson, "opacity");
+    if (op)
+    {
+        options->set_opacity(DICTOOL->getIntValue_json(optionsJson, "opacity"));
+    }
+    bool cr = DICTOOL->checkObjectExist_json(optionsJson, "colorR");
+    bool cg = DICTOOL->checkObjectExist_json(optionsJson, "colorG");
+    bool cb = DICTOOL->checkObjectExist_json(optionsJson, "colorB");
+    int colorR = cr ? DICTOOL->getIntValue_json(optionsJson, "colorR") : 255;
+    int colorG = cg ? DICTOOL->getIntValue_json(optionsJson, "colorG") : 255;
+    int colorB = cb ? DICTOOL->getIntValue_json(optionsJson, "colorB") : 255;
+    options->set_colorr(colorR);
+    options->set_colorg(colorG);
+    options->set_colorb(colorB);
+    
+    bool isAnchorPointXExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointX");
+    float anchorPointXInFile = 0.0f;
+    if (isAnchorPointXExists)
+    {
+        anchorPointXInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointX");
+    }
+    
+    bool isAnchorPointYExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointY");
+    float anchorPointYInFile = 0.0f;
+    if (isAnchorPointYExists)
+    {
+        anchorPointYInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointY");
+    }
+    
+    if (isAnchorPointXExists || isAnchorPointYExists)
+    {
+        options->set_anchorpointx(anchorPointXInFile);
+        options->set_anchorpointy(anchorPointYInFile);
+    }
+    
+    bool flipX = DICTOOL->getBooleanValue_json(optionsJson, "flipX");
+    bool flipY = DICTOOL->getBooleanValue_json(optionsJson, "flipY");
+    options->set_flipx(flipX);
+    options->set_flipx(flipY);
+}
+
+void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *widgetOptions,
+                                                const rapidjson::Value &optionsJson)
+{
+    protocolbuffers::WidgetOptions* options = widgetOptions;
+    bool ignoreSizeExsit = DICTOOL->checkObjectExist_json(optionsJson, "ignoreSize");
+    if (ignoreSizeExsit)
+    {
+        options->set_ignoresize(DICTOOL->getBooleanValue_json(optionsJson, "ignoreSize"));
+    }
+    
+    options->set_sizetype(DICTOOL->getIntValue_json(optionsJson, "sizeType"));
+    options->set_positiontype(DICTOOL->getIntValue_json(optionsJson, "positionType"));
+    
+    options->set_sizepercentx(DICTOOL->getFloatValue_json(optionsJson, "sizePercentX"));
+    options->set_sizepercenty(DICTOOL->getFloatValue_json(options, "sizePercentY"));
+    
+    options->set_positionpercentx(DICTOOL->getFloatValue_json(optionsJson, "positionPercentX"));
+    options->set_positionpercenty(DICTOOL->getFloatValue_json(options, "positionPercentY"));
+    
+    float width = DICTOOL->getFloatValue_json(optionsJson, "width");
+    float height = DICTOOL->getFloatValue_json(optionsJson, "height");
+    options->set_width(width);
+    options->set_height(height);
+    
+    options->set_tag(DICTOOL->getIntValue_json(optionsJson, "tag"));
+    options->set_actiontag(DICTOOL->getIntValue_json(optionsJson, "actiontag"));
+    options->set_touchable(DICTOOL->getBooleanValue_json(optionsJson, "touchAble"));
+    const char* name = DICTOOL->getStringValue_json(optionsJson, "name");
+    const char* nodeName = name ? name:"default";
+    options->set_name(nodeName);
+    
+    float x = DICTOOL->getFloatValue_json(optionsJson, "x");
+    float y = DICTOOL->getFloatValue_json(optionsJson, "y");
+    options->set_x(x);
+    options->set_y(y);
+    
+    options->set_scalex(DICTOOL->getFloatValue_json(optionsJson, "scaleX", 1.0));
+    options->set_scaley(DICTOOL->getFloatValue_json(optionsJson, "scaleY", 1.0));
+    
+    options->set_rotation(DICTOOL->getFloatValue_json(optionsJson, "rotation", 0));
+    
+    options->set_visible(true);
+    bool vb = DICTOOL->checkObjectExist_json(optionsJson, "visible");
+    if (vb)
+    {
+        options->set_visible(DICTOOL->getBooleanValue_json(optionsJson, "visible"));
+    }
+    int z = DICTOOL->getIntValue_json(optionsJson, "ZOrder");
+    options->set_zorder(z);
+    
+    
+    options->set_opacity(255);
+    bool op = DICTOOL->checkObjectExist_json(optionsJson, "opacity");
+    if (op)
+    {
+        options->set_opacity(DICTOOL->getIntValue_json(optionsJson, "opacity"));
+    }
+    bool cr = DICTOOL->checkObjectExist_json(optionsJson, "colorR");
+    bool cg = DICTOOL->checkObjectExist_json(optionsJson, "colorG");
+    bool cb = DICTOOL->checkObjectExist_json(optionsJson, "colorB");
+    int colorR = cr ? DICTOOL->getIntValue_json(optionsJson, "colorR") : 255;
+    int colorG = cg ? DICTOOL->getIntValue_json(optionsJson, "colorG") : 255;
+    int colorB = cb ? DICTOOL->getIntValue_json(optionsJson, "colorB") : 255;
+    options->set_colorr(colorR);
+    options->set_colorg(colorG);
+    options->set_colorb(colorB);
+    
+    bool isAnchorPointXExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointX");
+    float anchorPointXInFile = 0.0f;
+    if (isAnchorPointXExists)
+    {
+        anchorPointXInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointX");
+    }
+    
+    bool isAnchorPointYExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointY");
+    float anchorPointYInFile = 0.0f;
+    if (isAnchorPointYExists)
+    {
+        anchorPointYInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointY");
+    }
+    
+    if (isAnchorPointXExists || isAnchorPointYExists)
+    {
+        options->set_anchorpointx(anchorPointXInFile);
+        options->set_anchorpointy(anchorPointYInFile);
+    }
+    
+    bool flipX = DICTOOL->getBooleanValue_json(optionsJson, "flipX");
+    bool flipY = DICTOOL->getBooleanValue_json(optionsJson, "flipY");
+    options->set_flipx(flipX);
+    options->set_flipx(flipY);
+}
+
+void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *buttonOptions,
+                                                protocolbuffers::WidgetOptions *widgetOptions,
+                                                const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    ButtonOptions* options = buttonOptions;
+    
+    bool scale9Enable = DICTOOL->getBooleanValue_json(optionsJson, "scale9Enable");
+    options->set_scale9enable(scale9Enable);
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* normalFileData = options->mutable_normaldata();
+    const rapidjson::Value& normalDic = DICTOOL->getSubDictionary_json(optionsJson, "normalData");
+    type = DICTOOL->getIntValue_json(normalDic, "resourceType");
+    path = DICTOOL->getStringValue_json(normalDic, "path");
+    plistFile = DICTOOL->getStringValue_json(normalDic, "plistFile");
+    normalFileData->set_resourcetype(type);
+    normalFileData->set_path(path);
+    normalFileData->set_plistfile(plistFile);
+    
+    ResourceData* pressedFileData = options->mutable_presseddata();
+    const rapidjson::Value& pressedDic = DICTOOL->getSubDictionary_json(optionsJson, "pressedData");
+    type = DICTOOL->getIntValue_json(pressedDic, "resourceType");
+    path = DICTOOL->getStringValue_json(pressedDic, "path");
+    plistFile = DICTOOL->getStringValue_json(pressedDic, "plistFile");
+    pressedFileData->set_resourcetype(type);
+    pressedFileData->set_path(path);
+    pressedFileData->set_plistfile(plistFile);
+    
+    ResourceData* disabledFileData = options->mutable_disableddata();
+    const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(optionsJson, "disabledData");
+    type = DICTOOL->getIntValue_json(disabledDic, "resourceType");
+    path = DICTOOL->getStringValue_json(disabledDic, "path");
+    plistFile = DICTOOL->getStringValue_json(disabledDic, "plistFile");
+    disabledFileData->set_resourcetype(type);
+    disabledFileData->set_path(path);
+    disabledFileData->set_plistfile(plistFile);
+    
+    if (scale9Enable)
+    {
+        float cx = DICTOOL->getFloatValue_json(optionsJson, "capInsetsX");
+        float cy = DICTOOL->getFloatValue_json(optionsJson, "capInsetsY");
+        float cw = DICTOOL->getFloatValue_json(optionsJson, "capInsetsWidth");
+        float ch = DICTOOL->getFloatValue_json(optionsJson, "capInsetsHeight");
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+        
+        bool sw = DICTOOL->checkObjectExist_json(optionsJson, "scale9Width");
+        bool sh = DICTOOL->checkObjectExist_json(optionsJson, "scale9Height");
+        if (sw && sh)
+        {
+            float swf = DICTOOL->getFloatValue_json(optionsJson, "scale9Width");
+            float shf = DICTOOL->getFloatValue_json(optionsJson, "scale9Width");
+            
+            options->set_scale9width(swf);
+            options->set_scale9height(shf);
+        }
+    }
+    bool tt = DICTOOL->checkObjectExist_json(optionsJson, "text");
+    if (tt)
+    {
+        const char* text = DICTOOL->getStringValue_json(optionsJson, "text");
+        if (text)
+        {
+            options->set_text(text);
+        }
+    }
+    
+    
+    int cri = DICTOOL->getIntValue_json(optionsJson, "textColorR", 255);
+    int cgi = DICTOOL->getIntValue_json(optionsJson, "textColorgG", 255);
+    int cbi = DICTOOL->getIntValue_json(optionsJson, "textColorB", 255);
+    options->set_textcolorr(cri);
+    options->set_textcolorg(cgi);
+    options->set_textcolorb(cbi);
+    
+    options->set_fontsize(DICTOOL->getIntValue_json(optionsJson, "fontSize", 14));
+    
+    options->set_fontname(DICTOOL->getStringValue_json(optionsJson, "fontName", "微软雅黑"));
+}
+
+void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptions *checkBoxOptions,
+                                                  protocolbuffers::WidgetOptions *widgetOptions,
+                                                  const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::CheckBoxOptions* options = checkBoxOptions;
+    
+    static const char* P_BackGroundBoxData = "backGroundBoxData";
+    static const char* P_BackGroundBoxSelectedData = "backGroundBoxSelectedData";
+    static const char* P_FrontCrossData = "frontCrossData";
+    static const char* P_BackGroundBoxDisabledData = "backGroundBoxDisabledData";
+    static const char* P_FrontCrossDisabledData = "frontCrossDisabledData";
+    
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    //load background image
+    ResourceData* backGroundFileData = options->mutable_backgroundboxdata();
+    const rapidjson::Value& backGroundDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxData);
+    type = DICTOOL->getIntValue_json(backGroundDic, "resourceType");
+    path = DICTOOL->getStringValue_json(backGroundDic, "path");
+    plistFile = DICTOOL->getStringValue_json(backGroundDic, "plistFile");
+    backGroundFileData->set_resourcetype(type);
+    backGroundFileData->set_path(path);
+    backGroundFileData->set_plistfile(plistFile);
+    
+    //load background selected image
+    ResourceData* backGroundSelectedFileData = options->mutable_backgroundboxselecteddata();
+    const rapidjson::Value& backGroundSelectedDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxSelectedData);
+    type = DICTOOL->getIntValue_json(backGroundSelectedDic, "resourceType");
+    path = DICTOOL->getStringValue_json(backGroundSelectedDic, "path");
+    plistFile = DICTOOL->getStringValue_json(backGroundSelectedDic, "plistFile");
+    backGroundSelectedFileData->set_resourcetype(type);
+    backGroundSelectedFileData->set_path(path);
+    backGroundSelectedFileData->set_plistfile(plistFile);
+    
+    //load frontCross image
+    ResourceData* frontCrossFileData = options->mutable_frontcrossdata();
+    const rapidjson::Value& frontCrossDic = DICTOOL->getSubDictionary_json(optionsJson, P_FrontCrossData);
+    type = DICTOOL->getIntValue_json(frontCrossDic, "resourceType");
+    path = DICTOOL->getStringValue_json(frontCrossDic, "path");
+    plistFile = DICTOOL->getStringValue_json(frontCrossDic, "plistFile");
+    frontCrossFileData->set_resourcetype(type);
+    frontCrossFileData->set_path(path);
+    frontCrossFileData->set_plistfile(plistFile);
+    
+    //load backGroundBoxDisabledData
+    ResourceData* backGroundDisabledFileData = options->mutable_backgroundboxdisableddata();
+    const rapidjson::Value& backGroundDisabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxDisabledData);
+    type = DICTOOL->getIntValue_json(backGroundDisabledDic, "resourceType");
+    path = DICTOOL->getStringValue_json(backGroundDisabledDic, "path");
+    plistFile = DICTOOL->getStringValue_json(backGroundDisabledDic, "plistFile");
+    backGroundDisabledFileData->set_resourcetype(type);
+    backGroundDisabledFileData->set_path(path);
+    backGroundDisabledFileData->set_plistfile(plistFile);
+    
+    ///load frontCrossDisabledData
+    ResourceData* frontCrossDisabledFileData = options->mutable_frontcrossdisableddata();
+    const rapidjson::Value& frontCrossDisabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_FrontCrossDisabledData);
+    type = DICTOOL->getIntValue_json(frontCrossDisabledDic, "resourceType");
+    path = DICTOOL->getStringValue_json(frontCrossDisabledDic, "path");
+    plistFile = DICTOOL->getStringValue_json(frontCrossDisabledDic, "plistFile");
+    frontCrossDisabledFileData->set_resourcetype(type);
+    frontCrossDisabledFileData->set_path(path);
+    frontCrossDisabledFileData->set_plistfile(plistFile);
+    
+    bool selectState = DICTOOL->getBooleanValue_json(optionsJson, "selectState");
+    options->set_selectedstate(selectState);
+}
+
+void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOptions *imageViewOptions,
+                                                   protocolbuffers::WidgetOptions *widgetOptions,
+                                                   const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::ImageViewOptions* options = imageViewOptions;
+    
+    static const char* P_Scale9Enable = "scale9Enable";
+    static const char* P_FileNameData = "fileNameData";
+    static const char* P_CapInsetsX = "capInsetsX";
+    static const char* P_CapInsetsY = "capInsetsY";
+    static const char* P_CapInsetsWidth = "capInsetsWidth";
+    static const char* P_CapInsetsHeight = "capInsetsHeight";
+    static const char* P_Scale9Width = "scale9Width";
+    static const char* P_Scale9Height = "scale9Height";
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* imageFileData = options->mutable_filenamedata();
+    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_FileNameData);
+    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
+    imageFileData->set_resourcetype(type);
+    imageFileData->set_path(path);
+    imageFileData->set_plistfile(plistFile);
+    
+    
+    bool scale9EnableExist = DICTOOL->checkObjectExist_json(optionsJson, P_Scale9Enable);
+    bool scale9Enable = false;
+    if (scale9EnableExist)
+    {
+        scale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_Scale9Enable);
+    }
+    options->set_scale9enable(scale9Enable);
+    
+    
+    if (scale9Enable)
+    {
+        float swf = DICTOOL->getFloatValue_json(optionsJson, P_Scale9Width, 80.0f);
+        float shf = DICTOOL->getFloatValue_json(optionsJson, P_Scale9Height, 80.0f);
+        options->set_scale9width(swf);
+        options->set_scale9height(shf);
+        
+        float cx = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsX);
+        float cy = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsY);
+        float cw = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsWidth,1.0f);
+        float ch = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsHeight,1.0f);
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+    }
+}
+
+void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOptions *textAtlasOptions,
+                                                   protocolbuffers::WidgetOptions *widgetOptions,
+                                                   const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::TextAtlasOptions* options = textAtlasOptions;
+    
+    static const char* P_StringValue = "stringValue";
+    static const char* P_CharMapFileData = "charMapFileData";
+    static const char* P_ItemWidth = "itemWidth";
+    static const char* P_ItemHeight = "itemHeight";
+    static const char* P_StartCharMap = "startCharMap";
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* cmftFileData = options->mutable_charmapfiledata();
+    const rapidjson::Value& cmftDic = DICTOOL->getSubDictionary_json(optionsJson, P_CharMapFileData);
+    type = DICTOOL->getIntValue_json(cmftDic, "resourceType");
+    path = DICTOOL->getStringValue_json(cmftDic, "path");
+    plistFile = DICTOOL->getStringValue_json(cmftDic, "plistFile");
+    cmftFileData->set_resourcetype(type);
+    cmftFileData->set_path(path);
+    cmftFileData->set_plistfile(plistFile);
+    
+    options->set_stringvalue(DICTOOL->getStringValue_json(optionsJson, P_StringValue, "12345678"));
+    options->set_itemwidth(DICTOOL->getIntValue_json(optionsJson, P_ItemWidth, 24));
+    options->set_itemheight(DICTOOL->getIntValue_json(optionsJson,P_ItemHeight, 32));
+    options->set_startcharmap(DICTOOL->getStringValue_json(optionsJson, P_StartCharMap));
+}
+
+void ProtocolBuffersSerialize::setTextBMFontOptions(protocolbuffers::TextBMFontOptions *textBMFontOptions,
+                                                    protocolbuffers::WidgetOptions *widgetOptions,
+                                                    const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::TextBMFontOptions* options = textBMFontOptions;
+    
+    static const char* P_FileNameData = "fileNameData";
+    static const char* P_Text = "text";
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* cmftFileData = options->mutable_filenamedata();
+    const rapidjson::Value& cmftDic = DICTOOL->getSubDictionary_json(optionsJson, P_FileNameData);
+    type = DICTOOL->getIntValue_json(cmftDic, "resourceType");
+    path = DICTOOL->getStringValue_json(cmftDic, "path");
+    plistFile = DICTOOL->getStringValue_json(cmftDic, "plistFile");
+    cmftFileData->set_resourcetype(type);
+    cmftFileData->set_path(path);
+    cmftFileData->set_plistfile(plistFile);
+    
+    const char* text = DICTOOL->getStringValue_json(optionsJson, P_Text,"Text Label");
+    options->set_text(text);
+}
+
+void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *textOptions,
+                                              protocolbuffers::WidgetOptions *widgetOptions,
+                                              const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::TextOptions* options = textOptions;
+    
+    static const char* P_TouchScaleEnable = "touchScaleEnable";
+    static const char* P_Text = "text";
+    static const char* P_FontSize = "fontSize";
+    static const char* P_FontName = "fontName";
+    static const char* P_AreaWidth = "areaWidth";
+    static const char* P_AreaHeight = "areaHeight";
+    static const char* P_HAlignment = "hAlignment";
+    static const char* P_VAlignment = "vAlignment";
+    
+    bool touchScaleChangeAble = DICTOOL->getBooleanValue_json(options, P_TouchScaleEnable);
+    options->set_touchscaleenable(touchScaleChangeAble);
+    
+    const char* text = DICTOOL->getStringValue_json(optionsJson, P_Text,"Text Label");
+    options->set_text(text);
+    
+    options->set_fontsize(DICTOOL->getIntValue_json(optionsJson, P_FontSize, 20));
+    
+    std::string fontName = DICTOOL->getStringValue_json(optionsJson, P_FontName, "微软雅黑");
+    options->set_fontname(fontName);
+    
+    bool aw = DICTOOL->checkObjectExist_json(optionsJson, P_AreaWidth);
+    bool ah = DICTOOL->checkObjectExist_json(optionsJson, P_AreaHeight);
+    if (aw && ah)
+    {
+        options->set_areawidth(DICTOOL->getFloatValue_json(optionsJson, P_AreaWidth));
+        options->set_areaheight(DICTOOL->getFloatValue_json(optionsJson, P_AreaHeight));
+    }
+    bool ha = DICTOOL->checkObjectExist_json(optionsJson, P_HAlignment);
+    if (ha)
+    {
+        options->set_halignment(DICTOOL->getIntValue_json(optionsJson, P_HAlignment));
+    }
+    bool va = DICTOOL->checkObjectExist_json(optionsJson, P_VAlignment);
+    if (va)
+    {
+        options->set_valignment(DICTOOL->getIntValue_json(optionsJson, P_VAlignment));
+    }
+}
+
+void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarOptions *loadingBarOptions,
+                                                    protocolbuffers::WidgetOptions *widgetOptions,
+                                                    const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::LoadingBarOptions* options = loadingBarOptions;
+    
+    static const char* P_Scale9Enable = "scale9Enable";
+    static const char* P_CapInsetsX = "capInsetsX";
+    static const char* P_CapInsetsY = "capInsetsY";
+    static const char* P_CapInsetsWidth = "capInsetsWidth";
+    static const char* P_CapInsetsHeight = "capInsetsHeight";
+    static const char* P_TextureData = "textureData";
+    static const char* P_Direction = "direction";
+    static const char* P_Percent = "percent";
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* imageFileData = options->mutable_texturedata();
+    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_TextureData);
+    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
+    imageFileData->set_resourcetype(type);
+    imageFileData->set_path(path);
+    imageFileData->set_plistfile(plistFile);
+    
+    
+    /* gui mark add load bar scale9 parse */
+    bool scale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_Scale9Enable);
+    options->set_scale9enable(scale9Enable);
+    
+    if (scale9Enable)
+    {
+        float cx = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsX);
+        float cy = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsY);
+        float cw = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsWidth, 0);
+        float ch = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsHeight, 0);
+        
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+        
+        float scale9Width = DICTOOL->getFloatValue_json(optionsJson, "scale9Width");
+        float scale9Height = DICTOOL->getFloatValue_json(optionsJson, "scale9Height");
+        options->set_scale9width(scale9Width);
+        options->set_scale9height(scale9Height);
+    }
+    /**/
+    
+    options->set_direction(DICTOOL->getIntValue_json(optionsJson, P_Direction));
+    options->set_percent(DICTOOL->getIntValue_json(optionsJson, P_Percent, 100));
+}
+
+void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *sliderOptions,
+                                                protocolbuffers::WidgetOptions *widgetOptions,
+                                                const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::SliderOptions* options = sliderOptions;
+    
+    static const char* P_Scale9Enable = "scale9Enable";
+    static const char* P_Percent = "percent";
+    static const char* P_BarFileNameData = "barFileNameData";
+    static const char* P_Length = "length";
+    static const char* P_BallNormalData = "ballNormalData";
+    static const char* P_BallPressedData = "ballPressedData";
+    static const char* P_BallDisabledData = "ballDisabledData";
+    static const char* P_ProgressBarData = "progressBarData";
+    
+    bool barTextureScale9EnableExist = DICTOOL->checkObjectExist_json(optionsJson, P_Scale9Enable);
+    if (barTextureScale9EnableExist)
+    {
+        bool barTextureScale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_Scale9Enable);
+        options->set_scale9enable(barTextureScale9Enable);
+    }
+    
+    options->set_percent(DICTOOL->getIntValue_json(optionsJson, P_Percent));
+    
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* barFileData = options->mutable_barfilenamedata();
+    const rapidjson::Value& barFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BarFileNameData);
+    type = DICTOOL->getIntValue_json(barFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(barFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(barFileNameDic, "plistFile");
+    barFileData->set_resourcetype(type);
+    barFileData->set_path(path);
+    barFileData->set_plistfile(plistFile);
+    
+    //loading normal slider ball texture
+    ResourceData* ballNormalFileData = options->mutable_ballnormaldata();
+    const rapidjson::Value& normalDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallNormalData);
+    type = DICTOOL->getIntValue_json(normalDic, "resourceType");
+    path = DICTOOL->getStringValue_json(normalDic, "path");
+    plistFile = DICTOOL->getStringValue_json(normalDic, "plistFile");
+    ballNormalFileData->set_resourcetype(type);
+    ballNormalFileData->set_path(path);
+    ballNormalFileData->set_plistfile(plistFile);
+    
+    
+    //loading slider ball press texture
+    ResourceData* ballPressedFileData = options->mutable_ballpresseddata();
+    const rapidjson::Value& pressedDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallPressedData);
+    type = DICTOOL->getIntValue_json(pressedDic, "resourceType");
+    path = DICTOOL->getStringValue_json(pressedDic, "path");
+    plistFile = DICTOOL->getStringValue_json(pressedDic, "plistFile");
+    ballPressedFileData->set_resourcetype(type);
+    ballPressedFileData->set_path(path);
+    ballPressedFileData->set_plistfile(plistFile);
+    
+    //loading silder ball disable texture
+    ResourceData* ballDisabledFileData = options->mutable_balldisableddata();
+    const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallDisabledData);
+    type = DICTOOL->getIntValue_json(disabledDic, "resourceType");
+    path = DICTOOL->getStringValue_json(disabledDic, "path");
+    plistFile = DICTOOL->getStringValue_json(disabledDic, "plistFile");
+    ballDisabledFileData->set_resourcetype(type);
+    ballDisabledFileData->set_path(path);
+    ballDisabledFileData->set_plistfile(plistFile);
+    
+    //load slider progress texture
+    ResourceData* progressBarFileData = options->mutable_barfilenamedata();
+    const rapidjson::Value& progressBarDic = DICTOOL->getSubDictionary_json(optionsJson, P_ProgressBarData);
+    type = DICTOOL->getIntValue_json(progressBarDic, "resourceType");
+    path = DICTOOL->getStringValue_json(progressBarDic, "path");
+    plistFile = DICTOOL->getStringValue_json(progressBarDic, "plistFile");
+    progressBarFileData->set_resourcetype(type);
+    progressBarFileData->set_path(path);
+    progressBarFileData->set_plistfile(plistFile);
+}
+
+void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOptions *textFieldOptions,
+                                                   protocolbuffers::WidgetOptions *widgetOptions,
+                                                   const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::TextFieldOptions* options = textFieldOptions;
+    
+    static const char* P_PlaceHolder = "placeHolder";
+    static const char* P_Text = "text";
+    static const char* P_FontSize = "fontSize";
+    static const char* P_FontName = "fontName";
+    static const char* P_TouchSizeWidth = "touchSizeWidth";
+    static const char* P_TouchSizeHeight = "touchSizeHeight";
+    static const char* P_MaxLengthEnable = "maxLengthEnable";
+    static const char* P_MaxLength = "maxLength";
+    static const char* P_PasswordEnable = "passwordEnable";
+    static const char* P_PasswordStyleText = "passwordStyleText";
+    
+    bool ph = DICTOOL->checkObjectExist_json(options, P_PlaceHolder);
+    if (ph)
+    {
+        options->set_placeholder(DICTOOL->getStringValue_json(optionsJson, P_PlaceHolder, "input words here"));
+    }
+    
+    options->set_text(DICTOOL->getStringValue_json(optionsJson, P_Text, "Text Tield"));
+    
+    options->set_fontsize(DICTOOL->getIntValue_json(optionsJson, P_FontSize, 20));
+    
+    options->set_fontname(DICTOOL->getStringValue_json(optionsJson, P_FontName, "微软雅黑"));
+    
+    bool maxLengthEnable = DICTOOL->getBooleanValue_json(optionsJson, P_MaxLengthEnable);
+    options->set_maxlengthenable(maxLengthEnable);
+    
+    if (maxLengthEnable)
+    {
+        int maxLength = DICTOOL->getIntValue_json(optionsJson, P_MaxLength,10);
+        options->set_maxlength(maxLength);
+    }
+    bool passwordEnable = DICTOOL->getBooleanValue_json(optionsJson, P_PasswordEnable);
+    options->set_passwordenable(passwordEnable);
+    if (passwordEnable)
+    {
+        options->set_passwordstyletext(DICTOOL->getStringValue_json(optionsJson, P_PasswordStyleText,"*"));
+    }
+}
+
+void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *layoutOptions,
+                                                protocolbuffers::WidgetOptions *widgetOptions,
+                                                const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::PanelOptions* options = layoutOptions;
+    
+    static const char* P_CapInsetsX = "capInsetsX";
+    static const char* P_CapInsetsY = "capInsetsY";
+    static const char* P_CapInsetsWidth = "capInsetsWidth";
+    static const char* P_CapInsetsHeight = "capInsetsHeight";
+    static const char* P_ClipAble = "clipAble";
+    static const char* P_BackGroundScale9Enable = "backGroundScale9Enable";
+    static const char* P_BgColorR = "bgColorR";
+    static const char* P_BgColorG = "bgColorG";
+    static const char* P_BgColorB = "bgColorB";
+    static const char* P_BgStartColorR = "bgStartColorR";
+    static const char* P_BgStartColorG = "bgStartColorG";
+    static const char* P_BgStartColorB = "bgStartColorB";
+    static const char* P_BgEndColorR = "bgEndColorR";
+    static const char* P_BgEndColorG = "bgEndColorG";
+    static const char* P_BgEndColorB = "bgEndColorB";
+    static const char* P_VectorX = "vectorX";
+    static const char* P_VectorY = "vectorY";
+    static const char* P_BgColorOpacity = "bgColorOpacity";
+    static const char* P_ColorType = "colorType";
+    static const char* P_BackGroundImageData = "backGroundImageData";
+    static const char* P_LayoutType = "layoutType";
+    static const char* P_Scale9Width = "scale9Width";
+    static const char* P_Scale9Height = "scale9Height";
+    
+    options->set_clipable(DICTOOL->getBooleanValue_json(optionsJson, P_ClipAble));
+    
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_BackGroundScale9Enable);
+    options->set_backgroundscale9enable(backGroundScale9Enable);
+    
+    
+    int cr;
+    int cg;
+    int cb;
+    int scr;
+    int scg;
+    int scb;
+    int ecr;
+    int ecg;
+    int ecb;
+    
+    cr = DICTOOL->getIntValue_json(optionsJson, "bgColorR",150);
+    cg = DICTOOL->getIntValue_json(optionsJson, "bgColorG",200);
+    cb = DICTOOL->getIntValue_json(optionsJson, "bgColorB",255);
+    
+    scr = DICTOOL->getIntValue_json(optionsJson, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(optionsJson, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(optionsJson, "bgStartColorB",255);
+    
+    ecr = DICTOOL->getIntValue_json(optionsJson, "bgEndColorR",150);
+    ecg = DICTOOL->getIntValue_json(optionsJson, "bgEndColorG",200);
+    ecb = DICTOOL->getIntValue_json(optionsJson, "bgEndColorB",255);
+    
+//    if (dynamic_cast<ui::PageView*>(widget))
+//    {
+//        cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
+//        cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
+//        cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
+//        
+//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+//        
+//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
+//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
+//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
+//    }
+//    else if (dynamic_cast<ui::ListView*>(widget))
+//    {
+//        cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
+//        cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
+//        cb = DICTOOL->getIntValue_json(options, "bgColorB",255);
+//        
+//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+//        
+//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",150);
+//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
+//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",255);
+//    }
+//    else if (dynamic_cast<ui::ScrollView*>(widget))
+//    {
+//        cr = DICTOOL->getIntValue_json(options, "bgColorR",255);
+//        cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
+//        cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
+//        
+//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+//        
+//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
+//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
+//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
+//    }
+//    else
+//    {
+//        cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
+//        cg = DICTOOL->getIntValue_json(options, "bgColorG",200);
+//        cb = DICTOOL->getIntValue_json(options, "bgColorB",255);
+//        
+//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+//        
+//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",150);
+//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",200);
+//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",255);
+//    }
+    
+    float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
+    float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
+    options->set_vectorx(bgcv1);
+    options->set_vectory(bgcv2);
+    
+    int co = DICTOOL->getIntValue_json(optionsJson, P_BgColorOpacity, 100);
+    
+    int colorType = DICTOOL->getIntValue_json(optionsJson, P_ColorType, 1);
+    options->set_colortype(colorType);
+    
+    options->set_bgstartcolorr(scr);
+    options->set_bgstartcolorg(scg);
+    options->set_bgstartcolorb(scb);
+    options->set_bgendcolorr(ecr);
+    options->set_bgendcolorg(ecg);
+    options->set_bgendcolorb(ecb);
+    
+    options->set_bgcolorr(cr);
+    options->set_bgcolorg(cg);
+    options->set_bgcolorb(cb);
+    
+    options->set_bgcoloropacity(co);
+    
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
+    backgroundimageFileData->set_resourcetype(type);
+    backgroundimageFileData->set_path(path);
+    backgroundimageFileData->set_plistfile(plistFile);
+    
+    
+    if (backGroundScale9Enable)
+    {
+        float cx = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsX);
+        float cy = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsY);
+        float cw = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsWidth, 1);
+        float ch = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsHeight, 1);
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+    }
+    
+    int bgimgcr = DICTOOL->getIntValue_json(optionsJson, "colorR", 255);
+    int bgimgcg = DICTOOL->getIntValue_json(optionsJson, "colorG", 255);
+    int bgimgcb = DICTOOL->getIntValue_json(optionsJson, "colorB", 255);
+    widgetOptions->set_colorr(bgimgcr);
+    widgetOptions->set_colorg(bgimgcg);
+    widgetOptions->set_colorb(bgimgcb);
+    
+    int bgimgopacity = DICTOOL->getIntValue_json(optionsJson, "opacity",255);
+    widgetOptions->set_opacity(bgimgopacity);
+}
+
+void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptions *pageViewOptions,
+                                                  protocolbuffers::WidgetOptions *widgetOptions,
+                                                  const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::PageViewOptions* options = pageViewOptions;
+    
+    static const char* P_CapInsetsX = "capInsetsX";
+    static const char* P_CapInsetsY = "capInsetsY";
+    static const char* P_CapInsetsWidth = "capInsetsWidth";
+    static const char* P_CapInsetsHeight = "capInsetsHeight";
+    static const char* P_ClipAble = "clipAble";
+    static const char* P_BackGroundScale9Enable = "backGroundScale9Enable";
+    static const char* P_BgColorR = "bgColorR";
+    static const char* P_BgColorG = "bgColorG";
+    static const char* P_BgColorB = "bgColorB";
+    static const char* P_BgStartColorR = "bgStartColorR";
+    static const char* P_BgStartColorG = "bgStartColorG";
+    static const char* P_BgStartColorB = "bgStartColorB";
+    static const char* P_BgEndColorR = "bgEndColorR";
+    static const char* P_BgEndColorG = "bgEndColorG";
+    static const char* P_BgEndColorB = "bgEndColorB";
+    static const char* P_VectorX = "vectorX";
+    static const char* P_VectorY = "vectorY";
+    static const char* P_BgColorOpacity = "bgColorOpacity";
+    static const char* P_ColorType = "colorType";
+    static const char* P_BackGroundImageData = "backGroundImageData";
+    static const char* P_LayoutType = "layoutType";
+    static const char* P_Scale9Width = "scale9Width";
+    static const char* P_Scale9Height = "scale9Height";
+    
+    options->set_clipable(DICTOOL->getBooleanValue_json(options, P_ClipAble));
+    
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(options, P_BackGroundScale9Enable);
+    options->set_backgroundscale9enable(backGroundScale9Enable);
+    
+    
+    int cr;
+    int cg;
+    int cb;
+    int scr;
+    int scg;
+    int scb;
+    int ecr;
+    int ecg;
+    int ecb;
+    
+    cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
+    cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
+    cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
+    
+    scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+    
+    ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
+    ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
+    ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
+    
+    float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
+    float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
+    options->set_vectorx(bgcv1);
+    options->set_vectory(bgcv2);
+    
+    int co = DICTOOL->getIntValue_json(optionsJson, P_BgColorOpacity, 100);
+    
+    int colorType = DICTOOL->getIntValue_json(optionsJson, P_ColorType, 1);
+    options->set_colortype(colorType);
+    
+    options->set_bgstartcolorr(scr);
+    options->set_bgstartcolorg(scg);
+    options->set_bgstartcolorb(scb);
+    options->set_bgendcolorr(ecr);
+    options->set_bgendcolorg(ecg);
+    options->set_bgendcolorb(ecb);
+    
+    options->set_bgcolorr(cr);
+    options->set_bgcolorg(cg);
+    options->set_bgcolorb(cb);
+    
+    options->set_bgcoloropacity(co);
+    
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
+    backgroundimageFileData->set_resourcetype(type);
+    backgroundimageFileData->set_path(path);
+    backgroundimageFileData->set_plistfile(plistFile);
+    
+    
+    if (backGroundScale9Enable)
+    {
+        float cx = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsX);
+        float cy = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsY);
+        float cw = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsWidth, 1);
+        float ch = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsHeight, 1);
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+    }
+    
+    int bgimgcr = DICTOOL->getIntValue_json(optionsJson, "colorR", 255);
+    int bgimgcg = DICTOOL->getIntValue_json(optionsJson, "colorG", 255);
+    int bgimgcb = DICTOOL->getIntValue_json(optionsJson, "colorB", 255);
+    widgetOptions->set_colorr(bgimgcr);
+    widgetOptions->set_colorg(bgimgcg);
+    widgetOptions->set_colorb(bgimgcb);
+    
+    int bgimgopacity = DICTOOL->getIntValue_json(optionsJson, "opacity",255);
+    widgetOptions->set_opacity(bgimgopacity);
+}
+
+void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewOptions *scrollViewOptions,
+                                                    protocolbuffers::WidgetOptions *widgetOptions,
+                                                    const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::ScrollViewOptions* options = scrollViewOptions;
+    
+    static const char* P_CapInsetsX = "capInsetsX";
+    static const char* P_CapInsetsY = "capInsetsY";
+    static const char* P_CapInsetsWidth = "capInsetsWidth";
+    static const char* P_CapInsetsHeight = "capInsetsHeight";
+    static const char* P_ClipAble = "clipAble";
+    static const char* P_BackGroundScale9Enable = "backGroundScale9Enable";
+    static const char* P_BgColorR = "bgColorR";
+    static const char* P_BgColorG = "bgColorG";
+    static const char* P_BgColorB = "bgColorB";
+    static const char* P_BgStartColorR = "bgStartColorR";
+    static const char* P_BgStartColorG = "bgStartColorG";
+    static const char* P_BgStartColorB = "bgStartColorB";
+    static const char* P_BgEndColorR = "bgEndColorR";
+    static const char* P_BgEndColorG = "bgEndColorG";
+    static const char* P_BgEndColorB = "bgEndColorB";
+    static const char* P_VectorX = "vectorX";
+    static const char* P_VectorY = "vectorY";
+    static const char* P_BgColorOpacity = "bgColorOpacity";
+    static const char* P_ColorType = "colorType";
+    static const char* P_BackGroundImageData = "backGroundImageData";
+    static const char* P_LayoutType = "layoutType";
+    static const char* P_Scale9Width = "scale9Width";
+    static const char* P_Scale9Height = "scale9Height";
+    
+    static const char* P_InnerWidth = "innerWidth";
+    static const char* P_InnerHeight = "innerHeight";
+    static const char* P_Direction = "direction";
+    static const char* P_BounceEnable = "bounceEnable";
+    
+    options->set_clipable(DICTOOL->getBooleanValue_json(options, P_ClipAble));
+    
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(options, P_BackGroundScale9Enable);
+    options->set_backgroundscale9enable(backGroundScale9Enable);
+    
+    
+    int cr;
+    int cg;
+    int cb;
+    int scr;
+    int scg;
+    int scb;
+    int ecr;
+    int ecg;
+    int ecb;
+    
+    cr = DICTOOL->getIntValue_json(options, "bgColorR",255);
+    cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
+    cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
+    
+    scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+    
+    ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
+    ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
+    ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
+    
+    float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
+    float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
+    options->set_vectorx(bgcv1);
+    options->set_vectory(bgcv2);
+    
+    int co = DICTOOL->getIntValue_json(optionsJson, P_BgColorOpacity, 100);
+    
+    int colorType = DICTOOL->getIntValue_json(optionsJson, P_ColorType, 1);
+    options->set_colortype(colorType);
+    
+    options->set_bgstartcolorr(scr);
+    options->set_bgstartcolorg(scg);
+    options->set_bgstartcolorb(scb);
+    options->set_bgendcolorr(ecr);
+    options->set_bgendcolorg(ecg);
+    options->set_bgendcolorb(ecb);
+    
+    options->set_bgcolorr(cr);
+    options->set_bgcolorg(cg);
+    options->set_bgcolorb(cb);
+    
+    options->set_bgcoloropacity(co);
+    
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
+    backgroundimageFileData->set_resourcetype(type);
+    backgroundimageFileData->set_path(path);
+    backgroundimageFileData->set_plistfile(plistFile);
+    
+    
+    if (backGroundScale9Enable)
+    {
+        float cx = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsX);
+        float cy = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsY);
+        float cw = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsWidth, 1);
+        float ch = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsHeight, 1);
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+    }
+    
+    int bgimgcr = DICTOOL->getIntValue_json(optionsJson, "colorR", 255);
+    int bgimgcg = DICTOOL->getIntValue_json(optionsJson, "colorG", 255);
+    int bgimgcb = DICTOOL->getIntValue_json(optionsJson, "colorB", 255);
+    widgetOptions->set_colorr(bgimgcr);
+    widgetOptions->set_colorg(bgimgcg);
+    widgetOptions->set_colorb(bgimgcb);
+    
+    int bgimgopacity = DICTOOL->getIntValue_json(optionsJson, "opacity",255);
+    widgetOptions->set_opacity(bgimgopacity);
+    
+    float innerWidth = DICTOOL->getFloatValue_json(optionsJson, P_InnerWidth,200);
+    float innerHeight = DICTOOL->getFloatValue_json(optionsJson, P_InnerHeight,200);
+    options->set_innerwidth(innerWidth);
+    options->set_innerheight(innerHeight);
+    
+    int direction = DICTOOL->getFloatValue_json(options, P_Direction,1);
+    options->set_direction(direction);
+    
+    options->set_bounceenable(DICTOOL->getBooleanValue_json(options, P_BounceEnable));
+}
+
+void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptions *listViewOptions,
+                                                  protocolbuffers::WidgetOptions *widgetOptions,
+                                                  const rapidjson::Value &optionsJson)
+{
+    setWidgetOptions(widgetOptions, optionsJson);
+    
+    protocolbuffers::ListViewOptions* options = listViewOptions;
+    
+    static const char* P_CapInsetsX = "capInsetsX";
+    static const char* P_CapInsetsY = "capInsetsY";
+    static const char* P_CapInsetsWidth = "capInsetsWidth";
+    static const char* P_CapInsetsHeight = "capInsetsHeight";
+    static const char* P_ClipAble = "clipAble";
+    static const char* P_BackGroundScale9Enable = "backGroundScale9Enable";
+    static const char* P_BgColorR = "bgColorR";
+    static const char* P_BgColorG = "bgColorG";
+    static const char* P_BgColorB = "bgColorB";
+    static const char* P_BgStartColorR = "bgStartColorR";
+    static const char* P_BgStartColorG = "bgStartColorG";
+    static const char* P_BgStartColorB = "bgStartColorB";
+    static const char* P_BgEndColorR = "bgEndColorR";
+    static const char* P_BgEndColorG = "bgEndColorG";
+    static const char* P_BgEndColorB = "bgEndColorB";
+    static const char* P_VectorX = "vectorX";
+    static const char* P_VectorY = "vectorY";
+    static const char* P_BgColorOpacity = "bgColorOpacity";
+    static const char* P_ColorType = "colorType";
+    static const char* P_BackGroundImageData = "backGroundImageData";
+    static const char* P_LayoutType = "layoutType";
+    static const char* P_Scale9Width = "scale9Width";
+    static const char* P_Scale9Height = "scale9Height";
+    
+    static const char* P_InnerWidth = "innerWidth";
+    static const char* P_InnerHeight = "innerHeight";
+    static const char* P_Direction = "direction";
+    static const char* P_BounceEnable = "bounceEnable";
+    
+    static const char* P_ItemMargin = "itemMargin";
+    
+    options->set_clipable(DICTOOL->getBooleanValue_json(options, P_ClipAble));
+    
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(options, P_BackGroundScale9Enable);
+    options->set_backgroundscale9enable(backGroundScale9Enable);
+    
+    
+    int cr;
+    int cg;
+    int cb;
+    int scr;
+    int scg;
+    int scb;
+    int ecr;
+    int ecg;
+    int ecb;
+    
+    cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
+    cg = DICTOOL->getIntValue_json(options, "bgColorG",200);
+    cb = DICTOOL->getIntValue_json(options, "bgColorB",255);
+    
+    scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+    
+    ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",150);
+    ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",200);
+    ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",255);
+    
+    float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
+    float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
+    options->set_vectorx(bgcv1);
+    options->set_vectory(bgcv2);
+    
+    int co = DICTOOL->getIntValue_json(optionsJson, P_BgColorOpacity, 100);
+    
+    int colorType = DICTOOL->getIntValue_json(optionsJson, P_ColorType, 1);
+    options->set_colortype(colorType);
+    
+    options->set_bgstartcolorr(scr);
+    options->set_bgstartcolorg(scg);
+    options->set_bgstartcolorb(scb);
+    options->set_bgendcolorr(ecr);
+    options->set_bgendcolorg(ecg);
+    options->set_bgendcolorb(ecb);
+    
+    options->set_bgcolorr(cr);
+    options->set_bgcolorg(cg);
+    options->set_bgcolorb(cb);
+    
+    options->set_bgcoloropacity(co);
+    
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
+    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
+    backgroundimageFileData->set_resourcetype(type);
+    backgroundimageFileData->set_path(path);
+    backgroundimageFileData->set_plistfile(plistFile);
+    
+    
+    if (backGroundScale9Enable)
+    {
+        float cx = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsX);
+        float cy = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsY);
+        float cw = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsWidth, 1);
+        float ch = DICTOOL->getFloatValue_json(optionsJson, P_CapInsetsHeight, 1);
+        options->set_capinsetsx(cx);
+        options->set_capinsetsy(cy);
+        options->set_capinsetswidth(cw);
+        options->set_capinsetsheight(ch);
+    }
+    
+    int bgimgcr = DICTOOL->getIntValue_json(optionsJson, "colorR", 255);
+    int bgimgcg = DICTOOL->getIntValue_json(optionsJson, "colorG", 255);
+    int bgimgcb = DICTOOL->getIntValue_json(optionsJson, "colorB", 255);
+    widgetOptions->set_colorr(bgimgcr);
+    widgetOptions->set_colorg(bgimgcg);
+    widgetOptions->set_colorb(bgimgcb);
+    
+    int bgimgopacity = DICTOOL->getIntValue_json(optionsJson, "opacity",255);
+    widgetOptions->set_opacity(bgimgopacity);
+    
+    float innerWidth = DICTOOL->getFloatValue_json(optionsJson, P_InnerWidth,200);
+    float innerHeight = DICTOOL->getFloatValue_json(optionsJson, P_InnerHeight,200);
+    options->set_innerwidth(innerWidth);
+    options->set_innerheight(innerHeight);
+    
+    int direction = DICTOOL->getFloatValue_json(options, P_Direction,1);
+    options->set_direction(direction);
+    
+    options->set_bounceenable(DICTOOL->getBooleanValue_json(options, P_BounceEnable));
+    
+    options->set_gravity(DICTOOL->getIntValue_json(options, "gravity", 3));
+    
+    float itemMargin = DICTOOL->getFloatValue_json(options, P_ItemMargin);
+    options->set_itemmargin(itemMargin);
+}
+
+void ProtocolBuffersSerialize::convertActionProtocolBuffersWithJson(protocolbuffers::NodeAction *nodeAction,
+                                                                    const rapidjson::Value &json)
+{
+    int duration = DICTOOL->getIntValue_json(json, "duration");
+    nodeAction->set_duration(duration);
+    
+    int timeSpeed = DICTOOL->getFloatValue_json(json, "speed", 1.0f);
+    nodeAction->set_speed(timeSpeed);
+    
+    int timelineLength = DICTOOL->getArrayCount_json(json, "timelines");
+    for (int i = 0; i < timelineLength; i++)
+    {
+        const rapidjson::Value& dic = DICTOOL->getSubDictionary_json(json, "timelines", i);
+        protocolbuffers::TimeLine* timeLine = nodeAction->add_timelines();
+        convertTimelineProtocolBuffers(timeLine, dic);
+    }
+}
+
+void ProtocolBuffersSerialize::convertTimelineProtocolBuffers(protocolbuffers::TimeLine *timeLine,
+                                                              const rapidjson::Value &json)
+{
+    // get frame type
+    const char* frameTypeTemp = DICTOOL->getStringValue_json(json, "frameType");
+	if (frameTypeTemp == NULL)
+        return;
+    
+    if (frameTypeTemp)
+    {
+        timeLine->set_frametype(frameTypeTemp);
+        
+        int actionTag = DICTOOL->getIntValue_json(json, "actionTag");
+        timeLine->set_actiontag(actionTag);
+        
+        
+        int length = DICTOOL->getArrayCount_json(json, "frames");
+        for (int i = 0; i < length; i++)
+        {
+            const rapidjson::Value& dic = DICTOOL->getSubDictionary_json(json, "frames", i);
+            
+            protocolbuffers::Frame* frame = timeLine->add_frames();
+            
+            std::string frameType = frameTypeTemp;
+            
+            if (frameType == "VisibleFrame")
+            {
+                TimeLineBoolFrame* visibleFrame = frame->mutable_visibleframe();
+                setVisibleFrame(visibleFrame, dic);
+            }
+            else if (frameType == "PositionFrame")
+            {
+                TimeLinePointFrame* positionFrame = frame->mutable_positionframe();
+                setPositionFrame(positionFrame, dic);
+            }
+            else if (frameType == "ScaleFrame")
+            {
+                TimeLinePointFrame* scaleFrame = frame->mutable_scaleframe();
+                setScaleFrame(scaleFrame, dic);
+            }
+            else if (frameType == "RotationSkewFrame")
+            {
+                TimeLinePointFrame* rotationSkewFrame = frame->mutable_rotationskewframe();
+                setRotationSkewFrame(rotationSkewFrame, dic);
+            }
+            else if (frameType == "AnchorFrame")
+            {
+                TimeLinePointFrame* anchorFrame = frame->mutable_anchorpointframe();
+                setAnchorFrame(anchorFrame, dic);
+            }
+            else if (frameType == "ColorFrame")
+            {
+                TimeLineColorFrame* colorFrame = frame->mutable_colorframe();
+                setColorFrame(colorFrame, dic);
+            }
+            else if (frameType == "TextureFrame")
+            {
+                TimeLineTextureFrame* textureFrame = frame->mutable_textureframe();
+                setTextureFrame(textureFrame, dic);
+            }
+            else if (frameType == "EventFrame")
+            {
+                TimeLineStringFrame* eventFrame = frame->mutable_eventframe();
+                setEventFrame(eventFrame, dic);
+            }
+            else if (frameType == "ZOrderFrame")
+            {
+                TimeLineIntFrame* zOrderFrame = frame->mutable_zorderframe();
+                setZOrderFrame(zOrderFrame, dic);
+            }
+        }
+    }
+}
+
+void ProtocolBuffersSerialize::setVisibleFrame(protocolbuffers::TimeLineBoolFrame *visibleFrame,
+                                               const rapidjson::Value &json)
+{
+    bool visible = DICTOOL->getBooleanValue_json(json, "value");
+    visibleFrame->set_value(visible);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    visibleFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    visibleFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setPositionFrame(protocolbuffers::TimeLinePointFrame *positionFrame,
+                                                const rapidjson::Value &json)
+{
+    float x = DICTOOL->getFloatValue_json(json, "x");
+    float y = DICTOOL->getFloatValue_json(json, "y");
+    positionFrame->set_x(x);
+    positionFrame->set_y(y);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    positionFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    positionFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setScaleFrame(protocolbuffers::TimeLinePointFrame *scaleFrame,
+                                             const rapidjson::Value &json)
+{
+    float scalex = DICTOOL->getFloatValue_json(json, "x");
+    float scaley = DICTOOL->getFloatValue_json(json, "y");
+    scaleFrame->set_x(scalex);
+    scaleFrame->set_y(scaley);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    scaleFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    scaleFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setRotationSkewFrame(protocolbuffers::TimeLinePointFrame *rotationSkewFrame,
+                                                    const rapidjson::Value &json)
+{
+    float skewx = DICTOOL->getFloatValue_json(json, "x");
+    float skewy = DICTOOL->getFloatValue_json(json, "y");
+    rotationSkewFrame->set_x(skewx);
+    rotationSkewFrame->set_y(skewy);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    rotationSkewFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    rotationSkewFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setAnchorFrame(protocolbuffers::TimeLinePointFrame *anchorPointframe,
+                                              const rapidjson::Value &json)
+{
+    float anchorx = DICTOOL->getFloatValue_json(json, "x");
+    float anchory = DICTOOL->getFloatValue_json(json, "y");
+    anchorPointframe->set_x(anchorx);
+    anchorPointframe->set_y(anchory);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    anchorPointframe->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    anchorPointframe->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setColorFrame(protocolbuffers::TimeLineColorFrame *colorFrame,
+                                             const rapidjson::Value &json)
+{
+    int alpha = (GLubyte)DICTOOL->getIntValue_json(json, "alpha");
+    int red   = (GLubyte)DICTOOL->getIntValue_json(json, "red");
+    int green = (GLubyte)DICTOOL->getIntValue_json(json, "green");
+    int blue  = (GLubyte)DICTOOL->getIntValue_json(json, "blue");
+    colorFrame->set_alpha(alpha);
+    colorFrame->set_red(red);
+    colorFrame->set_green(green);
+    colorFrame->set_blue(blue);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    colorFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    colorFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setTextureFrame(protocolbuffers::TimeLineTextureFrame *textureFrame,
+                                               const rapidjson::Value &json)
+{
+    const char* texture = DICTOOL->getStringValue_json(json, "value");
+    if (texture != NULL)
+        textureFrame->set_name(texture);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    textureFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    textureFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setEventFrame(protocolbuffers::TimeLineStringFrame *eventFrame,
+                                             const rapidjson::Value &json)
+{
+    const char* evnt = DICTOOL->getStringValue_json(json, "value");
+    
+    if(evnt != NULL)
+        eventFrame->set_value(evnt);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    eventFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    eventFrame->set_tween(tween);
+}
+
+void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame *zorderFrame,
+                                              const rapidjson::Value &json)
+{
+    int zorder = DICTOOL->getIntValue_json(json, "value");
+    zorderFrame->set_value(zorder);
+    
+    int frameIndex = DICTOOL->getIntValue_json(json, "frameIndex");
+    zorderFrame->set_frameindex(frameIndex);
+    
+    bool tween = DICTOOL->getBooleanValue_json(json, "tween", false);
+    zorderFrame->set_tween(tween);
+}
+/**/
+/**/
+
 /*
 void ProtocolBuffersSerialize::serializeProtocolBuffersWithFile(const std::string &fileName)
 {
