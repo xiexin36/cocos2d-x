@@ -252,6 +252,84 @@ public:
                         const tinyxml2::XMLElement* frameElement);
     /**/
     
+    /* peterson json */
+    /* serialize protocol buffers from json */
+    void serializeProtocolBuffersWithJson(const std::string& protocolbuffersFileName,
+                                                 const std::string& jsonFileName);
+    // nodeTree
+    void convertNodeTreeProtocolBuffersWithJson(protocolbuffers::NodeTree* nodetree,
+                                               const rapidjson::Value& json);
+    void setNodeOptions(protocolbuffers::WidgetOptions* nodeOptions,
+                        const rapidjson::Value& optionsJson);
+    void setWidgetOptions(protocolbuffers::WidgetOptions* widgetOptions,
+                          const rapidjson::Value& optionsJson);
+    void setButtonOptions(protocolbuffers::ButtonOptions* buttonOptions,
+                          protocolbuffers::WidgetOptions* widgetOptions,
+                          const rapidjson::Value& optionsJson);
+    void setCheckBoxOptions(protocolbuffers::CheckBoxOptions* checkBoxOptions,
+                            protocolbuffers::WidgetOptions* widgetOptions,
+                            const rapidjson::Value& optionsJson);
+    void setImageViewOptions(protocolbuffers::ImageViewOptions* imageViewOptions,
+                             protocolbuffers::WidgetOptions* widgetOptions,
+                             const rapidjson::Value& optionsJson);
+    void setTextAtlasOptions(protocolbuffers::TextAtlasOptions* textAtlasOptions,
+                             protocolbuffers::WidgetOptions* widgetOptions,
+                             const rapidjson::Value& optionsJson);
+    void setTextBMFontOptions(protocolbuffers::TextBMFontOptions* textBMFontOptions,
+                              protocolbuffers::WidgetOptions* widgetOptions,
+                              const rapidjson::Value& optionsJson);
+    void setTextOptions(protocolbuffers::TextOptions* textOptions,
+                        protocolbuffers::WidgetOptions* widgetOptions,
+                        const rapidjson::Value& optionsJson);
+    void setLoadingBarOptions(protocolbuffers::LoadingBarOptions* loadingBarOptions,
+                              protocolbuffers::WidgetOptions* widgetOptions,
+                              const rapidjson::Value& optionsJson);
+    void setSliderOptions(protocolbuffers::SliderOptions* sliderOptions,
+                          protocolbuffers::WidgetOptions* widgetOptions,
+                          const rapidjson::Value& optionsJson);
+    void setTextFieldOptions(protocolbuffers::TextFieldOptions* textFieldOptions,
+                             protocolbuffers::WidgetOptions* widgetOptions,
+                             const rapidjson::Value& optionsJson);
+    void setLayoutOptions(protocolbuffers::PanelOptions* layoutOptions,
+                          protocolbuffers::WidgetOptions* widgetOptions,
+                          const rapidjson::Value& optionsJson);
+    void setPageViewOptions(protocolbuffers::PageViewOptions* pageViewOptions,
+                            protocolbuffers::WidgetOptions* widgetOptions,
+                            const rapidjson::Value& optionsJson);
+    void setScrollViewOptions(protocolbuffers::ScrollViewOptions* scrollViewOptions,
+                              protocolbuffers::WidgetOptions* widgetOptions,
+                              const rapidjson::Value& optionsJson);
+    void setListViewOptions(protocolbuffers::ListViewOptions* listViewOptions,
+                            protocolbuffers::WidgetOptions* widgetOptions,
+                            const rapidjson::Value& optionsJson);
+    /**/
+    
+    /* action */
+    void convertActionProtocolBuffersWithJson(protocolbuffers::NodeAction* nodeAction,
+                                              const rapidjson::Value& json);
+    void convertTimelineProtocolBuffers(protocolbuffers::TimeLine* timeLine,
+                                        const rapidjson::Value& json);
+    void setVisibleFrame(protocolbuffers::TimeLineBoolFrame* visibleFrame,
+                         const rapidjson::Value& json);
+    void setPositionFrame(protocolbuffers::TimeLinePointFrame* positionFrame,
+                          const rapidjson::Value& json);
+    void setScaleFrame(protocolbuffers::TimeLinePointFrame* scaleFrame,
+                       const rapidjson::Value& json);
+    void setRotationSkewFrame(protocolbuffers::TimeLinePointFrame* rotationSkewFrame,
+                              const rapidjson::Value& json);
+    void setAnchorFrame(protocolbuffers::TimeLinePointFrame* anchorPointframe,
+                        const rapidjson::Value& json);
+    void setColorFrame(protocolbuffers::TimeLineColorFrame* colorFrame,
+                       const rapidjson::Value& json);
+    void setTextureFrame(protocolbuffers::TimeLineTextureFrame* textureFrame,
+                         const rapidjson::Value& json);
+    void setEventFrame(protocolbuffers::TimeLineStringFrame* eventFrame,
+                       const rapidjson::Value& json);
+    void setZOrderFrame(protocolbuffers::TimeLineIntFrame* zorderFrame,
+                        const rapidjson::Value& json);
+    /**/
+    /**/
+    
     /* serialize protocol buffers from Node */
 //    void serializeProtocolBuffersWithFile(const std::string& fileName);
     
