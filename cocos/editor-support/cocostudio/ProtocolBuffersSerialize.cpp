@@ -1369,7 +1369,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         {
             options->set_fontname(value);
         }
-		else if (name == "DiplayState")
+		else if (name == "DisplayState")
 		{
 			options->set_displaystate((value == "True") ? true : false);
 		}
