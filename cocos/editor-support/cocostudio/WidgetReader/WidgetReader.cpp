@@ -364,6 +364,9 @@ namespace cocostudio
         
         const protocolbuffers::WidgetOptions& options = nodeTree.widgetoptions();
         
+        widget->setCascadeColorEnabled(true);
+        widget->setCascadeOpacityEnabled(true);
+        
         bool ignoreSizeExsit = options.has_ignoresize();
         if (ignoreSizeExsit)
         {
@@ -494,6 +497,9 @@ namespace cocostudio
     /* peterson xml */
     void WidgetReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
+        widget->setCascadeColorEnabled(true);
+        widget->setCascadeOpacityEnabled(true);
+        
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
         while (attribute)
