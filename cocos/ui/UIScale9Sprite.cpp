@@ -869,6 +869,9 @@ y+=ytranslate;                       \
             }
         }
         _positionsAreDirty = true;
+
+        this->setFlippedX(_flippedX);
+        this->setFlippedY(_flippedY);
     }
     
     bool Scale9Sprite::isScale9Enabled() const
@@ -1036,35 +1039,15 @@ y+=ytranslate;                       \
     void Scale9Sprite::setFlippedX(bool flippedX)
     {
         _flippedX = flippedX;
-        if (_scale9Enabled)
-        {
-            int iScale = _flippedX ? -1:1;
-            this->setScaleX(iScale);
-        }
-        else
-        {
-            if (_scale9Image)
-            {
-                _scale9Image->setFlippedX(flippedX);
-            }
-        }
+        int iScale = _flippedX ? -1:1;
+        this->setScaleX(iScale);
     }
     
     void Scale9Sprite::setFlippedY(bool flippedY)
     {
         _flippedY = flippedY;
-        if (_scale9Enabled)
-        {
-            int iScale = _flippedY ? -1:1;
-            this->setScaleY(iScale);
-        }
-        else
-        {
-            if (_scale9Image)
-            {
-                _scale9Image->setFlippedY(flippedY);
-            }
-        }
+        int iScale = _flippedY ? -1:1;
+        this->setScaleY(iScale);
     }
     
     bool Scale9Sprite::isFlippedX()const
