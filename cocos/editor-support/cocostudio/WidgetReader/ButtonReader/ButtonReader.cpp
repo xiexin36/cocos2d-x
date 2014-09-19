@@ -408,7 +408,7 @@ namespace cocostudio
             {
                 opacity = atoi(value.c_str());
             }
-            else if (name == "DiplayState")
+            else if (name == "DisplayState")
             {
                 button->setBright((value == "True") ? true : false);
             }

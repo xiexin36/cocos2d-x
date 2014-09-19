@@ -1322,6 +1322,8 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
     
     ButtonOptions* options = buttonOptions;
     
+    options->set_displaystate(true);
+    
     bool scale9Enabled = false;
     
     // attributes
@@ -1363,7 +1365,11 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         {
             options->set_fontsize(atoi(value.c_str()));
         }
-		else if (name == "DiplayState" || name == "DisplayState")
+        else if (name == "FontName")
+        {
+            options->set_fontname(value);
+        }
+		else if (name == "DisplayState")
 		{
 			options->set_displaystate((value == "True") ? true : false);
 		}
@@ -3971,6 +3977,9 @@ void ProtocolBuffersSerialize::serializeProtocolBuffersWithJson(const std::strin
         CCLOG("GetParseError %s\n", doc.GetParseError());
     }
     
+    std::string cocos2dVersion = DICTOOL->getStringValue_json(doc, "cocos2dVersion");
+    protobuf.set_cocos2dversion(cocos2dVersion);
+    
     const rapidjson::Value& nodeTreeJson = DICTOOL->getSubDictionary_json(doc, "nodeTree");
     protocolbuffers::NodeTree* nodeTree = protobuf.mutable_nodetree();
     convertNodeTreeProtocolBuffersWithJson(nodeTree, nodeTreeJson);
@@ -4006,6 +4015,8 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithJson(protocolbu
     std::string classname = DICTOOL->getStringValue_json(json, "classname");
     const rapidjson::Value& optionsJson = DICTOOL->getSubDictionary_json(json, "options");
     
+    nodetree->set_classname(classname);
+    
     if (classname == "Node")
     {
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
@@ -4029,19 +4040,19 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithJson(protocolbu
         ImageViewOptions* imageViewOptions = nodetree->mutable_imageviewoptions();
         setImageViewOptions(imageViewOptions, widgetOptions, optionsJson);
     }
-    else if (classname == "TextAtlas")
+    else if (classname == "TextAtlas" || classname == "LabelAtlas")
     {
         WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
         TextAtlasOptions* textAtlasOptions = nodetree->mutable_textatlasoptions();
         setTextAtlasOptions(textAtlasOptions, widgetOptions, optionsJson);
     }
-    else if (classname == "TextBMFont")
+    else if (classname == "TextBMFont" || classname == "LabelBMFont")
     {
         WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
         TextBMFontOptions* textBMFontOptions = nodetree->mutable_textbmfontoptions();
         setTextBMFontOptions(textBMFontOptions, widgetOptions, optionsJson);
     }
-    else if (classname == "Text")
+    else if (classname == "Text" || classname == "Label")
     {
         WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
         TextOptions* textOptions = nodetree->mutable_textoptions();
@@ -4113,10 +4124,10 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
     options->set_positiontype(DICTOOL->getIntValue_json(optionsJson, "positionType"));
     
     options->set_sizepercentx(DICTOOL->getFloatValue_json(optionsJson, "sizePercentX"));
-    options->set_sizepercenty(DICTOOL->getFloatValue_json(options, "sizePercentY"));
+    options->set_sizepercenty(DICTOOL->getFloatValue_json(optionsJson, "sizePercentY"));
     
     options->set_positionpercentx(DICTOOL->getFloatValue_json(optionsJson, "positionPercentX"));
-    options->set_positionpercenty(DICTOOL->getFloatValue_json(options, "positionPercentY"));
+    options->set_positionpercenty(DICTOOL->getFloatValue_json(optionsJson, "positionPercentY"));
     
     float width = DICTOOL->getFloatValue_json(optionsJson, "width");
     float height = DICTOOL->getFloatValue_json(optionsJson, "height");
@@ -4206,10 +4217,10 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
     options->set_positiontype(DICTOOL->getIntValue_json(optionsJson, "positionType"));
     
     options->set_sizepercentx(DICTOOL->getFloatValue_json(optionsJson, "sizePercentX"));
-    options->set_sizepercenty(DICTOOL->getFloatValue_json(options, "sizePercentY"));
+    options->set_sizepercenty(DICTOOL->getFloatValue_json(optionsJson, "sizePercentY"));
     
     options->set_positionpercentx(DICTOOL->getFloatValue_json(optionsJson, "positionPercentX"));
-    options->set_positionpercenty(DICTOOL->getFloatValue_json(options, "positionPercentY"));
+    options->set_positionpercenty(DICTOOL->getFloatValue_json(optionsJson, "positionPercentY"));
     
     float width = DICTOOL->getFloatValue_json(optionsJson, "width");
     float height = DICTOOL->getFloatValue_json(optionsJson, "height");
@@ -4299,32 +4310,44 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
     int type = 0;
     std::string path = "", plistFile = "";
     
-    ResourceData* normalFileData = options->mutable_normaldata();
-    const rapidjson::Value& normalDic = DICTOOL->getSubDictionary_json(optionsJson, "normalData");
-    type = DICTOOL->getIntValue_json(normalDic, "resourceType");
-    path = DICTOOL->getStringValue_json(normalDic, "path");
-    plistFile = DICTOOL->getStringValue_json(normalDic, "plistFile");
-    normalFileData->set_resourcetype(type);
-    normalFileData->set_path(path);
-    normalFileData->set_plistfile(plistFile);
+    bool normalDicExist = DICTOOL->checkObjectExist_json(optionsJson, "normalData");
+    if (normalDicExist)
+    {
+        ResourceData* normalFileData = options->mutable_normaldata();
+        const rapidjson::Value& normalDic = DICTOOL->getSubDictionary_json(optionsJson, "normalData");
+        type = DICTOOL->getIntValue_json(normalDic, "resourceType");
+        path = DICTOOL->getStringValue_json(normalDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(normalDic, "plistFile", "");
+        normalFileData->set_resourcetype(type);
+        normalFileData->set_path(path);
+        normalFileData->set_plistfile(plistFile);
+    }
     
-    ResourceData* pressedFileData = options->mutable_presseddata();
-    const rapidjson::Value& pressedDic = DICTOOL->getSubDictionary_json(optionsJson, "pressedData");
-    type = DICTOOL->getIntValue_json(pressedDic, "resourceType");
-    path = DICTOOL->getStringValue_json(pressedDic, "path");
-    plistFile = DICTOOL->getStringValue_json(pressedDic, "plistFile");
-    pressedFileData->set_resourcetype(type);
-    pressedFileData->set_path(path);
-    pressedFileData->set_plistfile(plistFile);
+    bool pressedDicExist = DICTOOL->checkObjectExist_json(optionsJson, "pressedData");
+    if (pressedDicExist)
+    {
+        ResourceData* pressedFileData = options->mutable_presseddata();
+        const rapidjson::Value& pressedDic = DICTOOL->getSubDictionary_json(optionsJson, "pressedData");
+        type = DICTOOL->getIntValue_json(pressedDic, "resourceType");
+        path = DICTOOL->getStringValue_json(pressedDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(pressedDic, "plistFile", "");
+        pressedFileData->set_resourcetype(type);
+        pressedFileData->set_path(path);
+        pressedFileData->set_plistfile(plistFile);
+    }
     
-    ResourceData* disabledFileData = options->mutable_disableddata();
-    const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(optionsJson, "disabledData");
-    type = DICTOOL->getIntValue_json(disabledDic, "resourceType");
-    path = DICTOOL->getStringValue_json(disabledDic, "path");
-    plistFile = DICTOOL->getStringValue_json(disabledDic, "plistFile");
-    disabledFileData->set_resourcetype(type);
-    disabledFileData->set_path(path);
-    disabledFileData->set_plistfile(plistFile);
+    bool disabledDicExist = DICTOOL->checkObjectExist_json(optionsJson, "disabledData");
+    if (disabledDicExist)
+    {
+        ResourceData* disabledFileData = options->mutable_disableddata();
+        const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(optionsJson, "disabledData");
+        type = DICTOOL->getIntValue_json(disabledDic, "resourceType");
+        path = DICTOOL->getStringValue_json(disabledDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(disabledDic, "plistFile", "");
+        disabledFileData->set_resourcetype(type);
+        disabledFileData->set_path(path);
+        disabledFileData->set_plistfile(plistFile);
+    }
     
     if (scale9Enable)
     {
@@ -4342,7 +4365,7 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         if (sw && sh)
         {
             float swf = DICTOOL->getFloatValue_json(optionsJson, "scale9Width");
-            float shf = DICTOOL->getFloatValue_json(optionsJson, "scale9Width");
+            float shf = DICTOOL->getFloatValue_json(optionsJson, "scale9Height");
             
             options->set_scale9width(swf);
             options->set_scale9height(shf);
@@ -4390,54 +4413,74 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
     std::string path = "", plistFile = "";
     
     //load background image
-    ResourceData* backGroundFileData = options->mutable_backgroundboxdata();
-    const rapidjson::Value& backGroundDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxData);
-    type = DICTOOL->getIntValue_json(backGroundDic, "resourceType");
-    path = DICTOOL->getStringValue_json(backGroundDic, "path");
-    plistFile = DICTOOL->getStringValue_json(backGroundDic, "plistFile");
-    backGroundFileData->set_resourcetype(type);
-    backGroundFileData->set_path(path);
-    backGroundFileData->set_plistfile(plistFile);
+    bool backGroundDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundBoxData);
+    if (backGroundDicExist)
+    {
+        ResourceData* backGroundFileData = options->mutable_backgroundboxdata();
+        const rapidjson::Value& backGroundDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxData);
+        type = DICTOOL->getIntValue_json(backGroundDic, "resourceType");
+        path = DICTOOL->getStringValue_json(backGroundDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(backGroundDic, "plistFile", "");
+        backGroundFileData->set_resourcetype(type);
+        backGroundFileData->set_path(path);
+        backGroundFileData->set_plistfile(plistFile);
+    }
     
     //load background selected image
-    ResourceData* backGroundSelectedFileData = options->mutable_backgroundboxselecteddata();
-    const rapidjson::Value& backGroundSelectedDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxSelectedData);
-    type = DICTOOL->getIntValue_json(backGroundSelectedDic, "resourceType");
-    path = DICTOOL->getStringValue_json(backGroundSelectedDic, "path");
-    plistFile = DICTOOL->getStringValue_json(backGroundSelectedDic, "plistFile");
-    backGroundSelectedFileData->set_resourcetype(type);
-    backGroundSelectedFileData->set_path(path);
-    backGroundSelectedFileData->set_plistfile(plistFile);
+    bool backGroundSelectedDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundBoxSelectedData);
+    if (backGroundSelectedDicExist)
+    {
+        ResourceData* backGroundSelectedFileData = options->mutable_backgroundboxselecteddata();
+        const rapidjson::Value& backGroundSelectedDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxSelectedData);
+        type = DICTOOL->getIntValue_json(backGroundSelectedDic, "resourceType");
+        path = DICTOOL->getStringValue_json(backGroundSelectedDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(backGroundSelectedDic, "plistFile", "");
+        backGroundSelectedFileData->set_resourcetype(type);
+        backGroundSelectedFileData->set_path(path);
+        backGroundSelectedFileData->set_plistfile(plistFile);
+    }
     
     //load frontCross image
-    ResourceData* frontCrossFileData = options->mutable_frontcrossdata();
-    const rapidjson::Value& frontCrossDic = DICTOOL->getSubDictionary_json(optionsJson, P_FrontCrossData);
-    type = DICTOOL->getIntValue_json(frontCrossDic, "resourceType");
-    path = DICTOOL->getStringValue_json(frontCrossDic, "path");
-    plistFile = DICTOOL->getStringValue_json(frontCrossDic, "plistFile");
-    frontCrossFileData->set_resourcetype(type);
-    frontCrossFileData->set_path(path);
-    frontCrossFileData->set_plistfile(plistFile);
+    bool frontCrossDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_FrontCrossData);
+    if (frontCrossDicExist)
+    {
+        ResourceData* frontCrossFileData = options->mutable_frontcrossdata();
+        const rapidjson::Value& frontCrossDic = DICTOOL->getSubDictionary_json(optionsJson, P_FrontCrossData);
+        type = DICTOOL->getIntValue_json(frontCrossDic, "resourceType");
+        path = DICTOOL->getStringValue_json(frontCrossDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(frontCrossDic, "plistFile", "");
+        frontCrossFileData->set_resourcetype(type);
+        frontCrossFileData->set_path(path);
+        frontCrossFileData->set_plistfile(plistFile);
+    }
     
     //load backGroundBoxDisabledData
-    ResourceData* backGroundDisabledFileData = options->mutable_backgroundboxdisableddata();
-    const rapidjson::Value& backGroundDisabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxDisabledData);
-    type = DICTOOL->getIntValue_json(backGroundDisabledDic, "resourceType");
-    path = DICTOOL->getStringValue_json(backGroundDisabledDic, "path");
-    plistFile = DICTOOL->getStringValue_json(backGroundDisabledDic, "plistFile");
-    backGroundDisabledFileData->set_resourcetype(type);
-    backGroundDisabledFileData->set_path(path);
-    backGroundDisabledFileData->set_plistfile(plistFile);
+    bool backGroundDisabledDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundBoxDisabledData);
+    if (backGroundDisabledDicExist)
+    {
+        ResourceData* backGroundDisabledFileData = options->mutable_backgroundboxdisableddata();
+        const rapidjson::Value& backGroundDisabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundBoxDisabledData);
+        type = DICTOOL->getIntValue_json(backGroundDisabledDic, "resourceType");
+        path = DICTOOL->getStringValue_json(backGroundDisabledDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(backGroundDisabledDic, "plistFile", "");
+        backGroundDisabledFileData->set_resourcetype(type);
+        backGroundDisabledFileData->set_path(path);
+        backGroundDisabledFileData->set_plistfile(plistFile);
+    }
     
     ///load frontCrossDisabledData
-    ResourceData* frontCrossDisabledFileData = options->mutable_frontcrossdisableddata();
-    const rapidjson::Value& frontCrossDisabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_FrontCrossDisabledData);
-    type = DICTOOL->getIntValue_json(frontCrossDisabledDic, "resourceType");
-    path = DICTOOL->getStringValue_json(frontCrossDisabledDic, "path");
-    plistFile = DICTOOL->getStringValue_json(frontCrossDisabledDic, "plistFile");
-    frontCrossDisabledFileData->set_resourcetype(type);
-    frontCrossDisabledFileData->set_path(path);
-    frontCrossDisabledFileData->set_plistfile(plistFile);
+    bool frontCrossDisabledDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_FrontCrossDisabledData);
+    if (frontCrossDisabledDicExist)
+    {
+        ResourceData* frontCrossDisabledFileData = options->mutable_frontcrossdisableddata();
+        const rapidjson::Value& frontCrossDisabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_FrontCrossDisabledData);
+        type = DICTOOL->getIntValue_json(frontCrossDisabledDic, "resourceType");
+        path = DICTOOL->getStringValue_json(frontCrossDisabledDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(frontCrossDisabledDic, "plistFile", "");
+        frontCrossDisabledFileData->set_resourcetype(type);
+        frontCrossDisabledFileData->set_path(path);
+        frontCrossDisabledFileData->set_plistfile(plistFile);
+    }
     
     bool selectState = DICTOOL->getBooleanValue_json(optionsJson, "selectState");
     options->set_selectedstate(selectState);
@@ -4463,14 +4506,18 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
     int type = 0;
     std::string path = "", plistFile = "";
     
-    ResourceData* imageFileData = options->mutable_filenamedata();
-    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_FileNameData);
-    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
-    imageFileData->set_resourcetype(type);
-    imageFileData->set_path(path);
-    imageFileData->set_plistfile(plistFile);
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_FileNameData);
+    if (imageFileNameDicExist)
+    {
+        ResourceData* imageFileData = options->mutable_filenamedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_FileNameData);
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        imageFileData->set_resourcetype(type);
+        imageFileData->set_path(path);
+        imageFileData->set_plistfile(plistFile);
+    }
     
     
     bool scale9EnableExist = DICTOOL->checkObjectExist_json(optionsJson, P_Scale9Enable);
@@ -4517,14 +4564,18 @@ void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOpt
     int type = 0;
     std::string path = "", plistFile = "";
     
-    ResourceData* cmftFileData = options->mutable_charmapfiledata();
-    const rapidjson::Value& cmftDic = DICTOOL->getSubDictionary_json(optionsJson, P_CharMapFileData);
-    type = DICTOOL->getIntValue_json(cmftDic, "resourceType");
-    path = DICTOOL->getStringValue_json(cmftDic, "path");
-    plistFile = DICTOOL->getStringValue_json(cmftDic, "plistFile");
-    cmftFileData->set_resourcetype(type);
-    cmftFileData->set_path(path);
-    cmftFileData->set_plistfile(plistFile);
+    bool cmftDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_CharMapFileData);
+    if (cmftDicExist)
+    {
+        ResourceData* cmftFileData = options->mutable_charmapfiledata();
+        const rapidjson::Value& cmftDic = DICTOOL->getSubDictionary_json(optionsJson, P_CharMapFileData);
+        type = DICTOOL->getIntValue_json(cmftDic, "resourceType");
+        path = DICTOOL->getStringValue_json(cmftDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(cmftDic, "plistFile", "");
+        cmftFileData->set_resourcetype(type);
+        cmftFileData->set_path(path);
+        cmftFileData->set_plistfile(plistFile);
+    }
     
     options->set_stringvalue(DICTOOL->getStringValue_json(optionsJson, P_StringValue, "12345678"));
     options->set_itemwidth(DICTOOL->getIntValue_json(optionsJson, P_ItemWidth, 24));
@@ -4546,14 +4597,18 @@ void ProtocolBuffersSerialize::setTextBMFontOptions(protocolbuffers::TextBMFontO
     int type = 0;
     std::string path = "", plistFile = "";
     
-    ResourceData* cmftFileData = options->mutable_filenamedata();
-    const rapidjson::Value& cmftDic = DICTOOL->getSubDictionary_json(optionsJson, P_FileNameData);
-    type = DICTOOL->getIntValue_json(cmftDic, "resourceType");
-    path = DICTOOL->getStringValue_json(cmftDic, "path");
-    plistFile = DICTOOL->getStringValue_json(cmftDic, "plistFile");
-    cmftFileData->set_resourcetype(type);
-    cmftFileData->set_path(path);
-    cmftFileData->set_plistfile(plistFile);
+    bool cmftDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_FileNameData);
+    if (cmftDicExist)
+    {
+        ResourceData* cmftFileData = options->mutable_filenamedata();
+        const rapidjson::Value& cmftDic = DICTOOL->getSubDictionary_json(optionsJson, P_FileNameData);
+        type = DICTOOL->getIntValue_json(cmftDic, "resourceType");
+        path = DICTOOL->getStringValue_json(cmftDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(cmftDic, "plistFile", "");
+        cmftFileData->set_resourcetype(type);
+        cmftFileData->set_path(path);
+        cmftFileData->set_plistfile(plistFile);
+    }
     
     const char* text = DICTOOL->getStringValue_json(optionsJson, P_Text,"Text Label");
     options->set_text(text);
@@ -4576,7 +4631,7 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
     static const char* P_HAlignment = "hAlignment";
     static const char* P_VAlignment = "vAlignment";
     
-    bool touchScaleChangeAble = DICTOOL->getBooleanValue_json(options, P_TouchScaleEnable);
+    bool touchScaleChangeAble = DICTOOL->getBooleanValue_json(optionsJson, P_TouchScaleEnable);
     options->set_touchscaleenable(touchScaleChangeAble);
     
     const char* text = DICTOOL->getStringValue_json(optionsJson, P_Text,"Text Label");
@@ -4626,14 +4681,18 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
     int type = 0;
     std::string path = "", plistFile = "";
     
-    ResourceData* imageFileData = options->mutable_texturedata();
-    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_TextureData);
-    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
-    imageFileData->set_resourcetype(type);
-    imageFileData->set_path(path);
-    imageFileData->set_plistfile(plistFile);
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_TextureData);
+    if (imageFileNameDicExist)
+    {
+        ResourceData* imageFileData = options->mutable_texturedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_TextureData);
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        imageFileData->set_resourcetype(type);
+        imageFileData->set_path(path);
+        imageFileData->set_plistfile(plistFile);
+    }
     
     
     /* gui mark add load bar scale9 parse */
@@ -4693,55 +4752,75 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
     int type = 0;
     std::string path = "", plistFile = "";
     
-    ResourceData* barFileData = options->mutable_barfilenamedata();
-    const rapidjson::Value& barFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BarFileNameData);
-    type = DICTOOL->getIntValue_json(barFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(barFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(barFileNameDic, "plistFile");
-    barFileData->set_resourcetype(type);
-    barFileData->set_path(path);
-    barFileData->set_plistfile(plistFile);
+    bool barFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BarFileNameData);
+    if (barFileNameDicExist)
+    {
+        ResourceData* barFileData = options->mutable_barfilenamedata();
+        const rapidjson::Value& barFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BarFileNameData);
+        type = DICTOOL->getIntValue_json(barFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(barFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(barFileNameDic, "plistFile", "");
+        barFileData->set_resourcetype(type);
+        barFileData->set_path(path);
+        barFileData->set_plistfile(plistFile);
+    }
     
     //loading normal slider ball texture
-    ResourceData* ballNormalFileData = options->mutable_ballnormaldata();
-    const rapidjson::Value& normalDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallNormalData);
-    type = DICTOOL->getIntValue_json(normalDic, "resourceType");
-    path = DICTOOL->getStringValue_json(normalDic, "path");
-    plistFile = DICTOOL->getStringValue_json(normalDic, "plistFile");
-    ballNormalFileData->set_resourcetype(type);
-    ballNormalFileData->set_path(path);
-    ballNormalFileData->set_plistfile(plistFile);
+    bool normalDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BallNormalData);
+    if (normalDicExist)
+    {
+        ResourceData* ballNormalFileData = options->mutable_ballnormaldata();
+        const rapidjson::Value& normalDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallNormalData);
+        type = DICTOOL->getIntValue_json(normalDic, "resourceType");
+        path = DICTOOL->getStringValue_json(normalDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(normalDic, "plistFile", "");
+        ballNormalFileData->set_resourcetype(type);
+        ballNormalFileData->set_path(path);
+        ballNormalFileData->set_plistfile(plistFile);
+    }
     
     
     //loading slider ball press texture
-    ResourceData* ballPressedFileData = options->mutable_ballpresseddata();
-    const rapidjson::Value& pressedDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallPressedData);
-    type = DICTOOL->getIntValue_json(pressedDic, "resourceType");
-    path = DICTOOL->getStringValue_json(pressedDic, "path");
-    plistFile = DICTOOL->getStringValue_json(pressedDic, "plistFile");
-    ballPressedFileData->set_resourcetype(type);
-    ballPressedFileData->set_path(path);
-    ballPressedFileData->set_plistfile(plistFile);
+    bool pressedDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BallPressedData);
+    if (pressedDicExist)
+    {
+        ResourceData* ballPressedFileData = options->mutable_ballpresseddata();
+        const rapidjson::Value& pressedDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallPressedData);
+        type = DICTOOL->getIntValue_json(pressedDic, "resourceType");
+        path = DICTOOL->getStringValue_json(pressedDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(pressedDic, "plistFile", "");
+        ballPressedFileData->set_resourcetype(type);
+        ballPressedFileData->set_path(path);
+        ballPressedFileData->set_plistfile(plistFile);
+    }
     
     //loading silder ball disable texture
-    ResourceData* ballDisabledFileData = options->mutable_balldisableddata();
-    const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallDisabledData);
-    type = DICTOOL->getIntValue_json(disabledDic, "resourceType");
-    path = DICTOOL->getStringValue_json(disabledDic, "path");
-    plistFile = DICTOOL->getStringValue_json(disabledDic, "plistFile");
-    ballDisabledFileData->set_resourcetype(type);
-    ballDisabledFileData->set_path(path);
-    ballDisabledFileData->set_plistfile(plistFile);
+    bool disabledDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BallDisabledData);
+    if (disabledDicExist)
+    {
+        ResourceData* ballDisabledFileData = options->mutable_balldisableddata();
+        const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(optionsJson, P_BallDisabledData);
+        type = DICTOOL->getIntValue_json(disabledDic, "resourceType");
+        path = DICTOOL->getStringValue_json(disabledDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(disabledDic, "plistFile", "");
+        ballDisabledFileData->set_resourcetype(type);
+        ballDisabledFileData->set_path(path);
+        ballDisabledFileData->set_plistfile(plistFile);
+    }
     
     //load slider progress texture
-    ResourceData* progressBarFileData = options->mutable_barfilenamedata();
-    const rapidjson::Value& progressBarDic = DICTOOL->getSubDictionary_json(optionsJson, P_ProgressBarData);
-    type = DICTOOL->getIntValue_json(progressBarDic, "resourceType");
-    path = DICTOOL->getStringValue_json(progressBarDic, "path");
-    plistFile = DICTOOL->getStringValue_json(progressBarDic, "plistFile");
-    progressBarFileData->set_resourcetype(type);
-    progressBarFileData->set_path(path);
-    progressBarFileData->set_plistfile(plistFile);
+    bool progressBarDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_ProgressBarData);
+    if (progressBarDicExist)
+    {
+        ResourceData* progressBarFileData = options->mutable_barfilenamedata();
+        const rapidjson::Value& progressBarDic = DICTOOL->getSubDictionary_json(optionsJson, P_ProgressBarData);
+        type = DICTOOL->getIntValue_json(progressBarDic, "resourceType");
+        path = DICTOOL->getStringValue_json(progressBarDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(progressBarDic, "plistFile", "");
+        progressBarFileData->set_resourcetype(type);
+        progressBarFileData->set_path(path);
+        progressBarFileData->set_plistfile(plistFile);
+    }
 }
 
 void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOptions *textFieldOptions,
@@ -4763,7 +4842,7 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
     static const char* P_PasswordEnable = "passwordEnable";
     static const char* P_PasswordStyleText = "passwordStyleText";
     
-    bool ph = DICTOOL->checkObjectExist_json(options, P_PlaceHolder);
+    bool ph = DICTOOL->checkObjectExist_json(optionsJson, P_PlaceHolder);
     if (ph)
     {
         options->set_placeholder(DICTOOL->getStringValue_json(optionsJson, P_PlaceHolder, "input words here"));
@@ -4851,63 +4930,6 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     ecg = DICTOOL->getIntValue_json(optionsJson, "bgEndColorG",200);
     ecb = DICTOOL->getIntValue_json(optionsJson, "bgEndColorB",255);
     
-//    if (dynamic_cast<ui::PageView*>(widget))
-//    {
-//        cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
-//        cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
-//        cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
-//        
-//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
-//        
-//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
-//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
-//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
-//    }
-//    else if (dynamic_cast<ui::ListView*>(widget))
-//    {
-//        cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
-//        cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
-//        cb = DICTOOL->getIntValue_json(options, "bgColorB",255);
-//        
-//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
-//        
-//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",150);
-//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
-//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",255);
-//    }
-//    else if (dynamic_cast<ui::ScrollView*>(widget))
-//    {
-//        cr = DICTOOL->getIntValue_json(options, "bgColorR",255);
-//        cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
-//        cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
-//        
-//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
-//        
-//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
-//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
-//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
-//    }
-//    else
-//    {
-//        cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
-//        cg = DICTOOL->getIntValue_json(options, "bgColorG",200);
-//        cb = DICTOOL->getIntValue_json(options, "bgColorB",255);
-//        
-//        scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-//        scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-//        scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
-//        
-//        ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",150);
-//        ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",200);
-//        ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",255);
-//    }
-    
     float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
     float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
     options->set_vectorx(bgcv1);
@@ -4931,18 +4953,21 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     
     options->set_bgcoloropacity(co);
     
-    
-    int type = 0;
-    std::string path = "", plistFile = "";
-    
-    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
-    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
-    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
-    backgroundimageFileData->set_resourcetype(type);
-    backgroundimageFileData->set_path(path);
-    backgroundimageFileData->set_plistfile(plistFile);
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundImageData);
+    if (imageFileNameDicExist)
+    {
+        int type = 0;
+        std::string path = "", plistFile = "";
+        
+        ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        backgroundimageFileData->set_resourcetype(type);
+        backgroundimageFileData->set_path(path);
+        backgroundimageFileData->set_plistfile(plistFile);
+    }
     
     
     if (backGroundScale9Enable)
@@ -5000,9 +5025,9 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
     static const char* P_Scale9Width = "scale9Width";
     static const char* P_Scale9Height = "scale9Height";
     
-    options->set_clipable(DICTOOL->getBooleanValue_json(options, P_ClipAble));
+    options->set_clipable(DICTOOL->getBooleanValue_json(optionsJson, P_ClipAble));
     
-    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(options, P_BackGroundScale9Enable);
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_BackGroundScale9Enable);
     options->set_backgroundscale9enable(backGroundScale9Enable);
     
     
@@ -5016,17 +5041,17 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
     int ecg;
     int ecb;
     
-    cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
-    cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
-    cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
+    cr = DICTOOL->getIntValue_json(optionsJson, "bgColorR",150);
+    cg = DICTOOL->getIntValue_json(optionsJson, "bgColorG",150);
+    cb = DICTOOL->getIntValue_json(optionsJson, "bgColorB",100);
     
-    scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-    scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-    scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+    scr = DICTOOL->getIntValue_json(optionsJson, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(optionsJson, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(optionsJson, "bgStartColorB",255);
     
-    ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
-    ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
-    ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
+    ecr = DICTOOL->getIntValue_json(optionsJson, "bgEndColorR",255);
+    ecg = DICTOOL->getIntValue_json(optionsJson, "bgEndColorG",150);
+    ecb = DICTOOL->getIntValue_json(optionsJson, "bgEndColorB",100);
     
     float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
     float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
@@ -5052,17 +5077,21 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
     options->set_bgcoloropacity(co);
     
     
-    int type = 0;
-    std::string path = "", plistFile = "";
-    
-    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
-    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
-    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
-    backgroundimageFileData->set_resourcetype(type);
-    backgroundimageFileData->set_path(path);
-    backgroundimageFileData->set_plistfile(plistFile);
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundImageData);
+    if (imageFileNameDicExist)
+    {
+        int type = 0;
+        std::string path = "", plistFile = "";
+        
+        ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        backgroundimageFileData->set_resourcetype(type);
+        backgroundimageFileData->set_path(path);
+        backgroundimageFileData->set_plistfile(plistFile);
+    }
     
     
     if (backGroundScale9Enable)
@@ -5125,9 +5154,9 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
     static const char* P_Direction = "direction";
     static const char* P_BounceEnable = "bounceEnable";
     
-    options->set_clipable(DICTOOL->getBooleanValue_json(options, P_ClipAble));
+    options->set_clipable(DICTOOL->getBooleanValue_json(optionsJson, P_ClipAble));
     
-    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(options, P_BackGroundScale9Enable);
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_BackGroundScale9Enable);
     options->set_backgroundscale9enable(backGroundScale9Enable);
     
     
@@ -5141,17 +5170,17 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
     int ecg;
     int ecb;
     
-    cr = DICTOOL->getIntValue_json(options, "bgColorR",255);
-    cg = DICTOOL->getIntValue_json(options, "bgColorG",150);
-    cb = DICTOOL->getIntValue_json(options, "bgColorB",100);
+    cr = DICTOOL->getIntValue_json(optionsJson, "bgColorR",255);
+    cg = DICTOOL->getIntValue_json(optionsJson, "bgColorG",150);
+    cb = DICTOOL->getIntValue_json(optionsJson, "bgColorB",100);
     
-    scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-    scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-    scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+    scr = DICTOOL->getIntValue_json(optionsJson, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(optionsJson, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(optionsJson, "bgStartColorB",255);
     
-    ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",255);
-    ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",150);
-    ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",100);
+    ecr = DICTOOL->getIntValue_json(optionsJson, "bgEndColorR",255);
+    ecg = DICTOOL->getIntValue_json(optionsJson, "bgEndColorG",150);
+    ecb = DICTOOL->getIntValue_json(optionsJson, "bgEndColorB",100);
     
     float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
     float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
@@ -5177,17 +5206,21 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
     options->set_bgcoloropacity(co);
     
     
-    int type = 0;
-    std::string path = "", plistFile = "";
-    
-    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
-    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
-    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
-    backgroundimageFileData->set_resourcetype(type);
-    backgroundimageFileData->set_path(path);
-    backgroundimageFileData->set_plistfile(plistFile);
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundImageData);
+    if (imageFileNameDicExist)
+    {
+        int type = 0;
+        std::string path = "", plistFile = "";
+        
+        ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        backgroundimageFileData->set_resourcetype(type);
+        backgroundimageFileData->set_path(path);
+        backgroundimageFileData->set_plistfile(plistFile);
+    }
     
     
     if (backGroundScale9Enable)
@@ -5217,10 +5250,10 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
     options->set_innerwidth(innerWidth);
     options->set_innerheight(innerHeight);
     
-    int direction = DICTOOL->getFloatValue_json(options, P_Direction,1);
+    int direction = DICTOOL->getFloatValue_json(optionsJson, P_Direction,1);
     options->set_direction(direction);
     
-    options->set_bounceenable(DICTOOL->getBooleanValue_json(options, P_BounceEnable));
+    options->set_bounceenable(DICTOOL->getBooleanValue_json(optionsJson, P_BounceEnable));
 }
 
 void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptions *listViewOptions,
@@ -5262,9 +5295,9 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     
     static const char* P_ItemMargin = "itemMargin";
     
-    options->set_clipable(DICTOOL->getBooleanValue_json(options, P_ClipAble));
+    options->set_clipable(DICTOOL->getBooleanValue_json(optionsJson, P_ClipAble));
     
-    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(options, P_BackGroundScale9Enable);
+    bool backGroundScale9Enable = DICTOOL->getBooleanValue_json(optionsJson, P_BackGroundScale9Enable);
     options->set_backgroundscale9enable(backGroundScale9Enable);
     
     
@@ -5278,17 +5311,17 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     int ecg;
     int ecb;
     
-    cr = DICTOOL->getIntValue_json(options, "bgColorR",150);
-    cg = DICTOOL->getIntValue_json(options, "bgColorG",200);
-    cb = DICTOOL->getIntValue_json(options, "bgColorB",255);
+    cr = DICTOOL->getIntValue_json(optionsJson, "bgColorR",150);
+    cg = DICTOOL->getIntValue_json(optionsJson, "bgColorG",200);
+    cb = DICTOOL->getIntValue_json(optionsJson, "bgColorB",255);
     
-    scr = DICTOOL->getIntValue_json(options, "bgStartColorR",255);
-    scg = DICTOOL->getIntValue_json(options, "bgStartColorG",255);
-    scb = DICTOOL->getIntValue_json(options, "bgStartColorB",255);
+    scr = DICTOOL->getIntValue_json(optionsJson, "bgStartColorR",255);
+    scg = DICTOOL->getIntValue_json(optionsJson, "bgStartColorG",255);
+    scb = DICTOOL->getIntValue_json(optionsJson, "bgStartColorB",255);
     
-    ecr = DICTOOL->getIntValue_json(options, "bgEndColorR",150);
-    ecg = DICTOOL->getIntValue_json(options, "bgEndColorG",200);
-    ecb = DICTOOL->getIntValue_json(options, "bgEndColorB",255);
+    ecr = DICTOOL->getIntValue_json(optionsJson, "bgEndColorR",150);
+    ecg = DICTOOL->getIntValue_json(optionsJson, "bgEndColorG",200);
+    ecb = DICTOOL->getIntValue_json(optionsJson, "bgEndColorB",255);
     
     float bgcv1 = DICTOOL->getFloatValue_json(optionsJson, P_VectorX);
     float bgcv2 = DICTOOL->getFloatValue_json(optionsJson, P_VectorY, -0.5f);
@@ -5314,17 +5347,21 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     options->set_bgcoloropacity(co);
     
     
-    int type = 0;
-    std::string path = "", plistFile = "";
-    
-    ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
-    const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
-    type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
-    path = DICTOOL->getStringValue_json(imageFileNameDic, "path");
-    plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile");
-    backgroundimageFileData->set_resourcetype(type);
-    backgroundimageFileData->set_path(path);
-    backgroundimageFileData->set_plistfile(plistFile);
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_BackGroundImageData);
+    if (imageFileNameDicExist)
+    {
+        int type = 0;
+        std::string path = "", plistFile = "";
+        
+        ResourceData* backgroundimageFileData = options->mutable_backgroundimagedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, P_BackGroundImageData);
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        backgroundimageFileData->set_resourcetype(type);
+        backgroundimageFileData->set_path(path);
+        backgroundimageFileData->set_plistfile(plistFile);
+    }
     
     
     if (backGroundScale9Enable)
@@ -5354,14 +5391,14 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     options->set_innerwidth(innerWidth);
     options->set_innerheight(innerHeight);
     
-    int direction = DICTOOL->getFloatValue_json(options, P_Direction,1);
+    int direction = DICTOOL->getFloatValue_json(optionsJson, P_Direction,1);
     options->set_direction(direction);
     
-    options->set_bounceenable(DICTOOL->getBooleanValue_json(options, P_BounceEnable));
+    options->set_bounceenable(DICTOOL->getBooleanValue_json(optionsJson, P_BounceEnable));
     
-    options->set_gravity(DICTOOL->getIntValue_json(options, "gravity", 3));
+    options->set_gravity(DICTOOL->getIntValue_json(optionsJson, "gravity", 3));
     
-    float itemMargin = DICTOOL->getFloatValue_json(options, P_ItemMargin);
+    float itemMargin = DICTOOL->getFloatValue_json(optionsJson, P_ItemMargin);
     options->set_itemmargin(itemMargin);
 }
 
