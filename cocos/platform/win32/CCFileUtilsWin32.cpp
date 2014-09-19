@@ -167,7 +167,7 @@ static Data getData(const std::string& filename, bool forString)
         // read the file from hardware
         std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filename);
 
-		std::string wszBuf = utf8Togbk(filename.c_str());
+		std::string wszBuf = utf8Togbk(fullPath.c_str());
         //WCHAR wszBuf[CC_MAX_PATH] = {0};
         //MultiByteToWideChar(CP_UTF8, 0, fullPath.c_str(), -1, wszBuf, sizeof(wszBuf)/sizeof(wszBuf[0]));
 
