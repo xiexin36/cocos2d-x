@@ -991,6 +991,9 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     node->setTag(tag);
     node->setUserObject(ActionTimelineData::create(actionTag));
     
+    node->setCascadeColorEnabled(true);
+    node->setCascadeOpacityEnabled(true);
+    
 }
 
 void CSLoader::setPropsForSingleNodeFromProtocolBuffers(cocos2d::Node *node,
@@ -1570,6 +1573,9 @@ Node* CSLoader::nodeFromXML(const tinyxml2::XMLElement *objectData, const std::s
 
 void CSLoader::setPropsForNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLElement *nodeObjectData)
 {
+    node->setCascadeColorEnabled(true);
+    node->setCascadeOpacityEnabled(true);
+    
     std::string name = nodeObjectData->Name();
     CCLOG("entity name = %s", name.c_str());
     
