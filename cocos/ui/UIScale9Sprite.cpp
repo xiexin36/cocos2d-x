@@ -48,8 +48,10 @@ namespace ui {
     , _insetLeft(0)
     , _insetTop(0)
     , _insetRight(0)
-    , _insetBottom(0),
-    _scale9Enabled(true)
+    , _insetBottom(0)
+    ,_flippedX(false)
+    ,_flippedY(false)
+    ,_scale9Enabled(true)
     {
         this->setAnchorPoint(Vec2(0.5,0.5));
     }
