@@ -760,7 +760,7 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         }
         else if (name == "VisibleForFrame")
         {
-            options->set_visible((value == "True") ? true : false);
+//            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "Alpha")
         {
@@ -1158,7 +1158,7 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
         }
         else if (name == "VisibleForFrame")
         {
-            options->set_visible((value == "True") ? true : false);
+//            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "Alpha")
         {
@@ -1979,15 +1979,15 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
         {
             if (value == "HT_Left")
             {
-                options->set_valignment(0);
+                options->set_halignment(0);
             }
-            else if (value == "HT_CENTER")
+            else if (value == "HT_Center")
             {
-                options->set_valignment(1);
+                options->set_halignment(1);
             }
             else if (value == "HT_Right")
             {
-                options->set_valignment(2);
+                options->set_halignment(2);
             }
         }
         else if (name == "VerticalAlignmentType")
@@ -1996,11 +1996,11 @@ void ProtocolBuffersSerialize::setTextOptions(protocolbuffers::TextOptions *text
             {
                 options->set_valignment(0);
             }
-            else if (value == "VT_CENTER")
+            else if (value == "VT_Center")
             {
                 options->set_valignment(1);
             }
-            else if (value == "VT_BOTTOM")
+            else if (value == "VT_Bottom")
             {
                 options->set_valignment(2);
             }
@@ -2182,6 +2182,10 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
         else if (name == "DiplayState" || name == "DisplayState")
         {
             options->set_displaystate((value == "True") ? true : false);
+            if (value == "False")
+            {
+                widgetOptions->set_touchable(false);
+            }
         }
         
         
@@ -3977,7 +3981,16 @@ void ProtocolBuffersSerialize::serializeProtocolBuffersWithJson(const std::strin
         CCLOG("GetParseError %s\n", doc.GetParseError());
     }
     
-    std::string cocos2dVersion = DICTOOL->getStringValue_json(doc, "cocos2dVersion");
+    std::string cocos2dVersion = "";
+    bool cocos2dVersion_exist = DICTOOL->checkObjectExist_json(doc, "cocos2dVersion");
+    if (cocos2dVersion_exist)
+    {
+        cocos2dVersion = DICTOOL->getStringValue_json(doc, "cocos2dVersion");
+    }
+    else
+    {
+        cocos2dVersion = "3.x";
+    }
     protobuf.set_cocos2dversion(cocos2dVersion);
     
     const rapidjson::Value& nodeTreeJson = DICTOOL->getSubDictionary_json(doc, "nodeTree");
@@ -4021,6 +4034,12 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithJson(protocolbu
     {
         WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
         setNodeOptions(nodeOptions, optionsJson);
+    }
+    else if (classname == "Sprite")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        SpriteOptions* spriteOptions = nodetree->mutable_spriteoptions();
+        setSpriteOptions(spriteOptions, widgetOptions, optionsJson);
     }
     else if (classname == "Button")
     {
@@ -4135,7 +4154,7 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
     options->set_height(height);
     
     options->set_tag(DICTOOL->getIntValue_json(optionsJson, "tag"));
-    options->set_actiontag(DICTOOL->getIntValue_json(optionsJson, "actiontag"));
+    options->set_actiontag(DICTOOL->getIntValue_json(optionsJson, "actionTag"));
     options->set_touchable(DICTOOL->getBooleanValue_json(optionsJson, "touchAble"));
     const char* name = DICTOOL->getStringValue_json(optionsJson, "name");
     const char* nodeName = name ? name:"default";
@@ -4201,6 +4220,32 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
     bool flipY = DICTOOL->getBooleanValue_json(optionsJson, "flipY");
     options->set_flipx(flipX);
     options->set_flipx(flipY);
+}
+
+void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *spriteOptions,
+                                                protocolbuffers::WidgetOptions *nodeOptions,
+                                                const rapidjson::Value &optionsJson)
+{
+    setNodeOptions(nodeOptions, optionsJson);
+    
+    SpriteOptions* options = spriteOptions;
+    
+    int type = 0;
+    std::string path = "", plistFile = "";
+    
+    bool imageFileNameDicExist = DICTOOL->checkObjectExist_json(optionsJson, "fileNameData");
+    if (imageFileNameDicExist)
+    {
+        ResourceData* imageFileData = options->mutable_filenamedata();
+        const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(optionsJson, "fileNameData");
+        type = DICTOOL->getIntValue_json(imageFileNameDic, "resourceType");
+        path = DICTOOL->getStringValue_json(imageFileNameDic, "path", "");
+        plistFile = DICTOOL->getStringValue_json(imageFileNameDic, "plistFile", "");
+        imageFileData->set_resourcetype(type);
+        imageFileData->set_path(path);
+        plistFile = "armature/Cowboy0.plist"; // cheat
+        imageFileData->set_plistfile(plistFile);
+    }
 }
 
 void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *widgetOptions,
