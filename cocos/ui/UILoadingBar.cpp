@@ -102,14 +102,20 @@ void LoadingBar::setDirection(cocos2d::ui::LoadingBar::Direction direction)
             _barRenderer->setAnchorPoint(Vec2(0.0f,0.5f));
             _barRenderer->setPosition(Vec2(0,_contentSize.height*0.5f));
             if (!_scale9Enabled) {
-                _barRenderer->getSprite()->setFlippedX(false);
+                if (_barRenderer->getSprite() != nullptr)
+                {
+                    _barRenderer->getSprite()->setFlippedX(false);
+                } 
             }
             break;
         case Direction::RIGHT:
             _barRenderer->setAnchorPoint(Vec2(1.0f,0.5f));
             _barRenderer->setPosition(Vec2(_totalLength,_contentSize.height*0.5f));
             if (!_scale9Enabled) {
-                _barRenderer->getSprite()->setFlippedX(true);
+                if (_barRenderer->getSprite() != nullptr)
+                {
+                    _barRenderer->getSprite()->setFlippedX(true);
+                } 
             }
             break;
     }
@@ -149,13 +155,19 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
         case Direction::LEFT:
             _barRenderer->setAnchorPoint(Vec2(0.0f,0.5f));
             if (!_scale9Enabled) {
-                _barRenderer->getSprite()->setFlippedX(false);
+                if (_barRenderer->getSprite() != nullptr)
+                {
+                    _barRenderer->getSprite()->setFlippedX(false);
+                } 
             }
             break;
         case Direction::RIGHT:
             _barRenderer->setAnchorPoint(Vec2(1.0f,0.5f));
             if (!_scale9Enabled) {
-                _barRenderer->getSprite()->setFlippedX(true);
+                if (_barRenderer->getSprite() != nullptr)
+                {
+                    _barRenderer->getSprite()->setFlippedX(true);
+                }                
             }
             break;
     }
