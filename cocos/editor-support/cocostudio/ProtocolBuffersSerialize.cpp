@@ -4812,7 +4812,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
     bool progressBarDicExist = DICTOOL->checkObjectExist_json(optionsJson, P_ProgressBarData);
     if (progressBarDicExist)
     {
-        ResourceData* progressBarFileData = options->mutable_barfilenamedata();
+        ResourceData* progressBarFileData = options->mutable_progressbardata();
         const rapidjson::Value& progressBarDic = DICTOOL->getSubDictionary_json(optionsJson, P_ProgressBarData);
         type = DICTOOL->getIntValue_json(progressBarDic, "resourceType");
         path = DICTOOL->getStringValue_json(progressBarDic, "path", "");

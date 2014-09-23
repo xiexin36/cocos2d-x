@@ -564,6 +564,14 @@ public:
      * use this function to manually specify the next focused widget regards to each direction
      */
     std::function<Widget*(FocusDirection)> onNextFocusedWidget;
+    
+    /* peterson */
+    /**
+     *@param enable Unify Size of a widget
+     *@return void
+     */
+    void setUnifySizeEnabled(bool enable);
+    /**/
 
 CC_CONSTRUCTOR_ACCESS:
 
@@ -599,11 +607,14 @@ CC_CONSTRUCTOR_ACCESS:
      */
     bool isUnifySizeEnabled()const;
     
-    /**
-     *@param enable Unify Size of a widget
-     *@return void
-     */
-    void setUnifySizeEnabled(bool enable);
+    /* peterson */
+    // before
+//    /**
+//     *@param enable Unify Size of a widget
+//     *@return void
+//     */
+//    void setUnifySizeEnabled(bool enable);
+    /**/
     
 protected:
     //call back function called when size changed.
