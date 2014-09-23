@@ -261,6 +261,9 @@ public:
                                                const rapidjson::Value& json);
     void setNodeOptions(protocolbuffers::WidgetOptions* nodeOptions,
                         const rapidjson::Value& optionsJson);
+    void setSpriteOptions(protocolbuffers::SpriteOptions* spriteOptions,
+                          protocolbuffers::WidgetOptions* nodeOptions,
+                          const rapidjson::Value& optionsJson);
     void setWidgetOptions(protocolbuffers::WidgetOptions* widgetOptions,
                           const rapidjson::Value& optionsJson);
     void setButtonOptions(protocolbuffers::ButtonOptions* buttonOptions,
