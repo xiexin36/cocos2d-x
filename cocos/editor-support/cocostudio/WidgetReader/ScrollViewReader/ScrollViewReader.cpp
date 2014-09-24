@@ -242,6 +242,8 @@ namespace cocostudio
         int end_red = 255, end_green = 255, end_blue = 255;
         float vector_color_x = 0.0f, vector_color_y = -0.5f;
         
+        int direction = 1;
+        
         int resourceType = 0;
         std::string path = "", plistFile = "";
         
@@ -293,15 +295,15 @@ namespace cocostudio
             {
                 if (value == "Vertical")
                 {
-                    scrollView->setDirection(ScrollView::Direction::VERTICAL);
+                    direction = 1;
                 }
                 else if (value == "Horizontal")
                 {
-                    scrollView->setDirection(ScrollView::Direction::HORIZONTAL);
+                    direction = 2;
                 }
                 else if (value == "Vertical_Horizontal")
                 {
-                    scrollView->setDirection(ScrollView::Direction::BOTH);
+                    direction = 3;
                 }
             }
             else if (name == "IsBounceEnabled")
@@ -562,6 +564,8 @@ namespace cocostudio
                 scrollView->setContentSize(Size(width, height));
             }
         }
+        
+        scrollView->setDirection((ScrollView::Direction)direction);
         
 //        scrollView->setBackGroundImageColor(Color3B(bgimg_red, bgimg_green, bgimg_blue));
 //        scrollView->setBackGroundImageOpacity(bgimg_opacity);
