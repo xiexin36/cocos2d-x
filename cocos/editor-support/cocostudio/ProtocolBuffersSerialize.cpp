@@ -4299,11 +4299,11 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
     options->set_zorder(z);
     
     
-    options->set_opacity(255);
+    options->set_alpha(255);
     bool op = DICTOOL->checkObjectExist_json(optionsJson, "opacity");
     if (op)
     {
-        options->set_opacity(DICTOOL->getIntValue_json(optionsJson, "opacity"));
+        options->set_alpha(DICTOOL->getIntValue_json(optionsJson, "opacity"));
     }
     bool cr = DICTOOL->checkObjectExist_json(optionsJson, "colorR");
     bool cg = DICTOOL->checkObjectExist_json(optionsJson, "colorG");
