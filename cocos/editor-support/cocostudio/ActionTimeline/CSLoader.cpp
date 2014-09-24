@@ -1070,7 +1070,7 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
     
     setPropsForNodeFromProtocolBuffers(sprite, nodeOptions);
     
-    GLubyte alpha       = (GLubyte)nodeOptions.has_opacity() ? nodeOptions.opacity() : 255;
+    GLubyte alpha       = (GLubyte)nodeOptions.has_alpha() ? nodeOptions.alpha() : 255;
     GLubyte red         = (GLubyte)nodeOptions.has_colorr() ? nodeOptions.colorr() : 255;
     GLubyte green       = (GLubyte)nodeOptions.has_colorg() ? nodeOptions.colorg() : 255;
     GLubyte blue        = (GLubyte)nodeOptions.has_colorb() ? nodeOptions.colorb() : 255;
@@ -1778,6 +1778,7 @@ void CSLoader::setPropsForSpriteFromXML(cocos2d::Node *node, const tinyxml2::XML
     setPropsForNodeFromXML(node, spriteObjectData);
     
     Sprite* sprite = static_cast<Sprite*>(node);
+    int opacity = 255;
     
     // attributes
     const tinyxml2::XMLAttribute* attribute = spriteObjectData->FirstAttribute();
@@ -1786,7 +1787,11 @@ void CSLoader::setPropsForSpriteFromXML(cocos2d::Node *node, const tinyxml2::XML
         std::string name = attribute->Name();
         std::string value = attribute->Value();
         
-        if (name == "FlipX")
+        if (name == "Alpha")
+        {
+            opacity = atoi(value.c_str());
+        }
+        else if (name == "FlipX")
         {
             sprite->setFlippedX((value == "True") ? true : false);
         }
@@ -1862,6 +1867,8 @@ void CSLoader::setPropsForSpriteFromXML(cocos2d::Node *node, const tinyxml2::XML
         
         child = child->NextSiblingElement();
     }
+    
+    sprite->setOpacity(opacity);
 }
 
 Node* CSLoader::createParticleFromXML(const tinyxml2::XMLElement *particleObjectData)
