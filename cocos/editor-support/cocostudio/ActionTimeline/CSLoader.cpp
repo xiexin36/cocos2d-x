@@ -1829,7 +1829,7 @@ void CSLoader::setPropsForSpriteFromXML(cocos2d::Node *node, const tinyxml2::XML
                 }
                 else if (name == "Type")
                 {
-                    resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
                 }
                 else if (name == "Plist")
                 {
@@ -1900,7 +1900,7 @@ Node* CSLoader::createParticleFromXML(const tinyxml2::XMLElement *particleObject
                 }
                 else if (name == "Type")
                 {
-                    resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
                 }
                 else if (name == "Plist")
                 {
@@ -1964,7 +1964,7 @@ Node* CSLoader::createTMXTiledMapFromXML(const tinyxml2::XMLElement *tmxTiledMap
                 }
                 else if (name == "Type")
                 {
-                    resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
                 }
                 else if (name == "Plist")
                 {
@@ -2076,7 +2076,7 @@ void CSLoader::setPropsForComAudioFromXML(cocos2d::Component *component, const t
                 }
                 else if (name == "Type")
                 {
-                    resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
                 }
                 else if (name == "Plist")
                 {

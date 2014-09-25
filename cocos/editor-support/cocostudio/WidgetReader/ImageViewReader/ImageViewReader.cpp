@@ -222,7 +222,7 @@ namespace cocostudio
         float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
         float swf = 0.0f, shf = 0.0f;
         
-        int opacity = 0;
+        int opacity = 255;
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -306,7 +306,7 @@ namespace cocostudio
                     }
                     else if (name == "Type")
                     {
-                        resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
+                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
                     }
                     else if (name == "Plist")
                     {
