@@ -1509,6 +1509,33 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 attribute = attribute->Next();
             }
         }
+        else if (name == "FontResource")
+        {
+            ResourceData* resourceData = options->mutable_fontresource();
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "Path")
+                {
+                    resourceData->set_path(value);
+                }
+                else if (name == "Type")
+                {
+                    int resourceType = getResourceType(value);
+                    resourceData->set_resourcetype(resourceType);
+                }
+                else if (name == "Plist")
+                {
+                    resourceData->set_plistfile(value);
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
         
         child = child->NextSiblingElement();
     }

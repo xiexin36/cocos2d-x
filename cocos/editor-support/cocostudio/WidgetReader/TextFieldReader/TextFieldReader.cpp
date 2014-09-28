@@ -143,6 +143,9 @@ namespace cocostudio
     {
         TextField* textField = static_cast<TextField*>(widget);
         const protocolbuffers::TextFieldOptions& options = nodeTree.textfieldoptions();
+        
+        std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
+        
 		bool IsCustomSize = options.iscustomsize();
 		widget->ignoreContentAdaptWithSize(!IsCustomSize);
         
@@ -205,7 +208,7 @@ namespace cocostudio
 		if (options.has_fontresource())
 		{
 			const protocolbuffers::ResourceData& resourceData = options.fontresource();
-		    textField->setFontName(resourceData.path());
+		    textField->setFontName(protocolBuffersPath + resourceData.path());
 		}
         
         // other commonly protperties
