@@ -134,7 +134,7 @@
     <PreLinkEvent>
       <Command>"$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\protoc.exe" --proto_path="$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf" --descriptor_set_out="$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\CSParseBinary.protobin" "$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\CSParseBinary.proto"
 "$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\protogen.exe" "$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\CSParseBinary.protobin" -output_directory="$(SolutionDir)\CocoStudio.EngineAdapterWrap\Extend"
-"$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\protoc.exe" --proto_path="$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf" --cpp_out="$(SolutionDir)..\cocos2d-x\cocos\editor-support\cocostudio" "$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\CSParseBinary.proto"</Command>
+"$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\protoc.exe" --proto_path="$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf" --cpp_out="$(EngineRoot)\cocos\editor-support\cocostudio" "$(SolutionDir)\CocoStudio.EngineAdapter\CocoExtensions\ProtocolBuf\CSParseBinary.proto"</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
