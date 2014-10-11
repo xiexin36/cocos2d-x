@@ -247,7 +247,10 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
     updateFlippedY();
     this->updateChildrenDisplayedRGBA();
     
-    updateContentSizeWithTextureSize(_normalTextureSize);
+    if (!_scale9Enabled)
+    {
+        updateContentSizeWithTextureSize(_normalTextureSize);
+    }
     _normalTextureLoaded = true;
     _normalTextureAdaptDirty = true;
 }

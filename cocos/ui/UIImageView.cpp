@@ -135,7 +135,10 @@ void ImageView::loadTexture(const std::string& fileName, TextureResType texType)
     updateFlippedY();
     this->updateChildrenDisplayedRGBA();
 
-    updateContentSizeWithTextureSize(_imageTextureSize);
+    if (!_scale9Enabled)
+    {
+        updateContentSizeWithTextureSize(_imageTextureSize);
+    }
     _imageRendererAdaptDirty = true;
 }
 
