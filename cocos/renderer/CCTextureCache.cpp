@@ -403,7 +403,7 @@ Texture2D* TextureCache::addImage(Image *image, const std::string &key)
     return texture;
 }
 
-bool TextureCache::reloadTexture(const std::string& fileName)
+Texture2D* TextureCache::reloadTexture(const std::string& fileName)
 {
     Texture2D * texture = nullptr;
 
@@ -415,7 +415,7 @@ bool TextureCache::reloadTexture(const std::string& fileName)
 
     auto it = _textures.find(fullpath);
     if (it != _textures.end()) {
-        texture = it->second;
+		_textures.erase(it);
     }
 
     bool ret = false;
@@ -436,7 +436,7 @@ bool TextureCache::reloadTexture(const std::string& fileName)
         } while (0);
     }
 
-    return ret;
+    return texture;
 }
 
 // TextureCache - Remove
