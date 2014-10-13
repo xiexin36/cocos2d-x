@@ -410,7 +410,7 @@ Texture2D* TextureCache::reloadTexture(const std::string& fileName)
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(fileName);
     if (fullpath.size() == 0)
     {
-        return false;
+        return nullptr;
     }
 
     auto it = _textures.find(fullpath);
