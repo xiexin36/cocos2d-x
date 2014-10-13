@@ -287,6 +287,9 @@ namespace cocostudio
         
         if (scale9Enable)
         {
+            button->setUnifySizeEnabled(false);
+            button->ignoreContentAdaptWithSize(false);
+            
             float cx = options.capinsetsx();
             float cy = options.capinsetsy();
             float cw = options.capinsetswidth();

@@ -205,20 +205,6 @@ bool ImageView::isScale9Enabled()const
 
 void ImageView::ignoreContentAdaptWithSize(bool ignore)
 {
-    if (_unifySize)
-    {
-        if (_scale9Enabled)
-        {
-            ProtectedNode::setContentSize(_customSize);
-        }
-        else
-        {
-            Size s = getVirtualRendererSize();
-            ProtectedNode::setContentSize(s);
-        }
-        onSizeChanged();
-        return;
-    }
     if (!_scale9Enabled || (_scale9Enabled && !ignore))
     {
         Widget::ignoreContentAdaptWithSize(ignore);
