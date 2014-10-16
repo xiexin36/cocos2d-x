@@ -756,11 +756,11 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         }
         else if (name == "Visible")
         {
-            options->set_visible((value == "True") ? true : false);
+//            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "VisibleForFrame")
         {
-//            options->set_visible((value == "True") ? true : false);
+            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "Alpha")
         {
@@ -1154,11 +1154,11 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
         }
         else if (name == "Visible")
         {
-            options->set_visible((value == "True") ? true : false);
+//            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "VisibleForFrame")
         {
-//            options->set_visible((value == "True") ? true : false);
+            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "Alpha")
         {

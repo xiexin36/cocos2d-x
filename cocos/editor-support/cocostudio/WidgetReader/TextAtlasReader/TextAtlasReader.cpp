@@ -194,6 +194,7 @@ namespace cocostudio
         int itemWidth = 0, itemHeight = 0;
         int resourceType = 0;
         std::string path = "", plistFile = "";
+        float width = 0.0f, height = 0.0f;
         
         int opacity = 255;
         
@@ -259,6 +260,30 @@ namespace cocostudio
                     
                     attribute = attribute->Next();
                 }
+            }
+            else if (name == "Size")
+            {
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                width = 0.0f; height = 0.0f;
+                
+                while (attribute)
+                {
+                    std::string name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "X")
+                    {
+                        width = atof(value.c_str());
+                    }
+                    else if (name == "Y")
+                    {
+                        height = atof(value.c_str());
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+                
+                labelAtlas->setContentSize(Size(width, height));
             }
             
             child = child->NextSiblingElement();
