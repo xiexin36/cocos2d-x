@@ -364,6 +364,7 @@ namespace cocostudio
         
         const protocolbuffers::WidgetOptions& options = nodeTree.widgetoptions();
         
+        widget->setAnchorPoint(Vec2::ZERO);
         widget->setCascadeColorEnabled(true);
         widget->setCascadeOpacityEnabled(true);
         
@@ -507,6 +508,7 @@ namespace cocostudio
         widget->setUnifySizeEnabled(true);
         
         widget->setScale(0.0f, 0.0f);
+        widget->setAnchorPoint(Vec2::ZERO);
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
