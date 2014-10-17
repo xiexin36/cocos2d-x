@@ -99,6 +99,7 @@ static ProtocolBuffersSerialize* sharedProtocolBuffersSerialize = nullptr;
 ProtocolBuffersSerialize::ProtocolBuffersSerialize()
 : _protocolbuffersDir("")
 , _isSimulator(false)
+, _protobuf(nullptr)
 {
     
 }
@@ -235,7 +236,11 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
     
     // xml read
-
+    if (!FileUtils::getInstance()->isFileExist(xmlFileName))
+    {
+        return "file doesn not exists ";
+    }
+    
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
     ssize_t size;
     std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
@@ -313,6 +318,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     if (serializeEnabled)
     {
         CSParseBinary protobuf;
+        _protobuf = &protobuf;
         
         const tinyxml2::XMLElement* child = element->FirstChildElement();
         
@@ -962,6 +968,7 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    
                 }
                 
                 attribute = attribute->Next();
@@ -1799,6 +1806,10 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
         }
         else if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_filenamedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1813,15 +1824,23 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -3482,12 +3501,13 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                     size_t pos = value.find_last_of('.');
                     std::string convert = value.substr(0, pos).append(".csb");
                     
-                    options->set_filename(convert);
-                    
-                    
                     std::string protocolBuffersFileName = _protocolbuffersDir + convert;
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
-                    serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value, true);
+                    std::string result = serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value, true);
+                    if (result == "")
+                    {
+                        options->set_filename(convert);
+                    }
                      
                 }
                 
@@ -4343,24 +4363,21 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
     options->set_colorb(colorB);
     
     bool isAnchorPointXExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointX");
-    float anchorPointXInFile = 0.0f;
+    float anchorPointXInFile = 0.5f;
     if (isAnchorPointXExists)
     {
         anchorPointXInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointX");
     }
     
     bool isAnchorPointYExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointY");
-    float anchorPointYInFile = 0.0f;
+    float anchorPointYInFile = 0.5f;
     if (isAnchorPointYExists)
     {
         anchorPointYInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointY");
     }
     
-    if (isAnchorPointXExists || isAnchorPointYExists)
-    {
-        options->set_anchorpointx(anchorPointXInFile);
-        options->set_anchorpointy(anchorPointYInFile);
-    }
+    options->set_anchorpointx(anchorPointXInFile);
+    options->set_anchorpointy(anchorPointYInFile);    
     
     bool flipX = DICTOOL->getBooleanValue_json(optionsJson, "flipX");
     bool flipY = DICTOOL->getBooleanValue_json(optionsJson, "flipY");
