@@ -153,12 +153,6 @@ namespace cocostudio
         
 		const protocolbuffers::ResourceData& imageFileNameDic = options.backgroundimagedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
-		/* peterson */
-		if (imageFileNameType == 1)
-		{
-			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(protocolBuffersPath + imageFileNameDic.plistfile());			
-		}
-		/**/
         std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
         scrollView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
