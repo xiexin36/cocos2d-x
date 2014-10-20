@@ -158,12 +158,6 @@ namespace cocostudio
         
 		const protocolbuffers::ResourceData& imageFileNameDic = options.texturedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
-		/* peterson */
-		if (imageFileNameType == 1)
-		{
-			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(protocolBuffersPath + imageFileNameDic.plistfile());			
-		}
-		/**/
         std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
         loadingBar->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
@@ -210,7 +204,6 @@ namespace cocostudio
         
         bool scale9Enabled = false;
         float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
-        float swf = 0.0f, shf = 0.0f;
         int direction = 0;
         
         int percent = 0;
@@ -271,13 +264,13 @@ namespace cocostudio
             
             if (name == "ImageFileData")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 int resourceType = 0;
                 std::string path = "", plistFile = "";
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "Path")

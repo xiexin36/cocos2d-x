@@ -87,7 +87,7 @@ static const char* FrameType_VisibleFrame       = "VisibleFrame";
 static const char* FrameType_PositionFrame      = "PositionFrame";
 static const char* FrameType_ScaleFrame         = "ScaleFrame";
 static const char* FrameType_RotationSkewFrame  = "RotationSkewFrame";
-static const char* FrameType_AnchorFrame        = "AnchorFrame";
+static const char* FrameType_AnchorFrame        = "AnchorPointFrame";
 static const char* FrameType_ColorFrame         = "ColorFrame";
 static const char* FrameType_TextureFrame       = "TextureFrame";
 static const char* FrameType_EventFrame         = "EventFrame";
@@ -99,6 +99,7 @@ static ProtocolBuffersSerialize* sharedProtocolBuffersSerialize = nullptr;
 ProtocolBuffersSerialize::ProtocolBuffersSerialize()
 : _protocolbuffersDir("")
 , _isSimulator(false)
+, _protobuf(nullptr)
 {
     
 }
@@ -235,7 +236,11 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
     
     // xml read
-
+    if (!FileUtils::getInstance()->isFileExist(xmlFileName))
+    {
+        return "file doesn not exists ";
+    }
+    
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
     ssize_t size;
     std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
@@ -313,6 +318,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     if (serializeEnabled)
     {
         CSParseBinary protobuf;
+        _protobuf = &protobuf;
         
         const tinyxml2::XMLElement* child = element->FirstChildElement();
         
@@ -338,7 +344,10 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
         
         
         // out, in for stream
-        const char* temp = protocolbuffersFileName.c_str();
+        std::string fullOut = FileUtils::getInstance()->fullPathForFilename(xmlFileName);
+        size_t pos = fullOut.find_last_of('.');
+        std::string convert = fullOut.substr(0, pos).append(".csb");
+        const char* temp = convert.c_str();
         FILE* file = fopen(temp, "wb");
         if (nullptr == file)
         {
@@ -756,11 +765,11 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
         }
         else if (name == "Visible")
         {
-            options->set_visible((value == "True") ? true : false);
+//            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "VisibleForFrame")
         {
-//            options->set_visible((value == "True") ? true : false);
+            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "Alpha")
         {
@@ -942,6 +951,10 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
         
         if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_filenamedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -956,15 +969,23 @@ void ProtocolBuffersSerialize::setSpriteOptions(protocolbuffers::SpriteOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -1154,11 +1175,11 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
         }
         else if (name == "Visible")
         {
-            options->set_visible((value == "True") ? true : false);
+//            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "VisibleForFrame")
         {
-//            options->set_visible((value == "True") ? true : false);
+            options->set_visible((value == "True") ? true : false);
         }
         else if (name == "Alpha")
         {
@@ -1430,6 +1451,10 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
         }
         else if (name == "DisabledFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* disabledFileData = options->mutable_disableddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1444,19 +1469,31 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-					int resourceType = getResourceType(value);
+					resourceType = getResourceType(value);
                     disabledFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     disabledFileData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "PressedFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* pressedFileData = options->mutable_presseddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1471,19 +1508,31 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     pressedFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     pressedFileData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "NormalFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* normalFileData = options->mutable_normaldata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1498,15 +1547,23 @@ void ProtocolBuffersSerialize::setButtonOptions(protocolbuffers::ButtonOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     normalFileData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     normalFileData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         else if (name == "FontResource")
@@ -1575,6 +1632,10 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
         
         if (name == "NormalBackFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* backgroundboxData = options->mutable_backgroundboxdata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1589,19 +1650,31 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     backgroundboxData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     backgroundboxData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "PressedBackFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* backGroundBoxSelectedData = options->mutable_backgroundboxselecteddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1616,19 +1689,31 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     backGroundBoxSelectedData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     backGroundBoxSelectedData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "NodeNormalFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* frontCrossData = options->mutable_frontcrossdata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1643,19 +1728,31 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     frontCrossData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     frontCrossData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "DisableBackFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* backGroundBoxDisabledData = options->mutable_backgroundboxdisableddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1670,19 +1767,31 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     backGroundBoxDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     backGroundBoxDisabledData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "NodeDisableFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* frontCrossDisabledData = options->mutable_frontcrossdisableddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1697,15 +1806,23 @@ void ProtocolBuffersSerialize::setCheckBoxOptions(protocolbuffers::CheckBoxOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     frontCrossDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     frontCrossDisabledData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -1799,6 +1916,10 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
         }
         else if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_filenamedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1813,15 +1934,23 @@ void ProtocolBuffersSerialize::setImageViewOptions(protocolbuffers::ImageViewOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -1872,6 +2001,10 @@ void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOpt
         
         if (name == "LabelAtlasFileImage_CNB")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_charmapfiledata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -1886,15 +2019,23 @@ void ProtocolBuffersSerialize::setTextAtlasOptions(protocolbuffers::TextAtlasOpt
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -2133,6 +2274,10 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
         
         if (name == "ImageFileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_texturedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2147,15 +2292,23 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -2227,6 +2380,10 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
         
         if (name == "BackGroundData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* barFileNameData = options->mutable_barfilenamedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2241,19 +2398,31 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     barFileNameData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     barFileNameData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "BallNormalData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* ballNormalData = options->mutable_ballnormaldata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2268,19 +2437,31 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     ballNormalData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     ballNormalData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "BallPressedData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* ballPressedData = options->mutable_ballpresseddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2295,19 +2476,31 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     ballPressedData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     ballPressedData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "BallDisabledData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* ballDisabledData = options->mutable_balldisableddata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2322,7 +2515,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     ballDisabledData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2332,9 +2525,20 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 
                 attribute = attribute->Next();
             }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
+            }
         }
         else if (name == "ProgressBarData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* progressBarData = options->mutable_progressbardata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2349,7 +2553,7 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     progressBarData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
@@ -2358,6 +2562,13 @@ void ProtocolBuffersSerialize::setSliderOptions(protocolbuffers::SliderOptions *
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -2673,6 +2884,10 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
         }
         else if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_backgroundimagedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2687,15 +2902,23 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -2880,6 +3103,10 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
         }
         else if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_backgroundimagedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -2894,15 +3121,23 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -3127,6 +3362,10 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
         }
         else if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_backgroundimagedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -3141,15 +3380,23 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -3424,6 +3671,10 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
         }
         else if (name == "FileData")
         {
+            int resourceType = 0;
+            std::string texture = "";
+            std::string texturePng = "";
+            
             ResourceData* resourceData = options->mutable_backgroundimagedata();
             const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             
@@ -3438,15 +3689,23 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
                 }
                 else if (name == "Type")
                 {
-                    int resourceType = getResourceType(value);
+                    resourceType = getResourceType(value);
                     resourceData->set_resourcetype(resourceType);
                 }
                 else if (name == "Plist")
                 {
                     resourceData->set_plistfile(value);
+                    texture = value;
                 }
                 
                 attribute = attribute->Next();
+            }
+            
+            if (resourceType == 1)
+            {
+                _protobuf->add_textures(texture);
+                texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                _protobuf->add_texturespng(texturePng);
             }
         }
         
@@ -3480,14 +3739,15 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                 if (name == "Path")
                 {
                     size_t pos = value.find_last_of('.');
-                    std::string convert = value.substr(0, pos).append(".csb");
-                    
-                    options->set_filename(convert);
-                    
+                    std::string convert = value.substr(0, pos).append(".csb");                    
                     
                     std::string protocolBuffersFileName = _protocolbuffersDir + convert;
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
-                    serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value, true);
+                    std::string result = serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value, true);
+                    if (result == "")
+                    {
+                        options->set_filename(convert);
+                    }
                      
                 }
                 
@@ -4343,24 +4603,21 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
     options->set_colorb(colorB);
     
     bool isAnchorPointXExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointX");
-    float anchorPointXInFile = 0.0f;
+    float anchorPointXInFile = 0.5f;
     if (isAnchorPointXExists)
     {
         anchorPointXInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointX");
     }
     
     bool isAnchorPointYExists = DICTOOL->checkObjectExist_json(optionsJson, "anchorPointY");
-    float anchorPointYInFile = 0.0f;
+    float anchorPointYInFile = 0.5f;
     if (isAnchorPointYExists)
     {
         anchorPointYInFile = DICTOOL->getFloatValue_json(optionsJson, "anchorPointY");
     }
     
-    if (isAnchorPointXExists || isAnchorPointYExists)
-    {
-        options->set_anchorpointx(anchorPointXInFile);
-        options->set_anchorpointy(anchorPointYInFile);
-    }
+    options->set_anchorpointx(anchorPointXInFile);
+    options->set_anchorpointy(anchorPointYInFile);    
     
     bool flipX = DICTOOL->getBooleanValue_json(optionsJson, "flipX");
     bool flipY = DICTOOL->getBooleanValue_json(optionsJson, "flipY");
