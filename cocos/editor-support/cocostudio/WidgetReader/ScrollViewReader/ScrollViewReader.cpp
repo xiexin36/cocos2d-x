@@ -224,7 +224,7 @@ namespace cocostudio
         std::string xmlPath = GUIReader::getInstance()->getFilePath();
         
         bool scale9Enabled = false;
-        float width = 0.0f, height = 0.0f;
+        float width = 0.0f, height = 0.0f; 
         float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
         
         Layout::BackGroundColorType colorType = Layout::BackGroundColorType::NONE;
