@@ -227,8 +227,8 @@ namespace cocostudio
         
         bool isCustomSize = false;
         float width = 0.0f, height = 0.0f;
-        
         int opacity = 255;
+        std::string text = "";
         
         textField->setUnifySizeEnabled(false);
         
@@ -248,6 +248,7 @@ namespace cocostudio
             else if (name == "LabelText")
             {
                 textField->setText(value);
+                text = value;
             }
             else if (name == "FontSize")
             {
@@ -268,6 +269,7 @@ namespace cocostudio
             else if (name == "PasswordEnable")
             {
                 textField->setPasswordEnabled((value == "True") ? true : false);
+                textField->setText(text);
             }
             else if (name == "PasswordStyleText")
             {
