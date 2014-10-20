@@ -791,22 +791,18 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
             int d = 0;
         }
         std::string filePath = options.filename();
-        CCLOG("filePath = %s", filePath.c_str());
-        if (filePath == "generalshark_cell/generalshark_left_foot.csb")
-        {
-            int b = 0;
-        }
+        CCLOG("filePath = %s", filePath.c_str());        
 		if(filePath != "")
 		{
             node = createNodeFromProtocolBuffers(_protocolBuffersPath + filePath);
             setPropsForProjectNodeFromProtocolBuffers(node, options, nodeOptions);
             
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionFromProtocolBuffers(_protocolBuffersPath + filePath);
-//            if(action)
-//            {
-//                node->runAction(action);
-//                action->gotoFrameAndPlay(0);
-//            }
+            if(action)
+            {
+                node->runAction(action);
+                action->gotoFrameAndPlay(0);
+            }
 		}
      
         curOptions = nodeOptions;
