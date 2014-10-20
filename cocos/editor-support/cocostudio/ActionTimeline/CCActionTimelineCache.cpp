@@ -45,7 +45,7 @@ static const char* FrameType_ScaleFrame         = "ScaleFrame";
 static const char* FrameType_RotationFrame      = "RotationFrame";
 static const char* FrameType_SkewFrame          = "SkewFrame";
 static const char* FrameType_RotationSkewFrame  = "RotationSkewFrame";
-static const char* FrameType_AnchorFrame        = "AnchorFrame";
+static const char* FrameType_AnchorFrame        = "AnchorPointFrame";
 static const char* FrameType_InnerActionFrame   = "InnerActionFrame";
 static const char* FrameType_ColorFrame         = "ColorFrame";
 static const char* FrameType_TextureFrame       = "TextureFrame";
@@ -240,7 +240,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFileFromProtocolBuff
 	Data content = FileUtils::getInstance()->getDataFromFile(fullPath);
     protocolbuffers::CSParseBinary gpbwp;
     //    protocolbuffers::GUIProtocolBuffersProtobuf gpbwp;
-	if (!gpbwp.ParseFromArray(content.getBytes(), content.getSize()))
+	if (!gpbwp.ParseFromArray(content.getBytes(), (int)content.getSize()))
     {
         return NULL;
     }
@@ -1167,7 +1167,7 @@ Frame* ActionTimelineCache::loadColorFrameFromXML(const tinyxml2::XMLElement *fr
     const tinyxml2::XMLElement* child = frameElement->FirstChildElement();
     while (child)
     {
-        const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+        attribute = child->FirstAttribute();
         while (attribute)
         {
             std::string name = attribute->Name();
