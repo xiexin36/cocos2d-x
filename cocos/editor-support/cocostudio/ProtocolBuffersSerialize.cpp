@@ -87,7 +87,7 @@ static const char* FrameType_VisibleFrame       = "VisibleFrame";
 static const char* FrameType_PositionFrame      = "PositionFrame";
 static const char* FrameType_ScaleFrame         = "ScaleFrame";
 static const char* FrameType_RotationSkewFrame  = "RotationSkewFrame";
-static const char* FrameType_AnchorFrame        = "AnchorFrame";
+static const char* FrameType_AnchorFrame        = "AnchorPointFrame";
 static const char* FrameType_ColorFrame         = "ColorFrame";
 static const char* FrameType_TextureFrame       = "TextureFrame";
 static const char* FrameType_EventFrame         = "EventFrame";
@@ -344,7 +344,8 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
         
         
         // out, in for stream
-        const char* temp = protocolbuffersFileName.c_str();
+        std::string fullOut = FileUtils::getInstance()->fullPathForFilename(protocolbuffersFileName);
+        const char* temp = fullOut.c_str();
         FILE* file = fopen(temp, "wb");
         if (nullptr == file)
         {
