@@ -223,6 +223,8 @@ namespace cocostudio
         
         std::string xmlPath = GUIReader::getInstance()->getFilePath();
         
+        bool clippingEnabled = false;
+        
         bool scale9Enabled = false;
         float width = 0.0f, height = 0.0f;
         float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
@@ -250,7 +252,7 @@ namespace cocostudio
             
             if (name == "ClipAble")
             {
-                scrollView->setClippingEnabled((value == "True") ? true : false);
+                clippingEnabled = (value == "True") ? true : false;
             }
             else if (name == "ComboBoxIndex")
             {
@@ -507,6 +509,8 @@ namespace cocostudio
             
             child = child->NextSiblingElement();
         }
+        
+        scrollView->setClippingEnabled(clippingEnabled);
         
         scrollView->setColor(Color3B(red, green, blue));
         scrollView->setOpacity(opacity);
