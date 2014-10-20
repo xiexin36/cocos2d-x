@@ -344,8 +344,10 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
         
         
         // out, in for stream
-        std::string fullOut = FileUtils::getInstance()->fullPathForFilename(protocolbuffersFileName);
-        const char* temp = fullOut.c_str();
+        std::string fullOut = FileUtils::getInstance()->fullPathForFilename(xmlFileName);
+        size_t pos = fullOut.find_last_of('.');
+        std::string convert = fullOut.substr(0, pos).append(".csb");
+        const char* temp = convert.c_str();
         FILE* file = fopen(temp, "wb");
         if (nullptr == file)
         {
@@ -3737,7 +3739,7 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
                 if (name == "Path")
                 {
                     size_t pos = value.find_last_of('.');
-                    std::string convert = value.substr(0, pos).append(".csb");
+                    std::string convert = value.substr(0, pos).append(".csb");                    
                     
                     std::string protocolBuffersFileName = _protocolbuffersDir + convert;
                     CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
