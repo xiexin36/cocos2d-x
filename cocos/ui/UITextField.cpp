@@ -480,6 +480,7 @@ void TextField::setFontName(const std::string& name)
         {
             _textFieldRenderer->requestSystemFontRefresh();
         }
+        _textFieldRenderer->setSystemFontSize(_fontSize);
         _fontType = FontType::SYSTEM;
     }
     _fontName = name;
