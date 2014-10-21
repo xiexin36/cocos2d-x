@@ -343,11 +343,12 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
         }
         
         
+        
         // out, in for stream
-        std::string fullOut = FileUtils::getInstance()->fullPathForFilename(xmlFileName);
-        size_t pos = fullOut.find_last_of('.');
-        std::string convert = fullOut.substr(0, pos).append(".csb");
-        const char* temp = convert.c_str();
+        std::string inFullPath = FileUtils::getInstance()->fullPathForFilename(xmlFileName);
+        size_t pos = inFullPath.find_last_of('.');
+        std::string outFullPath = inFullPath.substr(0, pos).append(".csb");
+        const char* temp = outFullPath.c_str();
         FILE* file = fopen(temp, "wb");
         if (nullptr == file)
         {
@@ -3854,7 +3855,7 @@ void ProtocolBuffersSerialize::convertActionProtocolBuffersWithXML(protocolbuffe
         }
         else if (name == "Speed")
         {
-            nodeAction->set_speed(atoi(value.c_str()));
+            nodeAction->set_speed(atof(value.c_str()));
         }
         
         attribute = attribute->Next();
