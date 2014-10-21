@@ -739,6 +739,7 @@ void Button::setTitleFontName(const std::string& fontName)
         {
             _titleRenderer->requestSystemFontRefresh();
         }
+        _titleRenderer->setSystemFontSize(_fontSize);
         _type = FontType::SYSTEM;
     }
     _fontName = fontName;
