@@ -344,11 +344,11 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
         
         
         
-        // out, in for stream
-        std::string inFullPath = FileUtils::getInstance()->fullPathForFilename(xmlFileName);
-        size_t pos = inFullPath.find_last_of('.');
-        std::string outFullPath = inFullPath.substr(0, pos).append(".csb");
-        const char* temp = outFullPath.c_str();
+        // out, in for stream        
+		std::string outFullPath = FileUtils::getInstance()->fullPathForFilename(protocolbuffersFileName);
+        size_t pos = outFullPath.find_last_of('.');
+        std::string convert = outFullPath.substr(0, pos).append(".csb");
+        const char* temp = convert.c_str();
         FILE* file = fopen(temp, "wb");
         if (nullptr == file)
         {
