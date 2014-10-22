@@ -234,14 +234,16 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
      */
     
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
+
     
+	std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
+
     // xml read
-    if (!FileUtils::getInstance()->isFileExist(xmlFileName))
+    if (!FileUtils::getInstance()->isFileExist(fullpath))
     {
         return "file doesn not exists ";
     }
     
-    std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
     ssize_t size;
     std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
     
