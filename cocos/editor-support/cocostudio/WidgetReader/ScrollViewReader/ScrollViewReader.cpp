@@ -229,6 +229,8 @@ namespace cocostudio
         float width = 0.0f, height = 0.0f;
         float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
         
+        float innerWidth = 0.0f, innerHeight = 0.0f;
+        
         Layout::BackGroundColorType colorType = Layout::BackGroundColorType::NONE;
         int color_opacity = 255, bgimg_opacity = 255, opacity = 255;
         int red = 255, green = 255, blue = 255;
@@ -319,7 +321,6 @@ namespace cocostudio
             if (name == "InnerNodeSize")
             {
                 attribute = child->FirstAttribute();
-                width = 0.0f; height = 0.0f;
                 
                 while (attribute)
                 {
@@ -328,17 +329,17 @@ namespace cocostudio
                     
                     if (name == "Width")
                     {
-                        width = atof(value.c_str());
+                        innerWidth = atof(value.c_str());
                     }
                     else if (name == "Height")
                     {
-                        height = atof(value.c_str());
+                        innerHeight = atof(value.c_str());
                     }
                     
                     attribute = attribute->Next();
                 }
                 
-                scrollView->setInnerContainerSize(Size(width, height));
+                scrollView->setInnerContainerSize(Size(innerWidth, innerHeight));
             }
             else if (name == "Size")
             {
