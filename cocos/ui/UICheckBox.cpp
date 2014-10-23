@@ -350,7 +350,17 @@ void CheckBox::setSelectedState(bool selected)
         return;
     }
     _isSelected = selected;
-    _frontCrossRenderer->setVisible(_isSelected);
+    if (_isSelected)
+    {
+        bool isNormal = _backGroundBoxRenderer->isVisible();
+        _frontCrossRenderer->setVisible(isNormal);
+        _frontCrossDisabledRenderer->setVisible(!isNormal);
+    }
+    else
+    {
+        _frontCrossRenderer->setVisible(false);
+        _frontCrossDisabledRenderer->setVisible(false);
+    }
 }
 
 bool CheckBox::getSelectedState()const
