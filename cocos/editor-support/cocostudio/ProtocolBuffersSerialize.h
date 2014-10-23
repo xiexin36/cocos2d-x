@@ -34,6 +34,7 @@
 
 namespace protocolbuffers
 {
+    class CSParseBinary;
     class NodeTree;
     class SpriteOptions;
     class TMXTiledMapOptions;
@@ -441,6 +442,8 @@ protected:
     std::string _protocolbuffersFileName;
     std::string _protocolbuffersDir;
 	bool _isSimulator;
+    
+    protocolbuffers::CSParseBinary* _protobuf;
 };
 
 #endif /* defined(__ProtobufTest__GUIProtocolBuffers__) */

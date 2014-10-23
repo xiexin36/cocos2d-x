@@ -153,12 +153,6 @@ namespace cocostudio
         
 		const protocolbuffers::ResourceData& imageFileNameDic = options.backgroundimagedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
-		/* peterson */
-		if (imageFileNameType == 1)
-		{
-			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(protocolBuffersPath + imageFileNameDic.plistfile());			
-		}
-		/**/
         std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
         scrollView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
@@ -229,9 +223,13 @@ namespace cocostudio
         
         std::string xmlPath = GUIReader::getInstance()->getFilePath();
         
+        bool clippingEnabled = false;
+        
         bool scale9Enabled = false;
         float width = 0.0f, height = 0.0f;
         float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
+        
+        float innerWidth = 0.0f, innerHeight = 0.0f;
         
         Layout::BackGroundColorType colorType = Layout::BackGroundColorType::NONE;
         int color_opacity = 255, bgimg_opacity = 255, opacity = 255;
@@ -256,7 +254,7 @@ namespace cocostudio
             
             if (name == "ClipAble")
             {
-                scrollView->setClippingEnabled((value == "True") ? true : false);
+                clippingEnabled = (value == "True") ? true : false;
             }
             else if (name == "ComboBoxIndex")
             {
@@ -322,35 +320,34 @@ namespace cocostudio
             
             if (name == "InnerNodeSize")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-                float width = 0.0f, height = 0.0f;
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "Width")
                     {
-                        width = atof(value.c_str());
+                        innerWidth = atof(value.c_str());
                     }
                     else if (name == "Height")
                     {
-                        height = atof(value.c_str());
+                        innerHeight = atof(value.c_str());
                     }
                     
                     attribute = attribute->Next();
                 }
                 
-                scrollView->setInnerContainerSize(Size(width, height));
+                scrollView->setInnerContainerSize(Size(innerWidth, innerHeight));
             }
             else if (name == "Size")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "X")
@@ -367,11 +364,11 @@ namespace cocostudio
             }
             else if (name == "CColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "R")
@@ -395,10 +392,10 @@ namespace cocostudio
             }
             else if (name == "SingleColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "R")
@@ -419,10 +416,10 @@ namespace cocostudio
             }
             else if (name == "EndColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "R")
@@ -443,10 +440,10 @@ namespace cocostudio
             }
             else if (name == "FirstColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "R")
@@ -467,10 +464,10 @@ namespace cocostudio
             }
             else if (name == "ColorVector")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "ScaleX")
@@ -487,11 +484,11 @@ namespace cocostudio
             }
             else if (name == "FileData")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "Path")
@@ -513,6 +510,8 @@ namespace cocostudio
             
             child = child->NextSiblingElement();
         }
+        
+        scrollView->setClippingEnabled(clippingEnabled);
         
         scrollView->setColor(Color3B(red, green, blue));
         scrollView->setOpacity(opacity);

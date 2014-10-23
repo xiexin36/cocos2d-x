@@ -161,12 +161,6 @@ namespace cocostudio
         
         const protocolbuffers::ResourceData& imageFileNameDic = options.filenamedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
-		/* peterson */
-		if (imageFileNameType == 1)
-		{
-			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(protocolBuffersPath + imageFileNameDic.plistfile());			
-		}
-		/**/
         std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
         imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
@@ -272,11 +266,11 @@ namespace cocostudio
             
             if (name == "Size" && scale9Enabled)
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "X")
@@ -293,13 +287,13 @@ namespace cocostudio
             }
             else if (name == "FileData")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 int resourceType = 0;
                 std::string path = "", plistFile = "";
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "Path")
