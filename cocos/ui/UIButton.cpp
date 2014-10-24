@@ -800,8 +800,15 @@ void Button::refreshUnifySize()
 {
     if (_unifySize)
     {
-        Size s = this->getNormalSize();
-        ProtectedNode::setContentSize(s);
+        if (_scale9Enabled)
+        {
+            ProtectedNode::setContentSize(_customSize);
+        }
+        else
+        {
+            Size s = getNormalSize();
+            ProtectedNode::setContentSize(s);
+        }
         onSizeChanged();
     }
 }
