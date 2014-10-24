@@ -226,6 +226,8 @@ protected:
     virtual Widget* createCloneInstance() override;
     virtual void copySpecialProperties(Widget* model) override;
    
+    virtual Size getNormalSize();
+    virtual void refreshUnifySize();
 protected:
     Scale9Sprite* _buttonNormalRenderer;
     Scale9Sprite* _buttonClickedRenderer;
