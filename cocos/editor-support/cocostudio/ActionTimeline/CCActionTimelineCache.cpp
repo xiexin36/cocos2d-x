@@ -1197,6 +1197,23 @@ Frame* ActionTimelineCache::loadColorFrameFromXML(const tinyxml2::XMLElement *fr
     return frame;
 }
 
+static void loadTextureFromXML(TextureFrame *frame, const tinyxml2::XMLElement *frameElement)
+{
+	const tinyxml2::XMLAttribute* attribute = frameElement->FirstAttribute();
+    while (attribute)
+    {
+        std::string name = attribute->Name();
+        std::string value = attribute->Value();
+        
+        if (name == "Path") // to be gonna modify
+        {
+            frame->setTextureName(value);
+        }
+        attribute = attribute->Next();
+    }
+}
+
+
 Frame* ActionTimelineCache::loadTextureFrameFromXML(const tinyxml2::XMLElement *frameElement)
 {
     TextureFrame* frame = TextureFrame::create();
@@ -1204,6 +1221,7 @@ Frame* ActionTimelineCache::loadTextureFrameFromXML(const tinyxml2::XMLElement *
     frame->setTween(true);
     
     const tinyxml2::XMLAttribute* attribute = frameElement->FirstAttribute();
+	const tinyxml2::XMLElement* frameEle = frameElement->FirstChildElement();
     while (attribute)
     {
         std::string name = attribute->Name();
@@ -1216,10 +1234,12 @@ Frame* ActionTimelineCache::loadTextureFrameFromXML(const tinyxml2::XMLElement *
         else if (name == "FrameIndex")
         {
             frame->setFrameIndex(atoi(value.c_str()));
+			loadTextureFromXML(frame, frameEle);
         }
         else if (name == "Tween")
         {
             frame->setTween((value == "True") ? true : false);
+			loadTextureFromXML(frame, frameEle);
         }
         
         attribute = attribute->Next();
