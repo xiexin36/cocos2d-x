@@ -4193,6 +4193,26 @@ void ProtocolBuffersSerialize::setTextureFrame(protocolbuffers::TimeLineTextureF
         
         attribute = attribute->Next();
     }
+    
+    const tinyxml2::XMLElement* child = frameElement->FirstChildElement();
+    while (child)
+    {
+        attribute = child->FirstAttribute();
+        while (attribute)
+        {
+            std::string name = attribute->Name();
+            std::string value = attribute->Value();
+            
+            if (name == "Path")
+            {
+                textureFrame->set_filepath(value);
+            }
+            
+            attribute = attribute->Next();
+        }
+        
+        child = child->NextSiblingElement();
+    }
 }
 
 void ProtocolBuffersSerialize::setEventFrame(protocolbuffers::TimeLineStringFrame *eventFrame,
