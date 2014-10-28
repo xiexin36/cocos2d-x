@@ -159,6 +159,7 @@ void Text::setFontName(const std::string& name)
         {
             _labelRenderer->requestSystemFontRefresh();
         }
+        _labelRenderer->setSystemFontSize(_fontSize);
         _type = Type::SYSTEM;
     }
     _fontName = name;

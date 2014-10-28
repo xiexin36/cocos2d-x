@@ -30,6 +30,8 @@ NS_CC_BEGIN
 
     namespace ui {
 
+        static bool _activeLayout = true;
+        
         Widget* Helper::seekWidgetByTag(Widget* root, int tag)
         {
             if (!root)
@@ -146,9 +148,24 @@ NS_CC_BEGIN
             }
             return str.substr(min,max);
         }
-
+        
+        void Helper::ActiveLayoutSystem()
+        {
+            _activeLayout = true;
+        }
+        
+        void Helper::InActiveLayoutSystem()
+        {
+            _activeLayout = false;
+        }
+        
         void Helper::doLayout(cocos2d::Node *rootNode)
         {
+            if(!_activeLayout)
+            {
+                return;
+            }
+            
             for(auto& node : rootNode->getChildren())
             {
                 auto com = node->getComponent(__LAYOUT_COMPONENT_NAME);

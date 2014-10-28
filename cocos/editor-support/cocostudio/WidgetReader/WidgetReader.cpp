@@ -364,6 +364,7 @@ namespace cocostudio
         
         const protocolbuffers::WidgetOptions& options = nodeTree.widgetoptions();
         
+        widget->setAnchorPoint(Vec2::ZERO);
         widget->setCascadeColorEnabled(true);
         widget->setCascadeOpacityEnabled(true);
         
@@ -507,6 +508,7 @@ namespace cocostudio
         widget->setUnifySizeEnabled(true);
         
         widget->setScale(0.0f, 0.0f);
+        widget->setAnchorPoint(Vec2::ZERO);
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -543,11 +545,11 @@ namespace cocostudio
             }
             else if (name == "Visible")
             {
-                widget->setVisible((value == "True") ? true : false);
+//                widget->setVisible((value == "True") ? true : false);
             }
             else if (name == "VisibleForFrame")
             {
-//                widget->setVisible((value == "True") ? true : false);
+                widget->setVisible((value == "True") ? true : false);
             }
             else if (name == "Alpha")
             {
@@ -587,11 +589,11 @@ namespace cocostudio
             }
             else if (name == "Position")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "X")
@@ -608,11 +610,11 @@ namespace cocostudio
             }
             else if (name == "Scale")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "ScaleX")
@@ -629,12 +631,12 @@ namespace cocostudio
             }
             else if (name == "AnchorPoint")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 float anchor_x = 0.0f, anchor_y = 0.0f;
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "ScaleX")
@@ -653,12 +655,12 @@ namespace cocostudio
             }
             else if (name == "CColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 int red = 255, green = 255, blue = 255;
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "A")
@@ -685,12 +687,12 @@ namespace cocostudio
             }
             else if (name == "Size")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                attribute = child->FirstAttribute();
                 float width = 0.0f, height = 0.0f;
                 
                 while (attribute)
                 {
-                    std::string name = attribute->Name();
+                    name = attribute->Name();
                     std::string value = attribute->Value();
                     
                     if (name == "X")

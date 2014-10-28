@@ -135,7 +135,10 @@ void ImageView::loadTexture(const std::string& fileName, TextureResType texType)
     updateFlippedY();
     this->updateChildrenDisplayedRGBA();
 
-    updateContentSizeWithTextureSize(_imageTextureSize);
+    if (!_scale9Enabled)
+    {
+        updateContentSizeWithTextureSize(_imageTextureSize);
+    }
     _imageRendererAdaptDirty = true;
 }
 
@@ -202,20 +205,6 @@ bool ImageView::isScale9Enabled()const
 
 void ImageView::ignoreContentAdaptWithSize(bool ignore)
 {
-    if (_unifySize)
-    {
-        if (_scale9Enabled)
-        {
-            ProtectedNode::setContentSize(_customSize);
-        }
-        else
-        {
-            Size s = getVirtualRendererSize();
-            ProtectedNode::setContentSize(s);
-        }
-        onSizeChanged();
-        return;
-    }
     if (!_scale9Enabled || (_scale9Enabled && !ignore))
     {
         Widget::ignoreContentAdaptWithSize(ignore);

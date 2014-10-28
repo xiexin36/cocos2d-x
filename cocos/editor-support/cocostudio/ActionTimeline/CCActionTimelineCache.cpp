@@ -45,7 +45,7 @@ static const char* FrameType_ScaleFrame         = "ScaleFrame";
 static const char* FrameType_RotationFrame      = "RotationFrame";
 static const char* FrameType_SkewFrame          = "SkewFrame";
 static const char* FrameType_RotationSkewFrame  = "RotationSkewFrame";
-static const char* FrameType_AnchorFrame        = "AnchorFrame";
+static const char* FrameType_AnchorFrame        = "AnchorPointFrame";
 static const char* FrameType_InnerActionFrame   = "InnerActionFrame";
 static const char* FrameType_ColorFrame         = "ColorFrame";
 static const char* FrameType_TextureFrame       = "TextureFrame";
@@ -240,7 +240,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFileFromProtocolBuff
 	Data content = FileUtils::getInstance()->getDataFromFile(fullPath);
     protocolbuffers::CSParseBinary gpbwp;
     //    protocolbuffers::GUIProtocolBuffersProtobuf gpbwp;
-	if (!gpbwp.ParseFromArray(content.getBytes(), content.getSize()))
+	if (!gpbwp.ParseFromArray(content.getBytes(), (int)content.getSize()))
     {
         return NULL;
     }
@@ -1167,7 +1167,7 @@ Frame* ActionTimelineCache::loadColorFrameFromXML(const tinyxml2::XMLElement *fr
     const tinyxml2::XMLElement* child = frameElement->FirstChildElement();
     while (child)
     {
-        const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+        attribute = child->FirstAttribute();
         while (attribute)
         {
             std::string name = attribute->Name();
@@ -1197,6 +1197,23 @@ Frame* ActionTimelineCache::loadColorFrameFromXML(const tinyxml2::XMLElement *fr
     return frame;
 }
 
+static void loadTextureFromXML(TextureFrame *frame, const tinyxml2::XMLElement *frameElement)
+{
+	const tinyxml2::XMLAttribute* attribute = frameElement->FirstAttribute();
+    while (attribute)
+    {
+        std::string name = attribute->Name();
+        std::string value = attribute->Value();
+        
+        if (name == "Path") // to be gonna modify
+        {
+            frame->setTextureName(value);
+        }
+        attribute = attribute->Next();
+    }
+}
+
+
 Frame* ActionTimelineCache::loadTextureFrameFromXML(const tinyxml2::XMLElement *frameElement)
 {
     TextureFrame* frame = TextureFrame::create();
@@ -1204,6 +1221,7 @@ Frame* ActionTimelineCache::loadTextureFrameFromXML(const tinyxml2::XMLElement *
     frame->setTween(true);
     
     const tinyxml2::XMLAttribute* attribute = frameElement->FirstAttribute();
+	const tinyxml2::XMLElement* frameEle = frameElement->FirstChildElement();
     while (attribute)
     {
         std::string name = attribute->Name();
@@ -1216,10 +1234,12 @@ Frame* ActionTimelineCache::loadTextureFrameFromXML(const tinyxml2::XMLElement *
         else if (name == "FrameIndex")
         {
             frame->setFrameIndex(atoi(value.c_str()));
+			loadTextureFromXML(frame, frameEle);
         }
         else if (name == "Tween")
         {
             frame->setTween((value == "True") ? true : false);
+			loadTextureFromXML(frame, frameEle);
         }
         
         attribute = attribute->Next();

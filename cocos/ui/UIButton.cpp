@@ -192,16 +192,7 @@ void Button::ignoreContentAdaptWithSize(bool ignore)
 {
     if (_unifySize)
     {
-        if (_scale9Enabled)
-        {
-            ProtectedNode::setContentSize(_customSize);
-        }
-        else
-        {
-            Size s = getVirtualRendererSize();
-            ProtectedNode::setContentSize(s);
-        }
-        onSizeChanged();
+        this->refreshUnifySize();
         return;
     }
     if (!_scale9Enabled || (_scale9Enabled && !ignore))
@@ -247,7 +238,10 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
     updateFlippedY();
     this->updateChildrenDisplayedRGBA();
     
-    updateContentSizeWithTextureSize(_normalTextureSize);
+    if (!_scale9Enabled)
+    {
+        updateContentSizeWithTextureSize(this->getNormalSize());
+    }
     _normalTextureLoaded = true;
     _normalTextureAdaptDirty = true;
 }
@@ -322,12 +316,29 @@ void Button::setCapInsets(const Rect &capInsets)
 
 void Button::setCapInsetsNormalRenderer(const Rect &capInsets)
 {
-    _capInsetsNormal = capInsets;
+    float x = capInsets.origin.x;
+    float y = capInsets.origin.y;
+    float width = capInsets.size.width;
+    float height = capInsets.size.height;
+    
+    if (_normalTextureSize.width < width)
+    {
+        x = 0.0f;
+        width = 0.0f;
+    }
+    if (_normalTextureSize.height < height)
+    {
+        y = 0.0f;
+        height = 0.0f;
+    }
+    Rect rect(x, y, width, height);
+    
+    _capInsetsNormal = rect;
     if (!_scale9Enabled)
     {
         return;
     }
-    _buttonNormalRenderer->setCapInsets(capInsets);
+    _buttonNormalRenderer->setCapInsets(rect);
 }
 
 const Rect& Button::getCapInsetsNormalRenderer()const
@@ -337,12 +348,29 @@ const Rect& Button::getCapInsetsNormalRenderer()const
 
 void Button::setCapInsetsPressedRenderer(const Rect &capInsets)
 {
-    _capInsetsPressed = capInsets;
+    float x = capInsets.origin.x;
+    float y = capInsets.origin.y;
+    float width = capInsets.size.width;
+    float height = capInsets.size.height;
+    
+    if (_pressedTextureSize.width < width)
+    {
+        x = 0.0f;
+        width = 0.0f;
+    }
+    if (_pressedTextureSize.height < height)
+    {
+        y = 0.0f;
+        height = 0.0f;
+    }
+    Rect rect(x, y, width, height);
+    
+    _capInsetsPressed = rect;
     if (!_scale9Enabled)
     {
         return;
     }
-    _buttonClickedRenderer->setCapInsets(capInsets);
+    _buttonClickedRenderer->setCapInsets(rect);
 }
 
 const Rect& Button::getCapInsetsPressedRenderer()const
@@ -352,12 +380,29 @@ const Rect& Button::getCapInsetsPressedRenderer()const
 
 void Button::setCapInsetsDisabledRenderer(const Rect &capInsets)
 {
-    _capInsetsDisabled = capInsets;
+    float x = capInsets.origin.x;
+    float y = capInsets.origin.y;
+    float width = capInsets.size.width;
+    float height = capInsets.size.height;
+    
+    if (_disabledTextureSize.width < width)
+    {
+        x = 0.0f;
+        width = 0.0f;
+    }
+    if (_disabledTextureSize.height < height)
+    {
+        y = 0.0f;
+        height = 0.0f;
+    }
+    Rect rect(x, y, width, height);
+    
+    _capInsetsDisabled = rect;
     if (!_scale9Enabled)
     {
         return;
     }
-    _buttonDisableRenderer->setCapInsets(capInsets);
+    _buttonDisableRenderer->setCapInsets(rect);
 }
 
 const Rect& Button::getCapInsetsDisabledRenderer()const
@@ -510,11 +555,11 @@ Node* Button::getVirtualRenderer()
 
 void Button::normalTextureScaleChangedWithSize()
 {
-    if (_unifySize)
-    {
-        _buttonNormalRenderer->setPreferredSize(_contentSize);
-    }
-    else if (_ignoreSize)
+    //if (_unifySize)
+    //{
+    //    _buttonNormalRenderer->setPreferredSize(_contentSize);
+    //}
+    if (_ignoreSize && !_unifySize)
     {
         if (!_scale9Enabled)
         {
@@ -551,11 +596,11 @@ void Button::normalTextureScaleChangedWithSize()
 
 void Button::pressedTextureScaleChangedWithSize()
 {
-    if (_unifySize)
-    {
-        _buttonClickedRenderer->setPreferredSize(_contentSize);
-    }
-    else if (_ignoreSize)
+    //if (_unifySize)
+    //{
+    //    _buttonClickedRenderer->setPreferredSize(_contentSize);
+    //}
+    if (_ignoreSize && !_unifySize)
     {
         if (!_scale9Enabled)
         {
@@ -592,11 +637,11 @@ void Button::pressedTextureScaleChangedWithSize()
 
 void Button::disabledTextureScaleChangedWithSize()
 {
-    if (_unifySize)
-    {
-        _buttonDisableRenderer->setPreferredSize(_contentSize);
-    }
-    else if (_ignoreSize)
+    //if (_unifySize)
+    //{
+    //    _buttonDisableRenderer->setPreferredSize(_contentSize);
+    //}
+    if (_ignoreSize && !_unifySize)
     {
         if (!_scale9Enabled)
         {
@@ -635,6 +680,8 @@ void Button::setPressedActionEnabled(bool enabled)
 void Button::setTitleText(const std::string& text)
 {
     _titleRenderer->setString(text);
+
+    this->refreshUnifySize();
 }
 
 const std::string& Button::getTitleText() const
@@ -663,6 +710,8 @@ void Button::setTitleFontSize(float size)
         _titleRenderer->setTTFConfig(config);
     }
     _fontSize = size;
+
+    this->refreshUnifySize();
 }
 
 float Button::getTitleFontSize() const
@@ -685,9 +734,12 @@ void Button::setTitleFontName(const std::string& fontName)
         {
             _titleRenderer->requestSystemFontRefresh();
         }
+        _titleRenderer->setSystemFontSize(_fontSize);
         _type = FontType::SYSTEM;
     }
     _fontName = fontName;
+
+    this->refreshUnifySize();
 }
 
 const std::string& Button::getTitleFontName() const
@@ -723,6 +775,41 @@ void Button::copySpecialProperties(Widget *widget)
         setTitleFontSize(button->getTitleFontSize());
         setTitleColor(button->getTitleColor());
         setPressedActionEnabled(button->_pressedActionEnabled);
+    }
+}
+
+Size Button::getNormalSize()
+{
+    Size titleSize;
+    if (_titleRenderer != nullptr)
+    {
+        titleSize = _titleRenderer->getContentSize();
+    }
+    Size imageSize;
+    if (_buttonNormalRenderer != nullptr)
+    {
+        imageSize = _buttonNormalRenderer->getContentSize();
+    }
+    float width = titleSize.width > imageSize.width ? titleSize.width : imageSize.width;
+    float height = titleSize.height > imageSize.height ? titleSize.height : imageSize.height;
+
+    return Size(width,height);
+}
+
+void Button::refreshUnifySize()
+{
+    if (_unifySize)
+    {
+        if (_scale9Enabled)
+        {
+            ProtectedNode::setContentSize(_customSize);
+        }
+        else
+        {
+            Size s = getNormalSize();
+            ProtectedNode::setContentSize(s);
+        }
+        onSizeChanged();
     }
 }
 
