@@ -97,8 +97,7 @@ static const char* FrameType_ZOrderFrame        = "ZOrderFrame";
 static ProtocolBuffersSerialize* sharedProtocolBuffersSerialize = nullptr;
 
 ProtocolBuffersSerialize::ProtocolBuffersSerialize()
-: _protocolbuffersDir("")
-, _isSimulator(false)
+: _isSimulator(false)
 , _protobuf(nullptr)
 {
     
@@ -226,12 +225,7 @@ void ProtocolBuffersSerialize::XMLTest(const std::string &fileName)
 std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const std::string &protocolbuffersFileName,
                                                               const std::string &xmlFileName, bool isSimulator/* = false*/)
 {
-    std::string result = "";
-    
-    /*
-    size_t pos = protocolbuffersFileName.find_last_of('/');
-    _protocolbuffersDir = protocolbuffersFileName.substr(0, pos + 1);
-     */
+    std::string result = "";    
     
     CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
 
@@ -3736,22 +3730,14 @@ void ProtocolBuffersSerialize::setProjectNodeOptions(protocolbuffers::ProjectNod
             
             while (attribute)
             {
-                std::string name = attribute->Name();
+                name = attribute->Name();
                 std::string value = attribute->Value();
                 
                 if (name == "Path")
                 {
                     size_t pos = value.find_last_of('.');
-                    std::string convert = value.substr(0, pos).append(".csb");                    
-                    
-                    std::string protocolBuffersFileName = _protocolbuffersDir + convert;
-                    CCLOG("protocolBuffersFileName = %s", protocolBuffersFileName.c_str());
-                    std::string result = serializeProtocolBuffersWithXMLFile(protocolBuffersFileName, value, true);
-                    if (result == "")
-                    {
-                        options->set_filename(convert);
-                    }
-                     
+                    std::string convert = value.substr(0, pos).append(".csb");
+                    options->set_filename(convert);
                 }
                 
                 attribute = attribute->Next();
@@ -7306,9 +7292,4 @@ int ProtocolBuffersSerialize::getResourceType(std::string key)
 		}
 	}
 	return 1;
-}
-
-void ProtocolBuffersSerialize::set_protocolbuffersDir(std::string path)
-{
-	_protocolbuffersDir = path;
 }
