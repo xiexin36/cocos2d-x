@@ -215,6 +215,33 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithContent(const std::s
     return action;
 }
     
+/* peterson create action from protocol buffers */
+ActionTimeline* ActionTimelineCache::createActionFromProtocolBuffers(protocolbuffers::CSParseBinary *protobuf)
+{
+    ActionTimeline* action = ActionTimeline::create();
+    
+    
+    const protocolbuffers::NodeAction& actionProtobuf = protobuf->action();
+    
+    action = ActionTimeline::create();
+    
+    action->setDuration(actionProtobuf.duration());
+    action->setTimeSpeed((actionProtobuf.has_speed()) ? actionProtobuf.speed() : 1.0f);
+    
+    int timelineLength = actionProtobuf.timelines_size();
+    for (int i = 0; i < timelineLength; i++)
+    {
+        const protocolbuffers::TimeLine& timelineProtobuf = actionProtobuf.timelines(i);
+        Timeline* timeline = loadTimelineFromProtocolBuffers(timelineProtobuf);
+        
+        if (timeline)
+            action->addTimeline(timeline);
+    }
+    
+    return action;
+}
+/**/
+    
 ActionTimeline* ActionTimelineCache::createActionFromProtocolBuffers(const std::string &fileName)
 {
     ActionTimeline* action = _animationActions.at(fileName);
