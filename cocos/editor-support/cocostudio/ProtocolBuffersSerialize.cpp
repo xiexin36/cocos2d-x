@@ -222,8 +222,8 @@ void ProtocolBuffersSerialize::XMLTest(const std::string &fileName)
 }
 
 /* create protocol buffers from XML */
-CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFile(const std::string &xmlFileName,
-                                                                          bool isSimulator/* = false*/)
+CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFileForSimulator(const std::string &xmlFileName,
+                                                                          bool isSimulator/* = true*/)
 {
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
     
@@ -328,7 +328,7 @@ CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFile(const 
             {
                 protocolbuffers::NodeTree* nodeTreeRoot = protobufPtf->mutable_nodetree();
                 const tinyxml2::XMLElement* objectData = child;
-                convertNodeTreeProtocolBuffersWithXML(nodeTreeRoot, objectData, rootType);
+                convertNodeTreeProtocolBuffersWithXMLForSimulator(nodeTreeRoot, objectData, rootType);
             }
             
             child = child->NextSiblingElement();
@@ -338,6 +338,263 @@ CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFile(const 
     }
     
     return nullptr;
+}
+
+void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXMLForSimulator(protocolbuffers::NodeTree *nodetree,
+                                                                                 const tinyxml2::XMLElement *objectData,
+                                                                                 std::string classType)
+{
+    std::string classname = classType.substr(0, classType.find("ObjectData"));
+    CCLOG("classname = %s", classname.c_str());
+    
+    nodetree->set_classname(classname);
+    
+    if (classname == "Node")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setNodeOptions(nodeOptions, objectData);
+    }
+    else if (classname == "SingleNode")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setSingleNodeOptions(nodeOptions, objectData);
+    }
+    else if (classname == "Sprite")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        SpriteOptions* options = nodetree->mutable_spriteoptions();
+        setSpriteOptions(options, nodeOptions, objectData);
+    }
+    else if (classname == "GameMap")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        TMXTiledMapOptions* options = nodetree->mutable_tmxtiledmapoptions();
+        setTMXTiledMapOptions(options, nodeOptions, objectData);
+    }
+    else if (classname == "Particle")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        ParticleSystemOptions* options = nodetree->mutable_particlesystemoptions();
+        setParticleSystemOptions(options, nodeOptions, objectData);
+    }
+    else if (classname == "Button")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ButtonOptions* options = nodetree->mutable_buttonoptions();
+        setButtonOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "CheckBox")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        CheckBoxOptions* options = nodetree->mutable_checkboxoptions();
+        setCheckBoxOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "ImageView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ImageViewOptions* options = nodetree->mutable_imageviewoptions();
+        setImageViewOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "TextAtlas")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextAtlasOptions* options = nodetree->mutable_textatlasoptions();
+        setTextAtlasOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "TextBMFont")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextBMFontOptions* options = nodetree->mutable_textbmfontoptions();
+        setTextBMFontOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "Text")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextOptions* options = nodetree->mutable_textoptions();
+        setTextOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "LoadingBar")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        LoadingBarOptions* options = nodetree->mutable_loadingbaroptions();
+        setLoadingBarOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "Slider")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        SliderOptions* options = nodetree->mutable_slideroptions();
+        setSliderOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "TextField")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        TextFieldOptions* options = nodetree->mutable_textfieldoptions();
+        setTextFieldOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "Panel")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        PanelOptions* layoutOptions = nodetree->mutable_paneloptions();
+        setLayoutOptions(layoutOptions, widgetOptions, objectData);
+    }
+    else if (classname == "PageView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        PageViewOptions* options = nodetree->mutable_pageviewoptions();
+        setPageViewOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "ScrollView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ScrollViewOptions* options = nodetree->mutable_scrollviewoptions();
+        setScrollViewOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "ListView")
+    {
+        WidgetOptions* widgetOptions = nodetree->mutable_widgetoptions();
+        ListViewOptions* options = nodetree->mutable_listviewoptions();
+        setListViewOptions(options, widgetOptions, objectData);
+    }
+    else if (classname == "ProjectNode")
+    {
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        ProjectNodeOptions* options = nodetree->mutable_projectnodeoptions();
+        setProjectNodeOptionsForSimulator(options, nodeOptions, objectData);
+    }
+    else if (classname == "SimpleAudio")
+    {
+        // process as component options
+        
+        WidgetOptions* nodeOptions = nodetree->mutable_widgetoptions();
+        setSimpleAudioOptions(nodeOptions, objectData);
+        
+        protocolbuffers::ComponentOptions* componentOptions = nodeOptions->add_componentoptions();
+        protocolbuffers::ComAudioOptions* options = componentOptions->mutable_comaudiooptions();
+        
+        componentOptions->set_type("ComAudio");
+        
+        setComAudioOptions(options, objectData);
+    }
+    
+    
+    // children
+    bool containChildrenElement = false;
+    objectData = objectData->FirstChildElement();
+    
+    while (objectData)
+    {
+        CCLOG("objectData name = %s", objectData->Name());
+        
+        if (strcmp("Children", objectData->Name()) == 0)
+        {
+            containChildrenElement = true;
+            break;
+        }
+        
+        objectData = objectData->NextSiblingElement();
+    }
+    
+    if (containChildrenElement)
+    {
+        objectData = objectData->FirstChildElement();
+        CCLOG("element name = %s", objectData->Name());
+        
+        while (objectData)
+        {
+            protocolbuffers::NodeTree* subNodeTree = nodetree->add_children();
+            
+            const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+            bool bHasType = false;
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "ctype")
+                {
+                    convertNodeTreeProtocolBuffersWithXMLForSimulator(subNodeTree, objectData, value);
+                    bHasType = true;
+                    break;
+                }
+                
+                attribute = attribute->Next();
+            }
+            
+            if(!bHasType)
+            {
+                convertNodeTreeProtocolBuffersWithXMLForSimulator(subNodeTree, objectData, "NodeObjectData");
+            }
+            
+            objectData = objectData->NextSiblingElement();
+        }
+    }
+    //
+    
+    /*
+     while (element)
+     {
+     CCLOG("entity name = %s", element->Name());
+     
+     const tinyxml2::XMLAttribute* attribute = element->FirstAttribute();
+     
+     while (attribute)
+     {
+     const char* name = attribute->Name();
+     const char* value = attribute->Value();
+     CCLOG("attribute name = %s, value = %s", name, value);
+     
+     attribute = attribute->Next();
+     }
+     
+     
+     const tinyxml2::XMLElement* child = element->FirstChildElement();
+     
+     if (child)
+     {
+     element = child;
+     }
+     else
+     {
+     element = element->NextSiblingElement();
+     }
+     }
+     */
+}
+
+void ProtocolBuffersSerialize::setProjectNodeOptionsForSimulator(protocolbuffers::ProjectNodeOptions *projectNodeOptions,
+                                                                 protocolbuffers::WidgetOptions *nodeOptions,
+                                                                 const tinyxml2::XMLElement *projectNodeObjectData)
+{
+    setNodeOptions(nodeOptions, projectNodeObjectData);
+    
+    ProjectNodeOptions* options = projectNodeOptions;
+    
+    // FileData
+    const tinyxml2::XMLElement* child = projectNodeObjectData->FirstChildElement();
+    while (child)
+    {
+        std::string name = child->Name();
+        
+        if (name == "FileData")
+        {
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            
+            while (attribute)
+            {
+                name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "Path")
+                {
+                    options->set_filename(value);
+                }
+                
+                attribute = attribute->Next();
+            }
+        }
+        
+        child = child->NextSiblingElement();
+    }
 }
 /**/
 

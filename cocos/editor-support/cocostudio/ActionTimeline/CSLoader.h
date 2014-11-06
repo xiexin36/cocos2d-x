@@ -100,8 +100,9 @@ public:
     cocos2d::Node* nodeFromXML(const tinyxml2::XMLElement* objectData,
                                const std::string& classType);
     
-    /* peterson create node from protocol buffers */
-    cocos2d::Node* createNodeFromProtocolBuffers(protocolbuffers::CSParseBinary* protobuf);
+    /* peterson create node from protocol buffers for simulator of cocosstudio editor */
+    cocos2d::Node* createNodeFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary* protobuf);
+    cocos2d::Node* nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeTree& nodetree);
     /**/
     
     void setRecordXMLPath(bool record) { _recordXMLPath = record; }
