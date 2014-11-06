@@ -221,6 +221,126 @@ void ProtocolBuffersSerialize::XMLTest(const std::string &fileName)
      */
 }
 
+/* create protocol buffers from XML */
+CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFile(const std::string &xmlFileName,
+                                                                          bool isSimulator/* = false*/)
+{
+    std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
+    
+    // xml read
+    if (!FileUtils::getInstance()->isFileExist(fullpath))
+    {
+        CCLOG("file doesn not exists ");
+        return nullptr;
+    }
+    
+    ssize_t size;
+    std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
+    
+    // xml parse
+    tinyxml2::XMLDocument* document = new tinyxml2::XMLDocument();
+    document->Parse(content.c_str());
+    
+    const tinyxml2::XMLElement* rootElement = document->RootElement();// Root
+    CCLOG("rootElement name = %s", rootElement->Name());
+    
+    const tinyxml2::XMLElement* element = rootElement->FirstChildElement();
+    
+    bool serializeEnabled = false;
+    std::string rootType = "";
+    
+    _isSimulator = isSimulator;
+    
+    while (element)
+    {
+        CCLOG("entity name = %s", element->Name());
+        
+        if (strcmp("Content", element->Name()) == 0)
+        {
+            const tinyxml2::XMLAttribute* attribute = element->FirstAttribute();
+            
+            // cheat
+            if (!attribute)
+            {
+                serializeEnabled = true;
+                rootType = "NodeObjectData";
+            }
+            //
+            
+            //
+            //            while (attribute)
+            //            {
+            //                std::string name = attribute->Name();
+            //                std::string value = attribute->Value();
+            //                CCLOG("attribute name = %s, value = %s", name, value);
+            //                if (name == "")
+            //                {
+            //                    serializeEnabled = true;
+            //                    rootType = (strcmp("", value) == 0) ? "Node" : value;
+            //                }
+            //
+            //                if (serializeEnabled)
+            //                {
+            //                    break;
+            //                }
+            //
+            //                attribute = attribute->Next();
+            //            }
+            //
+        }
+        
+        if (serializeEnabled)
+        {
+            break;
+        }
+        
+        const tinyxml2::XMLElement* child = element->FirstChildElement();
+        if (child)
+        {
+            element = child;
+        }
+        else
+        {
+            element = element->NextSiblingElement();
+        }
+    }
+    
+    
+    // serialize
+    if (serializeEnabled)
+    {
+        CSParseBinary* protobufPtf = new CSParseBinary;
+        _protobuf = protobufPtf;
+        
+        const tinyxml2::XMLElement* child = element->FirstChildElement();
+        
+        while (child)
+        {
+            std::string name = child->Name();
+            
+            if (name == "Animation") // action
+            {
+                protocolbuffers::NodeAction* nodeAction = protobufPtf->mutable_action();
+                const tinyxml2::XMLElement* animation = child;
+                convertActionProtocolBuffersWithXML(nodeAction, animation);
+            }
+            else if (name == "ObjectData") // nodeTree
+            {
+                protocolbuffers::NodeTree* nodeTreeRoot = protobufPtf->mutable_nodetree();
+                const tinyxml2::XMLElement* objectData = child;
+                convertNodeTreeProtocolBuffersWithXML(nodeTreeRoot, objectData, rootType);
+            }
+            
+            child = child->NextSiblingElement();
+        }
+        
+        return protobufPtf;        
+    }
+    
+    return nullptr;
+}
+/**/
+
 
 std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const std::string &protocolbuffersFileName,
                                                               const std::string &xmlFileName, bool isSimulator/* = false*/)

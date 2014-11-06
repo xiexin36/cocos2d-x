@@ -31,6 +31,9 @@
 
 namespace protocolbuffers
 {
+    /* peterson */
+    class CSParseBinary;
+    /**/
     class NodeTree;
 	class WidgetOptions;
     class SpriteOptions;
@@ -96,6 +99,10 @@ public:
     cocos2d::Node* nodeFromXMLFile(const std::string& fileName);
     cocos2d::Node* nodeFromXML(const tinyxml2::XMLElement* objectData,
                                const std::string& classType);
+    
+    /* peterson create node from protocol buffers */
+    cocos2d::Node* createNodeFromProtocolBuffers(protocolbuffers::CSParseBinary* protobuf);
+    /**/
     
     void setRecordXMLPath(bool record) { _recordXMLPath = record; }
     bool isRecordXMLPath() const { return _recordXMLPath; }

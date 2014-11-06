@@ -154,6 +154,11 @@ public:
     
     static void purge();
     
+    
+    /* create protocol buffers from XML */
+    protocolbuffers::CSParseBinary* createProtocolBuffersWithXMLFile(const std::string& xmlFileName, bool isSimulator = false);
+    /**/
+    
     /* serialize protocol buffers from XML */
     void XMLTest(const std::string& fileName);
     std::string serializeProtocolBuffersWithXMLFile(const std::string& protocolbuffersFileName, const std::string& xmlFileName, bool isSimulator = false);

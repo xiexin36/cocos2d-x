@@ -1238,6 +1238,30 @@ void CSLoader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *compon
 }
 /**/
 
+/* peterson create node from protocol buffers */
+Node* CSLoader::createNodeFromProtocolBuffers(protocolbuffers::CSParseBinary *protobuf)
+{
+    // decode plist
+    int textureSize = protobuf->textures_size();
+    CCLOG("textureSize = %d", textureSize);
+    for (int i = 0; i < textureSize; ++i)
+    {
+        std::string plist = protobuf->textures(i);
+        CCLOG("plist = %s", plist.c_str());
+        std::string png = protobuf->texturespng(i);
+        CCLOG("png = %s", png.c_str());
+        plist = _protocolBuffersPath + plist;
+        png = _protocolBuffersPath + png;
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist.c_str(), png.c_str());
+    }
+    
+    protocolbuffers::NodeTree rootNodeTree = protobuf->nodetree();
+    Node* node = nodeFromProtocolBuffers(rootNodeTree);
+    
+    return node;
+}
+/**/
+
 /* peterson xml */
 Node* CSLoader::createNodeFromXML(const std::string &filename)
 {

@@ -32,6 +32,7 @@ THE SOFTWARE.
 
 namespace protocolbuffers
 {
+    class CSParseBinary;
     class NodeAction;
     class TimeLine;
     class Frame;
@@ -85,6 +86,10 @@ public:
 
     ActionTimeline* loadAnimationActionWithFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithContent(const std::string&fileName, const std::string& content);
+    
+    /* peterson create action from protocol buffers */
+    ActionTimeline* createActionFromProtocolBuffers(protocolbuffers::CSParseBinary* protobuf);
+    /**/
     
     ActionTimeline* createActionFromProtocolBuffers(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithFileFromProtocolBuffers(const std::string& fileName);
