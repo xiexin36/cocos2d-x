@@ -87,8 +87,8 @@ public:
     ActionTimeline* loadAnimationActionWithFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithContent(const std::string&fileName, const std::string& content);
     
-    /* peterson create action from protocol buffers */
-    ActionTimeline* createActionFromProtocolBuffers(protocolbuffers::CSParseBinary* protobuf);
+    /* peterson create node from protocol buffers for simulator of cocosstudio editor */
+    ActionTimeline* createActionFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary* protobuf);
     /**/
     
     ActionTimeline* createActionFromProtocolBuffers(const std::string& fileName);

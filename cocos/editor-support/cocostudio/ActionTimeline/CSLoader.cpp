@@ -35,6 +35,10 @@
 
 #include <fstream>
 
+/* peterson create node from protocol buffers for simulator of cocosstudio editor */
+#include "ProtocolBuffersSerialize.h"
+/**/
+
 using namespace cocos2d::ui;
 using namespace cocostudio;
 using namespace cocostudio::timeline;
@@ -1238,8 +1242,8 @@ void CSLoader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *compon
 }
 /**/
 
-/* peterson create node from protocol buffers */
-Node* CSLoader::createNodeFromProtocolBuffers(protocolbuffers::CSParseBinary *protobuf)
+/* peterson create node from protocol buffers for simulator of cocosstudio editor */
+Node* CSLoader::createNodeFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary *protobuf)
 {
     // decode plist
     int textureSize = protobuf->textures_size();
@@ -1256,7 +1260,207 @@ Node* CSLoader::createNodeFromProtocolBuffers(protocolbuffers::CSParseBinary *pr
     }
     
     protocolbuffers::NodeTree rootNodeTree = protobuf->nodetree();
-    Node* node = nodeFromProtocolBuffers(rootNodeTree);
+    Node* node = nodeFromProtocolBuffersForSimulator(rootNodeTree);
+    
+    return node;
+}
+
+Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeTree &nodetree)
+{
+    Node* node = nullptr;
+    
+    std::string classname = nodetree.classname();
+    CCLOG("classname = %s", classname.c_str());
+    
+    /* peterson */
+    protocolbuffers::WidgetOptions curOptions;
+    /**/
+    
+    if (classname == "Node")
+    {
+        node = Node::create();
+        const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
+        setPropsForNodeFromProtocolBuffers(node, options);
+        
+        curOptions = options;
+    }
+    else if (classname == "SingleNode")
+    {
+        node = Node::create();
+        const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
+        setPropsForSingleNodeFromProtocolBuffers(node, options);
+        
+        curOptions = options;
+    }
+    else if (classname == "Sprite")
+    {
+        node = CCSprite::create();
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::SpriteOptions& options = nodetree.spriteoptions();
+        setPropsForSpriteFromProtocolBuffers(node, options, nodeOptions);
+        
+        curOptions = nodeOptions;
+    }
+    else if (classname == "ProjectNode")
+    {
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::ProjectNodeOptions& options = nodetree.projectnodeoptions();
+        
+        std::string filePath = options.filename();
+        CCLOG("filePath = %s", filePath.c_str());
+        if(filePath != "")
+        {
+            ProtocolBuffersSerialize* pbs = ProtocolBuffersSerialize::getInstance();
+            protocolbuffers::CSParseBinary* protobuf = pbs->createProtocolBuffersWithXMLFileForSimulator(filePath);
+            node = createNodeFromProtocolBuffersForSimulator(protobuf);
+            setPropsForProjectNodeFromProtocolBuffers(node, options, nodeOptions);
+            
+            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionFromProtocolBuffersForSimulator(protobuf);
+            if(action)
+            {
+                node->runAction(action);
+                action->gotoFrameAndPlay(0);
+            }
+        }
+        
+        curOptions = nodeOptions;
+    }
+    /* peterson */
+    else if (classname == "Particle")
+    {
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::ParticleSystemOptions& options = nodetree.particlesystemoptions();
+        node = createParticleFromProtocolBuffers(options, nodeOptions);
+        
+        curOptions = nodeOptions;
+    }
+    else if (classname == "GameMap")
+    {
+        const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
+        const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
+        /* peterson */
+        node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);
+        /**/
+        
+        curOptions = nodeOptions;
+    }
+    /* peterson */
+    else if (classname == "SimpleAudio")
+    {
+        node = Node::create();
+        const protocolbuffers::WidgetOptions& options = nodetree.widgetoptions();
+        setPropsForSimpleAudioFromProtocolBuffers(node, options);
+        
+        curOptions = options;
+    }
+    /**/
+    /**/
+    else if (isWidget(classname))
+    {
+        std::string guiClassName = getGUIClassName(classname);
+        std::string readerName = guiClassName;
+        readerName.append("Reader");
+        
+        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
+        widget->retain();
+        
+        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
+        reader->setPropsFromProtocolBuffers(widget, nodetree);
+        
+        const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+        int actionTag = widgetOptions.actiontag();
+        widget->setUserObject(ActionTimelineData::create(actionTag));
+        
+        node = widget;
+    }
+    else if (isCustomWidget(classname))
+    {
+        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
+        widget->retain();
+        
+        //
+        // 1st., custom widget parse properties of parent widget with parent widget reader
+        std::string readerName = getWidgetReaderClassName(widget);
+        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
+        if (reader && widget)
+        {
+            WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
+            widgetPropertiesReader->setPropsForAllWidgetFromProtocolBuffers(reader, widget, nodetree);
+            
+            // 2nd., custom widget parse with custom reader
+            const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+            const char* customProperty = widgetOptions.customproperty().c_str();
+            rapidjson::Document customJsonDict;
+            customJsonDict.Parse<0>(customProperty);
+            if (customJsonDict.HasParseError())
+            {
+                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+            }
+            
+            widgetPropertiesReader->setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
+        }
+        else
+        {
+            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your protocol buffers file.");
+        }
+        //
+        
+        const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+        int actionTag = widgetOptions.actiontag();
+        widget->setUserObject(ActionTimelineData::create(actionTag));
+        
+        node = widget;
+    }
+    
+    /* peterson */
+    // component
+    int componentSize = curOptions.componentoptions_size();
+    for (int i = 0; i < componentSize; ++i)
+    {
+        
+        const protocolbuffers::ComponentOptions& componentOptions = curOptions.componentoptions(i);
+        Component* component = createComponentFromProtocolBuffers(componentOptions);
+        
+        if (component)
+        {
+            node->addComponent(component);
+        }
+    }
+    /**/
+    
+    int size = nodetree.children_size();
+    CCLOG("size = %d", size);
+    for (int i = 0; i < size; ++i)
+    {
+        protocolbuffers::NodeTree subNodeTree = nodetree.children(i);
+        Node* child = nodeFromProtocolBuffersForSimulator(subNodeTree);
+        CCLOG("child = %p", child);
+        if (child)
+        {
+            PageView* pageView = dynamic_cast<PageView*>(node);
+            ListView* listView = dynamic_cast<ListView*>(node);
+            if (pageView)
+            {
+                Layout* layout = dynamic_cast<Layout*>(child);
+                if (layout)
+                {
+                    pageView->addPage(layout);
+                }
+            }
+            else if (listView)
+            {
+                Widget* widget = dynamic_cast<Widget*>(child);
+                if (widget)
+                {
+                    listView->pushBackCustomItem(widget);
+                }
+            }
+            else
+            {
+                node->addChild(child);
+            }
+        }
+    }
     
     return node;
 }

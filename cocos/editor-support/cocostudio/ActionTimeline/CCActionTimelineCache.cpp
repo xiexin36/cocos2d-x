@@ -215,8 +215,8 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithContent(const std::s
     return action;
 }
     
-/* peterson create action from protocol buffers */
-ActionTimeline* ActionTimelineCache::createActionFromProtocolBuffers(protocolbuffers::CSParseBinary *protobuf)
+/* peterson create node from protocol buffers for simulator of cocosstudio editor */
+ActionTimeline* ActionTimelineCache::createActionFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary *protobuf)
 {
     ActionTimeline* action = ActionTimeline::create();
     

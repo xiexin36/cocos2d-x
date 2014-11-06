@@ -156,7 +156,13 @@ public:
     
     
     /* create protocol buffers from XML */
-    protocolbuffers::CSParseBinary* createProtocolBuffersWithXMLFile(const std::string& xmlFileName, bool isSimulator = false);
+    protocolbuffers::CSParseBinary* createProtocolBuffersWithXMLFileForSimulator(const std::string& xmlFileName, bool isSimulator = true);
+    void convertNodeTreeProtocolBuffersWithXMLForSimulator(protocolbuffers::NodeTree* nodetree,
+                                                           const tinyxml2::XMLElement* objectData,
+                                                           std::string classType);
+    void setProjectNodeOptionsForSimulator(protocolbuffers::ProjectNodeOptions* projectNodeOptions,
+                                           protocolbuffers::WidgetOptions* nodeOptions,
+                                           const tinyxml2::XMLElement* projectNodeObjectData);
     /**/
     
     /* serialize protocol buffers from XML */
