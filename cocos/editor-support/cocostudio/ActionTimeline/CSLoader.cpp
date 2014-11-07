@@ -36,7 +36,7 @@
 #include <fstream>
 
 /* peterson create node from protocol buffers for simulator of cocosstudio editor */
-#include "ProtocolBuffersSerialize.h"
+#include "cocostudio/ProtocolBuffersSerialize.h"
 /**/
 
 using namespace cocos2d::ui;
