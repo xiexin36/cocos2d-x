@@ -3088,6 +3088,8 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     
     PanelOptions* options = layoutOptions;
     
+    options->set_colortype(0);
+    
 	bool scale9Enabled = false;
 
     // attributes
