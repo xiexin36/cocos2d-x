@@ -886,7 +886,14 @@ Size Button::getNormalSize() const
     Size imageSize;
     if (_buttonNormalRenderer != nullptr)
     {
-        imageSize = _buttonNormalRenderer->getContentSize();
+        if (_scale9Enabled)
+        {
+            imageSize = _buttonNormalRenderer->getContentSize();
+        }
+        else
+        {
+            imageSize = _normalTextureSize;
+        }
     }
     float width = titleSize.width > imageSize.width ? titleSize.width : imageSize.width;
     float height = titleSize.height > imageSize.height ? titleSize.height : imageSize.height;
