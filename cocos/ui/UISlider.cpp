@@ -57,14 +57,14 @@ _capInsetsBarRenderer(Rect::ZERO),
 _capInsetsProgressBarRenderer(Rect::ZERO),
 _sliderEventListener(nullptr),
 _sliderEventSelector(nullptr),
+_eventCallback(nullptr),
 _barTexType(TextureResType::LOCAL),
 _progressBarTexType(TextureResType::LOCAL),
 _ballNTexType(TextureResType::LOCAL),
 _ballPTexType(TextureResType::LOCAL),
 _ballDTexType(TextureResType::LOCAL),
 _barRendererAdaptDirty(true),
-_progressBarRendererDirty(true),
-_eventCallback(nullptr)
+_progressBarRendererDirty(true)
 {
     setTouchEnabled(true);
 }
@@ -77,7 +77,7 @@ Slider::~Slider()
 
 Slider* Slider::create()
 {
-    Slider* widget = new Slider();
+    Slider* widget = new (std::nothrow) Slider();
     if (widget && widget->init())
     {
         widget->autorelease();
@@ -336,7 +336,7 @@ void Slider::setPercent(int percent)
     _percent = percent;
     float res = percent / 100.0f;
     float dis = _barLength * res;
-    _slidBallRenderer->setPosition(Vec2(dis, _contentSize.height / 2.0f));
+    _slidBallRenderer->setPosition(dis, _contentSize.height / 2.0f);
     if (_scale9Enabled)
     {
         _progressBarRenderer->setPreferredSize(Size(dis,_progressBarTextureSize.height));
@@ -449,7 +449,7 @@ void Slider::adaptRenderers()
     }
 }
 
-const Size& Slider::getVirtualRendererSize() const
+Size Slider::getVirtualRendererSize() const
 {
     return _barRenderer->getContentSize();
 }

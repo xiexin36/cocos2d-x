@@ -54,7 +54,7 @@ Text::~Text()
 
 Text* Text::create()
 {
-    Text* widget = new Text();
+    Text* widget = new (std::nothrow) Text();
     if (widget && widget->init())
     {
         widget->autorelease();
@@ -75,7 +75,7 @@ bool Text::init()
     
 Text* Text::create(const std::string &textContent, const std::string &fontName, int fontSize)
 {
-    Text *text = new Text;
+    Text *text = new (std::nothrow) Text;
     if (text && text->init(textContent, fontName, fontSize)) {
         text->autorelease();
         return text;
@@ -159,7 +159,6 @@ void Text::setFontName(const std::string& name)
         {
             _labelRenderer->requestSystemFontRefresh();
         }
-        _labelRenderer->setSystemFontSize(_fontSize);
         _type = Type::SYSTEM;
     }
     _fontName = name;
@@ -297,7 +296,7 @@ void Text::adaptRenderers()
     }
 }
 
-const Size& Text::getVirtualRendererSize() const
+Size Text::getVirtualRendererSize() const
 {
     return _labelRenderer->getContentSize();
 }
