@@ -31,17 +31,18 @@ THE SOFTWARE.
 #include "base/ObjectFactory.h"
 #include "cocostudio/CocosStudioExport.h"
 
+/* peterson */
+namespace flatbuffers
+{
+    struct NodeTree;
+    struct Options;
+}
+/**/
+
 namespace protocolbuffers
 {
     class NodeTree;
 }
-
-/* peterson xml */
-namespace tinyxml2
-{
-    class XMLElement;
-}
-/**/
 
 namespace cocostudio {
     
@@ -128,11 +129,11 @@ public:
                                                          cocos2d::ui::Widget* widget,
                                                          const protocolbuffers::NodeTree& nodetree) = 0;
     
-    /* peterson xml */
-    virtual cocos2d::ui::Widget* widgetFromXML(const tinyxml2::XMLElement* objectData, const std::string& classType) = 0;
-    virtual void setPropsForAllWidgetFromXML(WidgetReaderProtocol* reader,
-                                             cocos2d::ui::Widget* widget,
-                                             const tinyxml2::XMLElement* objectData) = 0;
+    /* peterson */
+    virtual cocos2d::ui::Widget* widgetWithFlatBuffers(const flatbuffers::NodeTree* nodeTree) = 0;
+    virtual void setPropsForAllWidgetWithFlatBuffers(WidgetReaderProtocol* reader,
+                                                     cocos2d::ui::Widget* widget,
+                                                     const flatbuffers::Options* options) = 0;
     /**/
     
 protected:
@@ -200,11 +201,11 @@ public:
                                                          cocos2d::ui::Widget* widget,
                                                          const protocolbuffers::NodeTree& nodetree) {};
     
-    /* peterson xml */
-    virtual cocos2d::ui::Widget* widgetFromXML(const tinyxml2::XMLElement* objectData, const std::string& classType) { return nullptr; };
-    virtual void setPropsForAllWidgetFromXML(WidgetReaderProtocol* reader,
-                                             cocos2d::ui::Widget* widget,
-                                             const tinyxml2::XMLElement* objectData) {};
+    /* peterson */
+    virtual cocos2d::ui::Widget* widgetWithFlatBuffers(const flatbuffers::NodeTree* nodeTree) { return nullptr; };
+    virtual void setPropsForAllWidgetWithFlatBuffers(WidgetReaderProtocol* reader,
+                                                     cocos2d::ui::Widget* widget,
+                                                     const flatbuffers::Options* options) {};
     /**/
 };
    
@@ -256,12 +257,13 @@ public:
                                                          cocos2d::ui::Widget* widget,
                                                          const protocolbuffers::NodeTree& nodetree);
     
-    /* peterson xml */
-    virtual cocos2d::ui::Widget* widgetFromXML(const tinyxml2::XMLElement* objectData, const std::string& classType);
-    virtual void setPropsForAllWidgetFromXML(WidgetReaderProtocol* reader,
-                                             cocos2d::ui::Widget* widget,
-                                             const tinyxml2::XMLElement* objectData);
+    /* peterson */
+    virtual cocos2d::ui::Widget* widgetWithFlatBuffers(const flatbuffers::NodeTree* nodeTree);
+    virtual void setPropsForAllWidgetWithFlatBuffers(WidgetReaderProtocol* reader,
+                                                     cocos2d::ui::Widget* widget,
+                                                     const flatbuffers::Options* options);
     /**/
+   
 };
 
 

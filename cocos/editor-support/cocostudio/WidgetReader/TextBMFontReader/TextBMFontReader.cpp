@@ -4,8 +4,12 @@
 #include "ui/UITextBMFont.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -109,6 +113,42 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
+    /* peterson */
+    void TextBMFontReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        TextBMFont* labelBMFont = static_cast<TextBMFont*>(widget);
+        auto tbmfop = options->textBMFontOptions();
+        
+        auto cmftDic = tbmfop->fileNameData();
+        int cmfType = cmftDic->resourceType();
+        switch (cmfType)
+        {
+            case 0:
+            {
+                const char* cmfPath = cmftDic->path()->c_str();
+                labelBMFont->setFntFile(cmfPath);
+                break;
+            }
+                
+            case 1:
+                CCLOG("Wrong res type of LabelAtlas!");
+                break;
+                
+            default:
+                break;
+        }
+        
+        std::string text = tbmfop->text()->c_str();
+        labelBMFont->setString(text);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void TextBMFontReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -144,93 +184,6 @@ namespace cocostudio
         
         // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-    }
-    
-    /* peterson xml */
-    void TextBMFontReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
-    {
-        WidgetReader::setPropsFromXML(widget, objectData);
-        
-        TextBMFont* labelBMFont = static_cast<TextBMFont*>(widget);
-        
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
-        
-        std::string text = "";
-        
-        int opacity = 255;
-        
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
-        {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "LabelText")
-            {
-                text = value;
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            
-            attribute = attribute->Next();
-        }
-        
-        
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
-        {
-            std::string name = child->Name();
-            
-            if (name == "LabelBMFontFile_CNB")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        labelBMFont->setFntFile(xmlPath + path);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            
-            child = child->NextSiblingElement();
-        }
-        
-        labelBMFont->setString(text);
-        
-        labelBMFont->setOpacity(opacity);
-    }
-    /**/
+    }        
+
 }

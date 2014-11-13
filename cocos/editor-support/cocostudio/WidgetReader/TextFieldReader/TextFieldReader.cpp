@@ -4,8 +4,12 @@
 #include "ui/UITextField.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -216,164 +220,69 @@ namespace cocostudio
 
     }
     
-    /* peterson xml */
-    void TextFieldReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+    /* peterson */
+    void TextFieldReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
     {
-        WidgetReader::setPropsFromXML(widget, objectData);
-        
         TextField* textField = static_cast<TextField*>(widget);
+        auto txtfldop = options->textFieldOptions();
         
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
+        /*
+         bool IsCustomSize = txtfldop->isCustomSize();
+         widget->ignoreContentAdaptWithSize(IsCustomSize);
+         
+         if (IsCustomSize)
+         {
+         auto widgetOptions = options->widgetOptions();
+         auto f_size = widgetOptions->size();
+         Size size(f_size->width(), f_size->height());
+         textField->setContentSize(size);
+         }
+         */
         
-        bool isCustomSize = false;
-        float width = 0.0f, height = 0.0f;
-        int opacity = 255;
-        std::string text = "";
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        WidgetReader::setAnchorPointForWidget(widget, options);
         
         textField->setUnifySizeEnabled(false);
         
-        textField->setFontName("微软雅黑");
+        std::string placeholder = txtfldop->placeHolder()->c_str();
+        textField->setPlaceHolder(placeholder);
         
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
+        std::string text = txtfldop->text()->c_str();
+        textField->setString(text);
+        
+        int fontSize = txtfldop->fontSize();
+        textField->setFontSize(fontSize);
+        
+        std::string fontName = txtfldop->fontName()->c_str();
+        textField->setFontName(fontName);
+        
+        bool maxLengthEnabled = txtfldop->maxLengthEnabled();
+        textField->setMaxLengthEnabled(maxLengthEnabled);
+        
+        if (maxLengthEnabled)
         {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "PlaceHolderText")
-            {
-                textField->setPlaceHolder(value);
-            }
-            else if (name == "LabelText")
-            {
-                textField->setText(value);
-                text = value;
-            }
-            else if (name == "FontSize")
-            {
-                textField->setFontSize(atoi(value.c_str()));
-            }
-            else if (name == "FontName")
-            {
-                textField->setFontName(value);
-            }
-            else if (name == "MaxLengthEnable")
-            {
-                textField->setMaxLengthEnabled((value == "True") ? true : false);
-            }
-            else if (name == "MaxLengthText")
-            {
-                textField->setMaxLength(atoi(value.c_str()));
-            }
-            else if (name == "PasswordEnable")
-            {
-                textField->setPasswordEnabled((value == "True") ? true : false);
-                textField->setText(text);
-            }
-            else if (name == "PasswordStyleText")
-            {
-                textField->setPasswordStyleText(value.c_str());
-            }
-            else if (name == "IsCustomSize")
-            {
-                isCustomSize = ((value == "True") ? true : false);
-//                if (value == "Custom")
-//                {
-//                    float areaWidth = 0.0f;
-//                    objectData->QueryFloatAttribute("Width", &areaWidth);
-//                    
-//                    float areaHeight = 0.0f;
-//                    objectData->QueryFloatAttribute("Height", &areaHeight);
-//                    
-//                    textField->setTextAreaSize(Size(areaWidth, areaHeight));
-//                }
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            
-            attribute = attribute->Next();
+            int maxLength = txtfldop->maxLength();
+            textField->setMaxLength(maxLength);
+        }
+        bool passwordEnabled = txtfldop->passwordEnabled();
+        textField->setPasswordEnabled(passwordEnabled);
+        if (passwordEnabled)
+        {
+            std::string passwordStyleText = txtfldop->passwordStyleText()->c_str();
+            textField->setPasswordStyleText(passwordStyleText.c_str());
         }
         
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
+        
+        auto resourceData = txtfldop->fontResource();
+        std::string path = resourceData->path()->c_str();
+        if (path != "")
         {
-            std::string name = child->Name();
-            
-            if (name == "Size")
-            {
-                attribute = child->FirstAttribute();
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "X")
-                    {
-                        width = atof(value.c_str());
-                    }
-                    else if (name == "Y")
-                    {
-                        height = atof(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-            }
-            else if (name == "FontResource")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        textField->setFontName(xmlPath + path);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            
-            child = child->NextSiblingElement();
+            textField->setFontName(path);
         }
         
-        if (isCustomSize)
-        {
-            textField->ignoreContentAdaptWithSize(!isCustomSize);
-            textField->setContentSize(Size(width, height));
-        }
-        
-        textField->setOpacity(opacity);
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
     /**/
+
 }

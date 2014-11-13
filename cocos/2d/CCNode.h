@@ -39,7 +39,7 @@
 #include "renderer/ccGLStateCache.h"
 #include "CCGL.h"
 
-/* peterson */
+/* temp */
 #include "base/CCMap.h"
 /**/
 
@@ -1447,7 +1447,7 @@ public:
     virtual void removeAllComponents();
     /// @} end of component functions
     
-    /* peterson */
+    /* temp */
     const Map<std::string, Component*>* getAllComponents() const;
     /**/
 

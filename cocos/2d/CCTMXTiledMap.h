@@ -180,7 +180,7 @@ public:
 
     virtual std::string getDescription() const override;
     
-    /* peterson */
+    /* temp */
     const std::string getTMXFile() const { return _tmxFile; };
     const std::string getTMXString() const { return _tmxString; };
     const std::string getResourcePath() const { return _resourcePath; };
@@ -222,7 +222,7 @@ protected:
     //! tile properties
     ValueMapIntKey _tileProperties;
     
-    /* peterson */
+    /* temp */
     std::string _tmxFile;
     std::string _tmxString;
     std::string _resourcePath;

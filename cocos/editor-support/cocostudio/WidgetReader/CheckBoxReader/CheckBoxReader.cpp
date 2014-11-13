@@ -4,8 +4,12 @@
 #include "ui/UICheckBox.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -162,9 +166,7 @@ namespace cocostudio
         CheckBox* checkBox = static_cast<CheckBox*>(widget);
         const protocolbuffers::CheckBoxOptions& options = nodeTree.checkboxoptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         //load background image
 		const protocolbuffers::ResourceData& backGroundDic = options.backgroundboxdata();
@@ -209,282 +211,54 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
-    void CheckBoxReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+    /* peterson */
+    void CheckBoxReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
     {
-        WidgetReader::setPropsFromXML(widget, objectData);
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
         
         CheckBox* checkBox = static_cast<CheckBox*>(widget);
+        auto cbop = options->checkBoxOptions();
         
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
+        //load background image
+        auto backGroundDic = cbop->backGroundBoxData();
+        int backGroundType = backGroundDic->resourceType();
+        std::string backGroundTexturePath = this->getResourcePath(backGroundDic->path()->c_str(), (Widget::TextureResType)backGroundType);
+        checkBox->loadTextureBackGround(backGroundTexturePath, (Widget::TextureResType)backGroundType);
         
-        int opacity = 255;
+        //load background selected image
+        auto backGroundSelectedDic = cbop->backGroundBoxSelectedData();
+        int backGroundSelectedType = backGroundSelectedDic->resourceType();
+        std::string backGroundSelectedTexturePath = this->getResourcePath(backGroundSelectedDic->path()->c_str(), (Widget::TextureResType)backGroundSelectedType);
+        checkBox->loadTextureBackGroundSelected(backGroundSelectedTexturePath, (Widget::TextureResType)backGroundSelectedType);
         
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
-        {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "CheckedState")
-            {
-                checkBox->setSelectedState((value == "True") ? true : false);
-            }
-            else if (name == "DisplayState")
-            {
-                checkBox->setBright((value == "True") ? true : false);
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            
-            attribute = attribute->Next();
-        }
+        //load frontCross image
+        auto frontCrossDic = cbop->frontCrossData();
+        int frontCrossType = frontCrossDic->resourceType();
+        std::string frontCrossFileName = this->getResourcePath(frontCrossDic->path()->c_str(), (Widget::TextureResType)frontCrossType);
+        checkBox->loadTextureFrontCross(frontCrossFileName, (Widget::TextureResType)frontCrossType);
         
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
-        {
-            std::string name = child->Name();
-            
-            if (name == "NormalBackFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = getResourceType(value);
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        checkBox->loadTextureBackGround(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        checkBox->loadTextureBackGround(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "PressedBackFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = getResourceType(value);
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        checkBox->loadTextureBackGroundSelected(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        checkBox->loadTextureBackGroundSelected(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "NodeNormalFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = getResourceType(value);
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        checkBox->loadTextureFrontCross(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        checkBox->loadTextureFrontCross(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "DisableBackFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = getResourceType(value);
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        checkBox->loadTextureBackGroundDisabled(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        checkBox->loadTextureBackGroundDisabled(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "NodeDisableFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-						resourceType = getResourceType(value);
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        checkBox->loadTextureFrontCrossDisabled(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        checkBox->loadTextureFrontCrossDisabled(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            
-            child = child->NextSiblingElement();
-        }
+        //load backGroundBoxDisabledData
+        auto backGroundDisabledDic = cbop->backGroundBoxDisabledData();
+        int backGroundDisabledType = backGroundDisabledDic->resourceType();
+        std::string backGroundDisabledFileName = this->getResourcePath(backGroundDisabledDic->path()->c_str(), (Widget::TextureResType)backGroundDisabledType);
+        checkBox->loadTextureBackGroundDisabled(backGroundDisabledFileName, (Widget::TextureResType)backGroundDisabledType);
         
-        checkBox->setOpacity(opacity);
+        ///load frontCrossDisabledData
+        auto frontCrossDisabledDic = cbop->frontCrossDisabledData();
+        int frontCrossDisabledType = frontCrossDisabledDic->resourceType();
+        std::string frontCrossDisabledFileName = this->getResourcePath(frontCrossDisabledDic->path()->c_str(), (Widget::TextureResType)frontCrossDisabledType);
+        checkBox->loadTextureFrontCrossDisabled(frontCrossDisabledFileName, (Widget::TextureResType)frontCrossDisabledType);
+        
+        bool selectedstate = cbop->selectedState();
+        checkBox->setSelected(selectedstate);
+        
+        bool displaystate = cbop->displaystate();
+        checkBox->setBright(displaystate);
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
+    /**/        
 
     int CheckBoxReader::getResourceType(std::string key)
 	{
@@ -495,5 +269,4 @@ namespace cocostudio
 	
 		return 1;
 	}
-    /**/
 }

@@ -318,7 +318,7 @@ public:
      */
     std::function<int(FocusDirection, Widget*)> onPassFocusToChild;
     
-    /* peterson */
+    /* temp */
     const std::string& getBackGroundImageFileName() const { return _backGroundImageFileName; };
     const TextureResType getBackGroundImageTextureResType() const { return _bgImageTexType; };
     /**/

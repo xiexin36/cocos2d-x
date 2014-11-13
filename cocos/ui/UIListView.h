@@ -192,7 +192,7 @@ public:
     void requestRefreshView();
     void refreshView();
     
-    /* peterson */
+    /* temp */
     const ListView::Gravity getGravity() const { return _gravity; };
     /**/
 

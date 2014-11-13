@@ -4,8 +4,12 @@
 #include "ui/UIImageView.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -155,9 +159,7 @@ namespace cocostudio
         const protocolbuffers::ImageViewOptions& options = nodeTree.imageviewoptions();        
         ImageView* imageView = static_cast<ImageView*>(widget);
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         const protocolbuffers::ResourceData& imageFileNameDic = options.filenamedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
@@ -205,145 +207,42 @@ namespace cocostudio
 			imageView->setFlippedY(flipY);
     }
     
-    /* peterson xml */
-    void ImageViewReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+    /* peterson */
+    void ImageViewReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
     {
-        WidgetReader::setPropsFromXML(widget, objectData);
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
         
         ImageView* imageView = static_cast<ImageView*>(widget);
+        auto iop = options->imageViewOptions();
         
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
         
-        bool scale9Enabled = false;
-        float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
-        float swf = 0.0f, shf = 0.0f;
+        auto imageFileNameDic = iop->fileNameData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
-        int opacity = 255;
-        
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
-        {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "Scale9Enable")
-            {
-                if (value == "True")
-                {
-                    scale9Enabled = true;
-                }
-            }
-            else if (name == "Scale9OriginX")
-            {
-                cx = atof(value.c_str());
-            }
-            else if (name == "Scale9OriginY")
-            {
-                cy = atof(value.c_str());
-            }
-            else if (name == "Scale9Width")
-            {
-                cw = atof(value.c_str());
-            }
-            else if (name == "Scale9Height")
-            {
-                ch = atof(value.c_str());
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            
-            attribute = attribute->Next();
-        }
-        
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
-        {
-            std::string name = child->Name();
-            
-            if (name == "Size" && scale9Enabled)
-            {
-                attribute = child->FirstAttribute();
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "X")
-                    {
-                        swf = atof(value.c_str());
-                    }
-                    else if (name == "Y")
-                    {
-                        shf = atof(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-            }
-            else if (name == "FileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        imageView->loadTexture(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        imageView->loadTexture(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            
-            child = child->NextSiblingElement();
-        }
-        
+        bool scale9Enabled = iop->scale9Enabled();
         imageView->setScale9Enabled(scale9Enabled);
+        
         
         if (scale9Enabled)
         {
-            imageView->setCapInsets(Rect(cx, cy, cw, ch));
-            imageView->setContentSize(Size(swf, shf));
+            imageView->setUnifySizeEnabled(false);
+            imageView->ignoreContentAdaptWithSize(false);
+            
+            auto f_scale9Size = iop->scale9Size();
+            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
+            imageView->setContentSize(scale9Size);
+            
+            
+            auto f_capInset = iop->capInsets();
+            Rect capInsets(f_capInset->x(), f_capInset->y(), f_capInset->width(), f_capInset->height());
+            imageView->setCapInsets(capInsets);
         }
         
-        imageView->setOpacity(opacity);
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
     /**/
+    
 }

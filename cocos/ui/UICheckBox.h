@@ -194,7 +194,7 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* peterson */
+    /* temp */
     const std::string& getBackGroundFileName() const { return _backGroundFileName; };
     const std::string& getBackGroundSelectedFileName() const { return _backGroundSelectedFileName; };
     const std::string& getFrontCrossFileName() const { return _frontCrossFileName; };

@@ -27,21 +27,25 @@
 #include "CCActionTimeline.h"
 #include "../CCSGUIReader.h"
 #include "../../cocos/ui/CocosGUI.h"
-/* peterson */
 #include "cocostudio/CocoStudio.h"
-/**/
 
 #include "../CSParseBinary.pb.h"
 
-#include <fstream>
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+#include "flatbuffers/util.h"
 
-/* peterson create node from protocol buffers for simulator of cocosstudio editor */
-#include "cocostudio/ProtocolBuffersSerialize.h"
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
+
+#include <fstream>
 
 using namespace cocos2d::ui;
 using namespace cocostudio;
 using namespace cocostudio::timeline;
+/* peterson */
+using namespace flatbuffers;
+/**/
 
 NS_CC_BEGIN
 
@@ -49,9 +53,7 @@ static const char* ClassName_Node     = "Node";
 static const char* ClassName_SubGraph = "SubGraph";
 static const char* ClassName_Sprite   = "Sprite";
 static const char* ClassName_Particle = "Particle";
-/* peterson */
 static const char* ClassName_TMXTiledMap = "TMXTiledMap";
-/**/
 
 static const char* ClassName_Panel      = "Panel";
 static const char* ClassName_Button     = "Button";
@@ -72,9 +74,7 @@ static const char* ClassName_PageView   = "PageView";
 static const char* ClassName_Widget     = "Widget";
 static const char* ClassName_Label      = "Label";
 
-/* peterson */
 static const char* ClassName_ComAudio = "ComAudio";
-/**/
 
 
 static const char* NODE        = "nodeTree";
@@ -82,7 +82,6 @@ static const char* CHILDREN    = "children";
 static const char* CLASSNAME   = "classname";
 static const char* FILE_PATH   = "fileName";
 static const char* PLIST_FILE  = "plistFile";
-/* peterson */
 static const char* TMX_FILE  = "tmxFile";
 static const char* TMX_STRING  = "tmxString";
 static const char* RESOURCE_PATH  = "resourcePath";
@@ -93,7 +92,7 @@ static const char* COMPONENT_NAME  = "componentName";
 static const char* COMPONENT_ENABLED  = "componentEnabled";
 static const char* COMPONENT_AUDIO_FILE_PATH  = "comAudioFilePath";
 static const char* COMPONENT_LOOP  = "comAudioloop";
-/**/
+
 static const char* TAG         = "tag";
 static const char* ACTION_TAG  = "actionTag";
 
@@ -168,9 +167,7 @@ void CSLoader::init()
     _funcs.insert(Pair(ClassName_SubGraph,  std::bind(&CSLoader::loadSubGraph,   this, _1)));
     _funcs.insert(Pair(ClassName_Sprite,    std::bind(&CSLoader::loadSprite,     this, _1)));
     _funcs.insert(Pair(ClassName_Particle,  std::bind(&CSLoader::loadParticle,   this, _1)));
-    /* peterson */
     _funcs.insert(Pair(ClassName_TMXTiledMap,  std::bind(&CSLoader::loadTMXTiledMap,   this, _1)));
-    /**/
     _funcs.insert(Pair(ClassName_LabelAtlas,std::bind(&CSLoader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_LabelBMFont,std::bind(&CSLoader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_Panel,     std::bind(&CSLoader::loadWidget,   this, _1)));
@@ -190,9 +187,7 @@ void CSLoader::init()
     _funcs.insert(Pair(ClassName_Widget,    std::bind(&CSLoader::loadWidget,   this, _1)));
     _funcs.insert(Pair(ClassName_Label,     std::bind(&CSLoader::loadWidget,   this, _1)));
     
-    /* peterson */
     _componentFuncs.insert(ComponentPair(ClassName_ComAudio, std::bind(&CSLoader::loadComAudio, this, _1)));
-    /**/
     
 }
 
@@ -217,7 +212,6 @@ Node* CSLoader::createNode(const std::string& filename)
     return nullptr;
 }
 
-/* peterson */
 Node* CSLoader::createNodeFromJson(const std::string& filename)
 {
     if (_recordJsonPath)
@@ -237,7 +231,6 @@ Node* CSLoader::createNodeFromJson(const std::string& filename)
     
     return node;
 }
-/**/
 
 Node* CSLoader::loadNodeWithFile(const std::string& fileName)
 {
@@ -295,7 +288,6 @@ Node* CSLoader::loadNode(const rapidjson::Value& json)
         const rapidjson::Value& options = DICTOOL->getSubDictionary_json(json, OPTIONS);
         node = func(options);
         
-        /* peterson */
         // component
         if (node)
         {
@@ -311,7 +303,6 @@ Node* CSLoader::loadNode(const rapidjson::Value& json)
                 }
             }
         }
-        /**/
     }
     
     if(node)
@@ -445,7 +436,6 @@ void CSLoader::initNode(Node* node, const rapidjson::Value& json)
 Node* CSLoader::loadSimpleNode(const rapidjson::Value& json)
 {
     Node* node = Node::create();
-    node->retain();
     initNode(node, json);
     
     return node;
@@ -464,8 +454,6 @@ Node* CSLoader::loadSubGraph(const rapidjson::Value& json)
     {
         node = Node::create();
     }
-    
-    node->retain();
     
     initNode(node, json);
     
@@ -504,8 +492,6 @@ Node* CSLoader::loadSprite(const rapidjson::Value& json)
         sprite = Sprite::create();
     }
     
-    sprite->retain();
-    
     initNode(sprite, json);
     
     bool flipX          = DICTOOL->getBooleanValue_json(json, FLIPX);
@@ -526,14 +512,12 @@ Node* CSLoader::loadParticle(const rapidjson::Value& json)
     
     ParticleSystemQuad* particle = ParticleSystemQuad::create(filePath);
     particle->setTotalParticles(num);
-    particle->retain();
     
     initNode(particle, json);
     
     return particle;
 }
 
-/* peterson */
 Node* CSLoader::loadTMXTiledMap(const rapidjson::Value &json)
 {
     const char* tmxFile = DICTOOL->getStringValue_json(json, TMX_FILE);
@@ -555,7 +539,6 @@ Node* CSLoader::loadTMXTiledMap(const rapidjson::Value &json)
     return tmx;
     
 }
-/**/
 
 Node* CSLoader::loadWidget(const rapidjson::Value& json)
 {
@@ -577,7 +560,6 @@ Node* CSLoader::loadWidget(const rapidjson::Value& json)
         
         std::string guiClassName = getGUIClassName(classname);
         widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-        widget->retain();
         
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
         
@@ -586,7 +568,6 @@ Node* CSLoader::loadWidget(const rapidjson::Value& json)
     else if (isCustomWidget(classname))
     {
         widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-        widget->retain();
         
         //
         // 1st., custom widget parse properties of parent widget with parent widget reader
@@ -636,7 +617,6 @@ Node* CSLoader::loadWidget(const rapidjson::Value& json)
     return widget;
 }
 
-/* peterson */
 Component* CSLoader::loadComponent(const rapidjson::Value &json)
 {
     Component* component = nullptr;
@@ -756,9 +736,7 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     std::string classname = nodetree.classname();
     CCLOG("classname = %s", classname.c_str());
     
-    /* peterson */
     protocolbuffers::WidgetOptions curOptions;
-    /**/
     
     if (classname == "Node")
     {
@@ -807,7 +785,6 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
      
         curOptions = nodeOptions;
     }
-    /* peterson */
     else if (classname == "Particle")
     {        
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
@@ -820,13 +797,10 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     {		
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
-		/* peterson */
-		node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);  
-		/**/
+		node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);
         
         curOptions = nodeOptions;
     }
-	/* peterson */
 	else if (classname == "SimpleAudio")
 	{
         node = Node::create();
@@ -835,8 +809,6 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
 
 		curOptions = options;
 	}
-	/**/
-    /**/
     else if (isWidget(classname))
     {
         std::string guiClassName = getGUIClassName(classname);
@@ -844,7 +816,6 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         readerName.append("Reader");
         
         Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-        widget->retain();
         
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
         reader->setPropsFromProtocolBuffers(widget, nodetree);
@@ -858,7 +829,6 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
     else if (isCustomWidget(classname))
     {
         Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-        widget->retain();
         
         //
         // 1st., custom widget parse properties of parent widget with parent widget reader
@@ -894,7 +864,6 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
         node = widget;
     }
     
-    /* peterson */
     // component
     int componentSize = curOptions.componentoptions_size();
     for (int i = 0; i < componentSize; ++i)
@@ -908,7 +877,6 @@ Node* CSLoader::nodeFromProtocolBuffers(const protocolbuffers::NodeTree &nodetre
             node->addComponent(component);
         }
     }
-    /**/
     
     int size = nodetree.children_size();
     CCLOG("size = %d", size);
@@ -952,9 +920,7 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
 {
     const protocolbuffers::WidgetOptions& options = nodeOptions;
     
-    /* peterson */
     std::string name = options.name();
-    /**/
     float x             = options.x();
     float y             = options.y();
     float scalex        = options.scalex();
@@ -969,9 +935,7 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     int actionTag       = options.actiontag();
     bool visible        = options.visible();
     
-    /* peterson */
     node->setName(name);
-    /**/
     
     if(x != 0 || y != 0)
         node->setPosition(Point(x, y));
@@ -1067,8 +1031,6 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
      }
      */
     
-    sprite->retain();
-    
     setPropsForNodeFromProtocolBuffers(sprite, nodeOptions);
     
     GLubyte alpha       = (GLubyte)nodeOptions.has_alpha() ? nodeOptions.alpha() : 255;
@@ -1094,7 +1056,6 @@ void CSLoader::setPropsForSpriteFromProtocolBuffers(cocos2d::Node *node,
         sprite->setFlippedY(flipY);
 }
 
-/* peterson */
 cocos2d::Node* CSLoader::createParticleFromProtocolBuffers(const protocolbuffers::ParticleSystemOptions& particleSystemOptions,
 												 const protocolbuffers::WidgetOptions& nodeOptions)
 {
@@ -1167,7 +1128,6 @@ cocos2d::Node* CSLoader::createTMXTiledMapFromProtocolBuffers(const protocolbuff
 
 	return node;
 }
-/**/
 
 void CSLoader::setPropsForProjectNodeFromProtocolBuffers(cocos2d::Node *node,
                                                            const protocolbuffers::ProjectNodeOptions &projectNodeOptions,
@@ -1242,7 +1202,7 @@ void CSLoader::setPropsForComAudioFromProtocolBuffers(cocos2d::Component *compon
 }
 /**/
 
-/* peterson create node from protocol buffers for simulator of cocosstudio editor */
+/* create node from protocol buffers for simulator of cocosstudio editor */
 Node* CSLoader::createNodeFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary *protobuf)
 {
     // decode plist
@@ -1272,9 +1232,7 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
     std::string classname = nodetree.classname();
     CCLOG("classname = %s", classname.c_str());
     
-    /* peterson */
     protocolbuffers::WidgetOptions curOptions;
-    /**/
     
     if (classname == "Node")
     {
@@ -1325,7 +1283,6 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
         
         curOptions = nodeOptions;
     }
-    /* peterson */
     else if (classname == "Particle")
     {
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
@@ -1338,13 +1295,10 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
     {
         const protocolbuffers::WidgetOptions& nodeOptions = nodetree.widgetoptions();
         const protocolbuffers::TMXTiledMapOptions& options = nodetree.tmxtiledmapoptions();
-        /* peterson */
         node = createTMXTiledMapFromProtocolBuffers(options, nodeOptions);
-        /**/
         
         curOptions = nodeOptions;
     }
-    /* peterson */
     else if (classname == "SimpleAudio")
     {
         node = Node::create();
@@ -1353,8 +1307,6 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
         
         curOptions = options;
     }
-    /**/
-    /**/
     else if (isWidget(classname))
     {
         std::string guiClassName = getGUIClassName(classname);
@@ -1362,7 +1314,6 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
         readerName.append("Reader");
         
         Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-        widget->retain();
         
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
         reader->setPropsFromProtocolBuffers(widget, nodetree);
@@ -1376,7 +1327,6 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
     else if (isCustomWidget(classname))
     {
         Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-        widget->retain();
         
         //
         // 1st., custom widget parse properties of parent widget with parent widget reader
@@ -1412,7 +1362,6 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
         node = widget;
     }
     
-    /* peterson */
     // component
     int componentSize = curOptions.componentoptions_size();
     for (int i = 0; i < componentSize; ++i)
@@ -1426,7 +1375,6 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
             node->addComponent(component);
         }
     }
-    /**/
     
     int size = nodetree.children_size();
     CCLOG("size = %d", size);
@@ -1466,211 +1414,105 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
 }
 /**/
 
-/* peterson xml */
-Node* CSLoader::createNodeFromXML(const std::string &filename)
+/* peterson */
+Node* CSLoader::createNodeWithFlatBuffersFile(const std::string &filename)
 {
-    if(_recordXMLPath)
-    {
-        std::string xmlPath = filename.substr(0, filename.find_last_of('/') + 1);
-        CCLOG("xmlPath = %s", xmlPath.c_str());
-        GUIReader::getInstance()->setFilePath(xmlPath);
-        
-        _xmlPath = xmlPath;
-    }
-    else
-    {
-        GUIReader::getInstance()->setFilePath("");
-        _xmlPath = "";
-    }
-    
-    cocos2d::Node* node = nodeFromXMLFile(filename);
+    Node* node = nodeWithFlatBuffersFile(filename);
     
     return node;
 }
 
-Node* CSLoader::nodeFromXMLFile(const std::string &fileName)
+Node* CSLoader::nodeWithFlatBuffersFile(const std::string &fileName)
 {
-    Node* node = nullptr;
+    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName);
     
-    // xml read
-    std::string fullpath = FileUtils::getInstance()->fullPathForFilename(fileName).c_str();
-    ssize_t size;
-    std::string content =(char*)FileUtils::getInstance()->getFileData(fullpath, "r", &size);
+    CC_ASSERT(FileUtils::getInstance()->isFileExist(fullPath));
     
-    // xml parse
-    tinyxml2::XMLDocument* document = new tinyxml2::XMLDocument();
-    document->Parse(content.c_str());
-    
-    const tinyxml2::XMLElement* rootElement = document->RootElement();// Root
-    CCLOG("rootElement name = %s", rootElement->Name());
-    
-    
-    const tinyxml2::XMLElement* element = rootElement->FirstChildElement();
-    
-    bool createEnabled = false;
-    std::string rootType = "";
-    
-    while (element)
+    std::string inFile;
+    auto load = LoadFile(fullPath.c_str(), true, &inFile);
+    if (!load)
     {
-        CCLOG("entity name = %s", element->Name());
-        
-        if (strcmp("Content", element->Name()) == 0)
-        {
-            const tinyxml2::XMLAttribute* attribute = element->FirstAttribute();
-            
-            if (!attribute)
-            {
-                createEnabled = true;
-                rootType = "NodeObjectData";
-            }
-            //
-            
-            //
-            //            while (attribute)
-            //            {
-            //                std::string name = attribute->Name();
-            //                std::string value = attribute->Value();
-            //                CCLOG("attribute name = %s, value = %s", name, value);
-            //                if (name == "")
-            //                {
-            //                    serializeEnabled = true;
-            //                    rootType = (strcmp("", value) == 0) ? "Node" : value;
-            //                }
-            //
-            //                if (serializeEnabled)
-            //                {
-            //                    break;
-            //                }
-            //
-            //                attribute = attribute->Next();
-            //            }
-            //
-        }
-        
-        if (createEnabled)
-        {
-            break;
-        }
-        
-        const tinyxml2::XMLElement* child = element->FirstChildElement();
-        if (child)
-        {
-            element = child;
-        }
-        else
-        {
-            element = element->NextSiblingElement();
-        }
+        CCLOG("couldn't load files");
+        return nullptr;
     }
     
+    auto csparsebinary = GetCSParseBinary(inFile.data());
     
-    // create
-    if (createEnabled)
+    // decode plist
+    auto textures = csparsebinary->textures();
+    auto texturePngs = csparsebinary->texturePngs();
+    int textureSize = csparsebinary->textures()->size();
+    CCLOG("textureSize = %d", textureSize);
+    for (int i = 0; i < textureSize; ++i)
     {
-        protocolbuffers::CSParseBinary protobuf;
-        
-        const tinyxml2::XMLElement* child = element->FirstChildElement();
-        
-        while (child)
-        {
-            std::string name = child->Name();
-            
-            if (name == "ObjectData") // nodeTree
-            {
-                const tinyxml2::XMLElement* objectData = child;
-                node = nodeFromXML(objectData, rootType);
-            }
-            
-            child = child->NextSiblingElement();
-        }
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(textures->Get(i)->c_str(),
+                                                                 texturePngs->Get(i)->c_str());
     }
+    
+    Node* node = nodeWithFlatBuffers(csparsebinary->nodeTree());
     
     return node;
 }
 
-Node* CSLoader::nodeFromXML(const tinyxml2::XMLElement *objectData, const std::string &classType)
+Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
 {
     Node* node = nullptr;
     
-    std::string classname = classType.substr(0, classType.find("ObjectData"));
+    std::string classname = nodetree->classname()->c_str();
     CCLOG("classname = %s", classname.c_str());
+    
+    auto options = nodetree->options();
     
     if (classname == "Node")
     {
         node = Node::create();
-        setPropsForNodeFromXML(node, objectData);
+        setPropsForNodeWithFlatBuffers(options->widgetOptions(), node);
     }
     else if (classname == "SingleNode")
     {
         node = Node::create();
-        setPropsForSingleNodeFromXML(node, objectData);
+        setPropsForSingleNodeWithFlatBuffers(options->singleNodeOptions(), options->widgetOptions(), node);
     }
     else if (classname == "Sprite")
     {
-        node = Sprite::create();
-        setPropsForSpriteFromXML(node, objectData);
-    }
-    else if (classname == "GameMap")
-    {
-        node = createTMXTiledMapFromXML(objectData);
-    }
-    else if (classname == "Particle")
-    {
-        node = createParticleFromXML(objectData);
+        node = CCSprite::create();
+        setPropsForSpriteWithFlatBuffers(options->spriteOptions(), options->widgetOptions(), node);
     }
     else if (classname == "ProjectNode")
     {
-        // FileData
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
+        auto nodeOptions = options->widgetOptions();
+        auto projectNodeOptions = options->projectNodeOptions();
+        
+        std::string filePath = projectNodeOptions->fileName()->c_str();
+        CCLOG("filePath = %s", filePath.c_str());
+        if (filePath != "")
         {
-            std::string name = child->Name();
-            
-            if (name == "FileData")
-            {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        node = createNodeFromXML(_xmlPath + value);
-                        setPropsForProjectNodeFromXML(node, objectData);
-                        
-                        cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionFromXML(_xmlPath + value);
-                        if(action)
-                        {
-                            node->runAction(action);
-                            action->gotoFrameAndPlay(0);
-                        }
-                        
-                        break;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                break;
-            }
-            
-            child = child->NextSiblingElement();
+            node = createNodeWithFlatBuffersFile(filePath);
+            setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);
         }
+    }
+    else if (classname == "Particle")
+    {
+        node = createParticleWithFlatBuffers(options->particleSystemOptions(), options->widgetOptions());
+    }
+    else if (classname == "GameMap")
+    {
+        node = createTMXTiledMapWithFlatBuffers(options->tmxTiledMapOptions(), options->widgetOptions());
     }
     else if (classname == "SimpleAudio")
     {
-        // process as component options
         node = Node::create();
-        setPropsForSimpleAudioFromXML(node, objectData);
         
-        Component* component = createComponentFromXML(objectData, "ComAudio");
+        const flatbuffers::WidgetOptions* nodeOptions = options->widgetOptions();
         
+        const flatbuffers::ComponentOptions* componentOptions = options->componentOptions();
+        Component* component = createComponentWithFlatBuffers(componentOptions);
         if (component)
         {
             node->addComponent(component);
         }
+        
+        setPropsForSimpleAudioWithFlatBuffers(node, nodeOptions);
     }
     else if (isWidget(classname))
     {
@@ -1678,654 +1520,515 @@ Node* CSLoader::nodeFromXML(const tinyxml2::XMLElement *objectData, const std::s
         std::string readerName = guiClassName;
         readerName.append("Reader");
         
-        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-        widget->retain();
-        
+        Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-        reader->setPropsFromXML(widget, objectData);
+//        reader->setPropsWithFlatBuffers(widget, options);
+        
+        auto widgetOptions = options->widgetOptions();
+        int actionTag = widgetOptions->actionTag();
+        widget->setUserObject(ActionTimelineData::create(actionTag));
         
         node = widget;
     }
-    
-    
-    // children
-    bool containChildrenElement = false;
-    objectData = objectData->FirstChildElement();
-    
-    while (objectData)
+    else if (isCustomWidget(classname))
     {
-        CCLOG("objectData name = %s", objectData->Name());
-        
-        if (strcmp("Children", objectData->Name()) == 0)
-        {
-            containChildrenElement = true;
-            break;
-        }
-        
-        objectData = objectData->NextSiblingElement();
+        //        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
+        //        //        widget->retain();
+        //
+        //        //
+        //        // 1st., custom widget parse properties of parent widget with parent widget reader
+        //        std::string readerName = getWidgetReaderClassName(widget);
+        //        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
+        //        if (reader && widget)
+        //        {
+        //            WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
+        //            widgetPropertiesReader->setPropsForAllWidgetFromProtocolBuffers(reader, widget, nodetree);
+        //
+        //            // 2nd., custom widget parse with custom reader
+        //            const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+        //            const char* customProperty = widgetOptions.customproperty().c_str();
+        //            rapidjson::Document customJsonDict;
+        //            customJsonDict.Parse<0>(customProperty);
+        //            if (customJsonDict.HasParseError())
+        //            {
+        //                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+        //            }
+        //
+        //            widgetPropertiesReader->setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
+        //        }
+        //        else
+        //        {
+        //            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your protocol buffers file.");
+        //        }
+        //        //
+        //
+        //        const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+        //        int actionTag = widgetOptions.actiontag();
+        //        widget->setUserObject(ActionTimelineData::create(actionTag));
+        //
+        //        node = widget;
     }
     
-    if (containChildrenElement)
+    auto children = nodetree->children();
+    int size = children->size();
+    CCLOG("size = %d", size);
+    for (int i = 0; i < size; ++i)
     {
-        objectData = objectData->FirstChildElement();
-        CCLOG("element name = %s", objectData->Name());
-        
-        while (objectData)
+        auto subNodeTree = children->Get(i);
+        Node* child = nodeWithFlatBuffers(subNodeTree);
+        CCLOG("child = %p", child);
+        if (child)
         {
-            const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-            bool bHasType = false;
-            
-            while (attribute)
+            PageView* pageView = dynamic_cast<PageView*>(node);
+            ListView* listView = dynamic_cast<ListView*>(node);
+            if (pageView)
             {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ctype")
+                Layout* layout = dynamic_cast<Layout*>(child);
+                if (layout)
                 {
-                    bHasType = true;
-                    Node* child = nodeFromXML(objectData, value);
-                    CCLOG("child = %p", child);
-                    if (child)
-                    {
-                        PageView* pageView = dynamic_cast<PageView*>(node);
-                        ListView* listView = dynamic_cast<ListView*>(node);
-                        if (pageView)
-                        {
-                            Layout* layout = dynamic_cast<Layout*>(child);
-                            if (layout)
-                            {
-                                pageView->addPage(layout);
-                            }
-                        }
-                        else if (listView)
-                        {
-                            Widget* widget = dynamic_cast<Widget*>(child);
-                            if (widget)
-                            {
-                                listView->pushBackCustomItem(widget);
-                            }
-                        }
-                        else
-                        {
-                            node->addChild(child);
-                        }
-                    }
-                    
-                    break;
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            if (!bHasType)
-            {
-                Node* child = nodeFromXML(objectData, "NodeObjectData");
-                CCLOG("child = %p", child);
-                if (child)
-                {
-                    PageView* pageView = dynamic_cast<PageView*>(node);
-                    ListView* listView = dynamic_cast<ListView*>(node);
-                    if (pageView)
-                    {
-                        Layout* layout = dynamic_cast<Layout*>(child);
-                        if (layout)
-                        {
-                            pageView->addPage(layout);
-                        }
-                    }
-                    else if (listView)
-                    {
-                        Widget* widget = dynamic_cast<Widget*>(child);
-                        if (widget)
-                        {
-                            listView->pushBackCustomItem(widget);
-                        }
-                    }
-                    else
-                    {
-                        node->addChild(child);
-                    }
+                    pageView->addPage(layout);
                 }
             }
-            
-            objectData = objectData->NextSiblingElement();
+            else if (listView)
+            {
+                Widget* widget = dynamic_cast<Widget*>(child);
+                if (widget)
+                {
+                    listView->pushBackCustomItem(widget);
+                }
+            }
+            else
+            {
+                node->addChild(child);
+            }
         }
     }
-    //
     
     return node;
 }
 
-void CSLoader::setPropsForNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLElement *nodeObjectData)
+void CSLoader::setPropsForNodeWithFlatBuffers(const flatbuffers::WidgetOptions *nodeOptions,
+                                              cocos2d::Node *node)
 {
+    auto options = nodeOptions;
+    
+    std::string name = options->name()->c_str();
+    float x             = options->position()->x();
+    float y             = options->position()->y();
+    float scalex        = options->scale()->scaleX();
+    float scaley        = options->scale()->scaleY();
+    //    float rotation      = options.rotation();
+    float rotationSkewX      = options->rotationSkew()->rotationSkewX();
+    float rotationSkewY      = options->rotationSkew()->rotationSkewY();
+    float anchorx       = options->anchorPoint()->scaleX();
+    float anchory       = options->anchorPoint()->scaleY();
+    int zorder		    = options->zOrder();
+    int tag             = options->tag();
+    int actionTag       = options->actionTag();
+    bool visible        = options->visible();
+    float w             = options->size()->width();
+    float h             = options->size()->height();
+    
+    node->setName(name);
+    
+    if(x != 0 || y != 0)
+        node->setPosition(Point(x, y));
+    if(scalex != 1)
+        node->setScaleX(scalex);
+    if(scaley != 1)
+        node->setScaleY(scaley);
+    //    if (rotation != 0)
+    //        node->setRotation(rotation);
+    if (rotationSkewX != 0)
+        node->setRotationSkewX(rotationSkewX);
+    if (rotationSkewY != 0)
+        node->setRotationSkewY(rotationSkewY);
+    if(anchorx != 0.5f || anchory != 0.5f)
+        node->setAnchorPoint(Point(anchorx, anchory));
+    if(zorder != 0)
+        node->setLocalZOrder(zorder);
+    if(visible != true)
+        node->setVisible(visible);
+    if (w != 0 || h != 0)
+        node->setContentSize(Size(w, h));
+    
+    node->setTag(tag);
+    node->setUserObject(ActionTimelineData::create(actionTag));
+    
     node->setCascadeColorEnabled(true);
     node->setCascadeOpacityEnabled(true);
+}
+
+void CSLoader::setPropsForSingleNodeWithFlatBuffers(const flatbuffers::SingleNodeOptions *singleNodeOptions,
+                                                    const flatbuffers::WidgetOptions* nodeOptions,
+                                                    cocos2d::Node *node)
+{
+    setPropsForNodeWithFlatBuffers(nodeOptions, node);
+}
+
+void CSLoader::setPropsForSpriteWithFlatBuffers(const flatbuffers::SpriteOptions *spriteOptions,
+                                                const flatbuffers::WidgetOptions *nodeOptions,
+                                                cocos2d::Node *node)
+{
+    Sprite *sprite = static_cast<Sprite*>(node);
+    auto options = spriteOptions;
     
-    node->setScale(0.0f, 0.0f);
+    auto fileNameData = options->fileNameData();
     
-    std::string name = nodeObjectData->Name();
-    CCLOG("entity name = %s", name.c_str());
-    
-    // attributes
-    const tinyxml2::XMLAttribute* attribute = nodeObjectData->FirstAttribute();
-    while (attribute)
+    int resourceType = fileNameData->resourceType();
+    switch (resourceType)
     {
-        name = attribute->Name();
-        std::string value = attribute->Value();
-        
-        if (name == "Name")
+        case 0:
         {
-            node->setName(value);
-        }
-        else if (name == "ActionTag")
-        {
-            node->setUserObject(ActionTimelineData::create(atoi(value.c_str())));
-        }
-        else if (name == "RotationSkewX")
-        {
-            node->setRotationSkewX(atof(value.c_str()));
-        }
-        else if (name == "RotationSkewY")
-        {
-            node->setRotationSkewY(atof(value.c_str()));
-        }
-        else if (name == "Rotation")
-        {
-//            node->setRotation(atoi(value.c_str()));
-        }
-        else if (name == "ZOrder")
-        {
-            node->setZOrder(atoi(value.c_str()));
-        }
-        else if (name == "Visible")
-        {
-//            node->setVisible((value == "True") ? true : false);
-        }
-        else if (name == "VisibleForFrame")
-        {
-            node->setVisible((value == "True") ? true : false);
-        }
-        else if (name == "Alpha")
-        {
-            node->setOpacity(atoi(value.c_str()));
-        }
-        else if (name == "Tag")
-        {
-            node->setTag(atoi(value.c_str()));
-        }
-        
-        attribute = attribute->Next();
-    }
-    
-    const tinyxml2::XMLElement* child = nodeObjectData->FirstChildElement();
-    while (child)
-    {
-        name = child->Name();
-        if (name == "Children")
-        {
+            std::string path = _protocolBuffersPath + fileNameData->path()->c_str();
+            if (path != "")
+            {
+                sprite->setTexture(path);
+            }
             break;
         }
-        else if (name == "Position")
+            
+        case 1:
         {
-            attribute = child->FirstAttribute();
-            
-            while (attribute)
+            std::string path = fileNameData->path()->c_str();
+            if (path != "")
             {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "X")
-                {
-                    node->setPositionX(atof(value.c_str()));
-                }
-                else if (name == "Y")
-                {
-                    node->setPositionY(atof(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
+                sprite->setSpriteFrame(path);
             }
+            break;
         }
-        else if (name == "Scale")
-        {
-            attribute = child->FirstAttribute();
             
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ScaleX")
-                {
-                    node->setScaleX(atof(value.c_str()));
-                }
-                else if (name == "ScaleY")
-                {
-                    node->setScaleY(atof(value.c_str()));
-                }
-                
-                attribute = attribute->Next();
-            }
-        }
-        else if (name == "AnchorPoint")
-        {
-            attribute = child->FirstAttribute();
-            
-            float anchorX = 0.0f;
-            float anchorY = 0.0f;
-            
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ScaleX")
-                {
-                    anchorX = atof(value.c_str());
-                }
-                else if (name == "ScaleY")
-                {
-                    anchorY = atof(value.c_str());
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            node->setAnchorPoint(Vec2(anchorX, anchorY));
-        }
-        else if (name == "CColor")
-        {
-            attribute = child->FirstAttribute();
-            int opacity = 255, red = 255, green = 255, blue = 255;
-            
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "A")
-                {
-                    opacity = atoi(value.c_str());
-                }
-                else if (name == "R")
-                {
-                    red = atoi(value.c_str());
-                }
-                else if (name == "G")
-                {
-                    green = atoi(value.c_str());
-                }
-                else if (name == "B")
-                {
-                    blue = atoi(value.c_str());
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            node->setOpacity(opacity);
-            node->setColor(Color3B(red, green, blue));
-        }
-        else if (name == "Size")
-        {
-            attribute = child->FirstAttribute();
-            float width = 0.0f, height = 0.0f;
-            
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "X")
-                {
-                    width = atof(value.c_str());
-                }
-                else if (name == "Y")
-                {
-                    height = atof(value.c_str());
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            node->setContentSize(Size(width, height));
-        }
-        
-        child = child->NextSiblingElement();
+        default:
+            break;
     }
-}
-
-void CSLoader::setPropsForSingleNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLElement *nodeObjectData)
-{
-    setPropsForNodeFromXML(node, nodeObjectData);
-}
-
-void CSLoader::setPropsForSpriteFromXML(cocos2d::Node *node, const tinyxml2::XMLElement *spriteObjectData)
-{
-    setPropsForNodeFromXML(node, spriteObjectData);
     
-    Sprite* sprite = static_cast<Sprite*>(node);
-    int opacity = 255;
+    setPropsForNodeWithFlatBuffers(nodeOptions, node);
     
-    // attributes
-    const tinyxml2::XMLAttribute* attribute = spriteObjectData->FirstAttribute();
-    while (attribute)
+    GLubyte alpha       = (GLubyte)nodeOptions->color()->a();
+    GLubyte red         = (GLubyte)nodeOptions->color()->r();
+    GLubyte green       = (GLubyte)nodeOptions->color()->g();
+    GLubyte blue        = (GLubyte)nodeOptions->color()->b();
+    
+    if (alpha != 255)
     {
-        std::string name = attribute->Name();
-        std::string value = attribute->Value();
-        
-        if (name == "Alpha")
-        {
-            opacity = atoi(value.c_str());
-        }
-        else if (name == "FlipX")
-        {
-            sprite->setFlippedX((value == "True") ? true : false);
-        }
-        else if (name == "FlipY")
-        {
-            sprite->setFlippedY((value == "True") ? true : false);
-        }
-        
-        attribute = attribute->Next();
+        sprite->setOpacity(alpha);
     }
-    
-    
-    // FileData
-    const tinyxml2::XMLElement* child = spriteObjectData->FirstChildElement();
-    while (child)
+    if (red != 255 || green != 255 || blue != 255)
     {
-        std::string name = child->Name();
-        
-        if (name == "FileData")
-        {
-            attribute = child->FirstAttribute();
-            int resourceType = 0;
-            std::string path = "", plistFile = "";
-            
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "Path")
-                {
-                    path = value;
-                }
-                else if (name == "Type")
-                {
-                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                }
-                else if (name == "Plist")
-                {
-                    plistFile = value;
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            switch (resourceType)
-            {
-                case 0:
-                {
-                    if (path != "")
-                    {
-                        sprite->setTexture(_xmlPath + path);
-                    }
-                    break;
-                }
-                    
-                case 1:
-                {
-                    /* peterson */
-                    SpriteFrameCache::getInstance()->addSpriteFramesWithFile(_xmlPath + plistFile);
-                    /**/
-                    if (path != "")
-                    {
-                        sprite->setSpriteFrame(path);
-                    }
-                    break;
-                }
-                    
-                default:
-                    break;
-            }
-        }
-        
-        child = child->NextSiblingElement();
+        sprite->setColor(Color3B(red, green, blue));
     }
     
-    sprite->setOpacity(opacity);
+    bool flipX   = nodeOptions->flipX();
+    bool flipY   = nodeOptions->flipY();
+    
+    if(flipX != false)
+        sprite->setFlippedX(flipX);
+    if(flipY != false)
+        sprite->setFlippedY(flipY);
 }
 
-Node* CSLoader::createParticleFromXML(const tinyxml2::XMLElement *particleObjectData)
+Node* CSLoader::createParticleWithFlatBuffers(const flatbuffers::ParticleSystemOptions *particleSystemOptions,
+                                              const flatbuffers::WidgetOptions *nodeOptions)
 {
-	Node* node = nullptr;
+    Node* node = nullptr;
     
-    // child elements
-    const tinyxml2::XMLElement* child = particleObjectData->FirstChildElement();
-    while (child)
+    auto fileNameData = particleSystemOptions->fileNameData();
+    
+    int resourceType = fileNameData->resourceType();
+    switch (resourceType)
     {
-        std::string name = child->Name();
-        
-        if (name == "FileData")
+        case 0:
         {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            int resourceType = 0;
-            std::string path = "", plistFile = "";
             
-            while (attribute)
+            std::string path = fileNameData->path()->c_str();
+            if (path != "")
             {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "Path")
-                {
-                    path = value;
-                }
-                else if (name == "Type")
-                {
-                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                }
-                else if (name == "Plist")
-                {
-                    plistFile = value;
-                }
-                
-                attribute = attribute->Next();
+                node = ParticleSystemQuad::create(path);
             }
-            
-            switch (resourceType)
-            {
-                case 0:
-                {
-                    if (path != "")
-                    {
-                        node = ParticleSystemQuad::create(_xmlPath + path);
-                    }
-                    break;
-                }
-                    
-                default:
-                    break;
-            }
+            break;
         }
-        
-        child = child->NextSiblingElement();
+            
+        default:
+            break;
     }
     
-	if (node)
-	{
-        setPropsForNodeFromXML(node, particleObjectData);
-	}
-    
-	return node;
-}
-
-Node* CSLoader::createTMXTiledMapFromXML(const tinyxml2::XMLElement *tmxTiledMapObjectData)
-{
-	Node* node = nullptr;
-    
-    // child elements
-    const tinyxml2::XMLElement* child = tmxTiledMapObjectData->FirstChildElement();
-    while (child)
+    if (node)
     {
-        std::string name = child->Name();
-        
-        if (name == "FileData")
-        {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
-            int resourceType = 0;
-            std::string path = "", plistFile = "";
-            
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "Path")
-                {
-                    path = value;
-                }
-                else if (name == "Type")
-                {
-                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                }
-                else if (name == "Plist")
-                {
-                    plistFile = value;
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            switch (resourceType)
-            {
-                case 0:
-                {
-					std::string tmxFile_str = _xmlPath + path;
-                    const char* tmxFile = tmxFile_str.c_str();
-                    
-                    if (tmxFile && strcmp("", tmxFile) != 0)
-                    {
-                        node = TMXTiledMap::create(tmxFile);
-                    }
-                    break;
-                }
-                    
-                default:
-                    break;
-            }
-        }
-        
-        child = child->NextSiblingElement();
+        setPropsForNodeWithFlatBuffers(nodeOptions, node);
     }
     
-    
-	if (node)
-	{
-        setPropsForNodeFromXML(node, tmxTiledMapObjectData);
-	}
-    
-	return node;
+    return node;
 }
 
-void CSLoader::setPropsForProjectNodeFromXML(cocos2d::Node *node, const tinyxml2::XMLElement *projectNodeObjectData)
+Node* CSLoader::createTMXTiledMapWithFlatBuffers(const flatbuffers::TMXTiledMapOptions *tmxTiledMapOptions,
+                                                 const flatbuffers::WidgetOptions *nodeOptions)
 {
-    setPropsForNodeFromXML(node, projectNodeObjectData);
+    Node* node = nullptr;
+    
+    auto fileNameData = tmxTiledMapOptions->fileNameData();
+    
+    int resourceType = fileNameData->resourceType();
+    switch (resourceType)
+    {
+        case 0:
+        {
+            std::string path = fileNameData->path()->c_str();
+            const char* tmxFile = path.c_str();
+            
+            if (tmxFile && strcmp("", tmxFile) != 0)
+            {
+                node = TMXTiledMap::create(tmxFile);
+            }
+            break;
+        }
+            
+        default:
+            break;
+    }
+    
+    if (node)
+    {
+        setPropsForNodeWithFlatBuffers(nodeOptions, node);
+    }
+    
+    return node;
 }
 
-void CSLoader::setPropsForSimpleAudioFromXML(cocos2d::Node *node, const tinyxml2::XMLElement *simpleAudioObjectData)
+void CSLoader::setPropsForProjectNodeWithFlatBuffers(const flatbuffers::ProjectNodeOptions *projectNodeOptions,
+                                                     const flatbuffers::WidgetOptions *nodeOptions,
+                                                     cocos2d::Node *node)
 {
-    setPropsForNodeFromXML(node, simpleAudioObjectData);
+    setPropsForNodeWithFlatBuffers(nodeOptions, node);
 }
 
-Component* CSLoader::createComponentFromXML(const tinyxml2::XMLElement *componentObjectData,
-                                            const std::string &componentType)
+void CSLoader::setPropsForSimpleAudioWithFlatBuffers(cocos2d::Node *node,
+                                                     const flatbuffers::WidgetOptions *nodeOptions)
+{
+    setPropsForNodeWithFlatBuffers(nodeOptions, node);
+}
+
+Component* CSLoader::createComponentWithFlatBuffers(const flatbuffers::ComponentOptions *componentOptions)
 {
     Component* component = nullptr;
+    
+    std::string componentType = componentOptions->type()->c_str();
     
     if (componentType == "ComAudio")
     {
         component = ComAudio::create();
-        setPropsForComAudioFromXML(component, componentObjectData);
+        const flatbuffers::ComAudioOptions* options = componentOptions->comAudioOptions();
+        setPropsForComAudioWithFlatBuffers(component, options);
     }
     
     return component;
 }
 
-void CSLoader::setPropsForComAudioFromXML(cocos2d::Component *component, const tinyxml2::XMLElement *comAudioObjectData)
+void CSLoader::setPropsForComponentWithFlatBuffers(cocos2d::Component *component,
+                                                   const flatbuffers::ComponentOptions *componentOptions)
 {
+    std::string componentType = componentOptions->type()->c_str();
+    
+    if (componentType == "ComAudio")
+    {
+        component = ComAudio::create();
+        const flatbuffers::ComAudioOptions* options = componentOptions->comAudioOptions();
+        setPropsForComAudioWithFlatBuffers(component, options);
+    }
+}
+
+void CSLoader::setPropsForComAudioWithFlatBuffers(cocos2d::Component *component,
+                                                  const flatbuffers::ComAudioOptions *comAudioOptions)
+{
+    const flatbuffers::ComAudioOptions* options = comAudioOptions;
     ComAudio* audio = static_cast<ComAudio*>(component);
     
-    audio->setEnabled(true);
+    auto fileNameData = options->fileNameData();
     
-    const tinyxml2::XMLAttribute* attribute = comAudioObjectData->FirstAttribute();
-    while (attribute)
+    int resourceType = fileNameData->resourceType();
+    switch (resourceType)
     {
-        std::string name = attribute->Name();
-        std::string value = attribute->Value();
-        
-        if (name == "Loop")
+        case 0:
         {
-            audio->setLoop((value == "True") ? true : false);
+            std::string path = fileNameData->path()->c_str();
+            audio->setFile(path.c_str());
+            break;
         }
-        else if (name == "Name")
-        {
-            audio->setName(value);
-        }
-        
-        attribute = attribute->Next();
+            
+        default:
+            break;
     }
     
-    // FileData
-    const tinyxml2::XMLElement* child = comAudioObjectData->FirstChildElement();
-    while (child)
+    bool loop = options->loop();
+    audio->setLoop(loop);
+    
+    audio->setName(options->name()->c_str());
+    audio->setLoop(options->loop());
+}
+/**/
+
+/* peterson create node with flat buffers for simulator of cocosstudio editor */
+Node* CSLoader::createNodeWithFlatBuffersForSimulator(const flatbuffers::FlatBufferBuilder *builder)
+{
+    auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());
+    auto nodeTree = csparsebinary->nodeTree();
+    Node* node = nodeWithFlatBuffersForSimulator(nodeTree);
+    
+    return node;
+}
+
+Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nodetree)
+{
+    Node* node = nullptr;
+    
+    std::string classname = nodetree->classname()->c_str();
+    CCLOG("classname = %s", classname.c_str());
+    
+    auto options = nodetree->options();
+    
+    if (classname == "Node")
     {
-        std::string name = child->Name();
+        node = Node::create();
+        setPropsForNodeWithFlatBuffers(options->widgetOptions(), node);
+    }
+    else if (classname == "SingleNode")
+    {
+        node = Node::create();
+        setPropsForSingleNodeWithFlatBuffers(options->singleNodeOptions(), options->widgetOptions(), node);
+    }
+    else if (classname == "Sprite")
+    {
+        node = CCSprite::create();
+        setPropsForSpriteWithFlatBuffers(options->spriteOptions(), options->widgetOptions(), node);
+    }
+    else if (classname == "ProjectNode")
+    {
+        auto nodeOptions = options->widgetOptions();
+        auto projectNodeOptions = options->projectNodeOptions();
         
-        if (name == "FileData")
+        std::string filePath = projectNodeOptions->fileName()->c_str();
+        CCLOG("filePath = %s", filePath.c_str());
+        if (filePath != "")
         {
-            attribute = child->FirstAttribute();
-            int resourceType = 0;
-            std::string path = "", plistFile = "";
-            
-            while (attribute)
-            {
-                name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "Path")
-                {
-                    path = value;
-                }
-                else if (name == "Type")
-                {
-                    resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                }
-                else if (name == "Plist")
-                {
-                    plistFile = value;
-                }
-                
-                attribute = attribute->Next();
-            }
-            
-            switch (resourceType)
-            {
-                case 0:
-                {
-                    audio->setFile((_xmlPath + path).c_str());
-                    break;
-                }
-                    
-                default:
-                    break;
-            }
+            FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+            FlatBufferBuilder* builder = fbs->createFlatBuffersWithXMLFileForSimulator(filePath);
+            node = createNodeWithFlatBuffersForSimulator(builder);
+            setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);
+        }
+    }
+    else if (classname == "Particle")
+    {
+        node = createParticleWithFlatBuffers(options->particleSystemOptions(), options->widgetOptions());
+    }
+    else if (classname == "GameMap")
+    {
+        node = createTMXTiledMapWithFlatBuffers(options->tmxTiledMapOptions(), options->widgetOptions());
+    }
+    else if (classname == "SimpleAudio")
+    {
+        node = Node::create();
+        
+        const flatbuffers::WidgetOptions* nodeOptions = options->widgetOptions();
+        
+        const flatbuffers::ComponentOptions* componentOptions = options->componentOptions();
+        Component* component = createComponentWithFlatBuffers(componentOptions);
+        if (component)
+        {
+            node->addComponent(component);
         }
         
-        child = child->NextSiblingElement();
+        setPropsForSimpleAudioWithFlatBuffers(node, nodeOptions);
     }
+    else if (isWidget(classname))
+    {
+        std::string guiClassName = getGUIClassName(classname);
+        std::string readerName = guiClassName;
+        readerName.append("Reader");
+        
+        Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
+        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
+//        reader->setPropsWithFlatBuffers(widget, options);
+        
+        auto widgetOptions = options->widgetOptions();
+        int actionTag = widgetOptions->actionTag();
+        widget->setUserObject(ActionTimelineData::create(actionTag));
+        
+        node = widget;
+    }
+    else if (isCustomWidget(classname))
+    {
+        //        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
+        //        //        widget->retain();
+        //
+        //        //
+        //        // 1st., custom widget parse properties of parent widget with parent widget reader
+        //        std::string readerName = getWidgetReaderClassName(widget);
+        //        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
+        //        if (reader && widget)
+        //        {
+        //            WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
+        //            widgetPropertiesReader->setPropsForAllWidgetFromProtocolBuffers(reader, widget, nodetree);
+        //
+        //            // 2nd., custom widget parse with custom reader
+        //            const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+        //            const char* customProperty = widgetOptions.customproperty().c_str();
+        //            rapidjson::Document customJsonDict;
+        //            customJsonDict.Parse<0>(customProperty);
+        //            if (customJsonDict.HasParseError())
+        //            {
+        //                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+        //            }
+        //
+        //            widgetPropertiesReader->setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
+        //        }
+        //        else
+        //        {
+        //            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your protocol buffers file.");
+        //        }
+        //        //
+        //
+        //        const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
+        //        int actionTag = widgetOptions.actiontag();
+        //        widget->setUserObject(ActionTimelineData::create(actionTag));
+        //
+        //        node = widget;
+    }
+    
+    auto children = nodetree->children();
+    int size = children->size();
+    CCLOG("size = %d", size);
+    for (int i = 0; i < size; ++i)
+    {
+        auto subNodeTree = children->Get(i);
+        Node* child = nodeWithFlatBuffers(subNodeTree);
+        CCLOG("child = %p", child);
+        if (child)
+        {
+            PageView* pageView = dynamic_cast<PageView*>(node);
+            ListView* listView = dynamic_cast<ListView*>(node);
+            if (pageView)
+            {
+                Layout* layout = dynamic_cast<Layout*>(child);
+                if (layout)
+                {
+                    pageView->addPage(layout);
+                }
+            }
+            else if (listView)
+            {
+                Widget* widget = dynamic_cast<Widget*>(child);
+                if (widget)
+                {
+                    listView->pushBackCustomItem(widget);
+                }
+            }
+            else
+            {
+                node->addChild(child);
+            }
+        }
+    }
+    
+    return node;
 }
 /**/
 

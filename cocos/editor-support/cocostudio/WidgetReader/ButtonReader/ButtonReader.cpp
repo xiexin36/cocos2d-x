@@ -4,8 +4,11 @@
 #include "ui/UIButton.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -332,351 +335,73 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
-    void ButtonReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+    /* peterson */
+    void ButtonReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
     {
-        WidgetReader::setPropsFromXML(widget, objectData);
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
         
         Button* button = static_cast<Button*>(widget);
+        auto bop = options->buttonOptions();
         
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
-        
-        bool scale9Enabled = false;
-        float cx = 0.0f, cy = 0.0f, cw = 0.0f, ch = 0.0f;
-        float swf = 0.0f, shf = 0.0f;
-        std::string text = "";
-        std::string fontName = "微软雅黑";
-        int fontSize = 0;
-        int title_color_red = 255, title_color_green = 255, title_color_blue = 255;
-        int cri = 255, cgi = 255, cbi = 255;
-        int opacity = 255;
-        
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
-        {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "Scale9Enable")
-            {
-                if (value == "True")
-                {
-                    scale9Enabled = true;
-                }
-            }
-            else if (name == "Scale9OriginX")
-            {
-                cx = atof(value.c_str());
-            }
-            else if (name == "Scale9OriginY")
-            {
-                cy = atof(value.c_str());
-            }
-            else if (name == "Scale9Width")
-            {
-                cw = atof(value.c_str());
-            }
-            else if (name == "Scale9Height")
-            {
-                ch = atof(value.c_str());
-            }
-            else if (name == "ButtonText")
-            {
-                text = value;
-            }
-            else if (name == "FontSize")
-            {
-                fontSize = atoi(value.c_str());
-            }
-            else if (name == "FontName")
-            {
-                fontName = value;
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            else if (name == "DisplayState")
-            {
-                button->setBright((value == "True") ? true : false);
-            }
-            
-            attribute = attribute->Next();
-        }
-        
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
-        {
-            std::string name = child->Name();
-            
-            if (name == "Size" && scale9Enabled)
-            {
-                attribute = child->FirstAttribute();
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "X")
-                    {
-                        swf = atof(value.c_str());
-                    }
-                    else if (name == "Y")
-                    {
-                        shf = atof(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-            }
-            else if (name == "CColor")
-            {
-                attribute = child->FirstAttribute();
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "R")
-                    {
-                        cri = atoi(value.c_str());
-                    }
-                    else if (name == "G")
-                    {
-                        cgi = atoi(value.c_str());
-                    }
-                    else if (name == "B")
-                    {
-                        cbi = atoi(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-            }
-            else if (name == "TextColor")
-            {
-                attribute = child->FirstAttribute();
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "R")
-                    {
-                        title_color_red = atoi(value.c_str());
-                    }
-                    else if (name == "G")
-                    {
-                        title_color_green = atoi(value.c_str());
-                    }
-                    else if (name == "B")
-                    {
-                        title_color_blue = atoi(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-            }
-            else if (name == "DisabledFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        button->loadTextureDisabled(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        button->loadTextureDisabled(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "PressedFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        button->loadTexturePressed(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        button->loadTexturePressed(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "NormalFileData")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        button->loadTextureNormal(xmlPath + path, Widget::TextureResType::LOCAL);
-                        break;
-                    }
-                        
-                    case 1:
-                    {
-                        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(xmlPath + plistFile);
-                        button->loadTextureNormal(path, Widget::TextureResType::PLIST);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            else if (name == "FontResource")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        fontName = xmlPath + path;
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            
-            child = child->NextSiblingElement();
-        }
-        
+        bool scale9Enabled = bop->scale9Enabled();
         button->setScale9Enabled(scale9Enabled);
         
         
+        auto normalDic = bop->normalData();
+        int normalType = normalDic->resourceType();
+        std::string normalTexturePath = this->getResourcePath(normalDic->path()->c_str(), (Widget::TextureResType)normalType);
+        button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
+        
+        auto pressedDic = bop->pressedData();
+        int pressedType = pressedDic->resourceType();
+        std::string pressedTexturePath = this->getResourcePath(pressedDic->path()->c_str(), (Widget::TextureResType)pressedType);
+        button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
+        
+        auto disabledDic = bop->disabledData();
+        int disabledType = disabledDic->resourceType();
+        std::string disabledTexturePath = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
+        button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
+        
         if (scale9Enabled)
         {
-            button->setCapInsets(Rect(cx, cy, cw, ch));
-            button->setContentSize(Size(swf, shf));
+            button->setUnifySizeEnabled(false);
+            button->ignoreContentAdaptWithSize(false);
+            
+            auto f_capInsets = bop->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            button->setCapInsets(capInsets);
+            
+            Size scale9Size(bop->scale9Size()->width(), bop->scale9Size()->height());
+            button->setContentSize(scale9Size);
         }
         
-        button->setTitleText(text);
-        button->setTitleColor(Color3B(title_color_red, title_color_green, title_color_blue));
-        button->setTitleFontSize(fontSize);
-        button->setTitleFontName(fontName);
+        std::string titleText = bop->text()->c_str();
+        button->setTitleText(titleText);
         
-        button->setColor(Color3B(cri,cgi,cbi));
-        button->setOpacity(opacity);
+        auto textColor = bop->textColor();
+        Color3B titleColor(textColor->r(), textColor->g(), textColor->b());
+        button->setTitleColor(titleColor);
+        
+        int titleFontSize = bop->fontSize();
+        button->setTitleFontSize(titleFontSize);
+        
+        std::string titleFontName = bop->fontName()->c_str();
+        button->setTitleFontName(titleFontName);
+        
+        auto resourceData = bop->fontResource();
+        std::string path = resourceData->path()->c_str();
+        if (path != "")
+        {
+            button->setTitleFontName(path);
+        }
+        
+        bool displaystate = bop->displaystate();
+        button->setBright(displaystate);
+        button->setEnabled(displaystate);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
     /**/
 }

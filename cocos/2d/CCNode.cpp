@@ -1861,7 +1861,7 @@ void Node::removeAllComponents()
         _componentContainer->removeAll();
 }
 
-/* peterson */
+/* temp */
 const Map<std::string, Component*>* Node::getAllComponents() const
 {
     if (_componentContainer)

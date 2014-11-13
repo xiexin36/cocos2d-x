@@ -42,8 +42,12 @@ THE SOFTWARE.
 #include "cocostudio/CocoLoader.h"
 #include "ui/CocosGUI.h"
 #include "CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 using namespace cocos2d;
@@ -1611,10 +1615,10 @@ void WidgetPropertiesReader0300::setPropsForAllWidgetFromProtocolBuffers(cocostu
     reader->setPropsFromProtocolBuffers(widget, nodetree);
 }
     
-/* peterson xml */
-Widget* WidgetPropertiesReader0300::widgetFromXML(const tinyxml2::XMLElement *objectData, const std::string &classType)
+/* peterson */
+Widget* WidgetPropertiesReader0300::widgetWithFlatBuffers(const flatbuffers::NodeTree *nodeTree)
 {
-    std::string classname = classType.substr(0, classType.find("ObjectData"));
+    std::string classname = nodeTree->classname()->c_str();
     CCLOG("classname = %s", classname.c_str());
     
     Widget* widget = this->createGUI(classname);
@@ -1625,7 +1629,7 @@ Widget* WidgetPropertiesReader0300::widgetFromXML(const tinyxml2::XMLElement *ob
     if (reader)
     {
         // widget parse with widget reader
-        setPropsForAllWidgetFromXML(reader, widget, objectData);
+        setPropsForAllWidgetWithFlatBuffers(reader, widget, nodeTree->options());
     }
     else
     {
@@ -1635,12 +1639,13 @@ Widget* WidgetPropertiesReader0300::widgetFromXML(const tinyxml2::XMLElement *ob
         reader =  this->createWidgetReaderProtocol(readerName);
         if (reader && widget)
         {
-            setPropsForAllWidgetFromXML(reader, widget, objectData);
+            auto options = nodeTree->options();
+            
+            setPropsForAllWidgetWithFlatBuffers(reader, widget, options);
             
             // 2nd., custom widget parse with custom reader
-            //                const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
-            //                const char* customProperty = widgetOptions.customproperty().c_str();
-            const char* customProperty = "";
+            auto widgetOptions = options->widgetOptions();
+            const char* customProperty = widgetOptions->customProperty()->c_str();
             rapidjson::Document customJsonDict;
             customJsonDict.Parse<0>(customProperty);
             if (customJsonDict.HasParseError())
@@ -1656,117 +1661,46 @@ Widget* WidgetPropertiesReader0300::widgetFromXML(const tinyxml2::XMLElement *ob
         //
     }
     
-    
-    
-    
-    
-    // children
-    bool containChildrenElement = false;
-    objectData = objectData->FirstChildElement();
-    
-    while (objectData)
+    auto children = nodeTree->children();
+    int size = children->size();
+    CCLOG("widget children size = %d", size);
+    for (int i = 0; i < size; ++i)
     {
-        CCLOG("objectData name = %s", objectData->Name());
-        
-        if (strcmp("Children", objectData->Name()) == 0)
+        auto subNodeTree = children->Get(i);
+        Widget* child = widgetWithFlatBuffers(subNodeTree);
+        CCLOG("widget child = %p", child);
+        if (child)
         {
-            containChildrenElement = true;
-            break;
-        }
-        
-        objectData = objectData->NextSiblingElement();
-    }
-    
-    if (containChildrenElement)
-    {
-        objectData = objectData->FirstChildElement();
-        CCLOG("objectData name = %s", objectData->Name());
-        
-        while (objectData)
-        {
-            const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-            while (attribute)
+            PageView* pageView = dynamic_cast<PageView*>(widget);
+            if (pageView)
             {
-                std::string name = attribute->Name();
-                std::string value = attribute->Value();
-                
-                if (name == "ctype")
-                {
-                    Widget* child = widgetFromXML(objectData, value);
-                    CCLOG("child = %p", child);
-                    if (child)
-                    {
-                        PageView* pageView = dynamic_cast<PageView*>(widget);
-                        ListView* listView = dynamic_cast<ListView*>(widget);
-                        if (pageView)
-                        {
-                            Layout* layout = dynamic_cast<Layout*>(child);
-                            if (layout)
-                            {
-                                pageView->addPage(layout);
-                            }
-                        }
-                        else if (listView)
-                        {
-                            Widget* widgetChild = dynamic_cast<Widget*>(child);
-                            if (widgetChild)
-                            {
-                                listView->pushBackCustomItem(widgetChild);
-                            }
-                        }
-                        else
-                        {
-                            widget->addChild(child);
-                        }
-                    }
-                    
-                    break;
-                }
-                
-                attribute = attribute->Next();
+                pageView->addPage(static_cast<Layout*>(child));
             }
-            
-            //            Node* child = nodeFromXML(objectData, value);
-            //            CCLOG("child = %p", child);
-            //            if (child)
-            //            {
-            //                PageView* pageView = dynamic_cast<PageView*>(node);
-            //                ListView* listView = dynamic_cast<ListView*>(node);
-            //                if (pageView)
-            //                {
-            //                    Layout* layout = dynamic_cast<Layout*>(child);
-            //                    if (layout)
-            //                    {
-            //                        pageView->addPage(layout);
-            //                    }
-            //                }
-            //                else if (listView)
-            //                {
-            //                    Widget* widget = dynamic_cast<Widget*>(child);
-            //                    if (widget)
-            //                    {
-            //                        listView->pushBackCustomItem(widget);
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    node->addChild(child);
-            //                }
-            //            }
-            
-            objectData = objectData->NextSiblingElement();
+            else
+            {
+                ListView* listView = dynamic_cast<ListView*>(widget);
+                if (listView)
+                {
+                    listView->pushBackCustomItem(child);
+                }
+                else
+                {
+                    widget->addChild(child);
+                }
+            }
         }
     }
-    //
     
     CCLOG("widget = %p", widget);
     
     return widget;
 }
 
-void WidgetPropertiesReader0300::setPropsForAllWidgetFromXML(cocostudio::WidgetReaderProtocol *reader, cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+void WidgetPropertiesReader0300::setPropsForAllWidgetWithFlatBuffers(cocostudio::WidgetReaderProtocol *reader,
+                                                                     cocos2d::ui::Widget *widget,
+                                                                     const flatbuffers::Options *options)
 {
-    reader->setPropsFromXML(widget, objectData);
+    reader->setPropsWithFlatBuffers(widget, options);
 }
 /**/
     

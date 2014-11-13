@@ -4,8 +4,12 @@
 #include "ui/UIText.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -197,176 +201,53 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
-    void TextReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+    /* peterson */
+    void TextReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
     {
-        WidgetReader::setPropsFromXML(widget, objectData);
-        
         Text* label = static_cast<Text*>(widget);
+        auto txtop = options->textOptions();
         
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
+        bool IsCustomSize = txtop->isCustomSize();
+        label->ignoreContentAdaptWithSize(!IsCustomSize);
         
-        float areaWidth = 0.0f, areaHeight = 0.0f;
-        int halignment = 0, valignment = 0;
-        
-        int opacity = 255;
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
         
         label->setUnifySizeEnabled(false);
         
-        label->setFontName("微软雅黑");
+        bool touchScaleEnabled = txtop->touchScaleEnable();
+        label->setTouchScaleChangeEnabled(touchScaleEnabled);
+        std::string text = txtop->text()->c_str();
+        label->setString(text);
         
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
+        int fontSize = txtop->fontSize();
+        label->setFontSize(fontSize);
+        
+        std::string fontName = txtop->fontName()->c_str();
+        label->setFontName(fontName);
+        
+        Size areaSize = Size(txtop->areaWidth(), txtop->areaHeight());
+        if (!areaSize.equals(Size::ZERO))
         {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "TouchScaleChangeAble")
-            {
-                label->setTouchScaleChangeEnabled((value == "True") ? true : false);
-            }
-            else if (name == "LabelText")
-            {
-                label->setString(value);
-            }
-            else if (name == "FontSize")
-            {
-                label->setFontSize(atoi(value.c_str()));
-            }
-            else if (name == "FontName")
-            {
-                label->setFontName(value);
-            }
-            else if (name == "AreaWidth")
-            {
-                areaWidth = atoi(value.c_str());
-            }
-            else if (name == "AreaHeight")
-            {
-                areaHeight = atoi(value.c_str());
-            }
-            else if (name == "HorizontalAlignmentType")
-            {
-                if (value == "HT_Left")
-                {
-                    halignment = 0;
-                }
-                else if (value == "HT_Center")
-                {
-                    halignment = 1;
-                }
-                else if (value == "HT_Right")
-                {
-                    halignment = 2;
-                }
-            }
-            else if (name == "VerticalAlignmentType")
-            {
-                if (value == "VT_Top")
-                {
-                    valignment = 0;
-                }
-                else if (value == "VT_Center")
-                {
-                    valignment = 1;
-                }
-                else if (value == "VT_Bottom")
-                {
-                    valignment = 2;
-                }
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            
-            attribute = attribute->Next();
+            label->setTextAreaSize(areaSize);
         }
         
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
+        TextHAlignment h_alignment = (TextHAlignment)txtop->hAlignment();
+        label->setTextHorizontalAlignment(h_alignment);
+        
+        TextVAlignment v_alignment = (TextVAlignment)txtop->vAlignment();
+        label->setTextVerticalAlignment((TextVAlignment)v_alignment);
+        
+        auto resourceData = txtop->fontResource();
+        std::string path = resourceData->path()->c_str();
+        if (path != "")
         {
-            std::string name = child->Name();
-            
-            if (name == "Size")
-            {
-                attribute = child->FirstAttribute();
-                float width = 0.0f, height = 0.0f;
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "X")
-                    {
-                        width = atof(value.c_str());
-                    }
-                    else if (name == "Y")
-                    {
-                        height = atof(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                label->ignoreContentAdaptWithSize(false);
-                label->setContentSize(Size(width, height));
-            }
-            else if (name == "FontResource")
-            {
-                attribute = child->FirstAttribute();
-                int resourceType = 0;
-                std::string path = "", plistFile = "";
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                switch (resourceType)
-                {
-                    case 0:
-                    {
-                        label->setFontName(xmlPath + path);
-                        break;
-                    }
-                        
-                    default:
-                        break;
-                }
-            }
-            
-            child = child->NextSiblingElement();
+            label->setFontName(path);
         }
         
-        if (areaWidth != 0 || areaHeight != 0)
-        {
-            label->setTextAreaSize(Size(areaWidth, areaHeight));
-        }
         
-        label->setTextHorizontalAlignment((TextHAlignment)halignment);
-        label->setTextVerticalAlignment((TextVAlignment)valignment);
-        
-        label->setOpacity(opacity);
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
-    /**/
+    /**/        
+
 }

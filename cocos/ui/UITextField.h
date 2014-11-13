@@ -196,7 +196,7 @@ public:
     void setTextHorizontalAlignment(TextHAlignment alignment);
     void setTextVerticalAlignment(TextVAlignment alignment);
     
-    /* peterson */
+    /* temp */
     const Size getTextAreaSize() const
     {
         return _textFieldRenderer->getDimensions();

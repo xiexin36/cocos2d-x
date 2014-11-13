@@ -54,7 +54,7 @@ public:
     virtual void removeAll();
     virtual void visit(float delta);
     
-    /* peterson */
+    /* temp */
     virtual const Map<std::string, Component*>* getAllComponents() const { return _components; };
     /**/
     
