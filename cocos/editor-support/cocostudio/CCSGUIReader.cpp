@@ -42,8 +42,12 @@ THE SOFTWARE.
 #include "cocostudio/CocoLoader.h"
 #include "ui/CocosGUI.h"
 #include "CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 using namespace cocos2d;
@@ -1611,7 +1615,95 @@ void WidgetPropertiesReader0300::setPropsForAllWidgetFromProtocolBuffers(cocostu
     reader->setPropsFromProtocolBuffers(widget, nodetree);
 }
     
-/* peterson xml */
+/* peterson */
+Widget* WidgetPropertiesReader0300::widgetWithFlatBuffers(const flatbuffers::NodeTree *nodeTree)
+{
+    std::string classname = nodeTree->classname()->c_str();
+    CCLOG("classname = %s", classname.c_str());
+    
+    Widget* widget = this->createGUI(classname);
+    std::string readerName = this->getWidgetReaderClassName(classname);
+    
+    WidgetReaderProtocol* reader = this->createWidgetReaderProtocol(readerName);
+    
+    if (reader)
+    {
+        // widget parse with widget reader
+        setPropsForAllWidgetWithFlatBuffers(reader, widget, nodeTree->options());
+    }
+    else
+    {
+        //
+        // 1st., custom widget parse properties of parent widget with parent widget reader
+        readerName = this->getWidgetReaderClassName(widget);
+        reader =  this->createWidgetReaderProtocol(readerName);
+        if (reader && widget)
+        {
+            auto options = nodeTree->options();
+            
+            setPropsForAllWidgetWithFlatBuffers(reader, widget, options);
+            
+            // 2nd., custom widget parse with custom reader
+            auto widgetOptions = options->widgetOptions();
+            const char* customProperty = widgetOptions->customProperty()->c_str();
+            rapidjson::Document customJsonDict;
+            customJsonDict.Parse<0>(customProperty);
+            if (customJsonDict.HasParseError())
+            {
+                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+            }
+            setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
+        }
+        else
+        {
+            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
+        }
+        //
+    }
+    
+    auto children = nodeTree->children();
+    int size = children->size();
+    CCLOG("widget children size = %d", size);
+    for (int i = 0; i < size; ++i)
+    {
+        auto subNodeTree = children->Get(i);
+        Widget* child = widgetWithFlatBuffers(subNodeTree);
+        CCLOG("widget child = %p", child);
+        if (child)
+        {
+            PageView* pageView = dynamic_cast<PageView*>(widget);
+            if (pageView)
+            {
+                pageView->addPage(static_cast<Layout*>(child));
+            }
+            else
+            {
+                ListView* listView = dynamic_cast<ListView*>(widget);
+                if (listView)
+                {
+                    listView->pushBackCustomItem(child);
+                }
+                else
+                {
+                    widget->addChild(child);
+                }
+            }
+        }
+    }
+    
+    CCLOG("widget = %p", widget);
+    
+    return widget;
+}
+
+void WidgetPropertiesReader0300::setPropsForAllWidgetWithFlatBuffers(cocostudio::WidgetReaderProtocol *reader,
+                                                                     cocos2d::ui::Widget *widget,
+                                                                     const flatbuffers::Options *options)
+{
+    reader->setPropsWithFlatBuffers(widget, options);
+}
+/**/
+    
 Widget* WidgetPropertiesReader0300::widgetFromXML(const tinyxml2::XMLElement *objectData, const std::string &classType)
 {
     std::string classname = classType.substr(0, classType.find("ObjectData"));
@@ -1768,6 +1860,5 @@ void WidgetPropertiesReader0300::setPropsForAllWidgetFromXML(cocostudio::WidgetR
 {
     reader->setPropsFromXML(widget, objectData);
 }
-/**/
     
 }

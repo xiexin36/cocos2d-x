@@ -4,8 +4,12 @@
 #include "ui/UIText.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -197,7 +201,55 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void TextReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        Text* label = static_cast<Text*>(widget);
+        auto txtop = options->textOptions();
+        
+        bool IsCustomSize = txtop->isCustomSize();
+        label->ignoreContentAdaptWithSize(!IsCustomSize);
+        
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        label->setUnifySizeEnabled(false);
+        
+        bool touchScaleEnabled = txtop->touchScaleEnable();
+        label->setTouchScaleChangeEnabled(touchScaleEnabled);
+        std::string text = txtop->text()->c_str();
+        label->setString(text);
+        
+        int fontSize = txtop->fontSize();
+        label->setFontSize(fontSize);
+        
+        std::string fontName = txtop->fontName()->c_str();
+        label->setFontName(fontName);
+        
+        Size areaSize = Size(txtop->areaWidth(), txtop->areaHeight());
+        if (!areaSize.equals(Size::ZERO))
+        {
+            label->setTextAreaSize(areaSize);
+        }
+        
+        TextHAlignment h_alignment = (TextHAlignment)txtop->hAlignment();
+        label->setTextHorizontalAlignment(h_alignment);
+        
+        TextVAlignment v_alignment = (TextVAlignment)txtop->vAlignment();
+        label->setTextVerticalAlignment((TextVAlignment)v_alignment);
+        
+        auto resourceData = txtop->fontResource();
+        std::string path = resourceData->path()->c_str();
+        if (path != "")
+        {
+            label->setFontName(path);
+        }
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void TextReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -368,5 +420,5 @@ namespace cocostudio
         
         label->setOpacity(opacity);
     }
-    /**/
+
 }

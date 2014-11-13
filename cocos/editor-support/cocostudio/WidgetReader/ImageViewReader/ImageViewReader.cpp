@@ -4,8 +4,12 @@
 #include "ui/UIImageView.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -155,9 +159,7 @@ namespace cocostudio
         const protocolbuffers::ImageViewOptions& options = nodeTree.imageviewoptions();        
         ImageView* imageView = static_cast<ImageView*>(widget);
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         const protocolbuffers::ResourceData& imageFileNameDic = options.filenamedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
@@ -205,7 +207,44 @@ namespace cocostudio
 			imageView->setFlippedY(flipY);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void ImageViewReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        ImageView* imageView = static_cast<ImageView*>(widget);
+        auto iop = options->imageViewOptions();
+        
+        
+        auto imageFileNameDic = iop->fileNameData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
+        
+        bool scale9Enabled = iop->scale9Enabled();
+        imageView->setScale9Enabled(scale9Enabled);
+        
+        
+        if (scale9Enabled)
+        {
+            imageView->setUnifySizeEnabled(false);
+            imageView->ignoreContentAdaptWithSize(false);
+            
+            auto f_scale9Size = iop->scale9Size();
+            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
+            imageView->setContentSize(scale9Size);
+            
+            
+            auto f_capInset = iop->capInsets();
+            Rect capInsets(f_capInset->x(), f_capInset->y(), f_capInset->width(), f_capInset->height());
+            imageView->setCapInsets(capInsets);
+        }
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void ImageViewReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -345,5 +384,4 @@ namespace cocostudio
         
         imageView->setOpacity(opacity);
     }
-    /**/
 }

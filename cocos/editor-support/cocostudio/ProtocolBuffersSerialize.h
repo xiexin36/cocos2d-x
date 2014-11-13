@@ -264,7 +264,7 @@ public:
                         const tinyxml2::XMLElement* frameElement);
     /**/
     
-    /* peterson json */
+    /* json */
     /* serialize protocol buffers from json */
     void serializeProtocolBuffersWithJson(const std::string& protocolbuffersFileName,
                                                  const std::string& jsonFileName);

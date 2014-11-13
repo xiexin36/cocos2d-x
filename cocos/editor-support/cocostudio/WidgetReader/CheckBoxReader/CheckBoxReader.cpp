@@ -4,8 +4,12 @@
 #include "ui/UICheckBox.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -162,9 +166,7 @@ namespace cocostudio
         CheckBox* checkBox = static_cast<CheckBox*>(widget);
         const protocolbuffers::CheckBoxOptions& options = nodeTree.checkboxoptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         //load background image
 		const protocolbuffers::ResourceData& backGroundDic = options.backgroundboxdata();
@@ -209,7 +211,55 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void CheckBoxReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        CheckBox* checkBox = static_cast<CheckBox*>(widget);
+        auto cbop = options->checkBoxOptions();
+        
+        //load background image
+        auto backGroundDic = cbop->backGroundBoxData();
+        int backGroundType = backGroundDic->resourceType();
+        std::string backGroundTexturePath = this->getResourcePath(backGroundDic->path()->c_str(), (Widget::TextureResType)backGroundType);
+        checkBox->loadTextureBackGround(backGroundTexturePath, (Widget::TextureResType)backGroundType);
+        
+        //load background selected image
+        auto backGroundSelectedDic = cbop->backGroundBoxSelectedData();
+        int backGroundSelectedType = backGroundSelectedDic->resourceType();
+        std::string backGroundSelectedTexturePath = this->getResourcePath(backGroundSelectedDic->path()->c_str(), (Widget::TextureResType)backGroundSelectedType);
+        checkBox->loadTextureBackGroundSelected(backGroundSelectedTexturePath, (Widget::TextureResType)backGroundSelectedType);
+        
+        //load frontCross image
+        auto frontCrossDic = cbop->frontCrossData();
+        int frontCrossType = frontCrossDic->resourceType();
+        std::string frontCrossFileName = this->getResourcePath(frontCrossDic->path()->c_str(), (Widget::TextureResType)frontCrossType);
+        checkBox->loadTextureFrontCross(frontCrossFileName, (Widget::TextureResType)frontCrossType);
+        
+        //load backGroundBoxDisabledData
+        auto backGroundDisabledDic = cbop->backGroundBoxDisabledData();
+        int backGroundDisabledType = backGroundDisabledDic->resourceType();
+        std::string backGroundDisabledFileName = this->getResourcePath(backGroundDisabledDic->path()->c_str(), (Widget::TextureResType)backGroundDisabledType);
+        checkBox->loadTextureBackGroundDisabled(backGroundDisabledFileName, (Widget::TextureResType)backGroundDisabledType);
+        
+        ///load frontCrossDisabledData
+        auto frontCrossDisabledDic = cbop->frontCrossDisabledData();
+        int frontCrossDisabledType = frontCrossDisabledDic->resourceType();
+        std::string frontCrossDisabledFileName = this->getResourcePath(frontCrossDisabledDic->path()->c_str(), (Widget::TextureResType)frontCrossDisabledType);
+        checkBox->loadTextureFrontCrossDisabled(frontCrossDisabledFileName, (Widget::TextureResType)frontCrossDisabledType);
+        
+        bool selectedstate = cbop->selectedState();
+        checkBox->setSelected(selectedstate);
+        
+        bool displaystate = cbop->displaystate();
+        checkBox->setBright(displaystate);
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void CheckBoxReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -495,5 +545,4 @@ namespace cocostudio
 	
 		return 1;
 	}
-    /**/
 }

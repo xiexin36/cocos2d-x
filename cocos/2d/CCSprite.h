@@ -426,7 +426,7 @@ public:
     virtual bool isOpacityModifyRGB(void) const override;
     /// @}
 
-    /* peterson */
+    /* temp */
     void setFileName(const std::string& fileName) { _fileName = fileName; };
     const std::string& getFileName() const { return _fileName; };
     /**/
@@ -577,7 +577,7 @@ protected:
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
 
-    /* peterson */
+    /* temp */
     std::string _fileName;
     /**/
 

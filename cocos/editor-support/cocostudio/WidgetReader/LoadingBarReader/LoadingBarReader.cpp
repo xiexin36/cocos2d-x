@@ -4,8 +4,11 @@
 #include "ui/UILoadingBar.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -152,9 +155,7 @@ namespace cocostudio
         LoadingBar* loadingBar = static_cast<LoadingBar*>(widget);
         const protocolbuffers::LoadingBarOptions& options = nodeTree.loadingbaroptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
 		const protocolbuffers::ResourceData& imageFileNameDic = options.texturedata();
         int imageFileNameType = imageFileNameDic.resourcetype();
@@ -193,7 +194,31 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void LoadingBarReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        LoadingBar* loadingBar = static_cast<LoadingBar*>(widget);
+        auto ldbop = options->loadingBarOptions();
+        
+        auto imageFileNameDic = ldbop->textureData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        loadingBar->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
+        
+        int direction = ldbop->direction();
+        loadingBar->setDirection(LoadingBar::Direction(direction));
+        
+        int percent = ldbop->percent();
+        loadingBar->setPercent(percent);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void LoadingBarReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -317,5 +342,5 @@ namespace cocostudio
         
         loadingBar->setOpacity(opacity);
     }
-    /**/
+    
 }

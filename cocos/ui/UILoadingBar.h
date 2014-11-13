@@ -140,7 +140,7 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* peterson */
+    /* temp */
     const std::string& getTextureFile() const { return _textureFile; };
     const TextureResType getTextureResType() const { return _renderBarTexType; };
     /**/

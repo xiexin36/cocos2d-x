@@ -170,7 +170,7 @@ bool Sprite::initWithFile(const std::string& filename)
 {
     CCASSERT(filename.size()>0, "Invalid filename for sprite");
     
-    /* peterson */
+    /* temp */
     _fileName = filename;
     /**/
 
@@ -279,7 +279,7 @@ Sprite::Sprite(void)
 : _shouldBeHidden(false)
 , _texture(nullptr)
 , _insideBounds(true)
-/* peterson */
+/* temp */
 , _fileName("")
 /**/
 {

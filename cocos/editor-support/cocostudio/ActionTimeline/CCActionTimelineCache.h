@@ -30,6 +30,22 @@ THE SOFTWARE.
 #include "CCTimelineMacro.h"
 #include "cocostudio/CocosStudioExport.h"
 
+/* peterson */
+namespace flatbuffers
+{
+    struct FlatBufferBuilder;
+    
+    struct NodeAction;
+    struct TimeLine;
+    struct TimeLineBoolFrame;
+    struct TimeLineIntFrame;
+    struct TimeLineStringFrame;
+    struct TimeLinePointFrame;
+    struct TimeLineColorFrame;
+    struct TimeLineTextureFrame;
+}
+/**/
+
 namespace protocolbuffers
 {
     class CSParseBinary;
@@ -44,12 +60,10 @@ namespace protocolbuffers
     class TimeLineStringFrame;
 }
 
-/* peterson xml */
 namespace tinyxml2
 {
     class XMLElement;
 }
-/**/
 
 NS_TIMELINE_BEGIN
 
@@ -73,32 +87,32 @@ public:
     /** Remove action with filename, and also remove other resource relate with this file */
     void removeAction(const std::string& fileName);
     
-    /* peterson */
     static ActionTimeline* createAction(const std::string& fileName);
-    /**/
 
-    /* peterson */
     /** Clone a action with the specified name from the container. */
     ActionTimeline* createActionFromJson(const std::string& fileName);
-    // before
-//    ActionTimeline* createAction(const std::string& fileName);
-    /**/
 
     ActionTimeline* loadAnimationActionWithFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithContent(const std::string&fileName, const std::string& content);
     
-    /* peterson create node from protocol buffers for simulator of cocosstudio editor */
+    /* create node from protocol buffers for simulator of cocosstudio editor */
     ActionTimeline* createActionFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary* protobuf);
     /**/
     
     ActionTimeline* createActionFromProtocolBuffers(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithFileFromProtocolBuffers(const std::string& fileName);
     
-    /* peterson xml */
+    /* peterson */
+    ActionTimeline* createActionWithFlatBuffersFile(const std::string& fileName);
+    ActionTimeline* loadAnimationActionWithFlatBuffersFile(const std::string& fileName);
+    /**/
+    /* peterson create ActionTimeline with flat buffers for simulator of cocosstudio editor */
+    ActionTimeline* createActionWithFlatBuffersForSimulator(flatbuffers::FlatBufferBuilder* builder);
+    /**/
+    
     ActionTimeline* createActionFromXML(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithFileFromXML(const std::string& fileName);
     ActionTimeline* loadActionTimelineFromXML(const tinyxml2::XMLElement* animationElement);
-    /**/
     
 protected:
 
@@ -117,6 +131,7 @@ protected:
     Frame* loadEventFrame       (const rapidjson::Value& json);
     Frame* loadZOrderFrame      (const rapidjson::Value& json);
     
+    
     Timeline* loadTimelineFromProtocolBuffers(const protocolbuffers::TimeLine& timelineProtobuf);
     
     Frame* loadVisibleFrameFromProtocolBuffers     (const protocolbuffers::TimeLineBoolFrame& frameProtobuf);
@@ -129,7 +144,22 @@ protected:
     Frame* loadEventFrameFromProtocolBuffers       (const protocolbuffers::TimeLineStringFrame& frameProtobuf);
     Frame* loadZOrderFrameFromProtocolBuffers      (const protocolbuffers::TimeLineIntFrame& frameProtobuf);
     
-    /* peterson xml */
+    
+    /* peterson */
+    Timeline* loadTimelineWithFlatBuffers(const flatbuffers::TimeLine* flatbuffers);
+    
+    Frame* loadVisibleFrameWithFlatBuffers      (const flatbuffers::TimeLineBoolFrame* flatbuffers);
+    Frame* loadZOrderFrameWithFlatBuffers       (const flatbuffers::TimeLineIntFrame* flatbuffers);
+    Frame* loadRotationSkewFrameWithFlatBuffers (const flatbuffers::TimeLinePointFrame* flatbuffers);
+    Frame* loadEventFrameWithFlatBuffers        (const flatbuffers::TimeLineStringFrame* flatbuffers);
+    Frame* loadAnchorPointFrameWithFlatBuffers  (const flatbuffers::TimeLinePointFrame* flatbuffers);
+    Frame* loadPositionFrameWithFlatBuffers     (const flatbuffers::TimeLinePointFrame* flatbuffers);
+    Frame* loadScaleFrameWithFlatBuffers        (const flatbuffers::TimeLinePointFrame* flatbuffers);
+    Frame* loadColorFrameWithFlatBuffers        (const flatbuffers::TimeLineColorFrame* flatbuffers);
+    Frame* loadTextureFrameWithFlatBuffers      (const flatbuffers::TimeLineTextureFrame* flatbuffers);
+    /**/
+    
+    
     Timeline* loadTimelineFromXML(const tinyxml2::XMLElement* timelineElement);
     
     Frame* loadVisibleFrameFromXML     (const tinyxml2::XMLElement* frameElement);
@@ -141,7 +171,6 @@ protected:
     Frame* loadTextureFrameFromXML     (const tinyxml2::XMLElement* frameElement);
     Frame* loadEventFrameFromXML       (const tinyxml2::XMLElement* frameElement);
     Frame* loadZOrderFrameFromXML      (const tinyxml2::XMLElement* frameElement);
-    /**/
 
 protected:
 

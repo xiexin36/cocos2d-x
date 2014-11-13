@@ -373,7 +373,7 @@ public:
     */
     virtual const BlendFunc &getBlendFunc() const override;
     
-    /* peterson */
+    /* temp */
     const std::string getPlistFile () const { return _plistFile; };
     /**/
     

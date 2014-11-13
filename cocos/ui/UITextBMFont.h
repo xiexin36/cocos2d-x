@@ -88,7 +88,7 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* peterson */
+    /* temp */
     const std::string& getFntFileName() const { return _fntFileName; };
     /**/
     

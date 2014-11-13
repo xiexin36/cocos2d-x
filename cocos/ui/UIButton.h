@@ -205,7 +205,7 @@ public:
      */
     float getZoomScale()const;
     
-	    /* peterson */
+	    /* temp */
     const std::string& getNormalFileName() const { return _normalFileName; };
     const std::string& getPressedFileName() const { return _clickedFileName; };
     const std::string& getDisableFileName() const { return _disabledFileName; };

@@ -209,7 +209,7 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* peterson */
+    /* temp */
     const std::string& getTextureFile() const { return _textureFile; };
     const std::string& getProgressBarTextureFile() const { return _progressBarTextureFile; };
     const std::string& getSlidBallNormalTextureFile() const { return _slidBallNormalTextureFile; };

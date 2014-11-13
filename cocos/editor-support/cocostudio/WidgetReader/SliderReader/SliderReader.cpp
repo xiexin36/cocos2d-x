@@ -4,8 +4,12 @@
 #include "ui/UISlider.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -198,9 +202,7 @@ namespace cocostudio
         Slider* slider = static_cast<Slider*>(widget);
         const protocolbuffers::SliderOptions& options = nodeTree.slideroptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         bool barTextureScale9Enable = options.scale9enable();
         slider->setScale9Enabled(barTextureScale9Enable);
@@ -259,7 +261,58 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void SliderReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        Slider* slider = static_cast<Slider*>(widget);
+        auto sldop = options->sliderOptions();
+        
+        int percent = sldop->percent();
+        slider->setPercent(percent);
+        
+        auto imageFileNameDic = sldop->barFileNameData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        slider->loadBarTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
+        
+        //loading normal slider ball texture
+        auto normalDic = sldop->ballNormalData();
+        int normalType = normalDic->resourceType();
+        std::string normalFileName = this->getResourcePath(normalDic->path()->c_str(), (Widget::TextureResType)normalType);
+        slider->loadSlidBallTextureNormal(normalFileName, (Widget::TextureResType)normalType);
+        
+        //loading slider ball press texture
+        auto pressedDic = sldop->ballPressedData();
+        int pressedType = pressedDic->resourceType();
+        std::string pressedFileName = this->getResourcePath(pressedDic->path()->c_str(), (Widget::TextureResType)pressedType);
+        slider->loadSlidBallTexturePressed(pressedFileName, (Widget::TextureResType)pressedType);
+        
+        //loading silder ball disable texture
+        auto disabledDic = sldop->ballDisabledData();
+        int disabledType = disabledDic->resourceType();
+        std::string disabledFileName = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
+        slider->loadSlidBallTextureDisabled(disabledFileName, (Widget::TextureResType)disabledType);
+        
+        //load slider progress texture
+        auto progressBarDic = sldop->progressBarData();
+        int progressBarType = progressBarDic->resourceType();
+        std::string progressBarFileName = this->getResourcePath(progressBarDic->path()->c_str(), (Widget::TextureResType)progressBarType);
+        slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
+        
+        bool displaystate = sldop->displaystate();
+        if(!displaystate)
+        {
+            slider->setBright(displaystate);
+            slider->setEnabled(false);
+        }
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void SliderReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -582,5 +635,5 @@ namespace cocostudio
         
         slider->setOpacity(opacity);
     }
-    /**/
+
 }

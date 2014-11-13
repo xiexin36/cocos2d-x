@@ -4,8 +4,12 @@
 #include "ui/UITextAtlas.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -136,6 +140,44 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
+    /* peterson */
+    void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        TextAtlas* labelAtlas = static_cast<TextAtlas*>(widget);
+        auto taop = options->textAtlasOptions();
+        
+        auto cmftDic = taop->charMapFileData();
+        int cmfType = cmftDic->resourceType();
+        switch (cmfType)
+        {
+            case 0:
+            {
+                const char* cmfPath = cmftDic->path()->c_str();
+                std::string stringValue = taop->stringValue()->c_str();
+                int itemWidth = taop->itemWidth();
+                int itemHeight = taop->itemHeight();
+                labelAtlas->setProperty(stringValue,
+                                        cmfPath,
+                                        itemWidth,
+                                        itemHeight,
+                                        taop->startCharMap()->c_str());
+                break;
+            }
+            case 1:
+                CCLOG("Wrong res type of LabelAtlas!");
+                break;
+            default:
+                break;
+        }
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void TextAtlasReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -181,7 +223,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
     void TextAtlasReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -293,5 +334,5 @@ namespace cocostudio
         
         labelAtlas->setOpacity(opacity);
     }
-    /**/
+
 }

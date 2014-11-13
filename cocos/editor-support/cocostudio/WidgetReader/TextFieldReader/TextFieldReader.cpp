@@ -4,8 +4,12 @@
 #include "ui/UITextField.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -216,7 +220,71 @@ namespace cocostudio
 
     }
     
-    /* peterson xml */
+    /* peterson */
+    void TextFieldReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        TextField* textField = static_cast<TextField*>(widget);
+        auto txtfldop = options->textFieldOptions();
+        
+        /*
+         bool IsCustomSize = txtfldop->isCustomSize();
+         widget->ignoreContentAdaptWithSize(IsCustomSize);
+         
+         if (IsCustomSize)
+         {
+         auto widgetOptions = options->widgetOptions();
+         auto f_size = widgetOptions->size();
+         Size size(f_size->width(), f_size->height());
+         textField->setContentSize(size);
+         }
+         */
+        
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        WidgetReader::setAnchorPointForWidget(widget, options);
+        
+        textField->setUnifySizeEnabled(false);
+        
+        std::string placeholder = txtfldop->placeHolder()->c_str();
+        textField->setPlaceHolder(placeholder);
+        
+        std::string text = txtfldop->text()->c_str();
+        textField->setString(text);
+        
+        int fontSize = txtfldop->fontSize();
+        textField->setFontSize(fontSize);
+        
+        std::string fontName = txtfldop->fontName()->c_str();
+        textField->setFontName(fontName);
+        
+        bool maxLengthEnabled = txtfldop->maxLengthEnabled();
+        textField->setMaxLengthEnabled(maxLengthEnabled);
+        
+        if (maxLengthEnabled)
+        {
+            int maxLength = txtfldop->maxLength();
+            textField->setMaxLength(maxLength);
+        }
+        bool passwordEnabled = txtfldop->passwordEnabled();
+        textField->setPasswordEnabled(passwordEnabled);
+        if (passwordEnabled)
+        {
+            std::string passwordStyleText = txtfldop->passwordStyleText()->c_str();
+            textField->setPasswordStyleText(passwordStyleText.c_str());
+        }
+        
+        
+        auto resourceData = txtfldop->fontResource();
+        std::string path = resourceData->path()->c_str();
+        if (path != "")
+        {
+            textField->setFontName(path);
+        }
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void TextFieldReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -375,5 +443,5 @@ namespace cocostudio
         
         textField->setOpacity(opacity);
     }
-    /**/
+
 }

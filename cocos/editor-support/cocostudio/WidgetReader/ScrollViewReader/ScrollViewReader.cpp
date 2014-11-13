@@ -4,8 +4,11 @@
 #include "ui/UIScrollView.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -95,9 +98,7 @@ namespace cocostudio
         ScrollView* scrollView = static_cast<ScrollView*>(widget);
 		const protocolbuffers::ScrollViewOptions& options = nodeTree.scrollviewoptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         scrollView->setClippingEnabled(options.clipable());
         
@@ -214,7 +215,6 @@ namespace cocostudio
         widget->setFlippedY(flipY);
     }
     
-    /* peterson xml */
     void ScrollViewReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -569,5 +569,80 @@ namespace cocostudio
 //        scrollView->setBackGroundImageColor(Color3B(bgimg_red, bgimg_green, bgimg_blue));
 //        scrollView->setBackGroundImageOpacity(bgimg_opacity);
     }
+    
+    /* peterson */
+    void ScrollViewReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        ScrollView* scrollView = static_cast<ScrollView*>(widget);
+        auto scrolop = options->scrollViewOptions();
+        
+        bool clipEnabled = scrolop->clipEnabled();
+        scrollView->setClippingEnabled(clipEnabled);
+        
+        bool backGroundScale9Enabled = scrolop->backGroundScale9Enabled();
+        scrollView->setBackGroundImageScale9Enabled(backGroundScale9Enabled);
+        
+        
+        auto f_bgColor = scrolop->bgColor();
+        Color3B bgColor(f_bgColor->r(), f_bgColor->g(), f_bgColor->b());
+        auto f_bgStartColor = scrolop->bgStartColor();
+        Color3B bgStartColor(f_bgStartColor->r(), f_bgStartColor->g(), f_bgStartColor->b());
+        auto f_bgEndColor = scrolop->bgEndColor();
+        Color3B bgEndColor(f_bgEndColor->r(), f_bgEndColor->g(), f_bgEndColor->b());
+        
+        auto f_colorVecor = scrolop->colorVector();
+        Vec2 colorVector(f_colorVecor->vectorX(), f_colorVecor->vectorY());
+        scrollView->setBackGroundColorVector(colorVector);
+        
+        int bgColorOpacity = scrolop->bgColorOpacity();
+        
+        int colorType = scrolop->colorType();
+        scrollView->setBackGroundColorType(Layout::BackGroundColorType(colorType));
+        
+        scrollView->setBackGroundColor(bgStartColor, bgEndColor);
+        scrollView->setBackGroundColor(bgColor);
+        scrollView->setBackGroundColorOpacity(bgColorOpacity);
+        
+        
+        auto imageFileNameDic = scrolop->backGroundImageData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        scrollView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
+        
+        
+        if (backGroundScale9Enabled)
+        {
+            auto f_capInsets = scrolop->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            scrollView->setBackGroundImageCapInsets(capInsets);
+            
+            auto f_scale9Size = scrolop->scale9Size();
+            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
+            scrollView->setContentSize(scale9Size);
+        }
+        
+        auto widgetOptions = options->widgetOptions();
+        auto f_color = widgetOptions->color();
+        Color3B color(f_color->r(), f_color->g(), f_color->b());
+        scrollView->setColor(color);
+        
+        int opacity = widgetOptions->alpha();
+        scrollView->setOpacity(opacity);
+        
+        auto f_innerSize = scrolop->innerSize();
+        Size innerSize(f_innerSize->width(), f_innerSize->height());
+        scrollView->setInnerContainerSize(innerSize);
+        int direction = scrolop->direction();
+        scrollView->setDirection((ScrollView::Direction)direction);
+        bool bounceEnabled = scrolop->bounceEnabled();
+        scrollView->setBounceEnabled(bounceEnabled);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
     /**/
+
 }

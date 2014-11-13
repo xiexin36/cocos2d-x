@@ -5,8 +5,12 @@
 #include "ui/UILayout.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -55,9 +59,7 @@ namespace cocostudio
         PageView* pageView = static_cast<PageView*>(widget);
         const protocolbuffers::PageViewOptions& options = nodeTree.pageviewoptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         CCLOG("options.clipable() = %d", options.clipable());
         pageView->setClippingEnabled(options.clipable());
@@ -161,7 +163,73 @@ namespace cocostudio
         widget->setFlippedY(flipY);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void PageViewReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        PageView* pageView = static_cast<PageView*>(widget);
+        auto pageop = options->pageViewOptions();
+        
+        bool clipEnabled = pageop->clipEnabled();
+        pageView->setClippingEnabled(clipEnabled);
+        
+        bool backGroundScale9Enabled = pageop->backGroundScale9Enabled();
+        pageView->setBackGroundImageScale9Enabled(backGroundScale9Enabled);
+        
+        
+        auto f_bgColor = pageop->bgColor();
+        Color3B bgColor(f_bgColor->r(), f_bgColor->g(), f_bgColor->b());
+        auto f_bgStartColor = pageop->bgStartColor();
+        Color3B bgStartColor(f_bgStartColor->r(), f_bgStartColor->g(), f_bgStartColor->b());
+        auto f_bgEndColor = pageop->bgEndColor();
+        Color3B bgEndColor(f_bgEndColor->r(), f_bgEndColor->g(), f_bgEndColor->b());
+        
+        auto f_colorVecor = pageop->colorVector();
+        Vec2 colorVector(f_colorVecor->vectorX(), f_colorVecor->vectorY());
+        pageView->setBackGroundColorVector(colorVector);
+        
+        int bgColorOpacity = pageop->bgColorOpacity();
+        
+        int colorType = pageop->colorType();
+        pageView->setBackGroundColorType(Layout::BackGroundColorType(colorType));
+        
+        pageView->setBackGroundColor(bgStartColor, bgEndColor);
+        pageView->setBackGroundColor(bgColor);
+        pageView->setBackGroundColorOpacity(bgColorOpacity);
+        
+        
+        auto imageFileNameDic = pageop->backGroundImageData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        pageView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
+        
+        
+        if (backGroundScale9Enabled)
+        {
+            auto f_capInsets = pageop->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            pageView->setBackGroundImageCapInsets(capInsets);
+            
+            auto f_scale9Size = pageop->scale9Size();
+            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
+            pageView->setContentSize(scale9Size);
+        }
+        
+        auto widgetOptions = options->widgetOptions();
+        auto f_color = widgetOptions->color();
+        Color3B color(f_color->r(), f_color->g(), f_color->b());
+        pageView->setColor(color);
+        
+        int opacity = widgetOptions->alpha();
+        pageView->setOpacity(opacity);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void PageViewReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -469,5 +537,5 @@ namespace cocostudio
 //        pageView->setBackGroundImageOpacity(bgimg_opacity);
         
     }
-    /**/
+
 }

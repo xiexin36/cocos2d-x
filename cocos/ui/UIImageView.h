@@ -111,7 +111,7 @@ public:
     virtual Size getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
     
-    /* peterson */
+    /* temp */
     const std::string& getTextureFile() const { return _textureFile; };
     const TextureResType getTextureResType() const { return _imageTexType; };
     /**/

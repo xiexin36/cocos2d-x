@@ -105,7 +105,7 @@ public:
     
     virtual void adaptRenderers() override;
     
-    /* peterson */
+    /* temp */
     const std::string& getCharMapFileName() const { return _charMapFileName; };
     const int getItemWidth() const { return _itemWidth; };
     const int getItemHeight() const { return _itemHeight; };

@@ -4,8 +4,12 @@
 #include "ui/UITextBMFont.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -109,6 +113,42 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
+    /* peterson */
+    void TextBMFontReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        TextBMFont* labelBMFont = static_cast<TextBMFont*>(widget);
+        auto tbmfop = options->textBMFontOptions();
+        
+        auto cmftDic = tbmfop->fileNameData();
+        int cmfType = cmftDic->resourceType();
+        switch (cmfType)
+        {
+            case 0:
+            {
+                const char* cmfPath = cmftDic->path()->c_str();
+                labelBMFont->setFntFile(cmfPath);
+                break;
+            }
+                
+            case 1:
+                CCLOG("Wrong res type of LabelAtlas!");
+                break;
+                
+            default:
+                break;
+        }
+        
+        std::string text = tbmfop->text()->c_str();
+        labelBMFont->setString(text);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void TextBMFontReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -146,7 +186,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
     void TextBMFontReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -232,5 +271,5 @@ namespace cocostudio
         
         labelBMFont->setOpacity(opacity);
     }
-    /**/
+
 }

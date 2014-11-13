@@ -4637,7 +4637,7 @@ void ProtocolBuffersSerialize::setZOrderFrame(protocolbuffers::TimeLineIntFrame 
 }
 /**/
 
-/* peterson json */
+/* json */
 /* serialize protocol buffers from json */
 void ProtocolBuffersSerialize::serializeProtocolBuffersWithJson(const std::string &protocolbuffersFileName,
                                                            const std::string &jsonFileName)

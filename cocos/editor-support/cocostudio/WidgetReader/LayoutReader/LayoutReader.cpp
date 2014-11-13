@@ -7,8 +7,11 @@
 #include "ui/UIPageView.h"
 #include "ui/UIListView.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -319,9 +322,7 @@ namespace cocostudio
         Layout* panel = static_cast<Layout*>(widget);
 		const protocolbuffers::PanelOptions& options = nodeTree.paneloptions();
 
-		/* peterson */
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-		/**/
         
         panel->setClippingEnabled(options.clipable());
         
@@ -472,7 +473,73 @@ namespace cocostudio
         widget->setFlippedY(flipY);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void LayoutReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        Layout* panel = static_cast<Layout*>(widget);
+        auto layop = options->panelOptions();
+        
+        bool clipEnabled = layop->clipEnabled();
+        panel->setClippingEnabled(clipEnabled);
+        
+        bool backGroundScale9Enabled = layop->backGroundScale9Enabled();
+        panel->setBackGroundImageScale9Enabled(backGroundScale9Enabled);
+        
+        
+        auto f_bgColor = layop->bgColor();
+        Color3B bgColor(f_bgColor->r(), f_bgColor->g(), f_bgColor->b());
+        auto f_bgStartColor = layop->bgStartColor();
+        Color3B bgStartColor(f_bgStartColor->r(), f_bgStartColor->g(), f_bgStartColor->b());
+        auto f_bgEndColor = layop->bgEndColor();
+        Color3B bgEndColor(f_bgEndColor->r(), f_bgEndColor->g(), f_bgEndColor->b());
+        
+        auto f_colorVecor = layop->colorVector();
+        Vec2 colorVector(f_colorVecor->vectorX(), f_colorVecor->vectorY());
+        panel->setBackGroundColorVector(colorVector);
+        
+        int bgColorOpacity = layop->bgColorOpacity();
+        
+        int colorType = layop->colorType();
+        panel->setBackGroundColorType(Layout::BackGroundColorType(colorType));
+        
+        panel->setBackGroundColor(bgStartColor, bgEndColor);
+        panel->setBackGroundColor(bgColor);
+        panel->setBackGroundColorOpacity(bgColorOpacity);
+        
+        
+        auto imageFileNameDic = layop->backGroundImageData();
+        int imageFileNameType = imageFileNameDic->resourceType();
+        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        panel->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
+        
+        
+        if (backGroundScale9Enabled)
+        {
+            auto f_capInsets = layop->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            panel->setBackGroundImageCapInsets(capInsets);
+            
+            auto f_scale9Size = layop->scale9Size();
+            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
+            panel->setContentSize(scale9Size);
+        }
+        
+        auto widgetOptions = options->widgetOptions();
+        auto f_color = widgetOptions->color();
+        Color3B color(f_color->r(), f_color->g(), f_color->b());
+        panel->setColor(color);
+        
+        int opacity = widgetOptions->alpha();
+        panel->setOpacity(opacity);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void LayoutReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -777,5 +844,4 @@ namespace cocostudio
 //        panel->setBackGroundImageColor(Color3B(bgimg_red, bgimg_green, bgimg_blue));
 //        panel->setBackGroundImageOpacity(bgimg_opacity);
     }
-    /**/
 }

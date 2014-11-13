@@ -4,8 +4,11 @@
 #include "ui/UIButton.h"
 #include "cocostudio/CocoLoader.h"
 #include "../../CSParseBinary.pb.h"
-/* peterson xml */
 #include "tinyxml2/tinyxml2.h"
+/* peterson */
+#include "flatbuffers/flatbuffers.h"
+
+#include "cocostudio/CSParseBinary_generated.h"
 /**/
 
 USING_NS_CC;
@@ -332,7 +335,76 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson xml */
+    /* peterson */
+    void ButtonReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    {
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        
+        Button* button = static_cast<Button*>(widget);
+        auto bop = options->buttonOptions();
+        
+        bool scale9Enabled = bop->scale9Enabled();
+        button->setScale9Enabled(scale9Enabled);
+        
+        
+        auto normalDic = bop->normalData();
+        int normalType = normalDic->resourceType();
+        std::string normalTexturePath = this->getResourcePath(normalDic->path()->c_str(), (Widget::TextureResType)normalType);
+        button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
+        
+        auto pressedDic = bop->pressedData();
+        int pressedType = pressedDic->resourceType();
+        std::string pressedTexturePath = this->getResourcePath(pressedDic->path()->c_str(), (Widget::TextureResType)pressedType);
+        button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
+        
+        auto disabledDic = bop->disabledData();
+        int disabledType = disabledDic->resourceType();
+        std::string disabledTexturePath = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
+        button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
+        
+        if (scale9Enabled)
+        {
+            button->setUnifySizeEnabled(false);
+            button->ignoreContentAdaptWithSize(false);
+            
+            auto f_capInsets = bop->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            button->setCapInsets(capInsets);
+            
+            Size scale9Size(bop->scale9Size()->width(), bop->scale9Size()->height());
+            button->setContentSize(scale9Size);
+        }
+        
+        std::string titleText = bop->text()->c_str();
+        button->setTitleText(titleText);
+        
+        auto textColor = bop->textColor();
+        Color3B titleColor(textColor->r(), textColor->g(), textColor->b());
+        button->setTitleColor(titleColor);
+        
+        int titleFontSize = bop->fontSize();
+        button->setTitleFontSize(titleFontSize);
+        
+        std::string titleFontName = bop->fontName()->c_str();
+        button->setTitleFontName(titleFontName);
+        
+        auto resourceData = bop->fontResource();
+        std::string path = resourceData->path()->c_str();
+        if (path != "")
+        {
+            button->setTitleFontName(path);
+        }
+        
+        bool displaystate = bop->displaystate();
+        button->setBright(displaystate);
+        button->setEnabled(displaystate);
+        
+        
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+    }
+    /**/
+    
     void ButtonReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
     {
         WidgetReader::setPropsFromXML(widget, objectData);
@@ -678,5 +750,4 @@ namespace cocostudio
         button->setColor(Color3B(cri,cgi,cbi));
         button->setOpacity(opacity);
     }
-    /**/
 }
