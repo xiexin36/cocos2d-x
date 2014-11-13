@@ -110,10 +110,6 @@ public:
     ActionTimeline* createActionWithFlatBuffersForSimulator(flatbuffers::FlatBufferBuilder* builder);
     /**/
     
-    ActionTimeline* createActionFromXML(const std::string& fileName);
-    ActionTimeline* loadAnimationActionWithFileFromXML(const std::string& fileName);
-    ActionTimeline* loadActionTimelineFromXML(const tinyxml2::XMLElement* animationElement);
-    
 protected:
 
     Timeline* loadTimeline(const rapidjson::Value& json);
@@ -158,19 +154,7 @@ protected:
     Frame* loadColorFrameWithFlatBuffers        (const flatbuffers::TimeLineColorFrame* flatbuffers);
     Frame* loadTextureFrameWithFlatBuffers      (const flatbuffers::TimeLineTextureFrame* flatbuffers);
     /**/
-    
-    
-    Timeline* loadTimelineFromXML(const tinyxml2::XMLElement* timelineElement);
-    
-    Frame* loadVisibleFrameFromXML     (const tinyxml2::XMLElement* frameElement);
-    Frame* loadPositionFrameFromXML    (const tinyxml2::XMLElement* frameElement);
-    Frame* loadScaleFrameFromXML       (const tinyxml2::XMLElement* frameElement);
-	Frame* loadRotationSkewFrameFromXML(const tinyxml2::XMLElement* frameElement);
-    Frame* loadAnchorPointFrameFromXML (const tinyxml2::XMLElement* frameElement);
-    Frame* loadColorFrameFromXML       (const tinyxml2::XMLElement* frameElement);
-    Frame* loadTextureFrameFromXML     (const tinyxml2::XMLElement* frameElement);
-    Frame* loadEventFrameFromXML       (const tinyxml2::XMLElement* frameElement);
-    Frame* loadZOrderFrameFromXML      (const tinyxml2::XMLElement* frameElement);
+            
 
 protected:
 

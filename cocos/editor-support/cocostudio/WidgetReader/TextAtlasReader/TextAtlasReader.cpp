@@ -140,44 +140,6 @@ namespace cocostudio
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
     }
     
-    /* peterson */
-    void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
-    {
-        WidgetReader::setPropsWithFlatBuffers(widget, options);
-        
-        TextAtlas* labelAtlas = static_cast<TextAtlas*>(widget);
-        auto taop = options->textAtlasOptions();
-        
-        auto cmftDic = taop->charMapFileData();
-        int cmfType = cmftDic->resourceType();
-        switch (cmfType)
-        {
-            case 0:
-            {
-                const char* cmfPath = cmftDic->path()->c_str();
-                std::string stringValue = taop->stringValue()->c_str();
-                int itemWidth = taop->itemWidth();
-                int itemHeight = taop->itemHeight();
-                labelAtlas->setProperty(stringValue,
-                                        cmfPath,
-                                        itemWidth,
-                                        itemHeight,
-                                        taop->startCharMap()->c_str());
-                break;
-            }
-            case 1:
-                CCLOG("Wrong res type of LabelAtlas!");
-                break;
-            default:
-                break;
-        }
-        
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
-    }
-    /**/
-    
     void TextAtlasReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
     {
         WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
@@ -223,116 +185,42 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    void TextAtlasReader::setPropsFromXML(cocos2d::ui::Widget *widget, const tinyxml2::XMLElement *objectData)
+    /* peterson */
+    void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
     {
-        WidgetReader::setPropsFromXML(widget, objectData);
+        WidgetReader::setPropsWithFlatBuffers(widget, options);
         
         TextAtlas* labelAtlas = static_cast<TextAtlas*>(widget);
+        auto taop = options->textAtlasOptions();
         
-        std::string xmlPath = GUIReader::getInstance()->getFilePath();
-        
-        std::string stringValue = "", startChar = "";
-        int itemWidth = 0, itemHeight = 0;
-        int resourceType = 0;
-        std::string path = "", plistFile = "";
-        float width = 0.0f, height = 0.0f;
-        
-        int opacity = 255;
-        
-        
-        // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
+        auto cmftDic = taop->charMapFileData();
+        int cmfType = cmftDic->resourceType();
+        switch (cmfType)
         {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "LabelText")
+            case 0:
             {
-                stringValue = value;
+                const char* cmfPath = cmftDic->path()->c_str();
+                std::string stringValue = taop->stringValue()->c_str();
+                int itemWidth = taop->itemWidth();
+                int itemHeight = taop->itemHeight();
+                labelAtlas->setProperty(stringValue,
+                                        cmfPath,
+                                        itemWidth,
+                                        itemHeight,
+                                        taop->startCharMap()->c_str());
+                break;
             }
-            else if (name == "CharWidth")
-            {
-                itemWidth = atoi(value.c_str());
-            }
-            else if (name == "CharHeight")
-            {
-                itemHeight = atoi(value.c_str());
-            }
-            else if (name == "StartChar")
-            {
-                startChar = value;
-            }
-            else if (name == "Alpha")
-            {
-                opacity = atoi(value.c_str());
-            }
-            
-            attribute = attribute->Next();
+            case 1:
+                CCLOG("Wrong res type of LabelAtlas!");
+                break;
+            default:
+                break;
         }
         
-        // child elements
-        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
-        while (child)
-        {
-            std::string name = child->Name();
-            
-            if (name == "LabelAtlasFileImage_CNB")
-            {
-                attribute = child->FirstAttribute();
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "Path")
-                    {
-                        path = value;
-                    }
-                    else if (name == "Type")
-                    {
-                        resourceType = (value == "Normal" || value == "Default" || value == "MarkedSubImage") ? 0 : 1;
-                    }
-                    else if (name == "Plist")
-                    {
-                        plistFile = value;
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-            }
-            else if (name == "Size")
-            {
-                attribute = child->FirstAttribute();
-                width = 0.0f; height = 0.0f;
-                
-                while (attribute)
-                {
-                    name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "X")
-                    {
-                        width = atof(value.c_str());
-                    }
-                    else if (name == "Y")
-                    {
-                        height = atof(value.c_str());
-                    }
-                    
-                    attribute = attribute->Next();
-                }
-                
-                labelAtlas->setContentSize(Size(width, height));
-            }
-            
-            child = child->NextSiblingElement();
-        }
         
-        labelAtlas->setProperty(stringValue, xmlPath + path, itemWidth, itemHeight, startChar);
-        
-        labelAtlas->setOpacity(opacity);
+        // other commonly protperties
+        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
+    /**/
 
 }

@@ -28,7 +28,6 @@
 #include "cocos2d.h"
 #include "ExtensionMacros.h"
 #include "cocostudio/CocosStudioExport.h"
-#include "tinyxml2/tinyxml2.h"
 
 namespace flatbuffers
 {
@@ -76,6 +75,11 @@ namespace flatbuffers
     struct TimeLinePointFrame;
     struct TimeLineColorFrame;
     struct TimeLineTextureFrame;
+}
+
+namespace tinyxml2
+{
+    class XMLElement;
 }
 
 class CC_STUDIO_DLL FlatBuffersSerialize

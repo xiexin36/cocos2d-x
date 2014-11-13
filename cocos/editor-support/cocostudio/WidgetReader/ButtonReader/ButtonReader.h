@@ -49,9 +49,7 @@ namespace cocostudio
         
         /* peterson */
         virtual void setPropsWithFlatBuffers(cocos2d::ui::Widget* widget, const flatbuffers::Options* options) override;
-        /**/
-        
-        virtual void setPropsFromXML(cocos2d::ui::Widget* widget, const tinyxml2::XMLElement* objectData);
+        /**/        
         
     };
 }
