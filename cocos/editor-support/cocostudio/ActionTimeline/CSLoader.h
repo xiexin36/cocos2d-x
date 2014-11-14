@@ -104,8 +104,8 @@ public:
     cocos2d::Node* nodeWithFlatBuffersFile(const std::string& fileName);
     cocos2d::Node* nodeWithFlatBuffers(const flatbuffers::NodeTree* nodetree);
     /**/
-    /* peterson create node with flat buffers for simulator of cocosstudio editor */
-    cocos2d::Node* createNodeWithFlatBuffersForSimulator(const flatbuffers::FlatBufferBuilder* builder);
+    /* peterson create node with flat buffers from .csd for simulator of cocosstudio editor */
+	cocos2d::Node* createNodeWithFlatBuffersForSimulator(const std::string& filename);
     cocos2d::Node* nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree* nodetree);
     /**/
     
