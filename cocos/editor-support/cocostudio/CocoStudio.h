@@ -67,7 +67,7 @@ THE SOFTWARE.
 /* peterson */
 #include "cocostudio/ActionTimeline/CSLoader.h"
 #include "cocostudio/ProtocolBuffersSerialize.h"
-#include "cocostudio/FlatBuffersSerialize.h"
+//#include "cocostudio/FlatBuffersSerialize.h"
 /**/
 
 #endif

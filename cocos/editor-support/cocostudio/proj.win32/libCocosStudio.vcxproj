@@ -11,6 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\flatc.cpp" />
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_cpp.cpp" />
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_fbs.cpp" />
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_general.cpp" />
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_go.cpp" />
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_text.cpp" />
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_parser.cpp" />
     <ClCompile Include="..\..\..\..\external\protocolBuf\src\google\protobuf\extension_set.cc" />
     <ClCompile Include="..\..\..\..\external\protocolBuf\src\google\protobuf\generated_message_util.cc" />
     <ClCompile Include="..\..\..\..\external\protocolBuf\src\google\protobuf\io\coded_stream.cc" />
@@ -63,6 +70,7 @@
     <ClCompile Include="..\CocoLoader.cpp" />
     <ClCompile Include="..\CSParseBinary.pb.cc" />
     <ClCompile Include="..\DictionaryHelper.cpp" />
+    <ClCompile Include="..\FlatBuffersSerialize.cpp" />
     <ClCompile Include="..\ProtocolBuffersSerialize.cpp" />
     <ClCompile Include="..\TriggerBase.cpp" />
     <ClCompile Include="..\TriggerMng.cpp" />
@@ -83,6 +91,9 @@
     <ClCompile Include="..\WidgetReader\WidgetReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\external\flatbuffers\flatbuffers.h" />
+    <ClInclude Include="..\..\..\..\external\flatbuffers\idl.h" />
+    <ClInclude Include="..\..\..\..\external\flatbuffers\util.h" />
     <ClInclude Include="..\..\..\..\external\json\document.h" />
     <ClInclude Include="..\..\..\..\external\json\filestream.h" />
     <ClInclude Include="..\..\..\..\external\json\internal\pow10.h" />
@@ -162,8 +173,10 @@
     <ClInclude Include="..\CocoLoader.h" />
     <ClInclude Include="..\CocoStudio.h" />
     <ClInclude Include="..\CSParseBinary.pb.h" />
+    <ClInclude Include="..\CSParseBinary_generated.h" />
     <ClInclude Include="..\DictionaryHelper.h" />
     <ClInclude Include="..\CocosStudioExport.h" />
+    <ClInclude Include="..\FlatBuffersSerialize.h" />
     <ClInclude Include="..\ProtocolBuffersSerialize.h" />
     <ClInclude Include="..\TriggerBase.h" />
     <ClInclude Include="..\TriggerMng.h" />
