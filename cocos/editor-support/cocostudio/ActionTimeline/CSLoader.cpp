@@ -36,6 +36,7 @@
 #include "flatbuffers/util.h"
 
 #include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/FlatBuffersSerialize.h"
 /**/
 
 #include <fstream>
