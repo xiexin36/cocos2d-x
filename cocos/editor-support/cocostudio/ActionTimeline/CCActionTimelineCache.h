@@ -106,8 +106,8 @@ public:
     ActionTimeline* createActionWithFlatBuffersFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithFlatBuffersFile(const std::string& fileName);
     /**/
-    /* peterson create ActionTimeline with flat buffers for simulator of cocosstudio editor */
-    ActionTimeline* createActionWithFlatBuffersForSimulator(flatbuffers::FlatBufferBuilder* builder);
+    /* peterson create ActionTimeline with flat buffers from .csd for simulator of cocosstudio editor */
+	ActionTimeline* createActionWithFlatBuffersForSimulator(const std::string& fileName);
     /**/
     
 protected:

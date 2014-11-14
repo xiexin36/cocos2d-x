@@ -138,15 +138,15 @@ public:
     
     /* create flat buffers with XML */
     flatbuffers::FlatBufferBuilder* createFlatBuffersWithXMLFileForSimulator(const std::string& xmlFileName);
-    flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement* objectData);
-    /**/
+    flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement* objectData);	
+	/**/
+
     
     int getResourceType(std::string key);
     
 private:
     bool _isSimulator;
-    flatbuffers::FlatBufferBuilder* _builder;
-    flatbuffers::Offset<flatbuffers::CSParseBinary>* _csparsebinary;
+    flatbuffers::FlatBufferBuilder* _builder;    
     std::vector<flatbuffers::Offset<flatbuffers::String>> _textures;
     std::vector<flatbuffers::Offset<flatbuffers::String>> _texturePngs;
 };

@@ -1490,6 +1490,13 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         {
             node = createNodeWithFlatBuffersFile(filePath);
             setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);
+
+			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
+			if (action)
+			{
+				node->runAction(action);
+				action->gotoFrameAndPlay(0);
+			}
         }
     }
     else if (classname == "Particle")
@@ -1523,7 +1530,7 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         
         Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-//        reader->setPropsWithFlatBuffers(widget, options);
+        reader->setPropsWithFlatBuffers(widget, options);
         
         auto widgetOptions = options->widgetOptions();
         int actionTag = widgetOptions->actionTag();
@@ -1868,8 +1875,12 @@ void CSLoader::setPropsForComAudioWithFlatBuffers(cocos2d::Component *component,
 /**/
 
 /* peterson create node with flat buffers for simulator of cocosstudio editor */
-Node* CSLoader::createNodeWithFlatBuffersForSimulator(const flatbuffers::FlatBufferBuilder *builder)
-{
+Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filename)
+{	
+	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+
+	FlatBufferBuilder* builder = fbs->createFlatBuffersWithXMLFileForSimulator(filename);
+
     auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());
     auto nodeTree = csparsebinary->nodeTree();
     Node* node = nodeWithFlatBuffersForSimulator(nodeTree);
@@ -1909,11 +1920,16 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         std::string filePath = projectNodeOptions->fileName()->c_str();
         CCLOG("filePath = %s", filePath.c_str());
         if (filePath != "")
-        {
-            FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-            FlatBufferBuilder* builder = fbs->createFlatBuffersWithXMLFileForSimulator(filePath);
-            node = createNodeWithFlatBuffersForSimulator(builder);
+        {            
+			node = createNodeWithFlatBuffersForSimulator(filePath);
             setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);
+			
+			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
+			if (action)
+			{
+				node->runAction(action);
+				action->gotoFrameAndPlay(0);
+			}
         }
     }
     else if (classname == "Particle")

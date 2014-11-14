@@ -35,6 +35,8 @@ THE SOFTWARE.
 #include "flatbuffers/util.h"
 
 #include "cocostudio/CSParseBinary_generated.h"
+
+#include "cocostudio/FlatBuffersSerialize.h"
 /**/
 
 #include <fstream>
@@ -1060,8 +1062,11 @@ Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::T
 /**/
     
 /* peterson create ActionTimeline with flat buffers for simulator of cocosstudio editor */
-ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(flatbuffers::FlatBufferBuilder *builder)
+ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(const std::string& fileName)
 {
+	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+	auto builder = fbs->createFlatBuffersWithXMLFileForSimulator(fileName);
+
     ActionTimeline* action = ActionTimeline::create();
     
     auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());

@@ -65,8 +65,7 @@ FlatBuffersSerialize* FlatBuffersSerialize::getInstance()
 
 FlatBuffersSerialize::FlatBuffersSerialize()
 : _isSimulator(false)
-, _builder(nullptr)
-, _csparsebinary(nullptr)
+, _builder(new FlatBufferBuilder())
 {
     
 }
@@ -74,11 +73,17 @@ FlatBuffersSerialize::FlatBuffersSerialize()
 FlatBuffersSerialize::~FlatBuffersSerialize()
 {
     purge();
+	if (_builder != nullptr)
+	{
+		_builder->Clear();
+		CC_SAFE_DELETE(_builder);
+	}
 }
 
 void FlatBuffersSerialize::purge()
 {
     CC_SAFE_DELETE(sharedFlatBuffersSerialize);
+	
 }
 
 /*
@@ -218,8 +223,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     
     if (serializeEnabled)
     {
-        FlatBufferBuilder builder;
-        _builder = &builder;
+		_builder->Clear();        
         
         Offset<NodeTree> nodeTree;
         Offset<NodeAction> aciton;
@@ -245,20 +249,20 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
             child = child->NextSiblingElement();
         }
         
-        auto csparsebinary = CreateCSParseBinary(builder,
-                                                 builder.CreateVector(_textures),
-                                                 builder.CreateVector(_texturePngs),
+        auto csparsebinary = CreateCSParseBinary(*_builder,
+                                                 _builder->CreateVector(_textures),
+												 _builder->CreateVector(_texturePngs),
                                                  nodeTree,
                                                  aciton);
-        builder.Finish(csparsebinary);        
+		_builder->Finish(csparsebinary);
         
         
         std::string outFullPath = FileUtils::getInstance()->fullPathForFilename(flatbuffersFileName);
         size_t pos = outFullPath.find_last_of('.');
         std::string convert = outFullPath.substr(0, pos).append(".csb");
         auto save = flatbuffers::SaveFile(convert.c_str(),
-                                          reinterpret_cast<const char *>(builder.GetBufferPointer()),
-                                          builder.GetSize(),
+										  reinterpret_cast<const char *>(_builder->GetBufferPointer()),
+										  _builder->GetSize(),
                                           true);
         if (!save)
         {
@@ -668,11 +672,11 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTree(const tinyxml2::XMLElement
     }
     //
     
-    
-    return CreateNodeTree(*_builder,
-                          _builder->CreateString(classname),
-                          _builder->CreateVector(children),
-                          options);
+	Offset<NodeTree> a = CreateNodeTree(*_builder,
+		_builder->CreateString(classname),
+		_builder->CreateVector(children),
+		options);
+    return a;
 }
 
 Offset<WidgetOptions> FlatBuffersSerialize::createNodeOptions(const tinyxml2::XMLElement *objectData)
@@ -4542,28 +4546,6 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
                 serializeEnabled = true;
                 rootType = "NodeObjectData";
             }
-            //
-            
-            //
-            //            while (attribute)
-            //            {
-            //                std::string name = attribute->Name();
-            //                std::string value = attribute->Value();
-            //                CCLOG("attribute name = %s, value = %s", name, value);
-            //                if (name == "")
-            //                {
-            //                    serializeEnabled = true;
-            //                    rootType = (strcmp("", value) == 0) ? "Node" : value;
-            //                }
-            //
-            //                if (serializeEnabled)
-            //                {
-            //                    break;
-            //                }
-            //
-            //                attribute = attribute->Next();
-            //            }
-            //
         }
         
         if (serializeEnabled)
@@ -4584,9 +4566,8 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
     
     if (serializeEnabled)
     {
-        FlatBufferBuilder builder;
-        _builder = &builder;
-        
+		_builder->Clear();
+
         Offset<NodeTree> nodeTree;
         Offset<NodeAction> aciton;
         
@@ -4611,15 +4592,13 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
             child = child->NextSiblingElement();
         }
         
-        auto csparsebinary = CreateCSParseBinary(builder,
-                                                 builder.CreateVector(_textures),
-                                                 builder.CreateVector(_texturePngs),
+		auto csparsebinary = CreateCSParseBinary(*_builder,
+			_builder->CreateVector(_textures),
+			_builder->CreateVector(_texturePngs),
                                                  nodeTree,
-                                                 aciton);
-        _csparsebinary = &csparsebinary;
-        builder.Finish(csparsebinary);
+                                                 aciton);        
+		_builder->Finish(csparsebinary);
     }
-    
     return _builder;
 }
 
