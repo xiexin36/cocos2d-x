@@ -94,6 +94,9 @@
     <Filter Include="json\protocolBuf\stubs">
       <UniqueIdentifier>{022a7b79-410a-4ccb-a955-fdc44c403b4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="json\FlatBuffers">
+      <UniqueIdentifier>{4e197a49-0b3b-45d8-8c6d-2cf0410cb206}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\CCComAttribute.cpp">
@@ -304,6 +307,30 @@
       <Filter>TimelineAction</Filter>
     </ClCompile>
     <ClCompile Include="..\ActionTimeline\CSLoader.cpp">
+      <Filter>TimelineAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\flatc.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_cpp.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_fbs.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_general.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_go.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_gen_text.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\flatbuffers\idl_parser.cpp">
+      <Filter>json\FlatBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\FlatBuffersSerialize.cpp">
       <Filter>TimelineAction</Filter>
     </ClCompile>
   </ItemGroup>
@@ -604,6 +631,21 @@
       <Filter>TimelineAction</Filter>
     </ClInclude>
     <ClInclude Include="..\ActionTimeline\CSLoader.h">
+      <Filter>TimelineAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\external\flatbuffers\flatbuffers.h">
+      <Filter>json\FlatBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\external\flatbuffers\idl.h">
+      <Filter>json\FlatBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\external\flatbuffers\util.h">
+      <Filter>json\FlatBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CSParseBinary_generated.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FlatBuffersSerialize.h">
       <Filter>TimelineAction</Filter>
     </ClInclude>
   </ItemGroup>
