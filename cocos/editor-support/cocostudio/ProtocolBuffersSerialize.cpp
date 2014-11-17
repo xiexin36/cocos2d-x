@@ -960,6 +960,7 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
 	options->set_visible(true);
 	options->set_scalex(1.0f);
 	options->set_scaley(1.0f);
+    options->set_alpha(255);
     
     std::string name = nodeObjectData->Name();
     CCLOG("entity name = %s", name.c_str());

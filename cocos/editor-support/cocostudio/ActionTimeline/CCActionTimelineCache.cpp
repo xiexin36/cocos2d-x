@@ -1091,6 +1091,8 @@ ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(con
             action->addTimeline(timeline);
     }
     
+    fbs->deleteFlatBufferBuilder();
+    
     return action;
 }
 /**/

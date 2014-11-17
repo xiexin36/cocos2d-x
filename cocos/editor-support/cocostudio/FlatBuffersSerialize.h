@@ -92,6 +92,8 @@ public:
     FlatBuffersSerialize();
     ~FlatBuffersSerialize();
     
+    void deleteFlatBufferBuilder();
+    
     std::string test(const std::string& xmlFileName,
                      const std::string& flatbuffersFileName);
     
@@ -138,6 +140,8 @@ public:
     
     /* create flat buffers with XML */
     flatbuffers::FlatBufferBuilder* createFlatBuffersWithXMLFileForSimulator(const std::string& xmlFileName);
+    flatbuffers::Offset<flatbuffers::NodeTree> createNodeTreeForSimulator(const tinyxml2::XMLElement* objectData,
+                                                                          std::string classType);
     flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement* objectData);	
 	/**/
 
