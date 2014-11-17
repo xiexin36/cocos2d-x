@@ -65,7 +65,7 @@ FlatBuffersSerialize* FlatBuffersSerialize::getInstance()
 
 FlatBuffersSerialize::FlatBuffersSerialize()
 : _isSimulator(false)
-, _builder(new FlatBufferBuilder())
+, _builder(nullptr)
 {
     
 }
@@ -73,17 +73,28 @@ FlatBuffersSerialize::FlatBuffersSerialize()
 FlatBuffersSerialize::~FlatBuffersSerialize()
 {
     purge();
+    /*
 	if (_builder != nullptr)
 	{
 		_builder->Clear();
 		CC_SAFE_DELETE(_builder);
 	}
+     */
 }
 
 void FlatBuffersSerialize::purge()
 {
     CC_SAFE_DELETE(sharedFlatBuffersSerialize);
 	
+}
+
+void FlatBuffersSerialize::deleteFlatBufferBuilder()
+{
+    if (_builder != nullptr)
+    {
+        _builder->Clear();
+        CC_SAFE_DELETE(_builder);
+    }
 }
 
 /*
@@ -223,7 +234,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     
     if (serializeEnabled)
     {
-		_builder->Clear();        
+        _builder = new FlatBufferBuilder();
         
         Offset<NodeTree> nodeTree;
         Offset<NodeAction> aciton;
@@ -268,6 +279,8 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
         {
             return "couldn't save files!";
         }
+        
+        deleteFlatBufferBuilder();
     }
     
     return "";
@@ -672,11 +685,10 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTree(const tinyxml2::XMLElement
     }
     //
     
-	Offset<NodeTree> a = CreateNodeTree(*_builder,
-		_builder->CreateString(classname),
-		_builder->CreateVector(children),
-		options);
-    return a;
+    return CreateNodeTree(*_builder,
+                          _builder->CreateString(classname),
+                          _builder->CreateVector(children),
+                          options);
 }
 
 Offset<WidgetOptions> FlatBuffersSerialize::createNodeOptions(const tinyxml2::XMLElement *objectData)
@@ -4566,7 +4578,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
     
     if (serializeEnabled)
     {
-		_builder->Clear();
+        _builder = new FlatBufferBuilder();
 
         Offset<NodeTree> nodeTree;
         Offset<NodeAction> aciton;
@@ -4586,7 +4598,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
             else if (name == "ObjectData") // nodeTree
             {
                 const tinyxml2::XMLElement* objectData = child;
-                nodeTree = createNodeTree(objectData, rootType);
+                nodeTree = createNodeTreeForSimulator(objectData, rootType);
             }
             
             child = child->NextSiblingElement();
@@ -4600,6 +4612,410 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
 		_builder->Finish(csparsebinary);
     }
     return _builder;
+}
+
+Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2::XMLElement *objectData,
+                                                                  std::string classType)
+{
+    std::string classname = classType.substr(0, classType.find("ObjectData"));
+    CCLOG("classname = %s", classname.c_str());
+    
+    std::string name = "";
+    
+    Offset<Options> options;
+    std::vector<Offset<NodeTree>> children;
+    
+    if (classname == "Node")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        options = CreateOptions(*_builder, nodeOptions);
+    }
+    else if (classname == "SingleNode")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        auto singleNodeOptions = createSingleNodeOptions(objectData);
+        options = CreateOptions(*_builder,
+                                nodeOptions,
+                                singleNodeOptions);
+    }
+    else if (classname == "Sprite")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        auto spriteOptions = createSpriteOptions(objectData);
+        options = CreateOptions(*_builder,
+                                nodeOptions,
+                                0, // SingleNodeOptions
+                                spriteOptions);
+    }
+    else if (classname == "Particle")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        auto particleOptions = createParticleOptions(objectData);
+        options = CreateOptions(*_builder,
+                                nodeOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                particleOptions);
+    }
+    else if (classname == "GameMap")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        auto tmxTiledMapOptions = createTMXTiledMapOptions(objectData);
+        options = CreateOptions(*_builder,
+                                nodeOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                tmxTiledMapOptions);
+    }
+    else if (classname == "Button")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto buttonOptions = createButtonOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                buttonOptions);
+    }
+    else if (classname == "CheckBox")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto checkBoxOptions = createCheckBoxOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                checkBoxOptions);
+    }
+    else if (classname == "ImageView")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto imageViewOptions = createImageViewOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                imageViewOptions);
+    }
+    else if (classname == "TextAtlas")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto textAtlasOptions = createTextAltasOptions(objectData);
+        
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                0, // PanelOptions
+                                0, // ScrollViewOptions
+                                0, // PageViewOptions
+                                0, // ListViewOptions
+                                0, // ProjectNodeOptions
+                                0, // ComponentOptions
+                                textAtlasOptions);
+    }
+    else if (classname == "TextBMFont")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto textBMFontOptions = createTextBMFontOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                textBMFontOptions);
+    }
+    else if (classname == "Text")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto textOptions = createTextOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                textOptions);
+    }
+    else if (classname == "TextField")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto textFiledOptions = createTextFiledOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                textFiledOptions);
+    }
+    else if (classname == "LoadingBar")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto loadingBarOptions = createLoadingBarOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                loadingBarOptions);
+    }
+    else if (classname == "Slider")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto sliderOptions = createSliderOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                sliderOptions);
+    }
+    else if (classname == "Panel")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto layoutOptions = createLayoutOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                layoutOptions);
+    }
+    else if (classname == "ScrollView")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto scrollViewOptions = createScrollViewOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                0, // LayoutOptions
+                                scrollViewOptions);
+    }
+    else if (classname == "PageView")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto pageViewOptions = createPageViewOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                0, // LayoutOptions
+                                0, // ScrollViewOptions
+                                pageViewOptions);
+    }
+    else if (classname == "ListView")
+    {
+        auto widgetOptions = createWidgetOptions(objectData);
+        auto listViewOptions = createListViewOptions(objectData);
+        options = CreateOptions(*_builder,
+                                widgetOptions,
+                                0, // SingleNodeOptions,
+                                0, // SpriteOptions,
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                0, // LayoutOptions
+                                0, // ScrollViewOptions
+                                0, // PageViewOptions
+                                listViewOptions);
+    }
+    else if (classname == "ProjectNode")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        auto projectNodeOptions = createProjectNodeOptionsForSimulator(objectData);
+        options = CreateOptions(*_builder,
+                                nodeOptions,
+                                0, // SingleNodeOptions
+                                0, // SpriteOptions
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                0, // PanelOptions
+                                0, // ScrollViewOptions
+                                0, // PageViewOptions
+                                0, // ListViewOptions
+                                projectNodeOptions);
+    }
+    else if (classname == "SimpleAudio")
+    {
+        auto nodeOptions = createNodeOptions(objectData);
+        
+        std::string type = "ComAudio";
+        auto componentOptions = CreateComponentOptions(*_builder,
+                                                       _builder->CreateString(type),
+                                                       createComAudioOptions(objectData));
+        options = CreateOptions(*_builder,
+                                nodeOptions,
+                                0, // SingleNodeOptions
+                                0, // SpriteOptions
+                                0, // ParticleSystemOptions
+                                0, // TMXTiledMapOptions
+                                0, // ButtonOptions
+                                0, // CheckBoxOptions
+                                0, // ImageViewOptions
+                                0, // TextBMFontOptions
+                                0, // TextOptions
+                                0, // TextFieldOptions
+                                0, // LoadingBarOptions
+                                0, // SliderOptions
+                                0, // PanelOptions
+                                0, // ScrollViewOptions
+                                0, // PageViewOptions
+                                0, // ListViewOptions
+                                0, // ProjectNodeOptions
+                                componentOptions);
+    }
+    
+    
+    // children
+    bool containChildrenElement = false;
+    objectData = objectData->FirstChildElement();
+    
+    while (objectData)
+    {
+        CCLOG("objectData name = %s", objectData->Name());
+        
+        if (strcmp("Children", objectData->Name()) == 0)
+        {
+            containChildrenElement = true;
+            break;
+        }
+        
+        objectData = objectData->NextSiblingElement();
+    }
+    
+    if (containChildrenElement)
+    {
+        objectData = objectData->FirstChildElement();
+        CCLOG("element name = %s", objectData->Name());
+        
+        while (objectData)
+        {
+            const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+            bool bHasType = false;
+            while (attribute)
+            {
+                std::string attriname = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (attriname == "ctype")
+                {
+                    children.push_back(createNodeTreeForSimulator(objectData, value));
+                    
+                    bHasType = true;
+                    break;
+                }
+                
+                attribute = attribute->Next();
+            }
+            
+            if(!bHasType)
+            {
+                children.push_back(createNodeTreeForSimulator(objectData, "NodeObjectData"));
+            }
+            
+            objectData = objectData->NextSiblingElement();
+        }
+    }
+    //
+    
+    return CreateNodeTree(*_builder,
+                          _builder->CreateString(classname),
+                          _builder->CreateVector(children),
+                          options);
 }
 
 Offset<ProjectNodeOptions> FlatBuffersSerialize::createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement *objectData)

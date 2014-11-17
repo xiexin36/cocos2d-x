@@ -1878,12 +1878,13 @@ void CSLoader::setPropsForComAudioWithFlatBuffers(cocos2d::Component *component,
 Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filename)
 {	
 	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-
 	FlatBufferBuilder* builder = fbs->createFlatBuffersWithXMLFileForSimulator(filename);
 
     auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());
     auto nodeTree = csparsebinary->nodeTree();
     Node* node = nodeWithFlatBuffersForSimulator(nodeTree);
+    
+    fbs->deleteFlatBufferBuilder();
     
     return node;
 }
@@ -1920,10 +1921,10 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         std::string filePath = projectNodeOptions->fileName()->c_str();
         CCLOG("filePath = %s", filePath.c_str());
         if (filePath != "")
-        {            
+        {
 			node = createNodeWithFlatBuffersForSimulator(filePath);
-            setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);
-			
+            setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);			
+            
 			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
 			if (action)
 			{
@@ -1963,7 +1964,7 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         
         Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-//        reader->setPropsWithFlatBuffers(widget, options);
+        reader->setPropsWithFlatBuffers(widget, options);
         
         auto widgetOptions = options->widgetOptions();
         int actionTag = widgetOptions->actionTag();
@@ -2016,7 +2017,7 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
     for (int i = 0; i < size; ++i)
     {
         auto subNodeTree = children->Get(i);
-        Node* child = nodeWithFlatBuffers(subNodeTree);
+        Node* child = nodeWithFlatBuffersForSimulator(subNodeTree);
         CCLOG("child = %p", child);
         if (child)
         {
