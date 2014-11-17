@@ -3169,6 +3169,8 @@ void ProtocolBuffersSerialize::setPageViewOptions(protocolbuffers::PageViewOptio
     
     PageViewOptions* options = pageViewOptions;
     
+    options->set_colortype(0);
+    
     bool scale9Enabled = false;
 
     // attributes
@@ -3387,6 +3389,8 @@ void ProtocolBuffersSerialize::setScrollViewOptions(protocolbuffers::ScrollViewO
     setWidgetOptions(widgetOptions, scrollViewObjectData);
     
     ScrollViewOptions* options = scrollViewOptions;
+    
+    options->set_colortype(0);
     
     bool scale9Enabled = false;
 
@@ -3646,6 +3650,8 @@ void ProtocolBuffersSerialize::setListViewOptions(protocolbuffers::ListViewOptio
     setWidgetOptions(widgetOptions, listViewObjectData);
     
     ListViewOptions* options = listViewOptions;
+    
+    options->set_colortype(0);
     
     bool scale9Enabled = false;
 
