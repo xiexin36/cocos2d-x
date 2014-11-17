@@ -1374,6 +1374,7 @@ void ProtocolBuffersSerialize::setWidgetOptions(protocolbuffers::WidgetOptions *
     options->set_visible(true);
 	options->set_scalex(1.0f);
 	options->set_scaley(1.0f);
+    options->set_alpha(255);
     
     // attributes
     const tinyxml2::XMLAttribute* attribute = widgetObjectData->FirstAttribute();
@@ -2948,6 +2949,7 @@ void ProtocolBuffersSerialize::setLayoutOptions(protocolbuffers::PanelOptions *l
     PanelOptions* options = layoutOptions;
     
     options->set_colortype(0);
+    options->set_bgcoloropacity(255);
     
 	bool scale9Enabled = false;
 
