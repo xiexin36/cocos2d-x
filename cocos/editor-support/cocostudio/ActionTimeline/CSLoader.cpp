@@ -935,6 +935,7 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
     int tag             = options.tag();
     int actionTag       = options.actiontag();
     bool visible        = options.visible();
+    int alpha           = options.alpha();
     
     node->setName(name);
     
@@ -956,6 +957,8 @@ void CSLoader::setPropsForNodeFromProtocolBuffers(cocos2d::Node *node,
         node->setLocalZOrder(zorder);
     if(visible != true)
         node->setVisible(visible);
+    if (alpha != 255)
+        node->setOpacity(alpha);
     
     node->setTag(tag);
     node->setUserObject(ActionTimelineData::create(actionTag));
@@ -1091,7 +1094,11 @@ cocos2d::Node* CSLoader::createParticleFromProtocolBuffers(const protocolbuffers
 	if (node)
 	{
 		setPropsForNodeFromProtocolBuffers(node, nodeOptions);
-	}    
+	}
+    
+    float x = nodeOptions.x();
+    float y = nodeOptions.y();
+    node->setPosition(Vec2(x, y));
 
 	return node;
 }
