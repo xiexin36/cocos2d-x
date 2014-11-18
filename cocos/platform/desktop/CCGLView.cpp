@@ -272,15 +272,15 @@ GLView::GLView()
 
     GLFWEventHandler::setGLView(this);
 
-    glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
-    glfwInit();
+    //glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
+    //glfwInit();
 }
 
 GLView::~GLView()
 {
     CCLOGINFO("deallocing GLView: %p", this);
-    GLFWEventHandler::setGLView(nullptr);
-    glfwTerminate();
+    //GLFWEventHandler::setGLView(nullptr);
+    //glfwTerminate();
 }
 
 GLView* GLView::create(const std::string& viewName)
