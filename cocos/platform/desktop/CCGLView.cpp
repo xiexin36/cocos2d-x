@@ -262,6 +262,7 @@ GLView::GLView()
 , _monitor(nullptr)
 , _mouseX(0.0f)
 , _mouseY(0.0f)
+, _isInitglfw(false)
 {
     _viewName = "cocos2dx";
     g_keyCodeMap.clear();
@@ -271,16 +272,44 @@ GLView::GLView()
     }
 
     GLFWEventHandler::setGLView(this);
+}
 
-    //glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
-    //glfwInit();
+GLView::GLView(bool initglfw)
+: _captured(false)
+, _supportTouch(false)
+, _isInRetinaMonitor(false)
+, _isRetinaEnabled(false)
+, _retinaFactor(1)
+, _frameZoomFactor(1.0f)
+, _mainWindow(nullptr)
+, _monitor(nullptr)
+, _mouseX(0.0f)
+, _mouseY(0.0f)
+{
+	_isInitglfw = initglfw;
+	_viewName = "cocos2dx";
+	g_keyCodeMap.clear();
+	for (auto& item : g_keyCodeStructArray)
+	{
+		g_keyCodeMap[item.glfwKeyCode] = item.keyCode;
+	}
+
+	GLFWEventHandler::setGLView(this);
+	if (initglfw)
+	{
+		glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
+		glfwInit();
+	}
 }
 
 GLView::~GLView()
 {
     CCLOGINFO("deallocing GLView: %p", this);
-    //GLFWEventHandler::setGLView(nullptr);
-    //glfwTerminate();
+	if (_isInitglfw)
+	{
+		GLFWEventHandler::setGLView(nullptr);
+		glfwTerminate();
+	}
 }
 
 GLView* GLView::create(const std::string& viewName)
@@ -292,6 +321,17 @@ GLView* GLView::create(const std::string& viewName)
     }
 
     return nullptr;
+}
+
+GLView* GLView::createWithoutglfw(const std::string& viewName)
+{
+	auto ret = new GLView(true);
+	if (ret && ret->initWithRect(viewName, Rect(0, 0, 960, 640), 1)) {
+		ret->autorelease();
+		return ret;
+	}
+
+	return nullptr;
 }
 
 GLView* GLView::createWithRect(const std::string& viewName, Rect rect, float frameZoomFactor)
