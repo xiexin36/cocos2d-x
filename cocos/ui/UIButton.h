@@ -221,6 +221,7 @@ CC_CONSTRUCTOR_ACCESS:
                       const std::string& disableImage = "",
                       TextureResType texType = TextureResType::LOCAL);
 
+    virtual Size getNormalTextureSize() const;
 
 protected:
     virtual void initRenderer() override;
@@ -244,6 +245,7 @@ protected:
     virtual void copySpecialProperties(Widget* model) override;
    
     virtual Size getNormalSize() const;
+
 protected:
     Scale9Sprite* _buttonNormalRenderer;
     Scale9Sprite* _buttonClickedRenderer;
