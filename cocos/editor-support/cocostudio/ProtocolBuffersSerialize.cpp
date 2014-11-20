@@ -2461,6 +2461,8 @@ void ProtocolBuffersSerialize::setLoadingBarOptions(protocolbuffers::LoadingBarO
     
     LoadingBarOptions* options = loadingBarOptions;
     
+    options->set_percent(0);
+    
     // attributes
     const tinyxml2::XMLAttribute* attribute = loadingObjectData->FirstAttribute();
     while (attribute)
