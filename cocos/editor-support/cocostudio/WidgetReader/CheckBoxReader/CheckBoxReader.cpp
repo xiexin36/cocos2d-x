@@ -206,6 +206,7 @@ namespace cocostudio
 			displaystate = options.displaystate();
 		}
 		checkBox->setBright(displaystate);
+        checkBox->setEnabled(displaystate);
         
         // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);

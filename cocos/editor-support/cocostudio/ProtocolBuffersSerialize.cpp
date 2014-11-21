@@ -2846,6 +2846,7 @@ void ProtocolBuffersSerialize::setTextFieldOptions(protocolbuffers::TextFieldOpt
         else if (name == "MaxLengthEnable")
         {
             options->set_maxlengthenable((value == "True") ? true : false);
+            options->set_maxlength(0);
         }
         else if (name == "MaxLengthText")
         {
