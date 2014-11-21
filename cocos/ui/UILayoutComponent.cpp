@@ -61,6 +61,7 @@ namespace ui {
         return ret;
     }
     
+#pragma region OldVersion
     //Size
     Vec2 LayoutComponent::getOwnerContentSize()const
     {
@@ -302,6 +303,230 @@ namespace ui {
         }
         return inversePoint;
     }
+#pragma endregion
+
+#pragma region Position & Margin
+    Point LayoutComponent::getPosition()
+    {
+        return this->getOwner()->getPosition();
+    }
+    void LayoutComponent::setPosition(Point position)
+    {
+        this->getOwner()->setPosition(position);
+
+        Node* parent = this->getOwner()->getParent();
+
+        switch (this->_horizontalEage)
+        {
+        case HorizontalEage::Left:
+            _horizontalMargin = position.x;
+            break;
+        case HorizontalEage::Right:
+            if (parent != nullptr)
+            {
+                _horizontalMargin = parent->getContentSize().width - position.x;
+            }
+            break;
+        default:
+            break;
+        }
+
+        switch (this->_verticalEage)
+        {
+        case VerticalEage::Buttom:
+            _verticalMargin = position.y;
+            break;
+        case VerticalEage::Top:
+            if (parent != nullptr)
+            {
+                _verticalMargin = parent->getContentSize().height - position.y;
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.width != 0)
+                _horizontalPercentMargin = _horizontalMargin / parentSize.width;
+            else
+                _horizontalPercentMargin = 0;
+
+            if (parentSize.height != 0)
+                _verticalPercentMargin = _verticalMargin / parentSize.height;
+            else
+                _verticalPercentMargin = 0;
+        }
+    }
+
+    LayoutComponent::HorizontalEage LayoutComponent::getHorizontalEage()
+    {
+        return _horizontalEage;
+    }
+    void LayoutComponent::setHorizontalEage(HorizontalEage hEage)
+    {
+        if (_horizontalEage == hEage)
+        {
+            return;
+        }
+
+        _horizontalEage = hEage;
+
+        Node* parent = this->getOwner()->getParent();
+
+        switch (this->_horizontalEage)
+        {
+        case HorizontalEage::Left:
+            break;
+        case HorizontalEage::Right:
+            if (parent != nullptr)
+            {
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    bool LayoutComponent::isUsingHorizontalPercent()
+    {
+        return _usingHorizontalPercent;
+    }
+    void LayoutComponent::setHorizontalPercentUsedState(bool isUsed)
+    {
+
+    }
+
+    float LayoutComponent::getHorizontalMargin()
+    {
+        return _horizontalMargin;
+    }
+    void LayoutComponent::setHorizontalMargin(float margin)
+    {
+
+    }
+
+    float LayoutComponent::getHorizontalPercentMargin()
+    {
+        return _horizontalPercentMargin;
+    }
+    void LayoutComponent::setHorizontalPercentMargin(float percentMargin)
+    {
+
+    }
+
+    LayoutComponent::VerticalEage LayoutComponent::getVerticalEage()
+    {
+        return _verticalEage;
+    }
+    void LayoutComponent::setVerticalEage(VerticalEage vEage)
+    {
+
+    }
+
+    bool LayoutComponent::isUsingVerticalPercent()
+    {
+        return _usingVerticalPercnet;
+    }
+    void LayoutComponent::setVerticalPercentUsedState(bool isUsed)
+    {
+
+    }
+
+    float LayoutComponent::getVerticalMargin()
+    {
+        return _verticalMargin;
+    }
+    void LayoutComponent::setVerticalMargin(float margin)
+    {
+
+    }
+
+    float LayoutComponent::getVerticalPercentMargin()
+    {
+        return _verticalPercentMargin;
+    }
+    void LayoutComponent::setVerticalPercentMargin(float percentMargin)
+    {
+
+    }
+#pragma endregion
+
+#pragma region Size & Percent
+    Size LayoutComponent::getSize()
+    {
+        return this->getOwner()->getContentSize();
+    }
+    void LayoutComponent::setSize(Size _size)
+    {
+
+    }
+
+    LayoutComponent::SizeType LayoutComponent::getSizeType()
+    {
+        return _sizeType;
+    }
+    void LayoutComponent::changeSizeType(SizeType type)
+    {
+
+    }
+
+    bool LayoutComponent::isUsingPercentWidth()
+    {
+        return _usingPercentWidth;
+    }
+    void LayoutComponent::setPercentWidthUsedState(bool isUsed)
+    {
+
+    }
+
+    float LayoutComponent::getRelativeWidth()
+    {
+        return _relativeWidth;
+    }
+    void LayoutComponent::setRelativeWidth(float width)
+    {
+
+    }
+
+    float LayoutComponent::getPercentWidth()
+    {
+        return _percentWidth;
+    }
+    void LayoutComponent::setPercentWidth(float percentWidth)
+    {
+
+    }
+
+    bool LayoutComponent::isUsingPercentHeight()
+    {
+        return _usingPercentHeight;
+    }
+    void LayoutComponent::setPercentHeightUsedState(bool isUsed)
+    {
+
+    }
+
+    float LayoutComponent::getRelativeHeight()
+    {
+        return _relativeHeight;
+    }
+    void LayoutComponent::setRelativeHeight(float height)
+    {
+
+    }
+
+    float LayoutComponent::getPercentHeight()
+    {
+        return _percentHeight;
+    }
+    void LayoutComponent::setPercentHeight(float percentHeight)
+    {
+
+    }
+#pragma endregion
 }
 
 NS_CC_END
