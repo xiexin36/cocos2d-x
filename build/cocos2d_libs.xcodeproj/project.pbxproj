@@ -527,7 +527,6 @@
 		1AAF533E180E2F10000584C8 /* b2Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 46A169331807AF9C005B8026 /* b2Rope.h */; };
 		1AAF533F180E2F11000584C8 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A169321807AF9C005B8026 /* b2Rope.cpp */; };
 		1AAF5340180E2F11000584C8 /* b2Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 46A169331807AF9C005B8026 /* b2Rope.h */; };
-		1AAF5353180E3060000584C8 /* AssetsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5351180E3060000584C8 /* AssetsManager.cpp */; };
 		1AAF5354180E3060000584C8 /* AssetsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5351180E3060000584C8 /* AssetsManager.cpp */; };
 		1AAF5355180E3060000584C8 /* AssetsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5352180E3060000584C8 /* AssetsManager.h */; };
 		1AAF5356180E3060000584C8 /* AssetsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5352180E3060000584C8 /* AssetsManager.h */; };
@@ -641,6 +640,23 @@
 		430B0DB119AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
 		430B0DB219AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
 		438B18E81A234FDB0054A3C5 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */; };
+		438B18E91A2351E90054A3C5 /* libcocos2dx Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */; };
+		438B18EA1A2351FB0054A3C5 /* libbox2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03F2D9B1780BDF7006731B9 /* libbox2d Mac.a */; };
+		438B18EB1A2351FB0054A3C5 /* libchipmunk Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03F2CB81780BD04006731B9 /* libchipmunk Mac.a */; };
+		438B18EC1A2352180054A3C5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B217703F1977ECE6009EE11B /* OpenGL.framework */; };
+		438B18EF1A2354170054A3C5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 438B18EE1A2354170054A3C5 /* OpenAL.framework */; };
+		438B18F01A23541F0054A3C5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B217703D1977ECC1009EE11B /* AudioToolbox.framework */; };
+		438B18F11A2354340054A3C5 /* libcocos2dx Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */; };
+		438B18F31A23546C0054A3C5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 438B18F21A23546C0054A3C5 /* AppKit.framework */; };
+		438B18F41A2354AD0054A3C5 /* libcocos2dx Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */; };
+		438B18F51A2354BE0054A3C5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B217703F1977ECE6009EE11B /* OpenGL.framework */; };
+		438B18FA1A23560E0054A3C5 /* libcocos2dx Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */; };
+		438B18FB1A23561A0054A3C5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B217703F1977ECE6009EE11B /* OpenGL.framework */; };
+		438B18FC1A23565D0054A3C5 /* libcocos2dx Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */; };
+		438B18FE1A2356AD0054A3C5 /* libcocos2dx-extensions Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.dylib */; };
+		438B18FF1A2356B40054A3C5 /* libCocosDenshion Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A03F2ED617814268006731B9 /* libCocosDenshion Mac.dylib */; };
+		438B19001A2357370054A3C5 /* CSParseBinary.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 38BCC5971994AD2100619F1D /* CSParseBinary.pb.cc */; };
+		438B19021A23593D0054A3C5 /* libcocosGUI Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B245F13A19766132001920FD /* libcocosGUI Mac.dylib */; };
 		4392C4C219B49883004BD79E /* ProtocolBuffersSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */; };
 		4392C4C319B49883004BD79E /* ProtocolBuffersSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */; };
 		4392C4C419B49883004BD79E /* ProtocolBuffersSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */; };
@@ -1480,14 +1496,6 @@
 		B21770471977ED34009EE11B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B21770461977ED34009EE11B /* QuartzCore.framework */; };
 		B21770491977ED4C009EE11B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B21770481977ED4C009EE11B /* libz.dylib */; };
 		B217704E1977ED9F009EE11B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B217704C1977ED8B009EE11B /* libsqlite3.dylib */; };
-		B244F3071976871800ED1926 /* HttpClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5363180E3374000584C8 /* HttpClient.h */; };
-		B244F3081976871C00ED1926 /* HttpResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5365180E3374000584C8 /* HttpResponse.h */; };
-		B244F3091976871F00ED1926 /* SocketIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5367180E3374000584C8 /* SocketIO.h */; };
-		B244F30A1976872C00ED1926 /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5369180E3374000584C8 /* WebSocket.h */; };
-		B244F30B1976873300ED1926 /* HttpRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AAF5364180E3374000584C8 /* HttpRequest.h */; };
-		B244F30C1976874300ED1926 /* HttpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5362180E3374000584C8 /* HttpClient.cpp */; };
-		B244F30E1976875100ED1926 /* SocketIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5366180E3374000584C8 /* SocketIO.cpp */; };
-		B244F30F1976875300ED1926 /* WebSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF5368180E3374000584C8 /* WebSocket.cpp */; };
 		B24AA985195A675C007B4522 /* CCFastTMXLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B24AA981195A675C007B4522 /* CCFastTMXLayer.cpp */; };
 		B24AA986195A675C007B4522 /* CCFastTMXLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B24AA981195A675C007B4522 /* CCFastTMXLayer.cpp */; };
 		B24AA987195A675C007B4522 /* CCFastTMXLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = B24AA982195A675C007B4522 /* CCFastTMXLayer.h */; };
@@ -1496,7 +1504,6 @@
 		B24AA98A195A675C007B4522 /* CCFastTMXTiledMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B24AA983195A675C007B4522 /* CCFastTMXTiledMap.cpp */; };
 		B24AA98B195A675C007B4522 /* CCFastTMXTiledMap.h in Headers */ = {isa = PBXBuildFile; fileRef = B24AA984195A675C007B4522 /* CCFastTMXTiledMap.h */; };
 		B24AA98C195A675C007B4522 /* CCFastTMXTiledMap.h in Headers */ = {isa = PBXBuildFile; fileRef = B24AA984195A675C007B4522 /* CCFastTMXTiledMap.h */; };
-		B27AEE0219768934008BD575 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AAF5384180E35A3000584C8 /* libwebsockets.a */; };
 		B29594B41926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29594B21926D5EC003EEF37 /* CCMeshCommand.cpp */; };
 		B29594B51926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29594B21926D5EC003EEF37 /* CCMeshCommand.cpp */; };
 		B29594B61926D5EC003EEF37 /* CCMeshCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = B29594B31926D5EC003EEF37 /* CCMeshCommand.h */; };
@@ -2641,6 +2648,9 @@
 		430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIScale9Sprite.cpp; sourceTree = "<group>"; };
 		430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScale9Sprite.h; sourceTree = "<group>"; };
 		438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.0.dylib; path = ../external/glfw3/prebuilt/mac/libglfw.3.0.dylib; sourceTree = "<group>"; };
+		438B18EE1A2354170054A3C5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		438B18F21A23546C0054A3C5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		438B18F91A2355440054A3C5 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwebsockets.a; sourceTree = "<group>"; };
 		4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtocolBuffersSerialize.cpp; sourceTree = "<group>"; };
 		4392C4C119B49883004BD79E /* ProtocolBuffersSerialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolBuffersSerialize.h; sourceTree = "<group>"; };
 		43A0B1C519A6010C001CDF96 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -3182,8 +3192,8 @@
 		50FCEB9218C72017004AD434 /* WidgetReaderProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetReaderProtocol.h; sourceTree = "<group>"; };
 		A03F2CB81780BD04006731B9 /* libchipmunk Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libchipmunk Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A03F2D9B1780BDF7006731B9 /* libbox2d Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libbox2d Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A03F2ED617814268006731B9 /* libCocosDenshion Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCocosDenshion Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx-extensions Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A03F2ED617814268006731B9 /* libCocosDenshion Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCocosDenshion Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx-extensions Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07A4D641783777C0073F6A7 /* libcocos2dx iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07A4EFC1783867C0073F6A7 /* libcocos2dx-extensions iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx-extensions iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07A4F3B178387670073F6A7 /* libchipmunk iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libchipmunk iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3198,7 +3208,7 @@
 		B21770481977ED4C009EE11B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B217704A1977ED55009EE11B /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		B217704C1977ED8B009EE11B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		B245F13A19766132001920FD /* libcocosGUI Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosGUI Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B245F13A19766132001920FD /* libcocosGUI Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosGUI Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B24AA981195A675C007B4522 /* CCFastTMXLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCFastTMXLayer.cpp; sourceTree = "<group>"; };
 		B24AA982195A675C007B4522 /* CCFastTMXLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFastTMXLayer.h; sourceTree = "<group>"; };
 		B24AA983195A675C007B4522 /* CCFastTMXTiledMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCFastTMXTiledMap.cpp; sourceTree = "<group>"; };
@@ -3223,9 +3233,8 @@
 		B29594C01926D61F003EEF37 /* CCSprite3DMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSprite3DMaterial.h; sourceTree = "<group>"; };
 		B2D3D3B81948613300BA4831 /* CCBundle3DData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBundle3DData.h; sourceTree = "<group>"; };
 		B2DB47D2197669A100411E16 /* libcocosBuilder Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosBuilder Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2DB484D1976716E00411E16 /* libcocosStudio Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosStudio Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2DB490119767F1F00411E16 /* libcocosSpine Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosSpine Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2DB49C4197686CB00411E16 /* libcocosNetwork Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosNetwork Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2DB484D1976716E00411E16 /* libcocosStudio Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosStudio Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2DB490119767F1F00411E16 /* libcocosSpine Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocosSpine Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B37510451823AC7B00B3BA6A /* CCPhysicsBodyInfo_chipmunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsBodyInfo_chipmunk.cpp; sourceTree = "<group>"; };
 		B37510461823AC7B00B3BA6A /* CCPhysicsBodyInfo_chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPhysicsBodyInfo_chipmunk.h; sourceTree = "<group>"; };
 		B37510471823AC7B00B3BA6A /* CCPhysicsContactInfo_chipmunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsContactInfo_chipmunk.cpp; sourceTree = "<group>"; };
@@ -3293,6 +3302,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438B18F31A23546C0054A3C5 /* AppKit.framework in Frameworks */,
+				438B18F11A2354340054A3C5 /* libcocos2dx Mac.dylib in Frameworks */,
+				438B18F01A23541F0054A3C5 /* AudioToolbox.framework in Frameworks */,
+				438B18EF1A2354170054A3C5 /* OpenAL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3300,6 +3313,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438B18EC1A2352180054A3C5 /* OpenGL.framework in Frameworks */,
+				438B18EA1A2351FB0054A3C5 /* libbox2d Mac.a in Frameworks */,
+				438B18EB1A2351FB0054A3C5 /* libchipmunk Mac.a in Frameworks */,
+				438B18E91A2351E90054A3C5 /* libcocos2dx Mac.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3350,6 +3367,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438B18FB1A23561A0054A3C5 /* OpenGL.framework in Frameworks */,
+				438B18FA1A23560E0054A3C5 /* libcocos2dx Mac.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3400,6 +3419,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438B19021A23593D0054A3C5 /* libcocosGUI Mac.dylib in Frameworks */,
+				438B18FF1A2356B40054A3C5 /* libCocosDenshion Mac.dylib in Frameworks */,
+				438B18FE1A2356AD0054A3C5 /* libcocos2dx-extensions Mac.dylib in Frameworks */,
+				438B18FC1A23565D0054A3C5 /* libcocos2dx Mac.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3407,14 +3430,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2DB49A7197686CB00411E16 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B27AEE0219768934008BD575 /* libwebsockets.a in Frameworks */,
+				438B18F51A2354BE0054A3C5 /* OpenGL.framework in Frameworks */,
+				438B18F41A2354AD0054A3C5 /* libcocos2dx Mac.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3474,18 +3491,17 @@
 				1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */,
 				A03F2CB81780BD04006731B9 /* libchipmunk Mac.a */,
 				A03F2D9B1780BDF7006731B9 /* libbox2d Mac.a */,
-				A03F2ED617814268006731B9 /* libCocosDenshion Mac.a */,
-				A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.a */,
+				A03F2ED617814268006731B9 /* libCocosDenshion Mac.dylib */,
+				A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.dylib */,
 				A07A4D641783777C0073F6A7 /* libcocos2dx iOS.a */,
 				A07A4EFC1783867C0073F6A7 /* libcocos2dx-extensions iOS.a */,
 				A07A4F3B178387670073F6A7 /* libchipmunk iOS.a */,
 				A07A4F9E1783876B0073F6A7 /* libbox2d iOS.a */,
 				A07A4FB4178387730073F6A7 /* libCocosDenshion iOS.a */,
-				B245F13A19766132001920FD /* libcocosGUI Mac.a */,
+				B245F13A19766132001920FD /* libcocosGUI Mac.dylib */,
 				B2DB47D2197669A100411E16 /* libcocosBuilder Mac.a */,
-				B2DB484D1976716E00411E16 /* libcocosStudio Mac.a */,
-				B2DB490119767F1F00411E16 /* libcocosSpine Mac.a */,
-				B2DB49C4197686CB00411E16 /* libcocosNetwork Mac.a */,
+				B2DB484D1976716E00411E16 /* libcocosStudio Mac.dylib */,
+				B2DB490119767F1F00411E16 /* libcocosSpine Mac.dylib */,
 				B24EEA6619775E92004493CC /* libcocosGUI iOS.a */,
 				B24EEA6E19775EBB004493CC /* libcocosStudio iOS.a */,
 				B24EEA7619775ECE004493CC /* libcocosBuilder iOS.a */,
@@ -3498,6 +3514,9 @@
 		1551A341158F2AB200E66CFE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				438B18F81A2355440054A3C5 /* mac */,
+				438B18F21A23546C0054A3C5 /* AppKit.framework */,
+				438B18EE1A2354170054A3C5 /* OpenAL.framework */,
 				438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */,
 				B217704C1977ED8B009EE11B /* libsqlite3.dylib */,
 				B217704A1977ED55009EE11B /* libcurl.dylib */,
@@ -4612,6 +4631,15 @@
 			);
 			name = protocolBuf;
 			path = ../external/protocolBuf;
+			sourceTree = "<group>";
+		};
+		438B18F81A2355440054A3C5 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				438B18F91A2355440054A3C5 /* libwebsockets.a */,
+			);
+			name = mac;
+			path = ../external/websockets/prebuilt/mac;
 			sourceTree = "<group>";
 		};
 		43A0B1C319A6010C001CDF96 /* google */ = {
@@ -6758,18 +6786,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2DB49A8197686CB00411E16 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B244F30B1976873300ED1926 /* HttpRequest.h in Headers */,
-				B244F3071976871800ED1926 /* HttpClient.h in Headers */,
-				B244F3081976871C00ED1926 /* HttpResponse.h in Headers */,
-				B244F3091976871F00ED1926 /* SocketIO.h in Headers */,
-				B244F30A1976872C00ED1926 /* WebSocket.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -6839,7 +6855,7 @@
 			);
 			name = "CocosDenshion Mac";
 			productName = cocos2dx;
-			productReference = A03F2ED617814268006731B9 /* libCocosDenshion Mac.a */;
+			productReference = A03F2ED617814268006731B9 /* libCocosDenshion Mac.dylib */;
 			productType = "com.apple.product-type.library.static";
 		};
 		A03F2FC117814595006731B9 /* cocos2dx-extensions Mac */ = {
@@ -6856,7 +6872,7 @@
 			);
 			name = "cocos2dx-extensions Mac";
 			productName = cocos2dx;
-			productReference = A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.a */;
+			productReference = A03F2FD617814595006731B9 /* libcocos2dx-extensions Mac.dylib */;
 			productType = "com.apple.product-type.library.static";
 		};
 		A07A4C241783777C0073F6A7 /* cocos2dx iOS */ = {
@@ -6959,7 +6975,7 @@
 			);
 			name = "cocosGUI Mac";
 			productName = cocos2dx;
-			productReference = B245F13A19766132001920FD /* libcocosGUI Mac.a */;
+			productReference = B245F13A19766132001920FD /* libcocosGUI Mac.dylib */;
 			productType = "com.apple.product-type.library.static";
 		};
 		B24EEA2C19775E92004493CC /* cocosGUI iOS */ = {
@@ -7078,7 +7094,7 @@
 			);
 			name = "cocosStudio Mac";
 			productName = cocos2dx;
-			productReference = B2DB484D1976716E00411E16 /* libcocosStudio Mac.a */;
+			productReference = B2DB484D1976716E00411E16 /* libcocosStudio Mac.dylib */;
 			productType = "com.apple.product-type.library.static";
 		};
 		B2DB48CA19767F1F00411E16 /* cocosSpine Mac */ = {
@@ -7095,24 +7111,7 @@
 			);
 			name = "cocosSpine Mac";
 			productName = cocos2dx;
-			productReference = B2DB490119767F1F00411E16 /* libcocosSpine Mac.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		B2DB498D197686CB00411E16 /* cocosNetwork Mac */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B2DB49C1197686CB00411E16 /* Build configuration list for PBXNativeTarget "cocosNetwork Mac" */;
-			buildPhases = (
-				B2DB498E197686CB00411E16 /* Sources */,
-				B2DB49A7197686CB00411E16 /* Frameworks */,
-				B2DB49A8197686CB00411E16 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "cocosNetwork Mac";
-			productName = cocos2dx;
-			productReference = B2DB49C4197686CB00411E16 /* libcocosNetwork Mac.a */;
+			productReference = B2DB490119767F1F00411E16 /* libcocosSpine Mac.dylib */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -7143,7 +7142,6 @@
 				B2DB48161976716E00411E16 /* cocosStudio Mac */,
 				B2DB479B197669A100411E16 /* cocosBuilder Mac */,
 				B2DB48CA19767F1F00411E16 /* cocosSpine Mac */,
-				B2DB498D197686CB00411E16 /* cocosNetwork Mac */,
 				A03F2B781780BD04006731B9 /* chipmunk Mac */,
 				A03F2D5D1780BDF7006731B9 /* box2d Mac */,
 				A03F2E9817814268006731B9 /* CocosDenshion Mac */,
@@ -7504,7 +7502,6 @@
 				460E479018080902000CDD6D /* CCControlUtils.cpp in Sources */,
 				1AD71EF0180E27CF00808F54 /* CCPhysicsDebugNode.cpp in Sources */,
 				1AD71EF4180E27CF00808F54 /* CCPhysicsSprite.cpp in Sources */,
-				1AAF5353180E3060000584C8 /* AssetsManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8116,6 +8113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				438B19001A2357370054A3C5 /* CSParseBinary.pb.cc in Sources */,
 				B2DB488B19767CE000411E16 /* CCFrame.cpp in Sources */,
 				B2DB488E19767CEE00411E16 /* ButtonReader.cpp in Sources */,
 				B2DB488F19767CF200411E16 /* CheckBoxReader.cpp in Sources */,
@@ -8225,16 +8223,6 @@
 				B2DB491819767F5300411E16 /* Slot.cpp in Sources */,
 				B2DB491919767F5300411E16 /* SlotData.cpp in Sources */,
 				B2DB491A19767F5300411E16 /* spine-cocos2dx.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2DB498E197686CB00411E16 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B244F30C1976874300ED1926 /* HttpClient.cpp in Sources */,
-				B244F30E1976875100ED1926 /* SocketIO.cpp in Sources */,
-				B244F30F1976875300ED1926 /* WebSocket.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8546,9 +8534,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_PREPROCESSOR_DEFINITIONS = CC_TARGET_OS_MAC;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
+				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac";
 			};
 			name = Debug;
@@ -8557,10 +8547,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = CC_TARGET_OS_MAC;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
+				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac";
 			};
 			name = Release;
@@ -8570,6 +8562,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
@@ -8577,7 +8570,12 @@
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/curl/prebuilt/ios,
+				);
+				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
 			name = Debug;
@@ -8587,6 +8585,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -8595,7 +8594,12 @@
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/curl/prebuilt/ios,
+				);
+				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
 			name = Release;
@@ -8821,6 +8825,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
@@ -8829,6 +8834,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
@@ -8838,6 +8844,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -8847,6 +8854,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
@@ -9102,6 +9110,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
@@ -9110,6 +9119,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
@@ -9119,6 +9129,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -9128,6 +9139,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
@@ -9137,6 +9149,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
@@ -9145,6 +9158,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
@@ -9154,6 +9168,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -9163,49 +9178,9 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
-			};
-			name = Release;
-		};
-		B2DB49C2197686CB00411E16 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					CC_TARGET_OS_MAC,
-					CC_KEYBOARD_SUPPORT,
-				);
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../external/websockets/prebuilt/mac\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac $(SRCROOT)/../external/websockets/include/mac";
-			};
-			name = Debug;
-		};
-		B2DB49C3197686CB00411E16 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					CC_TARGET_OS_MAC,
-					CC_KEYBOARD_SUPPORT,
-				);
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../external/websockets/prebuilt/mac\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac $(SRCROOT)/../external/websockets/include/mac";
 			};
 			name = Release;
 		};
@@ -9406,15 +9381,6 @@
 			buildConfigurations = (
 				B2DB48FF19767F1F00411E16 /* Debug */,
 				B2DB490019767F1F00411E16 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B2DB49C1197686CB00411E16 /* Build configuration list for PBXNativeTarget "cocosNetwork Mac" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B2DB49C2197686CB00411E16 /* Debug */,
-				B2DB49C3197686CB00411E16 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
