@@ -28,6 +28,11 @@
 
 NS_CC_EXT_BEGIN
 
+EditBoxImpl* __createSystemEditBox(EditBox* pEditBox)
+{
+    return NULL;
+}
+
 static const float CHECK_EDITBOX_POSITION_INTERVAL = 0.1f;
 
 EditBox::EditBox(void)
