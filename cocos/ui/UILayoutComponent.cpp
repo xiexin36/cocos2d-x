@@ -308,13 +308,13 @@ namespace ui {
 #pragma region Position & Margin
     Point LayoutComponent::getPosition()
     {
-        return this->getOwner()->getPosition();
+        return _owner->getPosition();
     }
     void LayoutComponent::setPosition(Point position)
     {
-        this->getOwner()->setPosition(position);
+        _owner->setPosition(position);
 
-        Node* parent = this->getOwner()->getParent();
+        Node* parent = _owner->getParent();
 
         switch (this->_horizontalEage)
         {
@@ -367,26 +367,31 @@ namespace ui {
     }
     void LayoutComponent::setHorizontalEage(HorizontalEage hEage)
     {
-        if (_horizontalEage == hEage)
-        {
-            return;
-        }
-
         _horizontalEage = hEage;
 
-        Node* parent = this->getOwner()->getParent();
-
+        Node* parent = _owner->getParent();
         switch (this->_horizontalEage)
         {
         case HorizontalEage::Left:
+            _horizontalMargin = _owner->getPosition().x;
             break;
         case HorizontalEage::Right:
             if (parent != nullptr)
             {
+                _horizontalMargin = parent->getContentSize().width - _owner->getPosition().x;
             }
             break;
         default:
             break;
+        }
+
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.width != 0)
+                _horizontalPercentMargin = _horizontalMargin / parentSize.width;
+            else
+                _horizontalPercentMargin = 0;
         }
     }
 
@@ -396,7 +401,7 @@ namespace ui {
     }
     void LayoutComponent::setHorizontalPercentUsedState(bool isUsed)
     {
-
+        _usingHorizontalPercent = isUsed;
     }
 
     float LayoutComponent::getHorizontalMargin()
@@ -405,7 +410,32 @@ namespace ui {
     }
     void LayoutComponent::setHorizontalMargin(float margin)
     {
+        _horizontalMargin = margin;
 
+        Node* parent = _owner->getParent();
+        switch (this->_horizontalEage)
+        {
+        case HorizontalEage::Left:
+            _owner->setPositionX(_horizontalMargin);
+            break;
+        case HorizontalEage::Right:
+            if (parent != nullptr)
+            {
+                _owner->setPositionX(parent->getContentSize().width - _horizontalMargin);
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.width != 0)
+                _horizontalPercentMargin = _horizontalMargin / parentSize.width;
+            else
+                _horizontalPercentMargin = 0;
+        }
     }
 
     float LayoutComponent::getHorizontalPercentMargin()
@@ -414,7 +444,29 @@ namespace ui {
     }
     void LayoutComponent::setHorizontalPercentMargin(float percentMargin)
     {
+        _horizontalPercentMargin = percentMargin;
 
+        Node* parent = _owner->getParent();
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            _horizontalMargin = parentSize.width * _horizontalPercentMargin;
+
+            switch (this->_horizontalEage)
+            {
+            case HorizontalEage::Left:
+                _owner->setPositionX(_horizontalMargin);
+                break;
+            case HorizontalEage::Right:
+                if (parent != nullptr)
+                {
+                    _owner->setPositionX(parentSize.width - _horizontalMargin);
+                }
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     LayoutComponent::VerticalEage LayoutComponent::getVerticalEage()
@@ -423,7 +475,32 @@ namespace ui {
     }
     void LayoutComponent::setVerticalEage(VerticalEage vEage)
     {
+        _verticalEage = vEage;
 
+        Node* parent = _owner->getParent();
+        switch (this->_verticalEage)
+        {
+        case VerticalEage::Buttom:
+            _verticalMargin = _owner->getPosition().y;
+            break;
+        case VerticalEage::Top:
+            if (parent != nullptr)
+            {
+                _verticalMargin = parent->getContentSize().height - _owner->getPosition().y;
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.height != 0)
+                _verticalPercentMargin = _verticalMargin / parentSize.height;
+            else
+                _verticalPercentMargin = 0;
+        }
     }
 
     bool LayoutComponent::isUsingVerticalPercent()
@@ -432,7 +509,7 @@ namespace ui {
     }
     void LayoutComponent::setVerticalPercentUsedState(bool isUsed)
     {
-
+        _usingVerticalPercnet = isUsed;
     }
 
     float LayoutComponent::getVerticalMargin()
@@ -441,7 +518,32 @@ namespace ui {
     }
     void LayoutComponent::setVerticalMargin(float margin)
     {
+        _verticalMargin = margin;
 
+        Node* parent = _owner->getParent();
+        switch (this->_verticalEage)
+        {
+        case VerticalEage::Buttom:
+            _owner->setPositionY(_verticalMargin);
+            break;
+        case VerticalEage::Top:
+            if (parent != nullptr)
+            {
+                _owner->setPositionY(parent->getContentSize().height - _verticalMargin);
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.height != 0)
+                _verticalPercentMargin = _verticalMargin / parentSize.height;
+            else
+                _verticalPercentMargin = 0;
+        }
     }
 
     float LayoutComponent::getVerticalPercentMargin()
@@ -450,7 +552,29 @@ namespace ui {
     }
     void LayoutComponent::setVerticalPercentMargin(float percentMargin)
     {
+        _verticalPercentMargin = percentMargin;
 
+        Node* parent = _owner->getParent();
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            _verticalMargin = parentSize.height * _verticalPercentMargin;
+
+            switch (this->_verticalEage)
+            {
+            case VerticalEage::Buttom:
+                _owner->setPositionY(_verticalMargin);
+                break;
+            case VerticalEage::Top:
+                if (parent != nullptr)
+                {
+                    _owner->setPositionY(parentSize.height - _verticalMargin);
+                }
+                break;
+            default:
+                break;
+            }
+        }
     }
 #pragma endregion
 
@@ -470,7 +594,42 @@ namespace ui {
     }
     void LayoutComponent::changeSizeType(SizeType type)
     {
+        _sizeType = type;
 
+        Node* parent = _owner->getParent();
+
+        Size ownerSize = _owner->getContentSize();
+        switch (this->_sizeType)
+        {
+        case SizeType::Normal:
+            _relativeWidth = ownerSize.width;
+            _relativeHeight = ownerSize.height;
+            break;
+        case SizeType::Inverse:
+            if (parent != nullptr)
+            {
+                Size parentSize = parent->getContentSize();
+                _relativeWidth = parentSize.width - ownerSize.width;
+                _relativeHeight = parentSize.height - ownerSize.height;
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.width != 0)
+                _percentWidth = _relativeWidth / parentSize.width;
+            else
+                _percentWidth = 0;
+
+            if (parentSize.height != 0)
+                _percentHeight = _relativeHeight / parentSize.height;
+            else
+                _percentHeight = 0;
+        }
     }
 
     bool LayoutComponent::isUsingPercentWidth()
@@ -479,7 +638,7 @@ namespace ui {
     }
     void LayoutComponent::setPercentWidthUsedState(bool isUsed)
     {
-
+        _usingPercentWidth = isUsed;
     }
 
     float LayoutComponent::getRelativeWidth()
@@ -488,7 +647,34 @@ namespace ui {
     }
     void LayoutComponent::setRelativeWidth(float width)
     {
+        _relativeWidth = width;
 
+        Node* parent = _owner->getParent();
+        Size ownerSize = _owner->getContentSize();
+        switch (this->_sizeType)
+        {
+        case SizeType::Normal:
+            ownerSize.width = _relativeWidth;
+            break;
+        case SizeType::Inverse:
+            if (parent != nullptr)
+            {
+                ownerSize.width = parent->getContentSize().width - _relativeWidth;
+            }
+            break;
+        default:
+            break;
+        }
+
+        _owner->setContentSize(ownerSize);
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.width != 0)
+                _percentWidth = _relativeWidth / parentSize.width;
+            else
+                _percentWidth = 0;
+        }
     }
 
     float LayoutComponent::getPercentWidth()
@@ -497,7 +683,30 @@ namespace ui {
     }
     void LayoutComponent::setPercentWidth(float percentWidth)
     {
+        _percentWidth = percentWidth;
 
+        Node* parent = _owner->getParent();
+        if (parent != nullptr)
+        {
+            _relativeWidth = parent->getContentSize().width * _percentWidth;
+            Size ownerSize = _owner->getContentSize();
+            switch (this->_sizeType)
+            {
+            case SizeType::Normal:
+                ownerSize.width = _relativeWidth;
+                break;
+            case SizeType::Inverse:
+                if (parent != nullptr)
+                {
+                    ownerSize.width = parent->getContentSize().width - _relativeWidth;
+                }
+                break;
+            default:
+                break;
+            }
+
+            _owner->setContentSize(ownerSize);
+        }
     }
 
     bool LayoutComponent::isUsingPercentHeight()
@@ -506,7 +715,7 @@ namespace ui {
     }
     void LayoutComponent::setPercentHeightUsedState(bool isUsed)
     {
-
+        _usingPercentHeight = isUsed;
     }
 
     float LayoutComponent::getRelativeHeight()
@@ -515,7 +724,34 @@ namespace ui {
     }
     void LayoutComponent::setRelativeHeight(float height)
     {
+        _relativeHeight = height;
 
+        Node* parent = _owner->getParent();
+        Size ownerSize = _owner->getContentSize();
+        switch (this->_sizeType)
+        {
+        case SizeType::Normal:
+            ownerSize.height = _relativeHeight;
+            break;
+        case SizeType::Inverse:
+            if (parent != nullptr)
+            {
+                ownerSize.height = parent->getContentSize().height - _relativeHeight;
+            }
+            break;
+        default:
+            break;
+        }
+
+        _owner->setContentSize(ownerSize);
+        if (parent != nullptr)
+        {
+            Size parentSize = parent->getContentSize();
+            if (parentSize.height != 0)
+                _percentHeight = _relativeHeight / parentSize.height;
+            else
+                _percentHeight = 0;
+        }
     }
 
     float LayoutComponent::getPercentHeight()
@@ -524,7 +760,30 @@ namespace ui {
     }
     void LayoutComponent::setPercentHeight(float percentHeight)
     {
+        _percentHeight = percentHeight;
 
+        Node* parent = _owner->getParent();
+        if (parent != nullptr)
+        {
+            _relativeHeight = parent->getContentSize().height * _percentHeight;
+            Size ownerSize = _owner->getContentSize();
+            switch (this->_sizeType)
+            {
+            case SizeType::Normal:
+                ownerSize.height = _relativeHeight;
+                break;
+            case SizeType::Inverse:
+                if (parent != nullptr)
+                {
+                    ownerSize.height = parent->getContentSize().height - _relativeHeight;
+                }
+                break;
+            default:
+                break;
+            }
+
+            _owner->setContentSize(ownerSize);
+        }
     }
 #pragma endregion
 }
