@@ -639,6 +639,7 @@
 		430B0DB019AF103200D6C795 /* UIScale9Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */; };
 		430B0DB119AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
 		430B0DB219AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
+		437813B31A2380E100DF7813 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B21770481977ED4C009EE11B /* libz.dylib */; };
 		438B18E81A234FDB0054A3C5 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */; };
 		438B18E91A2351E90054A3C5 /* libcocos2dx Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */; };
 		438B18EA1A2351FB0054A3C5 /* libbox2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03F2D9B1780BDF7006731B9 /* libbox2d Mac.a */; };
@@ -3419,6 +3420,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				437813B31A2380E100DF7813 /* libz.dylib in Frameworks */,
 				438B19021A23593D0054A3C5 /* libcocosGUI Mac.dylib in Frameworks */,
 				438B18FF1A2356B40054A3C5 /* libCocosDenshion Mac.dylib in Frameworks */,
 				438B18FE1A2356AD0054A3C5 /* libcocos2dx-extensions Mac.dylib in Frameworks */,
@@ -8535,7 +8537,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				EXECUTABLE_EXTENSION = dylib;
-				GCC_PREPROCESSOR_DEFINITIONS = CC_TARGET_OS_MAC;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CC_TARGET_OS_MAC,
+					_SHARED_,
+				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_dylib;
@@ -8549,7 +8554,10 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = CC_TARGET_OS_MAC;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CC_TARGET_OS_MAC,
+					_SHARED_,
+				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_dylib;
@@ -8830,6 +8838,7 @@
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
 					CC_KEYBOARD_SUPPORT,
+					_SHARED_,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -8850,6 +8859,7 @@
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
 					CC_KEYBOARD_SUPPORT,
+					_SHARED_,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -9115,6 +9125,7 @@
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
 					CC_KEYBOARD_SUPPORT,
+					_SHARED_,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -9135,6 +9146,7 @@
 					"$(inherited)",
 					CC_TARGET_OS_MAC,
 					CC_KEYBOARD_SUPPORT,
+					_SHARED_,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
