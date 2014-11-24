@@ -165,7 +165,9 @@ namespace ui {
         virtual void setPercentHeight(float percentHeight);
 #pragma endregion
 
-    private:
+        virtual void refreshLayout();
+
+    protected:
         HorizontalEage  _horizontalEage;
         VerticalEage    _verticalEage;
 

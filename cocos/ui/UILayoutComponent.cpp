@@ -786,6 +786,75 @@ namespace ui {
         }
     }
 #pragma endregion
+
+    void LayoutComponent::refreshLayout()
+    {
+        Node* parent = _owner->getParent();
+        if (parent == nullptr)
+            return;
+
+        Size parentSize = parent->getContentSize();
+        Size ownerSize = _owner->getContentSize();
+        Point ownerPosition = _owner->getPosition();
+
+        if (_usingHorizontalPercent)
+        {
+            _horizontalMargin = parentSize.width * _horizontalPercentMargin;
+        }
+        switch (this->_horizontalEage)
+        {
+        case HorizontalEage::Left:
+            ownerPosition.x = _horizontalMargin;
+            break;
+        case HorizontalEage::Right:
+            ownerPosition.x = parentSize.width - _horizontalMargin;
+            break;
+        default:
+            break;
+        }
+
+        if (_usingVerticalPercnet)
+        {
+            _verticalMargin = parentSize.height * _verticalPercentMargin;
+        }
+        switch (this->_verticalEage)
+        {
+        case VerticalEage::Buttom:
+            ownerPosition.y = _verticalMargin;
+            break;
+        case VerticalEage::Top:
+            ownerPosition.y = parentSize.height - _verticalMargin;
+            break;
+        default:
+            break;
+        }
+
+
+        if (_usingPercentWidth)
+        {
+            _relativeWidth = parentSize.width * _percentWidth;
+        }
+        if (_usingPercentHeight)
+        {
+            _relativeHeight = parentSize.height * _percentHeight;
+        }
+        switch (this->_sizeType)
+        {
+        case SizeType::Normal:
+            ownerSize.width = _relativeWidth;
+            ownerSize.height = _relativeHeight;
+            break;
+        case SizeType::Inverse:
+            ownerSize.width = parentSize.width - _relativeWidth;
+            ownerSize.height = parentSize.height - _relativeHeight;
+            break;
+        default:
+            break;
+        }
+
+        _owner->setPosition(ownerPosition);
+        _owner->setContentSize(ownerSize);
+    }
 }
 
 NS_CC_END
