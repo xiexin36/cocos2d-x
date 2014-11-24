@@ -319,7 +319,6 @@
 		1A570311180BCF190088DEC7 /* CCComponentContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A57030A180BCF190088DEC7 /* CCComponentContainer.cpp */; };
 		1A570312180BCF190088DEC7 /* CCComponentContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A57030B180BCF190088DEC7 /* CCComponentContainer.h */; };
 		1A570313180BCF190088DEC7 /* CCComponentContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A57030B180BCF190088DEC7 /* CCComponentContainer.h */; };
-		1A570347180BD0850088DEC7 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A570346180BD0850088DEC7 /* libglfw3.a */; };
 		1A57034B180BD09B0088DEC7 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A570349180BD09B0088DEC7 /* tinyxml2.cpp */; };
 		1A57034C180BD09B0088DEC7 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A570349180BD09B0088DEC7 /* tinyxml2.cpp */; };
 		1A57034D180BD09B0088DEC7 /* tinyxml2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A57034A180BD09B0088DEC7 /* tinyxml2.h */; };
@@ -614,7 +613,6 @@
 		38CD81541A148BF20088B728 /* FlatBuffersSerialize.h in Headers */ = {isa = PBXBuildFile; fileRef = 38CD814E1A148BF20088B728 /* FlatBuffersSerialize.h */; };
 		38CD81551A148BF20088B728 /* FlatBuffersSerialize.h in Headers */ = {isa = PBXBuildFile; fileRef = 38CD814E1A148BF20088B728 /* FlatBuffersSerialize.h */; };
 		38CD81561A148BF20088B728 /* FlatBuffersSerialize.h in Headers */ = {isa = PBXBuildFile; fileRef = 38CD814E1A148BF20088B728 /* FlatBuffersSerialize.h */; };
-		38CF8B4419B4380500399AB7 /* CSLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38CF8B4219B4380500399AB7 /* CSLoader.cpp */; };
 		38CF8B4519B4380500399AB7 /* CSLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38CF8B4219B4380500399AB7 /* CSLoader.cpp */; };
 		38CF8B4619B4380500399AB7 /* CSLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38CF8B4219B4380500399AB7 /* CSLoader.cpp */; };
 		38CF8B4719B4380500399AB7 /* CSLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38CF8B4219B4380500399AB7 /* CSLoader.cpp */; };
@@ -642,6 +640,7 @@
 		430B0DB019AF103200D6C795 /* UIScale9Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */; };
 		430B0DB119AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
 		430B0DB219AF103200D6C795 /* UIScale9Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */; };
+		438B18E81A234FDB0054A3C5 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */; };
 		4392C4C219B49883004BD79E /* ProtocolBuffersSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */; };
 		4392C4C319B49883004BD79E /* ProtocolBuffersSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */; };
 		4392C4C419B49883004BD79E /* ProtocolBuffersSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */; };
@@ -2203,7 +2202,7 @@
 		06CAAABF186AD63B0012A414 /* TriggerMng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerMng.h; sourceTree = "<group>"; };
 		06CAAAC0186AD63B0012A414 /* TriggerObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerObj.cpp; sourceTree = "<group>"; };
 		06CAAAC1186AD63B0012A414 /* TriggerObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerObj.h; sourceTree = "<group>"; };
-		1551A33F158F2AB200E66CFE /* libcocos2dx Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1551A342158F2AB200E66CFE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1A01C67618F57BE800EFE3A6 /* CCArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCArray.cpp; sourceTree = "<group>"; };
 		1A01C67718F57BE800EFE3A6 /* CCArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCArray.h; sourceTree = "<group>"; };
@@ -2641,6 +2640,7 @@
 		430B0DA819AF103200D6C795 /* UILayoutComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILayoutComponent.h; sourceTree = "<group>"; };
 		430B0DA919AF103200D6C795 /* UIScale9Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIScale9Sprite.cpp; sourceTree = "<group>"; };
 		430B0DAA19AF103200D6C795 /* UIScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScale9Sprite.h; sourceTree = "<group>"; };
+		438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.0.dylib; path = ../external/glfw3/prebuilt/mac/libglfw.3.0.dylib; sourceTree = "<group>"; };
 		4392C4C019B49883004BD79E /* ProtocolBuffersSerialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProtocolBuffersSerialize.cpp; sourceTree = "<group>"; };
 		4392C4C119B49883004BD79E /* ProtocolBuffersSerialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolBuffersSerialize.h; sourceTree = "<group>"; };
 		43A0B1C519A6010C001CDF96 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -3258,6 +3258,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A57052B180BD31F0088DEC7 /* libfreetype.a in Frameworks */,
+				1A5703B8180BD2780088DEC7 /* libwebp.a in Frameworks */,
+				1A5703A1180BD22C0088DEC7 /* libtiff.a in Frameworks */,
+				1A57037B180BD1C90088DEC7 /* libjpeg.a in Frameworks */,
+				1A570361180BD1080088DEC7 /* libpng.a in Frameworks */,
+				438B18E81A234FDB0054A3C5 /* libglfw.3.0.dylib in Frameworks */,
 				B217704E1977ED9F009EE11B /* libsqlite3.dylib in Frameworks */,
 				B21770491977ED4C009EE11B /* libz.dylib in Frameworks */,
 				B21770471977ED34009EE11B /* QuartzCore.framework in Frameworks */,
@@ -3266,12 +3272,6 @@
 				B21770401977ECE6009EE11B /* OpenGL.framework in Frameworks */,
 				B217703C1977ECB4009EE11B /* IOKit.framework in Frameworks */,
 				B3B12A5A17E7F44000026B4A /* libchipmunk Mac.a in Frameworks */,
-				1A570347180BD0850088DEC7 /* libglfw3.a in Frameworks */,
-				1A570361180BD1080088DEC7 /* libpng.a in Frameworks */,
-				1A57037B180BD1C90088DEC7 /* libjpeg.a in Frameworks */,
-				1A5703A1180BD22C0088DEC7 /* libtiff.a in Frameworks */,
-				1A5703B8180BD2780088DEC7 /* libwebp.a in Frameworks */,
-				1A57052B180BD31F0088DEC7 /* libfreetype.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3471,7 +3471,7 @@
 		1551A340158F2AB200E66CFE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1551A33F158F2AB200E66CFE /* libcocos2dx Mac.a */,
+				1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */,
 				A03F2CB81780BD04006731B9 /* libchipmunk Mac.a */,
 				A03F2D9B1780BDF7006731B9 /* libbox2d Mac.a */,
 				A03F2ED617814268006731B9 /* libCocosDenshion Mac.a */,
@@ -3498,6 +3498,7 @@
 		1551A341158F2AB200E66CFE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				438B18E71A234FDB0054A3C5 /* libglfw.3.0.dylib */,
 				B217704C1977ED8B009EE11B /* libsqlite3.dylib */,
 				B217704A1977ED55009EE11B /* libcurl.dylib */,
 				B21770481977ED4C009EE11B /* libz.dylib */,
@@ -6787,7 +6788,7 @@
 			);
 			name = "cocos2dx Mac";
 			productName = cocos2dx;
-			productReference = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.a */;
+			productReference = 1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */;
 			productType = "com.apple.product-type.library.static";
 		};
 		A03F2B781780BD04006731B9 /* chipmunk Mac */ = {
@@ -7205,7 +7206,6 @@
 				1A570075180BC5A10088DEC7 /* CCActionGrid3D.cpp in Sources */,
 				B375107A1823AC9F00B3BA6A /* CCPhysicsWorldInfo_chipmunk.cpp in Sources */,
 				1A570079180BC5A10088DEC7 /* CCActionInstant.cpp in Sources */,
-				38CF8B4419B4380500399AB7 /* CSLoader.cpp in Sources */,
 				50ABBE591925AB6F00A911A9 /* CCEventKeyboard.cpp in Sources */,
 				43A0B1F719A6010C001CDF96 /* extension_set.cc in Sources */,
 				1A57007D180BC5A10088DEC7 /* CCActionInterval.cpp in Sources */,
@@ -8382,7 +8382,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "../cocos/cocos2d-prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -8403,8 +8403,20 @@
 					"\"$(SRCROOT)/../external/webp/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/freetype2/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/websockets/prebuilt/mac\"",
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/glfw3/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/png/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/jpeg/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/tiff/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/webp/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/freetype2/prebuilt/mac,
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/png/include/mac $(SRCROOT)/../external/tiff/include/mac $(SRCROOT)/../external/webp/include/mac $(SRCROOT)/../external/jpeg/include/mac $(SRCROOT)/../external/freetype2/include/mac $(SRCROOT)/../external/glfw3/include/mac";
 			};
 			name = Debug;
@@ -8414,7 +8426,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_EXTENSION = dylib;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "../cocos/cocos2d-prefix.pch";
@@ -8436,8 +8448,20 @@
 					"\"$(SRCROOT)/../external/webp/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/freetype2/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/websockets/prebuilt/mac\"",
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/glfw3/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/png/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/jpeg/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/tiff/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/webp/prebuilt/mac,
+					/Users/dc/Desktop/Cocos,
+					Studio/cocos2dx/external/freetype2/prebuilt/mac,
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/png/include/mac $(SRCROOT)/../external/tiff/include/mac $(SRCROOT)/../external/webp/include/mac $(SRCROOT)/../external/jpeg/include/mac $(SRCROOT)/../external/freetype2/include/mac $(SRCROOT)/../external/glfw3/include/mac";
 			};
 			name = Release;
