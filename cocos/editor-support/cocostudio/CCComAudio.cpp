@@ -30,32 +30,6 @@ namespace cocostudio {
 
 IMPLEMENT_CLASS_COMPONENT_INFO(ComAudio)
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-
-static std::string utf8Togbk(const char *src)
-{
-	int len = MultiByteToWideChar(CP_UTF8, 0, src, -1, NULL, 0);
-	unsigned short * wszGBK = new unsigned short[len + 1];
-	memset(wszGBK, 0, len * 2 + 2);
-	MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)src, -1, (LPWSTR)wszGBK, len);
-
-	len = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)wszGBK, -1, NULL, 0, NULL, NULL);
-	char *szGBK = new char[len + 1];
-	memset(szGBK, 0, len + 1);
-	WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)wszGBK, -1, szGBK, len, NULL, NULL);
-	std::string strTemp(szGBK);
-	if (strTemp.find('?') != std::string::npos)
-	{
-		strTemp.assign(src);
-	}
-	delete[]szGBK;
-	delete[]wszGBK;
-	return strTemp;
-}
-#endif
-
-
-
 ComAudio::ComAudio(void)
 : _filePath("")
 , _loop(false)
@@ -202,22 +176,19 @@ void ComAudio::end()
 
 void ComAudio::preloadBackgroundMusic(const char* pszFilePath)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic(filePath.c_str());
-	setFile(filePath.c_str());
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic(pszFilePath);
+	setFile(pszFilePath);
 	setLoop(false);
 }
 
 void ComAudio::playBackgroundMusic(const char* pszFilePath, bool loop)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(filePath.c_str(), loop);
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(pszFilePath, loop);
 }
 
 void ComAudio::playBackgroundMusic(const char* pszFilePath)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(filePath.c_str());
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(pszFilePath);
 }
 
 void ComAudio::playBackgroundMusic()
@@ -282,14 +253,12 @@ void ComAudio::setEffectsVolume(float volume)
 
 unsigned int ComAudio::playEffect(const char* pszFilePath, bool loop)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(filePath.c_str(), loop);
+	return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(pszFilePath, loop);
 }
 
 unsigned int ComAudio::playEffect(const char* pszFilePath)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(filePath.c_str());
+	return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(pszFilePath);
 }
 
 unsigned int ComAudio::playEffect()
@@ -329,16 +298,14 @@ void ComAudio::stopAllEffects()
 
 void ComAudio::preloadEffect(const char* pszFilePath)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(filePath.c_str());
-	setFile(filePath.c_str());
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(pszFilePath);
+	setFile(pszFilePath);
     setLoop(false);
 }
 
 void ComAudio::unloadEffect(const char *pszFilePath)
 {
-	std::string filePath = utf8Togbk(pszFilePath);
-	CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(filePath.c_str());
+	CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(pszFilePath);
 }
 
 void ComAudio::setFile(const char* pszFilePath)
