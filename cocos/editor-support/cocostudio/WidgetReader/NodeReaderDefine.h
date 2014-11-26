@@ -22,39 +22,29 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __TestCpp__WidgetReaderProtocol__
-#define __TestCpp__WidgetReaderProtocol__
+#ifndef __cocos2d_libs__NodeReaderDefine__
+#define __cocos2d_libs__NodeReaderDefine__
 
-#include "cocos2d.h"
-#include "cocostudio/DictionaryHelper.h"
-#include "cocostudio/CocosStudioExport.h"
+#include <string>
+#include "base/ObjectFactory.h"
 
-namespace protocolbuffers
-{
-    class NodeTree;
-}
+//
+//// Reader macro
+//
 
-namespace cocos2d
-{
-    namespace ui
-    {
-        class Widget;
-    }
-}
+#define DECLARE_CLASS_NODE_READER_INFO \
+public: \
+static cocos2d::ObjectFactory::TInfo __Type; \
+static cocos2d::Ref* createInstance(void); \
 
-namespace cocostudio
-{
-    class CocoLoader;
-    struct stExpCocoNode;
-    
-    class CC_STUDIO_DLL WidgetReaderProtocol
-    {
-    public:
-        virtual ~WidgetReaderProtocol() {};
-        virtual void setPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options) = 0;
-        virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader,  stExpCocoNode*	pCocoNode) = 0;
-        virtual void setPropsFromProtocolBuffers(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree) = 0;        
-    };
-}
+#define IMPLEMENT_CLASS_NODE_READER_INFO(className) \
+cocos2d::Ref* className::createInstance(void) \
+{ \
+return className::getInstance(); \
+} \
+cocos2d::ObjectFactory::TInfo className::__Type(#className, &className::createInstance); \
 
-#endif /* defined(__TestCpp__WidgetReaderProtocol__) */
+#define CREATE_CLASS_NODE_READER_INFO(className) \
+cocos2d::ObjectFactory::TInfo(#className, &className::createInstance) \
+
+#endif /* defined(__cocos2d_libs__NodeReaderDefine__) */

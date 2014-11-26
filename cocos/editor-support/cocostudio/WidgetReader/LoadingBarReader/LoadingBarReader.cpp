@@ -1,19 +1,19 @@
 
 
 #include "LoadingBarReader.h"
+
 #include "ui/UILoadingBar.h"
 #include "cocostudio/CocoLoader.h"
-#include "../../CSParseBinary.pb.h"
-#include "tinyxml2/tinyxml2.h"
-/* peterson */
-#include "flatbuffers/flatbuffers.h"
-
+#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
-/**/
+#include "cocostudio/FlatBuffersSerialize.h"
+
+#include "tinyxml2/tinyxml2.h"
+#include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
 using namespace ui;
-using namespace cocostudio;
+using namespace flatbuffers;
 
 namespace cocostudio
 {
@@ -28,7 +28,7 @@ namespace cocostudio
     
     static LoadingBarReader* instanceLoadingBar = nullptr;
     
-    IMPLEMENT_CLASS_WIDGET_READER_INFO(LoadingBarReader)
+    IMPLEMENT_CLASS_NODE_READER_INFO(LoadingBarReader)
     
     LoadingBarReader::LoadingBarReader()
     {
@@ -44,7 +44,7 @@ namespace cocostudio
     {
         if (!instanceLoadingBar)
         {
-            instanceLoadingBar = new LoadingBarReader();
+            instanceLoadingBar = new (std::nothrow) LoadingBarReader();
         }
         return instanceLoadingBar;
     }
@@ -194,29 +194,143 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson */
-    void LoadingBarReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    Offset<Table> LoadingBarReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
+                                                                 flatbuffers::FlatBufferBuilder *builder)
     {
-        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        auto temp = WidgetReader::getInstance()->createOptionsWithFlatBuffers(objectData, builder);
+        auto widgetOptions = *(Offset<WidgetOptions>*)(&temp);
         
-        LoadingBar* loadingBar = static_cast<LoadingBar*>(widget);
-        auto ldbop = options->loadingBarOptions();
+        std::string path = "";
+        std::string plistFile = "";
+        int resourceType = 0;
         
-        auto imageFileNameDic = ldbop->textureData();
+        int percent = 80;
+        int direction = 0;
+        
+        // attributes
+        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        while (attribute)
+        {
+            std::string name = attribute->Name();
+            std::string value = attribute->Value();
+            
+            if (name == "ProgressType")
+            {
+                direction = (value == "Left_To_Right") ? 0 : 1;
+            }
+            else if (name == "ProgressInfo")
+            {
+                percent = atoi(value.c_str());
+            }
+            
+            attribute = attribute->Next();
+        }
+        
+        // child elements
+        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
+        while (child)
+        {
+            std::string name = child->Name();
+            
+            if (name == "ImageFileData")
+            {
+                std::string texture = "";
+                std::string texturePng = "";
+                
+                attribute = child->FirstAttribute();
+                
+                while (attribute)
+                {
+                    name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "Path")
+                    {
+                        path = value;
+                    }
+                    else if (name == "Type")
+                    {
+                        resourceType = getResourceType(value);
+                    }
+                    else if (name == "Plist")
+                    {
+                        plistFile = value;
+                        texture = value;
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+                
+                if (resourceType == 1)
+                {
+                    FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+                    fbs->_textures.push_back(builder->CreateString(texture));
+                    
+                    texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                    fbs->_texturePngs.push_back(builder->CreateString(texturePng));
+                }
+            }
+            
+            child = child->NextSiblingElement();
+        }
+        
+        auto options = CreateLoadingBarOptions(*builder,
+                                               widgetOptions,
+                                               CreateResourceData(*builder,
+                                                                  builder->CreateString(path),
+                                                                  builder->CreateString(plistFile),
+                                                                  resourceType),
+                                               percent,
+                                               direction);
+        
+        return *(Offset<Table>*)(&options);
+    }
+    
+    void LoadingBarReader::setPropsWithFlatBuffers(cocos2d::Node *node, const flatbuffers::Table *loadingBarOptions)
+    {
+        LoadingBar* loadingBar = static_cast<LoadingBar*>(node);
+        auto options = (LoadingBarOptions*)loadingBarOptions;
+        
+        auto imageFileNameDic = options->textureData();
         int imageFileNameType = imageFileNameDic->resourceType();
         std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
         loadingBar->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
-        int direction = ldbop->direction();
+        int direction = options->direction();
         loadingBar->setDirection(LoadingBar::Direction(direction));
         
-        int percent = ldbop->percent();
+        int percent = options->percent();
         loadingBar->setPercent(percent);
         
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+        auto widgetReader = WidgetReader::getInstance();
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
     }
-    /**/        
+    
+    Node* LoadingBarReader::createNodeWithFlatBuffers(const flatbuffers::Table *loadingBarOptions)
+    {
+        LoadingBar* loadingBar = LoadingBar::create();
+        
+        setPropsWithFlatBuffers(loadingBar, (Table*)loadingBarOptions);
+        
+        return loadingBar;
+    }
+    
+    int LoadingBarReader::getResourceType(std::string key)
+    {
+        if(key == "Normal" || key == "Default")
+        {
+            return 	0;
+        }
+        
+        FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+        if(fbs->_isSimulator)
+        {
+            if(key == "MarkedSubImage")
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
     
 }

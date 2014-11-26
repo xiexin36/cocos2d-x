@@ -1,19 +1,19 @@
 
 
 #include "ImageViewReader.h"
+
 #include "ui/UIImageView.h"
 #include "cocostudio/CocoLoader.h"
-#include "../../CSParseBinary.pb.h"
-#include "tinyxml2/tinyxml2.h"
-
-/* peterson */
-#include "flatbuffers/flatbuffers.h"
-
+#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
-/**/
+#include "cocostudio/FlatBuffersSerialize.h"
+
+#include "tinyxml2/tinyxml2.h"
+#include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
 using namespace ui;
+using namespace flatbuffers;
 
 namespace cocostudio
 {
@@ -29,7 +29,7 @@ namespace cocostudio
     
     static ImageViewReader* instanceImageViewReader = nullptr;
     
-    IMPLEMENT_CLASS_WIDGET_READER_INFO(ImageViewReader)
+    IMPLEMENT_CLASS_NODE_READER_INFO(ImageViewReader)
     
     ImageViewReader::ImageViewReader()
     {
@@ -45,7 +45,7 @@ namespace cocostudio
     {
         if (!instanceImageViewReader)
         {
-            instanceImageViewReader = new ImageViewReader();
+            instanceImageViewReader = new (std::nothrow) ImageViewReader();
         }
         return instanceImageViewReader;
     }
@@ -118,9 +118,13 @@ namespace cocostudio
         
         const rapidjson::Value& imageFileNameDic = DICTOOL->getSubDictionary_json(options, P_FileNameData);
         int imageFileNameType = DICTOOL->getIntValue_json(imageFileNameDic, P_ResourceType);
-        std::string imageFileName = this->getResourcePath(imageFileNameDic, P_Path, (Widget::TextureResType)imageFileNameType);
-        imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
-        
+        const std::string& imageFilePath = DICTOOL->getStringValue_json(imageFileNameDic, P_Path);
+
+        if (!imageFilePath.empty()) {
+        	std::string imageFileName = this->getResourcePath(imageFileNameDic, P_Path, (Widget::TextureResType)imageFileNameType);
+        	imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
+        }
+                
         
         bool scale9EnableExist = DICTOOL->checkObjectExist_json(options, P_Scale9Enable);
         bool scale9Enable = false;
@@ -197,31 +201,153 @@ namespace cocostudio
         
         // other commonly protperties
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-
-		bool flipX   = options.flippedx();
-		bool flipY   = options.flippedy();
-    
-		if(flipX != false)
-			imageView->setFlippedX(flipX);
-		if(flipY != false)
-			imageView->setFlippedY(flipY);
     }
     
-    /* peterson */
-    void ImageViewReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    Offset<Table> ImageViewReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
+                                                                flatbuffers::FlatBufferBuilder *builder)
     {
-        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        auto temp = WidgetReader::getInstance()->createOptionsWithFlatBuffers(objectData, builder);
+        auto widgetOptions = *(Offset<WidgetOptions>*)(&temp);
         
-        ImageView* imageView = static_cast<ImageView*>(widget);
-        auto iop = options->imageViewOptions();
+        bool scale9Enabled = false;
+        Rect capInsets;
+        cocos2d::Size scale9Size;
+        
+        std::string path = "";
+        std::string plistFile = "";
+        int resourceType = 0;
+        
+        // attributes
+        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        while (attribute)
+        {
+            std::string name = attribute->Name();
+            std::string value = attribute->Value();
+            
+            if (name == "Scale9Enable")
+            {
+                if (value == "True")
+                {
+                    scale9Enabled = true;
+                }
+            }
+            else if (name == "Scale9OriginX")
+            {
+                capInsets.origin.x = atof(value.c_str());
+            }
+            else if (name == "Scale9OriginY")
+            {
+                capInsets.origin.y = atof(value.c_str());
+            }
+            else if (name == "Scale9Width")
+            {
+                capInsets.size.width = atof(value.c_str());
+            }
+            else if (name == "Scale9Height")
+            {
+                capInsets.size.height = atof(value.c_str());
+            }
+            
+            attribute = attribute->Next();
+        }
+        
+        // child elements
+        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
+        while (child)
+        {
+            std::string name = child->Name();
+            
+            if (name == "Size" && scale9Enabled)
+            {
+                attribute = child->FirstAttribute();
+                
+                while (attribute)
+                {
+                    name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "X")
+                    {
+                        scale9Size.width = atof(value.c_str());
+                    }
+                    else if (name == "Y")
+                    {
+                        scale9Size.height = atof(value.c_str());
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+            }
+            else if (name == "FileData")
+            {
+                std::string texture = "";
+                std::string texturePng = "";
+                
+                attribute = child->FirstAttribute();
+                
+                while (attribute)
+                {
+                    name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "Path")
+                    {
+                        path = value;
+                    }
+                    else if (name == "Type")
+                    {
+                        resourceType = getResourceType(value);
+                    }
+                    else if (name == "Plist")
+                    {
+                        plistFile = value;
+                        texture = value;
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+                
+                if (resourceType == 1)
+                {
+                    FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+                    fbs->_textures.push_back(builder->CreateString(texture));
+                    
+                    texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
+                    fbs->_texturePngs.push_back(builder->CreateString(texturePng));
+                }
+            }
+            
+            child = child->NextSiblingElement();
+        }
+        
+        CapInsets f_capInsets(capInsets.origin.x, capInsets.origin.y, capInsets.size.width, capInsets.size.height);
+        FlatSize f_scale9Size(scale9Size.width, scale9Size.height);
+        
+        auto options = CreateImageViewOptions(*builder,
+                                              widgetOptions,
+                                              CreateResourceData(*builder,
+                                                                 builder->CreateString(path),
+                                                                 builder->CreateString(plistFile),
+                                                                 resourceType),
+                                              &f_capInsets,
+                                              &f_scale9Size,
+                                              scale9Enabled);
+        
+        return *(Offset<Table>*)(&options);
+    }
+    
+    void ImageViewReader::setPropsWithFlatBuffers(cocos2d::Node *node, const flatbuffers::Table *imageViewOptions)
+    {
+        ImageView* imageView = static_cast<ImageView*>(node);
+        auto options = (ImageViewOptions*)imageViewOptions;
         
         
-        auto imageFileNameDic = iop->fileNameData();
+        auto imageFileNameDic = options->fileNameData();
         int imageFileNameType = imageFileNameDic->resourceType();
         std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
         imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
-        bool scale9Enabled = iop->scale9Enabled();
+        bool scale9Enabled = options->scale9Enabled();
         imageView->setScale9Enabled(scale9Enabled);
         
         
@@ -230,19 +356,46 @@ namespace cocostudio
             imageView->setUnifySizeEnabled(false);
             imageView->ignoreContentAdaptWithSize(false);
             
-            auto f_scale9Size = iop->scale9Size();
+            auto f_scale9Size = options->scale9Size();
             Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
             imageView->setContentSize(scale9Size);
             
             
-            auto f_capInset = iop->capInsets();
+            auto f_capInset = options->capInsets();
             Rect capInsets(f_capInset->x(), f_capInset->y(), f_capInset->width(), f_capInset->height());
             imageView->setCapInsets(capInsets);
         }
         
-        // other commonly protperties
-        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
+        auto widgetReader = WidgetReader::getInstance();
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
+        
     }
-    /**/
+    
+    Node* ImageViewReader::createNodeWithFlatBuffers(const flatbuffers::Table *imageViewOptions)
+    {
+        ImageView* imageView = ImageView::create();
+        
+        setPropsWithFlatBuffers(imageView, (Table*)imageViewOptions);
+        
+        return imageView;
+    }
+    
+    int ImageViewReader::getResourceType(std::string key)
+    {
+        if(key == "Normal" || key == "Default")
+        {
+            return 	0;
+        }
+        
+        FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+        if(fbs->_isSimulator)
+        {
+            if(key == "MarkedSubImage")
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
     
 }

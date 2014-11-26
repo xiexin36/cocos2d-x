@@ -99,15 +99,11 @@ public:
     cocos2d::Node* nodeFromProtocolBuffersFile(const std::string& fileName);
     cocos2d::Node* nodeFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree);
     
-    /* peterson */
     cocos2d::Node* createNodeWithFlatBuffersFile(const std::string& filename);
     cocos2d::Node* nodeWithFlatBuffersFile(const std::string& fileName);
     cocos2d::Node* nodeWithFlatBuffers(const flatbuffers::NodeTree* nodetree);
-    /**/
-    /* peterson create node with flat buffers from .csd for simulator of cocosstudio editor */
 	cocos2d::Node* createNodeWithFlatBuffersForSimulator(const std::string& filename);
     cocos2d::Node* nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree* nodetree);
-    /**/
     
     void setRecordProtocolBuffersPath(bool record) { _recordProtocolBuffersPath = record; }
     bool isRecordProtocolBuffersPath() const { return _recordProtocolBuffersPath; }
@@ -161,32 +157,6 @@ protected:
     
     void setPropsForComAudioFromProtocolBuffers(cocos2d::Component* component,
                                                 const protocolbuffers::ComAudioOptions& comAudioOptions);
-    
-    /* peterson */
-    void setPropsForNodeWithFlatBuffers(const flatbuffers::WidgetOptions* nodeOptions,
-                                        cocos2d::Node* node);
-    void setPropsForSingleNodeWithFlatBuffers(const flatbuffers::SingleNodeOptions* singleNodeOptions,
-                                              const flatbuffers::WidgetOptions* nodeOptions,
-                                              cocos2d::Node* node);
-    void setPropsForSpriteWithFlatBuffers(const flatbuffers::SpriteOptions* spriteOptions,
-                                          const flatbuffers::WidgetOptions* nodeOptions,
-                                          cocos2d::Node* node);
-    cocos2d::Node* createParticleWithFlatBuffers(const flatbuffers::ParticleSystemOptions* particleSystemOptions,
-                                                 const flatbuffers::WidgetOptions* nodeOptions);
-    cocos2d::Node* createTMXTiledMapWithFlatBuffers(const flatbuffers::TMXTiledMapOptions* tmxTiledMapOptions,
-                                                    const flatbuffers::WidgetOptions* nodeOptions);
-    void setPropsForProjectNodeWithFlatBuffers(const flatbuffers::ProjectNodeOptions* projectNodeOptions,
-                                               const flatbuffers::WidgetOptions* nodeOptions,
-                                               cocos2d::Node* node);
-    void setPropsForSimpleAudioWithFlatBuffers(cocos2d::Node* node,
-                                               const flatbuffers::WidgetOptions* nodeOptions);
-    
-    cocos2d::Component* createComponentWithFlatBuffers(const flatbuffers::ComponentOptions* componentOptions);
-    void setPropsForComponentWithFlatBuffers(cocos2d::Component* component,
-                                             const flatbuffers::ComponentOptions* componentOptions);
-    void setPropsForComAudioWithFlatBuffers(cocos2d::Component* component,
-                                            const flatbuffers::ComAudioOptions* comAudioOptions);
-    /**/
     
     bool isWidget(const std::string& type);
     bool isCustomWidget(const std::string& type);

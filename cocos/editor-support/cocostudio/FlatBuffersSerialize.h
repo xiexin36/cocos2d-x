@@ -28,6 +28,7 @@
 #include "cocos2d.h"
 #include "ExtensionMacros.h"
 #include "cocostudio/CocosStudioExport.h"
+#include "tinyxml2/tinyxml2.h"
 
 namespace flatbuffers
 {
@@ -82,6 +83,8 @@ namespace tinyxml2
     class XMLElement;
 }
 
+namespace cocostudio {
+    
 class CC_STUDIO_DLL FlatBuffersSerialize
 {
     
@@ -105,28 +108,6 @@ public:
     flatbuffers::Offset<flatbuffers::NodeTree> createNodeTree(const tinyxml2::XMLElement* objectData,
                                                               std::string classType);
     
-    flatbuffers::Offset<flatbuffers::WidgetOptions> createNodeOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::SingleNodeOptions> createSingleNodeOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::SpriteOptions> createSpriteOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ParticleSystemOptions> createParticleOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TMXTiledMapOptions> createTMXTiledMapOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::WidgetOptions> createWidgetOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ButtonOptions> createButtonOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::CheckBoxOptions> createCheckBoxOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ImageViewOptions> createImageViewOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TextBMFontOptions> createTextBMFontOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TextOptions> createTextOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TextFieldOptions> createTextFiledOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::LoadingBarOptions> createLoadingBarOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::SliderOptions> createSliderOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::PanelOptions> createLayoutOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ScrollViewOptions> createScrollViewOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::PageViewOptions> createPageViewOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ListViewOptions> createListViewOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::ComAudioOptions> createComAudioOptions(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TextAtlasOptions> createTextAltasOptions(const tinyxml2::XMLElement* objectData);
-    
     // NodeAction
     flatbuffers::Offset<flatbuffers::NodeAction> createNodeAction(const tinyxml2::XMLElement* objectData);
     flatbuffers::Offset<flatbuffers::TimeLine> createTimeLine(const tinyxml2::XMLElement* objectData);
@@ -138,21 +119,27 @@ public:
     flatbuffers::Offset<flatbuffers::TimeLineTextureFrame> createTimeLineTextureFrame(const tinyxml2::XMLElement* objectData);
     /**/
     
+    int getResourceType(std::string key);
+    std::string getGUIClassName(const std::string &name);
+    std::string getWidgetReaderClassName(cocos2d::ui::Widget *widget);
+    
     /* create flat buffers with XML */
     flatbuffers::FlatBufferBuilder* createFlatBuffersWithXMLFileForSimulator(const std::string& xmlFileName);
     flatbuffers::Offset<flatbuffers::NodeTree> createNodeTreeForSimulator(const tinyxml2::XMLElement* objectData,
                                                                           std::string classType);
     flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement* objectData);	
 	/**/
-
     
-    int getResourceType(std::string key);
-    
-private:
-    bool _isSimulator;
-    flatbuffers::FlatBufferBuilder* _builder;    
+public:
     std::vector<flatbuffers::Offset<flatbuffers::String>> _textures;
     std::vector<flatbuffers::Offset<flatbuffers::String>> _texturePngs;
+    bool _isSimulator;
+    
+private:
+    flatbuffers::FlatBufferBuilder* _builder;
+    flatbuffers::Offset<flatbuffers::CSParseBinary>* _csparsebinary;
+    
 };
+}
 
 #endif /* defined(__cocos2d_libs__FlatBuffersSerialize__) */
