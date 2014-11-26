@@ -8393,18 +8393,7 @@
 					"\"$(SRCROOT)/../external/webp/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/freetype2/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/websockets/prebuilt/mac\"",
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/glfw3/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/png/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/jpeg/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/tiff/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/webp/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/freetype2/prebuilt/mac,
+					"\"$(SRCROOT)/../../CocoStudioMono/CocoStudio.EngineAdapter/Lib\"",
 				);
 				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/png/include/mac $(SRCROOT)/../external/tiff/include/mac $(SRCROOT)/../external/webp/include/mac $(SRCROOT)/../external/jpeg/include/mac $(SRCROOT)/../external/freetype2/include/mac $(SRCROOT)/../external/glfw3/include/mac";
@@ -8438,18 +8427,7 @@
 					"\"$(SRCROOT)/../external/webp/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/freetype2/prebuilt/mac\"",
 					"\"$(SRCROOT)/../external/websockets/prebuilt/mac\"",
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/glfw3/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/png/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/jpeg/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/tiff/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/webp/prebuilt/mac,
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/freetype2/prebuilt/mac,
+					"\"$(SRCROOT)/../../CocoStudioMono/CocoStudio.EngineAdapter/Lib\"",
 				);
 				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../external/png/include/mac $(SRCROOT)/../external/tiff/include/mac $(SRCROOT)/../external/webp/include/mac $(SRCROOT)/../external/jpeg/include/mac $(SRCROOT)/../external/freetype2/include/mac $(SRCROOT)/../external/glfw3/include/mac";
@@ -8578,11 +8556,7 @@
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/curl/prebuilt/ios,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
@@ -8602,11 +8576,7 @@
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/dc/Desktop/Cocos,
-					Studio/cocos2dx/external/curl/prebuilt/ios,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../cocos/platform/mac $(SRCROOT)/../cocos/platform/desktop $(SRCROOT)/../external/glfw3/include/mac";
 			};
