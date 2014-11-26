@@ -15,7 +15,7 @@ struct WidgetOptions;
 struct SingleNodeOptions;
 struct SpriteOptions;
 struct ParticleSystemOptions;
-struct TMXTiledMapOptions;
+struct GameMapOptions;
 struct ButtonOptions;
 struct CheckBoxOptions;
 struct ImageViewOptions;
@@ -263,68 +263,11 @@ inline flatbuffers::Offset<NodeTree> CreateNodeTree(flatbuffers::FlatBufferBuild
 }
 
 struct Options : private flatbuffers::Table {
-  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
-  const SingleNodeOptions *singleNodeOptions() const { return GetPointer<const SingleNodeOptions *>(6); }
-  const SpriteOptions *spriteOptions() const { return GetPointer<const SpriteOptions *>(8); }
-  const ParticleSystemOptions *particleSystemOptions() const { return GetPointer<const ParticleSystemOptions *>(10); }
-  const TMXTiledMapOptions *tmxTiledMapOptions() const { return GetPointer<const TMXTiledMapOptions *>(12); }
-  const ButtonOptions *buttonOptions() const { return GetPointer<const ButtonOptions *>(14); }
-  const CheckBoxOptions *checkBoxOptions() const { return GetPointer<const CheckBoxOptions *>(16); }
-  const ImageViewOptions *imageViewOptions() const { return GetPointer<const ImageViewOptions *>(18); }
-  const TextBMFontOptions *textBMFontOptions() const { return GetPointer<const TextBMFontOptions *>(20); }
-  const TextOptions *textOptions() const { return GetPointer<const TextOptions *>(22); }
-  const TextFieldOptions *textFieldOptions() const { return GetPointer<const TextFieldOptions *>(24); }
-  const LoadingBarOptions *loadingBarOptions() const { return GetPointer<const LoadingBarOptions *>(26); }
-  const SliderOptions *sliderOptions() const { return GetPointer<const SliderOptions *>(28); }
-  const PanelOptions *panelOptions() const { return GetPointer<const PanelOptions *>(30); }
-  const ScrollViewOptions *scrollViewOptions() const { return GetPointer<const ScrollViewOptions *>(32); }
-  const PageViewOptions *pageViewOptions() const { return GetPointer<const PageViewOptions *>(34); }
-  const ListViewOptions *listViewOptions() const { return GetPointer<const ListViewOptions *>(36); }
-  const ProjectNodeOptions *projectNodeOptions() const { return GetPointer<const ProjectNodeOptions *>(38); }
-  const ComponentOptions *componentOptions() const { return GetPointer<const ComponentOptions *>(40); }
-  const TextAtlasOptions *textAtlasOptions() const { return GetPointer<const TextAtlasOptions *>(42); }
+  const Table *data() const { return GetPointer<const Table *>(4); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
-           verifier.VerifyTable(widgetOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* singleNodeOptions */) &&
-           verifier.VerifyTable(singleNodeOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* spriteOptions */) &&
-           verifier.VerifyTable(spriteOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* particleSystemOptions */) &&
-           verifier.VerifyTable(particleSystemOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* tmxTiledMapOptions */) &&
-           verifier.VerifyTable(tmxTiledMapOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* buttonOptions */) &&
-           verifier.VerifyTable(buttonOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 16 /* checkBoxOptions */) &&
-           verifier.VerifyTable(checkBoxOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 18 /* imageViewOptions */) &&
-           verifier.VerifyTable(imageViewOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 20 /* textBMFontOptions */) &&
-           verifier.VerifyTable(textBMFontOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 22 /* textOptions */) &&
-           verifier.VerifyTable(textOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 24 /* textFieldOptions */) &&
-           verifier.VerifyTable(textFieldOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 26 /* loadingBarOptions */) &&
-           verifier.VerifyTable(loadingBarOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 28 /* sliderOptions */) &&
-           verifier.VerifyTable(sliderOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 30 /* panelOptions */) &&
-           verifier.VerifyTable(panelOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 32 /* scrollViewOptions */) &&
-           verifier.VerifyTable(scrollViewOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 34 /* pageViewOptions */) &&
-           verifier.VerifyTable(pageViewOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 36 /* listViewOptions */) &&
-           verifier.VerifyTable(listViewOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 38 /* projectNodeOptions */) &&
-           verifier.VerifyTable(projectNodeOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 40 /* componentOptions */) &&
-           verifier.VerifyTable(componentOptions()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 42 /* textAtlasOptions */) &&
-           verifier.VerifyTable(textAtlasOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* data */) &&
+//           verifier.VerifyTable(data()) &&
            verifier.EndTable();
   }
 };
@@ -332,76 +275,19 @@ struct Options : private flatbuffers::Table {
 struct OptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
-  void add_singleNodeOptions(flatbuffers::Offset<SingleNodeOptions> singleNodeOptions) { fbb_.AddOffset(6, singleNodeOptions); }
-  void add_spriteOptions(flatbuffers::Offset<SpriteOptions> spriteOptions) { fbb_.AddOffset(8, spriteOptions); }
-  void add_particleSystemOptions(flatbuffers::Offset<ParticleSystemOptions> particleSystemOptions) { fbb_.AddOffset(10, particleSystemOptions); }
-  void add_tmxTiledMapOptions(flatbuffers::Offset<TMXTiledMapOptions> tmxTiledMapOptions) { fbb_.AddOffset(12, tmxTiledMapOptions); }
-  void add_buttonOptions(flatbuffers::Offset<ButtonOptions> buttonOptions) { fbb_.AddOffset(14, buttonOptions); }
-  void add_checkBoxOptions(flatbuffers::Offset<CheckBoxOptions> checkBoxOptions) { fbb_.AddOffset(16, checkBoxOptions); }
-  void add_imageViewOptions(flatbuffers::Offset<ImageViewOptions> imageViewOptions) { fbb_.AddOffset(18, imageViewOptions); }
-  void add_textBMFontOptions(flatbuffers::Offset<TextBMFontOptions> textBMFontOptions) { fbb_.AddOffset(20, textBMFontOptions); }
-  void add_textOptions(flatbuffers::Offset<TextOptions> textOptions) { fbb_.AddOffset(22, textOptions); }
-  void add_textFieldOptions(flatbuffers::Offset<TextFieldOptions> textFieldOptions) { fbb_.AddOffset(24, textFieldOptions); }
-  void add_loadingBarOptions(flatbuffers::Offset<LoadingBarOptions> loadingBarOptions) { fbb_.AddOffset(26, loadingBarOptions); }
-  void add_sliderOptions(flatbuffers::Offset<SliderOptions> sliderOptions) { fbb_.AddOffset(28, sliderOptions); }
-  void add_panelOptions(flatbuffers::Offset<PanelOptions> panelOptions) { fbb_.AddOffset(30, panelOptions); }
-  void add_scrollViewOptions(flatbuffers::Offset<ScrollViewOptions> scrollViewOptions) { fbb_.AddOffset(32, scrollViewOptions); }
-  void add_pageViewOptions(flatbuffers::Offset<PageViewOptions> pageViewOptions) { fbb_.AddOffset(34, pageViewOptions); }
-  void add_listViewOptions(flatbuffers::Offset<ListViewOptions> listViewOptions) { fbb_.AddOffset(36, listViewOptions); }
-  void add_projectNodeOptions(flatbuffers::Offset<ProjectNodeOptions> projectNodeOptions) { fbb_.AddOffset(38, projectNodeOptions); }
-  void add_componentOptions(flatbuffers::Offset<ComponentOptions> componentOptions) { fbb_.AddOffset(40, componentOptions); }
-  void add_textAtlasOptions(flatbuffers::Offset<TextAtlasOptions> textAtlasOptions) { fbb_.AddOffset(42, textAtlasOptions); }
+  void add_data(flatbuffers::Offset<Table> data) { fbb_.AddOffset(4, data); }
   OptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   OptionsBuilder &operator=(const OptionsBuilder &);
   flatbuffers::Offset<Options> Finish() {
-    auto o = flatbuffers::Offset<Options>(fbb_.EndTable(start_, 20));
+    auto o = flatbuffers::Offset<Options>(fbb_.EndTable(start_, 1));
     return o;
   }
 };
 
 inline flatbuffers::Offset<Options> CreateOptions(flatbuffers::FlatBufferBuilder &_fbb,
-   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
-   flatbuffers::Offset<SingleNodeOptions> singleNodeOptions = 0,
-   flatbuffers::Offset<SpriteOptions> spriteOptions = 0,
-   flatbuffers::Offset<ParticleSystemOptions> particleSystemOptions = 0,
-   flatbuffers::Offset<TMXTiledMapOptions> tmxTiledMapOptions = 0,
-   flatbuffers::Offset<ButtonOptions> buttonOptions = 0,
-   flatbuffers::Offset<CheckBoxOptions> checkBoxOptions = 0,
-   flatbuffers::Offset<ImageViewOptions> imageViewOptions = 0,
-   flatbuffers::Offset<TextBMFontOptions> textBMFontOptions = 0,
-   flatbuffers::Offset<TextOptions> textOptions = 0,
-   flatbuffers::Offset<TextFieldOptions> textFieldOptions = 0,
-   flatbuffers::Offset<LoadingBarOptions> loadingBarOptions = 0,
-   flatbuffers::Offset<SliderOptions> sliderOptions = 0,
-   flatbuffers::Offset<PanelOptions> panelOptions = 0,
-   flatbuffers::Offset<ScrollViewOptions> scrollViewOptions = 0,
-   flatbuffers::Offset<PageViewOptions> pageViewOptions = 0,
-   flatbuffers::Offset<ListViewOptions> listViewOptions = 0,
-   flatbuffers::Offset<ProjectNodeOptions> projectNodeOptions = 0,
-   flatbuffers::Offset<ComponentOptions> componentOptions = 0,
-   flatbuffers::Offset<TextAtlasOptions> textAtlasOptions = 0) {
+   flatbuffers::Offset<Table> data = 0) {
   OptionsBuilder builder_(_fbb);
-  builder_.add_textAtlasOptions(textAtlasOptions);
-  builder_.add_componentOptions(componentOptions);
-  builder_.add_projectNodeOptions(projectNodeOptions);
-  builder_.add_listViewOptions(listViewOptions);
-  builder_.add_pageViewOptions(pageViewOptions);
-  builder_.add_scrollViewOptions(scrollViewOptions);
-  builder_.add_panelOptions(panelOptions);
-  builder_.add_sliderOptions(sliderOptions);
-  builder_.add_loadingBarOptions(loadingBarOptions);
-  builder_.add_textFieldOptions(textFieldOptions);
-  builder_.add_textOptions(textOptions);
-  builder_.add_textBMFontOptions(textBMFontOptions);
-  builder_.add_imageViewOptions(imageViewOptions);
-  builder_.add_checkBoxOptions(checkBoxOptions);
-  builder_.add_buttonOptions(buttonOptions);
-  builder_.add_tmxTiledMapOptions(tmxTiledMapOptions);
-  builder_.add_particleSystemOptions(particleSystemOptions);
-  builder_.add_spriteOptions(spriteOptions);
-  builder_.add_singleNodeOptions(singleNodeOptions);
-  builder_.add_widgetOptions(widgetOptions);
+  builder_.add_data(data);
   return builder_.Finish();
 }
 
@@ -522,8 +408,11 @@ inline flatbuffers::Offset<WidgetOptions> CreateWidgetOptions(flatbuffers::FlatB
 }
 
 struct SingleNodeOptions : private flatbuffers::Table {
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
            verifier.EndTable();
   }
 };
@@ -531,24 +420,30 @@ struct SingleNodeOptions : private flatbuffers::Table {
 struct SingleNodeOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
   SingleNodeOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   SingleNodeOptionsBuilder &operator=(const SingleNodeOptionsBuilder &);
   flatbuffers::Offset<SingleNodeOptions> Finish() {
-    auto o = flatbuffers::Offset<SingleNodeOptions>(fbb_.EndTable(start_, 0));
+    auto o = flatbuffers::Offset<SingleNodeOptions>(fbb_.EndTable(start_, 1));
     return o;
   }
 };
 
-inline flatbuffers::Offset<SingleNodeOptions> CreateSingleNodeOptions(flatbuffers::FlatBufferBuilder &_fbb) {
+inline flatbuffers::Offset<SingleNodeOptions> CreateSingleNodeOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0) {
   SingleNodeOptionsBuilder builder_(_fbb);
+  builder_.add_nodeOptions(nodeOptions);
   return builder_.Finish();
 }
 
 struct SpriteOptions : private flatbuffers::Table {
-  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(4); }
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(6); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fileNameData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileNameData */) &&
            verifier.VerifyTable(fileNameData()) &&
            verifier.EndTable();
   }
@@ -557,27 +452,33 @@ struct SpriteOptions : private flatbuffers::Table {
 struct SpriteOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(4, fileNameData); }
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
+  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(6, fileNameData); }
   SpriteOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   SpriteOptionsBuilder &operator=(const SpriteOptionsBuilder &);
   flatbuffers::Offset<SpriteOptions> Finish() {
-    auto o = flatbuffers::Offset<SpriteOptions>(fbb_.EndTable(start_, 1));
+    auto o = flatbuffers::Offset<SpriteOptions>(fbb_.EndTable(start_, 2));
     return o;
   }
 };
 
 inline flatbuffers::Offset<SpriteOptions> CreateSpriteOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
    flatbuffers::Offset<ResourceData> fileNameData = 0) {
   SpriteOptionsBuilder builder_(_fbb);
   builder_.add_fileNameData(fileNameData);
+  builder_.add_nodeOptions(nodeOptions);
   return builder_.Finish();
 }
 
 struct ParticleSystemOptions : private flatbuffers::Table {
-  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(4); }
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(6); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fileNameData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileNameData */) &&
            verifier.VerifyTable(fileNameData()) &&
            verifier.EndTable();
   }
@@ -586,84 +487,96 @@ struct ParticleSystemOptions : private flatbuffers::Table {
 struct ParticleSystemOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(4, fileNameData); }
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
+  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(6, fileNameData); }
   ParticleSystemOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ParticleSystemOptionsBuilder &operator=(const ParticleSystemOptionsBuilder &);
   flatbuffers::Offset<ParticleSystemOptions> Finish() {
-    auto o = flatbuffers::Offset<ParticleSystemOptions>(fbb_.EndTable(start_, 1));
+    auto o = flatbuffers::Offset<ParticleSystemOptions>(fbb_.EndTable(start_, 2));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ParticleSystemOptions> CreateParticleSystemOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
    flatbuffers::Offset<ResourceData> fileNameData = 0) {
   ParticleSystemOptionsBuilder builder_(_fbb);
   builder_.add_fileNameData(fileNameData);
+  builder_.add_nodeOptions(nodeOptions);
   return builder_.Finish();
 }
 
-struct TMXTiledMapOptions : private flatbuffers::Table {
-  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(4); }
+struct GameMapOptions : private flatbuffers::Table {
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(6); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fileNameData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileNameData */) &&
            verifier.VerifyTable(fileNameData()) &&
            verifier.EndTable();
   }
 };
 
-struct TMXTiledMapOptionsBuilder {
+struct GameMapOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(4, fileNameData); }
-  TMXTiledMapOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
-  TMXTiledMapOptionsBuilder &operator=(const TMXTiledMapOptionsBuilder &);
-  flatbuffers::Offset<TMXTiledMapOptions> Finish() {
-    auto o = flatbuffers::Offset<TMXTiledMapOptions>(fbb_.EndTable(start_, 1));
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
+  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(6, fileNameData); }
+  GameMapOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  GameMapOptionsBuilder &operator=(const GameMapOptionsBuilder &);
+  flatbuffers::Offset<GameMapOptions> Finish() {
+    auto o = flatbuffers::Offset<GameMapOptions>(fbb_.EndTable(start_, 2));
     return o;
   }
 };
 
-inline flatbuffers::Offset<TMXTiledMapOptions> CreateTMXTiledMapOptions(flatbuffers::FlatBufferBuilder &_fbb,
+inline flatbuffers::Offset<GameMapOptions> CreateGameMapOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
    flatbuffers::Offset<ResourceData> fileNameData = 0) {
-  TMXTiledMapOptionsBuilder builder_(_fbb);
+  GameMapOptionsBuilder builder_(_fbb);
   builder_.add_fileNameData(fileNameData);
+  builder_.add_nodeOptions(nodeOptions);
   return builder_.Finish();
 }
 
 struct ButtonOptions : private flatbuffers::Table {
-  const ResourceData *normalData() const { return GetPointer<const ResourceData *>(4); }
-  const ResourceData *pressedData() const { return GetPointer<const ResourceData *>(6); }
-  const ResourceData *disabledData() const { return GetPointer<const ResourceData *>(8); }
-  const ResourceData *fontResource() const { return GetPointer<const ResourceData *>(10); }
-  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(12); }
-  const flatbuffers::String *fontName() const { return GetPointer<const flatbuffers::String *>(14); }
-  int32_t fontSize() const { return GetField<int32_t>(16, 0); }
-  const Color *textColor() const { return GetStruct<const Color *>(18); }
-  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(20); }
-  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(22); }
-  uint8_t scale9Enabled() const { return GetField<uint8_t>(24, 0); }
-  uint8_t displaystate() const { return GetField<uint8_t>(26, 1); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *normalData() const { return GetPointer<const ResourceData *>(6); }
+  const ResourceData *pressedData() const { return GetPointer<const ResourceData *>(8); }
+  const ResourceData *disabledData() const { return GetPointer<const ResourceData *>(10); }
+  const ResourceData *fontResource() const { return GetPointer<const ResourceData *>(12); }
+  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(14); }
+  const flatbuffers::String *fontName() const { return GetPointer<const flatbuffers::String *>(16); }
+  int32_t fontSize() const { return GetField<int32_t>(18, 0); }
+  const Color *textColor() const { return GetStruct<const Color *>(20); }
+  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(22); }
+  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(24); }
+  uint8_t scale9Enabled() const { return GetField<uint8_t>(26, 0); }
+  uint8_t displaystate() const { return GetField<uint8_t>(28, 1); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* normalData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* normalData */) &&
            verifier.VerifyTable(normalData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* pressedData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* pressedData */) &&
            verifier.VerifyTable(pressedData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* disabledData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* disabledData */) &&
            verifier.VerifyTable(disabledData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* fontResource */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* fontResource */) &&
            verifier.VerifyTable(fontResource()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* text */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* text */) &&
            verifier.Verify(text()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* fontName */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 16 /* fontName */) &&
            verifier.Verify(fontName()) &&
-           VerifyField<int32_t>(verifier, 16 /* fontSize */) &&
-           VerifyField<Color>(verifier, 18 /* textColor */) &&
-           VerifyField<CapInsets>(verifier, 20 /* capInsets */) &&
-           VerifyField<FlatSize>(verifier, 22 /* scale9Size */) &&
-           VerifyField<uint8_t>(verifier, 24 /* scale9Enabled */) &&
-           VerifyField<uint8_t>(verifier, 26 /* displaystate */) &&
+           VerifyField<int32_t>(verifier, 18 /* fontSize */) &&
+           VerifyField<Color>(verifier, 20 /* textColor */) &&
+           VerifyField<CapInsets>(verifier, 22 /* capInsets */) &&
+           VerifyField<FlatSize>(verifier, 24 /* scale9Size */) &&
+           VerifyField<uint8_t>(verifier, 26 /* scale9Enabled */) &&
+           VerifyField<uint8_t>(verifier, 28 /* displaystate */) &&
            verifier.EndTable();
   }
 };
@@ -671,27 +584,29 @@ struct ButtonOptions : private flatbuffers::Table {
 struct ButtonOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_normalData(flatbuffers::Offset<ResourceData> normalData) { fbb_.AddOffset(4, normalData); }
-  void add_pressedData(flatbuffers::Offset<ResourceData> pressedData) { fbb_.AddOffset(6, pressedData); }
-  void add_disabledData(flatbuffers::Offset<ResourceData> disabledData) { fbb_.AddOffset(8, disabledData); }
-  void add_fontResource(flatbuffers::Offset<ResourceData> fontResource) { fbb_.AddOffset(10, fontResource); }
-  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(12, text); }
-  void add_fontName(flatbuffers::Offset<flatbuffers::String> fontName) { fbb_.AddOffset(14, fontName); }
-  void add_fontSize(int32_t fontSize) { fbb_.AddElement<int32_t>(16, fontSize, 0); }
-  void add_textColor(const Color *textColor) { fbb_.AddStruct(18, textColor); }
-  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(20, capInsets); }
-  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(22, scale9Size); }
-  void add_scale9Enabled(uint8_t scale9Enabled) { fbb_.AddElement<uint8_t>(24, scale9Enabled, 0); }
-  void add_displaystate(uint8_t displaystate) { fbb_.AddElement<uint8_t>(26, displaystate, 1); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_normalData(flatbuffers::Offset<ResourceData> normalData) { fbb_.AddOffset(6, normalData); }
+  void add_pressedData(flatbuffers::Offset<ResourceData> pressedData) { fbb_.AddOffset(8, pressedData); }
+  void add_disabledData(flatbuffers::Offset<ResourceData> disabledData) { fbb_.AddOffset(10, disabledData); }
+  void add_fontResource(flatbuffers::Offset<ResourceData> fontResource) { fbb_.AddOffset(12, fontResource); }
+  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(14, text); }
+  void add_fontName(flatbuffers::Offset<flatbuffers::String> fontName) { fbb_.AddOffset(16, fontName); }
+  void add_fontSize(int32_t fontSize) { fbb_.AddElement<int32_t>(18, fontSize, 0); }
+  void add_textColor(const Color *textColor) { fbb_.AddStruct(20, textColor); }
+  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(22, capInsets); }
+  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(24, scale9Size); }
+  void add_scale9Enabled(uint8_t scale9Enabled) { fbb_.AddElement<uint8_t>(26, scale9Enabled, 0); }
+  void add_displaystate(uint8_t displaystate) { fbb_.AddElement<uint8_t>(28, displaystate, 1); }
   ButtonOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ButtonOptionsBuilder &operator=(const ButtonOptionsBuilder &);
   flatbuffers::Offset<ButtonOptions> Finish() {
-    auto o = flatbuffers::Offset<ButtonOptions>(fbb_.EndTable(start_, 12));
+    auto o = flatbuffers::Offset<ButtonOptions>(fbb_.EndTable(start_, 13));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ButtonOptions> CreateButtonOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> normalData = 0,
    flatbuffers::Offset<ResourceData> pressedData = 0,
    flatbuffers::Offset<ResourceData> disabledData = 0,
@@ -715,33 +630,37 @@ inline flatbuffers::Offset<ButtonOptions> CreateButtonOptions(flatbuffers::FlatB
   builder_.add_disabledData(disabledData);
   builder_.add_pressedData(pressedData);
   builder_.add_normalData(normalData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_displaystate(displaystate);
   builder_.add_scale9Enabled(scale9Enabled);
   return builder_.Finish();
 }
 
 struct CheckBoxOptions : private flatbuffers::Table {
-  const ResourceData *backGroundBoxData() const { return GetPointer<const ResourceData *>(4); }
-  const ResourceData *backGroundBoxSelectedData() const { return GetPointer<const ResourceData *>(6); }
-  const ResourceData *frontCrossData() const { return GetPointer<const ResourceData *>(8); }
-  const ResourceData *backGroundBoxDisabledData() const { return GetPointer<const ResourceData *>(10); }
-  const ResourceData *frontCrossDisabledData() const { return GetPointer<const ResourceData *>(12); }
-  uint8_t selectedState() const { return GetField<uint8_t>(14, 1); }
-  uint8_t displaystate() const { return GetField<uint8_t>(16, 1); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *backGroundBoxData() const { return GetPointer<const ResourceData *>(6); }
+  const ResourceData *backGroundBoxSelectedData() const { return GetPointer<const ResourceData *>(8); }
+  const ResourceData *frontCrossData() const { return GetPointer<const ResourceData *>(10); }
+  const ResourceData *backGroundBoxDisabledData() const { return GetPointer<const ResourceData *>(12); }
+  const ResourceData *frontCrossDisabledData() const { return GetPointer<const ResourceData *>(14); }
+  uint8_t selectedState() const { return GetField<uint8_t>(16, 1); }
+  uint8_t displaystate() const { return GetField<uint8_t>(18, 1); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* backGroundBoxData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* backGroundBoxData */) &&
            verifier.VerifyTable(backGroundBoxData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* backGroundBoxSelectedData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* backGroundBoxSelectedData */) &&
            verifier.VerifyTable(backGroundBoxSelectedData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* frontCrossData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* frontCrossData */) &&
            verifier.VerifyTable(frontCrossData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* backGroundBoxDisabledData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* backGroundBoxDisabledData */) &&
            verifier.VerifyTable(backGroundBoxDisabledData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* frontCrossDisabledData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* frontCrossDisabledData */) &&
            verifier.VerifyTable(frontCrossDisabledData()) &&
-           VerifyField<uint8_t>(verifier, 14 /* selectedState */) &&
-           VerifyField<uint8_t>(verifier, 16 /* displaystate */) &&
+           VerifyField<uint8_t>(verifier, 16 /* selectedState */) &&
+           VerifyField<uint8_t>(verifier, 18 /* displaystate */) &&
            verifier.EndTable();
   }
 };
@@ -749,22 +668,24 @@ struct CheckBoxOptions : private flatbuffers::Table {
 struct CheckBoxOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_backGroundBoxData(flatbuffers::Offset<ResourceData> backGroundBoxData) { fbb_.AddOffset(4, backGroundBoxData); }
-  void add_backGroundBoxSelectedData(flatbuffers::Offset<ResourceData> backGroundBoxSelectedData) { fbb_.AddOffset(6, backGroundBoxSelectedData); }
-  void add_frontCrossData(flatbuffers::Offset<ResourceData> frontCrossData) { fbb_.AddOffset(8, frontCrossData); }
-  void add_backGroundBoxDisabledData(flatbuffers::Offset<ResourceData> backGroundBoxDisabledData) { fbb_.AddOffset(10, backGroundBoxDisabledData); }
-  void add_frontCrossDisabledData(flatbuffers::Offset<ResourceData> frontCrossDisabledData) { fbb_.AddOffset(12, frontCrossDisabledData); }
-  void add_selectedState(uint8_t selectedState) { fbb_.AddElement<uint8_t>(14, selectedState, 1); }
-  void add_displaystate(uint8_t displaystate) { fbb_.AddElement<uint8_t>(16, displaystate, 1); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_backGroundBoxData(flatbuffers::Offset<ResourceData> backGroundBoxData) { fbb_.AddOffset(6, backGroundBoxData); }
+  void add_backGroundBoxSelectedData(flatbuffers::Offset<ResourceData> backGroundBoxSelectedData) { fbb_.AddOffset(8, backGroundBoxSelectedData); }
+  void add_frontCrossData(flatbuffers::Offset<ResourceData> frontCrossData) { fbb_.AddOffset(10, frontCrossData); }
+  void add_backGroundBoxDisabledData(flatbuffers::Offset<ResourceData> backGroundBoxDisabledData) { fbb_.AddOffset(12, backGroundBoxDisabledData); }
+  void add_frontCrossDisabledData(flatbuffers::Offset<ResourceData> frontCrossDisabledData) { fbb_.AddOffset(14, frontCrossDisabledData); }
+  void add_selectedState(uint8_t selectedState) { fbb_.AddElement<uint8_t>(16, selectedState, 1); }
+  void add_displaystate(uint8_t displaystate) { fbb_.AddElement<uint8_t>(18, displaystate, 1); }
   CheckBoxOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   CheckBoxOptionsBuilder &operator=(const CheckBoxOptionsBuilder &);
   flatbuffers::Offset<CheckBoxOptions> Finish() {
-    auto o = flatbuffers::Offset<CheckBoxOptions>(fbb_.EndTable(start_, 7));
+    auto o = flatbuffers::Offset<CheckBoxOptions>(fbb_.EndTable(start_, 8));
     return o;
   }
 };
 
 inline flatbuffers::Offset<CheckBoxOptions> CreateCheckBoxOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> backGroundBoxData = 0,
    flatbuffers::Offset<ResourceData> backGroundBoxSelectedData = 0,
    flatbuffers::Offset<ResourceData> frontCrossData = 0,
@@ -778,23 +699,27 @@ inline flatbuffers::Offset<CheckBoxOptions> CreateCheckBoxOptions(flatbuffers::F
   builder_.add_frontCrossData(frontCrossData);
   builder_.add_backGroundBoxSelectedData(backGroundBoxSelectedData);
   builder_.add_backGroundBoxData(backGroundBoxData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_displaystate(displaystate);
   builder_.add_selectedState(selectedState);
   return builder_.Finish();
 }
 
 struct ImageViewOptions : private flatbuffers::Table {
-  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(4); }
-  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(6); }
-  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(8); }
-  uint8_t scale9Enabled() const { return GetField<uint8_t>(10, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(6); }
+  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(8); }
+  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(10); }
+  uint8_t scale9Enabled() const { return GetField<uint8_t>(12, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fileNameData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileNameData */) &&
            verifier.VerifyTable(fileNameData()) &&
-           VerifyField<CapInsets>(verifier, 6 /* capInsets */) &&
-           VerifyField<FlatSize>(verifier, 8 /* scale9Size */) &&
-           VerifyField<uint8_t>(verifier, 10 /* scale9Enabled */) &&
+           VerifyField<CapInsets>(verifier, 8 /* capInsets */) &&
+           VerifyField<FlatSize>(verifier, 10 /* scale9Size */) &&
+           VerifyField<uint8_t>(verifier, 12 /* scale9Enabled */) &&
            verifier.EndTable();
   }
 };
@@ -802,19 +727,21 @@ struct ImageViewOptions : private flatbuffers::Table {
 struct ImageViewOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(4, fileNameData); }
-  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(6, capInsets); }
-  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(8, scale9Size); }
-  void add_scale9Enabled(uint8_t scale9Enabled) { fbb_.AddElement<uint8_t>(10, scale9Enabled, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(6, fileNameData); }
+  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(8, capInsets); }
+  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(10, scale9Size); }
+  void add_scale9Enabled(uint8_t scale9Enabled) { fbb_.AddElement<uint8_t>(12, scale9Enabled, 0); }
   ImageViewOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ImageViewOptionsBuilder &operator=(const ImageViewOptionsBuilder &);
   flatbuffers::Offset<ImageViewOptions> Finish() {
-    auto o = flatbuffers::Offset<ImageViewOptions>(fbb_.EndTable(start_, 4));
+    auto o = flatbuffers::Offset<ImageViewOptions>(fbb_.EndTable(start_, 5));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ImageViewOptions> CreateImageViewOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> fileNameData = 0,
    const CapInsets *capInsets = 0,
    const FlatSize *scale9Size = 0,
@@ -823,26 +750,30 @@ inline flatbuffers::Offset<ImageViewOptions> CreateImageViewOptions(flatbuffers:
   builder_.add_scale9Size(scale9Size);
   builder_.add_capInsets(capInsets);
   builder_.add_fileNameData(fileNameData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_scale9Enabled(scale9Enabled);
   return builder_.Finish();
 }
 
 struct TextAtlasOptions : private flatbuffers::Table {
-  const ResourceData *charMapFileData() const { return GetPointer<const ResourceData *>(4); }
-  const flatbuffers::String *stringValue() const { return GetPointer<const flatbuffers::String *>(6); }
-  const flatbuffers::String *startCharMap() const { return GetPointer<const flatbuffers::String *>(8); }
-  int32_t itemWidth() const { return GetField<int32_t>(10, 0); }
-  int32_t itemHeight() const { return GetField<int32_t>(12, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *charMapFileData() const { return GetPointer<const ResourceData *>(6); }
+  const flatbuffers::String *stringValue() const { return GetPointer<const flatbuffers::String *>(8); }
+  const flatbuffers::String *startCharMap() const { return GetPointer<const flatbuffers::String *>(10); }
+  int32_t itemWidth() const { return GetField<int32_t>(12, 0); }
+  int32_t itemHeight() const { return GetField<int32_t>(14, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* charMapFileData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* charMapFileData */) &&
            verifier.VerifyTable(charMapFileData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* stringValue */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* stringValue */) &&
            verifier.Verify(stringValue()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* startCharMap */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* startCharMap */) &&
            verifier.Verify(startCharMap()) &&
-           VerifyField<int32_t>(verifier, 10 /* itemWidth */) &&
-           VerifyField<int32_t>(verifier, 12 /* itemHeight */) &&
+           VerifyField<int32_t>(verifier, 12 /* itemWidth */) &&
+           VerifyField<int32_t>(verifier, 14 /* itemHeight */) &&
            verifier.EndTable();
   }
 };
@@ -850,20 +781,22 @@ struct TextAtlasOptions : private flatbuffers::Table {
 struct TextAtlasOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_charMapFileData(flatbuffers::Offset<ResourceData> charMapFileData) { fbb_.AddOffset(4, charMapFileData); }
-  void add_stringValue(flatbuffers::Offset<flatbuffers::String> stringValue) { fbb_.AddOffset(6, stringValue); }
-  void add_startCharMap(flatbuffers::Offset<flatbuffers::String> startCharMap) { fbb_.AddOffset(8, startCharMap); }
-  void add_itemWidth(int32_t itemWidth) { fbb_.AddElement<int32_t>(10, itemWidth, 0); }
-  void add_itemHeight(int32_t itemHeight) { fbb_.AddElement<int32_t>(12, itemHeight, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_charMapFileData(flatbuffers::Offset<ResourceData> charMapFileData) { fbb_.AddOffset(6, charMapFileData); }
+  void add_stringValue(flatbuffers::Offset<flatbuffers::String> stringValue) { fbb_.AddOffset(8, stringValue); }
+  void add_startCharMap(flatbuffers::Offset<flatbuffers::String> startCharMap) { fbb_.AddOffset(10, startCharMap); }
+  void add_itemWidth(int32_t itemWidth) { fbb_.AddElement<int32_t>(12, itemWidth, 0); }
+  void add_itemHeight(int32_t itemHeight) { fbb_.AddElement<int32_t>(14, itemHeight, 0); }
   TextAtlasOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   TextAtlasOptionsBuilder &operator=(const TextAtlasOptionsBuilder &);
   flatbuffers::Offset<TextAtlasOptions> Finish() {
-    auto o = flatbuffers::Offset<TextAtlasOptions>(fbb_.EndTable(start_, 5));
+    auto o = flatbuffers::Offset<TextAtlasOptions>(fbb_.EndTable(start_, 6));
     return o;
   }
 };
 
 inline flatbuffers::Offset<TextAtlasOptions> CreateTextAtlasOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> charMapFileData = 0,
    flatbuffers::Offset<flatbuffers::String> stringValue = 0,
    flatbuffers::Offset<flatbuffers::String> startCharMap = 0,
@@ -875,17 +808,21 @@ inline flatbuffers::Offset<TextAtlasOptions> CreateTextAtlasOptions(flatbuffers:
   builder_.add_startCharMap(startCharMap);
   builder_.add_stringValue(stringValue);
   builder_.add_charMapFileData(charMapFileData);
+  builder_.add_widgetOptions(widgetOptions);
   return builder_.Finish();
 }
 
 struct TextBMFontOptions : private flatbuffers::Table {
-  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(4); }
-  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(6); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(6); }
+  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(8); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fileNameData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileNameData */) &&
            verifier.VerifyTable(fileNameData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* text */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* text */) &&
            verifier.Verify(text()) &&
            verifier.EndTable();
   }
@@ -894,51 +831,57 @@ struct TextBMFontOptions : private flatbuffers::Table {
 struct TextBMFontOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(4, fileNameData); }
-  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(6, text); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(6, fileNameData); }
+  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(8, text); }
   TextBMFontOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   TextBMFontOptionsBuilder &operator=(const TextBMFontOptionsBuilder &);
   flatbuffers::Offset<TextBMFontOptions> Finish() {
-    auto o = flatbuffers::Offset<TextBMFontOptions>(fbb_.EndTable(start_, 2));
+    auto o = flatbuffers::Offset<TextBMFontOptions>(fbb_.EndTable(start_, 3));
     return o;
   }
 };
 
 inline flatbuffers::Offset<TextBMFontOptions> CreateTextBMFontOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> fileNameData = 0,
    flatbuffers::Offset<flatbuffers::String> text = 0) {
   TextBMFontOptionsBuilder builder_(_fbb);
   builder_.add_text(text);
   builder_.add_fileNameData(fileNameData);
+  builder_.add_widgetOptions(widgetOptions);
   return builder_.Finish();
 }
 
 struct TextOptions : private flatbuffers::Table {
-  const ResourceData *fontResource() const { return GetPointer<const ResourceData *>(4); }
-  const flatbuffers::String *fontName() const { return GetPointer<const flatbuffers::String *>(6); }
-  int32_t fontSize() const { return GetField<int32_t>(8, 0); }
-  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(10); }
-  int32_t areaWidth() const { return GetField<int32_t>(12, 0); }
-  int32_t areaHeight() const { return GetField<int32_t>(14, 0); }
-  int32_t hAlignment() const { return GetField<int32_t>(16, 0); }
-  int32_t vAlignment() const { return GetField<int32_t>(18, 0); }
-  uint8_t touchScaleEnable() const { return GetField<uint8_t>(20, 0); }
-  uint8_t isCustomSize() const { return GetField<uint8_t>(22, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fontResource() const { return GetPointer<const ResourceData *>(6); }
+  const flatbuffers::String *fontName() const { return GetPointer<const flatbuffers::String *>(8); }
+  int32_t fontSize() const { return GetField<int32_t>(10, 0); }
+  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(12); }
+  int32_t areaWidth() const { return GetField<int32_t>(14, 0); }
+  int32_t areaHeight() const { return GetField<int32_t>(16, 0); }
+  int32_t hAlignment() const { return GetField<int32_t>(18, 0); }
+  int32_t vAlignment() const { return GetField<int32_t>(20, 0); }
+  uint8_t touchScaleEnable() const { return GetField<uint8_t>(22, 0); }
+  uint8_t isCustomSize() const { return GetField<uint8_t>(24, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fontResource */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fontResource */) &&
            verifier.VerifyTable(fontResource()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fontName */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* fontName */) &&
            verifier.Verify(fontName()) &&
-           VerifyField<int32_t>(verifier, 8 /* fontSize */) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* text */) &&
+           VerifyField<int32_t>(verifier, 10 /* fontSize */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* text */) &&
            verifier.Verify(text()) &&
-           VerifyField<int32_t>(verifier, 12 /* areaWidth */) &&
-           VerifyField<int32_t>(verifier, 14 /* areaHeight */) &&
-           VerifyField<int32_t>(verifier, 16 /* hAlignment */) &&
-           VerifyField<int32_t>(verifier, 18 /* vAlignment */) &&
-           VerifyField<uint8_t>(verifier, 20 /* touchScaleEnable */) &&
-           VerifyField<uint8_t>(verifier, 22 /* isCustomSize */) &&
+           VerifyField<int32_t>(verifier, 14 /* areaWidth */) &&
+           VerifyField<int32_t>(verifier, 16 /* areaHeight */) &&
+           VerifyField<int32_t>(verifier, 18 /* hAlignment */) &&
+           VerifyField<int32_t>(verifier, 20 /* vAlignment */) &&
+           VerifyField<uint8_t>(verifier, 22 /* touchScaleEnable */) &&
+           VerifyField<uint8_t>(verifier, 24 /* isCustomSize */) &&
            verifier.EndTable();
   }
 };
@@ -946,25 +889,27 @@ struct TextOptions : private flatbuffers::Table {
 struct TextOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fontResource(flatbuffers::Offset<ResourceData> fontResource) { fbb_.AddOffset(4, fontResource); }
-  void add_fontName(flatbuffers::Offset<flatbuffers::String> fontName) { fbb_.AddOffset(6, fontName); }
-  void add_fontSize(int32_t fontSize) { fbb_.AddElement<int32_t>(8, fontSize, 0); }
-  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(10, text); }
-  void add_areaWidth(int32_t areaWidth) { fbb_.AddElement<int32_t>(12, areaWidth, 0); }
-  void add_areaHeight(int32_t areaHeight) { fbb_.AddElement<int32_t>(14, areaHeight, 0); }
-  void add_hAlignment(int32_t hAlignment) { fbb_.AddElement<int32_t>(16, hAlignment, 0); }
-  void add_vAlignment(int32_t vAlignment) { fbb_.AddElement<int32_t>(18, vAlignment, 0); }
-  void add_touchScaleEnable(uint8_t touchScaleEnable) { fbb_.AddElement<uint8_t>(20, touchScaleEnable, 0); }
-  void add_isCustomSize(uint8_t isCustomSize) { fbb_.AddElement<uint8_t>(22, isCustomSize, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_fontResource(flatbuffers::Offset<ResourceData> fontResource) { fbb_.AddOffset(6, fontResource); }
+  void add_fontName(flatbuffers::Offset<flatbuffers::String> fontName) { fbb_.AddOffset(8, fontName); }
+  void add_fontSize(int32_t fontSize) { fbb_.AddElement<int32_t>(10, fontSize, 0); }
+  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(12, text); }
+  void add_areaWidth(int32_t areaWidth) { fbb_.AddElement<int32_t>(14, areaWidth, 0); }
+  void add_areaHeight(int32_t areaHeight) { fbb_.AddElement<int32_t>(16, areaHeight, 0); }
+  void add_hAlignment(int32_t hAlignment) { fbb_.AddElement<int32_t>(18, hAlignment, 0); }
+  void add_vAlignment(int32_t vAlignment) { fbb_.AddElement<int32_t>(20, vAlignment, 0); }
+  void add_touchScaleEnable(uint8_t touchScaleEnable) { fbb_.AddElement<uint8_t>(22, touchScaleEnable, 0); }
+  void add_isCustomSize(uint8_t isCustomSize) { fbb_.AddElement<uint8_t>(24, isCustomSize, 0); }
   TextOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   TextOptionsBuilder &operator=(const TextOptionsBuilder &);
   flatbuffers::Offset<TextOptions> Finish() {
-    auto o = flatbuffers::Offset<TextOptions>(fbb_.EndTable(start_, 10));
+    auto o = flatbuffers::Offset<TextOptions>(fbb_.EndTable(start_, 11));
     return o;
   }
 };
 
 inline flatbuffers::Offset<TextOptions> CreateTextOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> fontResource = 0,
    flatbuffers::Offset<flatbuffers::String> fontName = 0,
    int32_t fontSize = 0,
@@ -984,43 +929,47 @@ inline flatbuffers::Offset<TextOptions> CreateTextOptions(flatbuffers::FlatBuffe
   builder_.add_fontSize(fontSize);
   builder_.add_fontName(fontName);
   builder_.add_fontResource(fontResource);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_isCustomSize(isCustomSize);
   builder_.add_touchScaleEnable(touchScaleEnable);
   return builder_.Finish();
 }
 
 struct TextFieldOptions : private flatbuffers::Table {
-  const ResourceData *fontResource() const { return GetPointer<const ResourceData *>(4); }
-  const flatbuffers::String *fontName() const { return GetPointer<const flatbuffers::String *>(6); }
-  int32_t fontSize() const { return GetField<int32_t>(8, 0); }
-  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(10); }
-  const flatbuffers::String *placeHolder() const { return GetPointer<const flatbuffers::String *>(12); }
-  uint8_t passwordEnabled() const { return GetField<uint8_t>(14, 0); }
-  const flatbuffers::String *passwordStyleText() const { return GetPointer<const flatbuffers::String *>(16); }
-  uint8_t maxLengthEnabled() const { return GetField<uint8_t>(18, 0); }
-  int32_t maxLength() const { return GetField<int32_t>(20, 0); }
-  int32_t areaWidth() const { return GetField<int32_t>(22, 0); }
-  int32_t areaHeight() const { return GetField<int32_t>(24, 0); }
-  uint8_t isCustomSize() const { return GetField<uint8_t>(26, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *fontResource() const { return GetPointer<const ResourceData *>(6); }
+  const flatbuffers::String *fontName() const { return GetPointer<const flatbuffers::String *>(8); }
+  int32_t fontSize() const { return GetField<int32_t>(10, 0); }
+  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(12); }
+  const flatbuffers::String *placeHolder() const { return GetPointer<const flatbuffers::String *>(14); }
+  uint8_t passwordEnabled() const { return GetField<uint8_t>(16, 0); }
+  const flatbuffers::String *passwordStyleText() const { return GetPointer<const flatbuffers::String *>(18); }
+  uint8_t maxLengthEnabled() const { return GetField<uint8_t>(20, 0); }
+  int32_t maxLength() const { return GetField<int32_t>(22, 0); }
+  int32_t areaWidth() const { return GetField<int32_t>(24, 0); }
+  int32_t areaHeight() const { return GetField<int32_t>(26, 0); }
+  uint8_t isCustomSize() const { return GetField<uint8_t>(28, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fontResource */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fontResource */) &&
            verifier.VerifyTable(fontResource()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fontName */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* fontName */) &&
            verifier.Verify(fontName()) &&
-           VerifyField<int32_t>(verifier, 8 /* fontSize */) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* text */) &&
+           VerifyField<int32_t>(verifier, 10 /* fontSize */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* text */) &&
            verifier.Verify(text()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* placeHolder */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* placeHolder */) &&
            verifier.Verify(placeHolder()) &&
-           VerifyField<uint8_t>(verifier, 14 /* passwordEnabled */) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 16 /* passwordStyleText */) &&
+           VerifyField<uint8_t>(verifier, 16 /* passwordEnabled */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 18 /* passwordStyleText */) &&
            verifier.Verify(passwordStyleText()) &&
-           VerifyField<uint8_t>(verifier, 18 /* maxLengthEnabled */) &&
-           VerifyField<int32_t>(verifier, 20 /* maxLength */) &&
-           VerifyField<int32_t>(verifier, 22 /* areaWidth */) &&
-           VerifyField<int32_t>(verifier, 24 /* areaHeight */) &&
-           VerifyField<uint8_t>(verifier, 26 /* isCustomSize */) &&
+           VerifyField<uint8_t>(verifier, 20 /* maxLengthEnabled */) &&
+           VerifyField<int32_t>(verifier, 22 /* maxLength */) &&
+           VerifyField<int32_t>(verifier, 24 /* areaWidth */) &&
+           VerifyField<int32_t>(verifier, 26 /* areaHeight */) &&
+           VerifyField<uint8_t>(verifier, 28 /* isCustomSize */) &&
            verifier.EndTable();
   }
 };
@@ -1028,27 +977,29 @@ struct TextFieldOptions : private flatbuffers::Table {
 struct TextFieldOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fontResource(flatbuffers::Offset<ResourceData> fontResource) { fbb_.AddOffset(4, fontResource); }
-  void add_fontName(flatbuffers::Offset<flatbuffers::String> fontName) { fbb_.AddOffset(6, fontName); }
-  void add_fontSize(int32_t fontSize) { fbb_.AddElement<int32_t>(8, fontSize, 0); }
-  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(10, text); }
-  void add_placeHolder(flatbuffers::Offset<flatbuffers::String> placeHolder) { fbb_.AddOffset(12, placeHolder); }
-  void add_passwordEnabled(uint8_t passwordEnabled) { fbb_.AddElement<uint8_t>(14, passwordEnabled, 0); }
-  void add_passwordStyleText(flatbuffers::Offset<flatbuffers::String> passwordStyleText) { fbb_.AddOffset(16, passwordStyleText); }
-  void add_maxLengthEnabled(uint8_t maxLengthEnabled) { fbb_.AddElement<uint8_t>(18, maxLengthEnabled, 0); }
-  void add_maxLength(int32_t maxLength) { fbb_.AddElement<int32_t>(20, maxLength, 0); }
-  void add_areaWidth(int32_t areaWidth) { fbb_.AddElement<int32_t>(22, areaWidth, 0); }
-  void add_areaHeight(int32_t areaHeight) { fbb_.AddElement<int32_t>(24, areaHeight, 0); }
-  void add_isCustomSize(uint8_t isCustomSize) { fbb_.AddElement<uint8_t>(26, isCustomSize, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_fontResource(flatbuffers::Offset<ResourceData> fontResource) { fbb_.AddOffset(6, fontResource); }
+  void add_fontName(flatbuffers::Offset<flatbuffers::String> fontName) { fbb_.AddOffset(8, fontName); }
+  void add_fontSize(int32_t fontSize) { fbb_.AddElement<int32_t>(10, fontSize, 0); }
+  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(12, text); }
+  void add_placeHolder(flatbuffers::Offset<flatbuffers::String> placeHolder) { fbb_.AddOffset(14, placeHolder); }
+  void add_passwordEnabled(uint8_t passwordEnabled) { fbb_.AddElement<uint8_t>(16, passwordEnabled, 0); }
+  void add_passwordStyleText(flatbuffers::Offset<flatbuffers::String> passwordStyleText) { fbb_.AddOffset(18, passwordStyleText); }
+  void add_maxLengthEnabled(uint8_t maxLengthEnabled) { fbb_.AddElement<uint8_t>(20, maxLengthEnabled, 0); }
+  void add_maxLength(int32_t maxLength) { fbb_.AddElement<int32_t>(22, maxLength, 0); }
+  void add_areaWidth(int32_t areaWidth) { fbb_.AddElement<int32_t>(24, areaWidth, 0); }
+  void add_areaHeight(int32_t areaHeight) { fbb_.AddElement<int32_t>(26, areaHeight, 0); }
+  void add_isCustomSize(uint8_t isCustomSize) { fbb_.AddElement<uint8_t>(28, isCustomSize, 0); }
   TextFieldOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   TextFieldOptionsBuilder &operator=(const TextFieldOptionsBuilder &);
   flatbuffers::Offset<TextFieldOptions> Finish() {
-    auto o = flatbuffers::Offset<TextFieldOptions>(fbb_.EndTable(start_, 12));
+    auto o = flatbuffers::Offset<TextFieldOptions>(fbb_.EndTable(start_, 13));
     return o;
   }
 };
 
 inline flatbuffers::Offset<TextFieldOptions> CreateTextFieldOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> fontResource = 0,
    flatbuffers::Offset<flatbuffers::String> fontName = 0,
    int32_t fontSize = 0,
@@ -1071,6 +1022,7 @@ inline flatbuffers::Offset<TextFieldOptions> CreateTextFieldOptions(flatbuffers:
   builder_.add_fontSize(fontSize);
   builder_.add_fontName(fontName);
   builder_.add_fontResource(fontResource);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_isCustomSize(isCustomSize);
   builder_.add_maxLengthEnabled(maxLengthEnabled);
   builder_.add_passwordEnabled(passwordEnabled);
@@ -1078,15 +1030,18 @@ inline flatbuffers::Offset<TextFieldOptions> CreateTextFieldOptions(flatbuffers:
 }
 
 struct LoadingBarOptions : private flatbuffers::Table {
-  const ResourceData *textureData() const { return GetPointer<const ResourceData *>(4); }
-  int32_t percent() const { return GetField<int32_t>(6, 80); }
-  int32_t direction() const { return GetField<int32_t>(8, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *textureData() const { return GetPointer<const ResourceData *>(6); }
+  int32_t percent() const { return GetField<int32_t>(8, 80); }
+  int32_t direction() const { return GetField<int32_t>(10, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* textureData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* textureData */) &&
            verifier.VerifyTable(textureData()) &&
-           VerifyField<int32_t>(verifier, 6 /* percent */) &&
-           VerifyField<int32_t>(verifier, 8 /* direction */) &&
+           VerifyField<int32_t>(verifier, 8 /* percent */) &&
+           VerifyField<int32_t>(verifier, 10 /* direction */) &&
            verifier.EndTable();
   }
 };
@@ -1094,18 +1049,20 @@ struct LoadingBarOptions : private flatbuffers::Table {
 struct LoadingBarOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_textureData(flatbuffers::Offset<ResourceData> textureData) { fbb_.AddOffset(4, textureData); }
-  void add_percent(int32_t percent) { fbb_.AddElement<int32_t>(6, percent, 80); }
-  void add_direction(int32_t direction) { fbb_.AddElement<int32_t>(8, direction, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_textureData(flatbuffers::Offset<ResourceData> textureData) { fbb_.AddOffset(6, textureData); }
+  void add_percent(int32_t percent) { fbb_.AddElement<int32_t>(8, percent, 80); }
+  void add_direction(int32_t direction) { fbb_.AddElement<int32_t>(10, direction, 0); }
   LoadingBarOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   LoadingBarOptionsBuilder &operator=(const LoadingBarOptionsBuilder &);
   flatbuffers::Offset<LoadingBarOptions> Finish() {
-    auto o = flatbuffers::Offset<LoadingBarOptions>(fbb_.EndTable(start_, 3));
+    auto o = flatbuffers::Offset<LoadingBarOptions>(fbb_.EndTable(start_, 4));
     return o;
   }
 };
 
 inline flatbuffers::Offset<LoadingBarOptions> CreateLoadingBarOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> textureData = 0,
    int32_t percent = 80,
    int32_t direction = 0) {
@@ -1113,31 +1070,35 @@ inline flatbuffers::Offset<LoadingBarOptions> CreateLoadingBarOptions(flatbuffer
   builder_.add_direction(direction);
   builder_.add_percent(percent);
   builder_.add_textureData(textureData);
+  builder_.add_widgetOptions(widgetOptions);
   return builder_.Finish();
 }
 
 struct SliderOptions : private flatbuffers::Table {
-  const ResourceData *barFileNameData() const { return GetPointer<const ResourceData *>(4); }
-  const ResourceData *ballNormalData() const { return GetPointer<const ResourceData *>(6); }
-  const ResourceData *ballPressedData() const { return GetPointer<const ResourceData *>(8); }
-  const ResourceData *ballDisabledData() const { return GetPointer<const ResourceData *>(10); }
-  const ResourceData *progressBarData() const { return GetPointer<const ResourceData *>(12); }
-  int32_t percent() const { return GetField<int32_t>(14, 50); }
-  uint8_t displaystate() const { return GetField<uint8_t>(16, 1); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *barFileNameData() const { return GetPointer<const ResourceData *>(6); }
+  const ResourceData *ballNormalData() const { return GetPointer<const ResourceData *>(8); }
+  const ResourceData *ballPressedData() const { return GetPointer<const ResourceData *>(10); }
+  const ResourceData *ballDisabledData() const { return GetPointer<const ResourceData *>(12); }
+  const ResourceData *progressBarData() const { return GetPointer<const ResourceData *>(14); }
+  int32_t percent() const { return GetField<int32_t>(16, 50); }
+  uint8_t displaystate() const { return GetField<uint8_t>(18, 1); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* barFileNameData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* barFileNameData */) &&
            verifier.VerifyTable(barFileNameData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* ballNormalData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* ballNormalData */) &&
            verifier.VerifyTable(ballNormalData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* ballPressedData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* ballPressedData */) &&
            verifier.VerifyTable(ballPressedData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* ballDisabledData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* ballDisabledData */) &&
            verifier.VerifyTable(ballDisabledData()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* progressBarData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* progressBarData */) &&
            verifier.VerifyTable(progressBarData()) &&
-           VerifyField<int32_t>(verifier, 14 /* percent */) &&
-           VerifyField<uint8_t>(verifier, 16 /* displaystate */) &&
+           VerifyField<int32_t>(verifier, 16 /* percent */) &&
+           VerifyField<uint8_t>(verifier, 18 /* displaystate */) &&
            verifier.EndTable();
   }
 };
@@ -1145,22 +1106,24 @@ struct SliderOptions : private flatbuffers::Table {
 struct SliderOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_barFileNameData(flatbuffers::Offset<ResourceData> barFileNameData) { fbb_.AddOffset(4, barFileNameData); }
-  void add_ballNormalData(flatbuffers::Offset<ResourceData> ballNormalData) { fbb_.AddOffset(6, ballNormalData); }
-  void add_ballPressedData(flatbuffers::Offset<ResourceData> ballPressedData) { fbb_.AddOffset(8, ballPressedData); }
-  void add_ballDisabledData(flatbuffers::Offset<ResourceData> ballDisabledData) { fbb_.AddOffset(10, ballDisabledData); }
-  void add_progressBarData(flatbuffers::Offset<ResourceData> progressBarData) { fbb_.AddOffset(12, progressBarData); }
-  void add_percent(int32_t percent) { fbb_.AddElement<int32_t>(14, percent, 50); }
-  void add_displaystate(uint8_t displaystate) { fbb_.AddElement<uint8_t>(16, displaystate, 1); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_barFileNameData(flatbuffers::Offset<ResourceData> barFileNameData) { fbb_.AddOffset(6, barFileNameData); }
+  void add_ballNormalData(flatbuffers::Offset<ResourceData> ballNormalData) { fbb_.AddOffset(8, ballNormalData); }
+  void add_ballPressedData(flatbuffers::Offset<ResourceData> ballPressedData) { fbb_.AddOffset(10, ballPressedData); }
+  void add_ballDisabledData(flatbuffers::Offset<ResourceData> ballDisabledData) { fbb_.AddOffset(12, ballDisabledData); }
+  void add_progressBarData(flatbuffers::Offset<ResourceData> progressBarData) { fbb_.AddOffset(14, progressBarData); }
+  void add_percent(int32_t percent) { fbb_.AddElement<int32_t>(16, percent, 50); }
+  void add_displaystate(uint8_t displaystate) { fbb_.AddElement<uint8_t>(18, displaystate, 1); }
   SliderOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   SliderOptionsBuilder &operator=(const SliderOptionsBuilder &);
   flatbuffers::Offset<SliderOptions> Finish() {
-    auto o = flatbuffers::Offset<SliderOptions>(fbb_.EndTable(start_, 7));
+    auto o = flatbuffers::Offset<SliderOptions>(fbb_.EndTable(start_, 8));
     return o;
   }
 };
 
 inline flatbuffers::Offset<SliderOptions> CreateSliderOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> barFileNameData = 0,
    flatbuffers::Offset<ResourceData> ballNormalData = 0,
    flatbuffers::Offset<ResourceData> ballPressedData = 0,
@@ -1175,36 +1138,40 @@ inline flatbuffers::Offset<SliderOptions> CreateSliderOptions(flatbuffers::FlatB
   builder_.add_ballPressedData(ballPressedData);
   builder_.add_ballNormalData(ballNormalData);
   builder_.add_barFileNameData(barFileNameData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_displaystate(displaystate);
   return builder_.Finish();
 }
 
 struct PanelOptions : private flatbuffers::Table {
-  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(4); }
-  uint8_t clipEnabled() const { return GetField<uint8_t>(6, 0); }
-  const Color *bgColor() const { return GetStruct<const Color *>(8); }
-  const Color *bgStartColor() const { return GetStruct<const Color *>(10); }
-  const Color *bgEndColor() const { return GetStruct<const Color *>(12); }
-  int32_t colorType() const { return GetField<int32_t>(14, 0); }
-  uint8_t bgColorOpacity() const { return GetField<uint8_t>(16, 255); }
-  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(18); }
-  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(20); }
-  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(22); }
-  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(24, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(6); }
+  uint8_t clipEnabled() const { return GetField<uint8_t>(8, 0); }
+  const Color *bgColor() const { return GetStruct<const Color *>(10); }
+  const Color *bgStartColor() const { return GetStruct<const Color *>(12); }
+  const Color *bgEndColor() const { return GetStruct<const Color *>(14); }
+  int32_t colorType() const { return GetField<int32_t>(16, 0); }
+  uint8_t bgColorOpacity() const { return GetField<uint8_t>(18, 255); }
+  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(20); }
+  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(22); }
+  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(24); }
+  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(26, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* backGroundImageData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* backGroundImageData */) &&
            verifier.VerifyTable(backGroundImageData()) &&
-           VerifyField<uint8_t>(verifier, 6 /* clipEnabled */) &&
-           VerifyField<Color>(verifier, 8 /* bgColor */) &&
-           VerifyField<Color>(verifier, 10 /* bgStartColor */) &&
-           VerifyField<Color>(verifier, 12 /* bgEndColor */) &&
-           VerifyField<int32_t>(verifier, 14 /* colorType */) &&
-           VerifyField<uint8_t>(verifier, 16 /* bgColorOpacity */) &&
-           VerifyField<ColorVector>(verifier, 18 /* colorVector */) &&
-           VerifyField<CapInsets>(verifier, 20 /* capInsets */) &&
-           VerifyField<FlatSize>(verifier, 22 /* scale9Size */) &&
-           VerifyField<uint8_t>(verifier, 24 /* backGroundScale9Enabled */) &&
+           VerifyField<uint8_t>(verifier, 8 /* clipEnabled */) &&
+           VerifyField<Color>(verifier, 10 /* bgColor */) &&
+           VerifyField<Color>(verifier, 12 /* bgStartColor */) &&
+           VerifyField<Color>(verifier, 14 /* bgEndColor */) &&
+           VerifyField<int32_t>(verifier, 16 /* colorType */) &&
+           VerifyField<uint8_t>(verifier, 18 /* bgColorOpacity */) &&
+           VerifyField<ColorVector>(verifier, 20 /* colorVector */) &&
+           VerifyField<CapInsets>(verifier, 22 /* capInsets */) &&
+           VerifyField<FlatSize>(verifier, 24 /* scale9Size */) &&
+           VerifyField<uint8_t>(verifier, 26 /* backGroundScale9Enabled */) &&
            verifier.EndTable();
   }
 };
@@ -1212,26 +1179,28 @@ struct PanelOptions : private flatbuffers::Table {
 struct PanelOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(4, backGroundImageData); }
-  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(6, clipEnabled, 0); }
-  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(8, bgColor); }
-  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(10, bgStartColor); }
-  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(12, bgEndColor); }
-  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(14, colorType, 0); }
-  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(16, bgColorOpacity, 255); }
-  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(18, colorVector); }
-  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(20, capInsets); }
-  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(22, scale9Size); }
-  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(24, backGroundScale9Enabled, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(6, backGroundImageData); }
+  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(8, clipEnabled, 0); }
+  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(10, bgColor); }
+  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(12, bgStartColor); }
+  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(14, bgEndColor); }
+  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(16, colorType, 0); }
+  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(18, bgColorOpacity, 255); }
+  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(20, colorVector); }
+  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(22, capInsets); }
+  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(24, scale9Size); }
+  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(26, backGroundScale9Enabled, 0); }
   PanelOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   PanelOptionsBuilder &operator=(const PanelOptionsBuilder &);
   flatbuffers::Offset<PanelOptions> Finish() {
-    auto o = flatbuffers::Offset<PanelOptions>(fbb_.EndTable(start_, 11));
+    auto o = flatbuffers::Offset<PanelOptions>(fbb_.EndTable(start_, 12));
     return o;
   }
 };
 
 inline flatbuffers::Offset<PanelOptions> CreatePanelOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> backGroundImageData = 0,
    uint8_t clipEnabled = 0,
    const Color *bgColor = 0,
@@ -1252,6 +1221,7 @@ inline flatbuffers::Offset<PanelOptions> CreatePanelOptions(flatbuffers::FlatBuf
   builder_.add_bgStartColor(bgStartColor);
   builder_.add_bgColor(bgColor);
   builder_.add_backGroundImageData(backGroundImageData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_backGroundScale9Enabled(backGroundScale9Enabled);
   builder_.add_bgColorOpacity(bgColorOpacity);
   builder_.add_clipEnabled(clipEnabled);
@@ -1259,37 +1229,40 @@ inline flatbuffers::Offset<PanelOptions> CreatePanelOptions(flatbuffers::FlatBuf
 }
 
 struct ScrollViewOptions : private flatbuffers::Table {
-  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(4); }
-  uint8_t clipEnabled() const { return GetField<uint8_t>(6, 0); }
-  const Color *bgColor() const { return GetStruct<const Color *>(8); }
-  const Color *bgStartColor() const { return GetStruct<const Color *>(10); }
-  const Color *bgEndColor() const { return GetStruct<const Color *>(12); }
-  int32_t colorType() const { return GetField<int32_t>(14, 0); }
-  uint8_t bgColorOpacity() const { return GetField<uint8_t>(16, 255); }
-  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(18); }
-  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(20); }
-  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(22); }
-  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(24, 0); }
-  const FlatSize *innerSize() const { return GetStruct<const FlatSize *>(26); }
-  int32_t direction() const { return GetField<int32_t>(28, 0); }
-  uint8_t bounceEnabled() const { return GetField<uint8_t>(30, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(6); }
+  uint8_t clipEnabled() const { return GetField<uint8_t>(8, 0); }
+  const Color *bgColor() const { return GetStruct<const Color *>(10); }
+  const Color *bgStartColor() const { return GetStruct<const Color *>(12); }
+  const Color *bgEndColor() const { return GetStruct<const Color *>(14); }
+  int32_t colorType() const { return GetField<int32_t>(16, 0); }
+  uint8_t bgColorOpacity() const { return GetField<uint8_t>(18, 255); }
+  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(20); }
+  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(22); }
+  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(24); }
+  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(26, 0); }
+  const FlatSize *innerSize() const { return GetStruct<const FlatSize *>(28); }
+  int32_t direction() const { return GetField<int32_t>(30, 0); }
+  uint8_t bounceEnabled() const { return GetField<uint8_t>(32, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* backGroundImageData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* backGroundImageData */) &&
            verifier.VerifyTable(backGroundImageData()) &&
-           VerifyField<uint8_t>(verifier, 6 /* clipEnabled */) &&
-           VerifyField<Color>(verifier, 8 /* bgColor */) &&
-           VerifyField<Color>(verifier, 10 /* bgStartColor */) &&
-           VerifyField<Color>(verifier, 12 /* bgEndColor */) &&
-           VerifyField<int32_t>(verifier, 14 /* colorType */) &&
-           VerifyField<uint8_t>(verifier, 16 /* bgColorOpacity */) &&
-           VerifyField<ColorVector>(verifier, 18 /* colorVector */) &&
-           VerifyField<CapInsets>(verifier, 20 /* capInsets */) &&
-           VerifyField<FlatSize>(verifier, 22 /* scale9Size */) &&
-           VerifyField<uint8_t>(verifier, 24 /* backGroundScale9Enabled */) &&
-           VerifyField<FlatSize>(verifier, 26 /* innerSize */) &&
-           VerifyField<int32_t>(verifier, 28 /* direction */) &&
-           VerifyField<uint8_t>(verifier, 30 /* bounceEnabled */) &&
+           VerifyField<uint8_t>(verifier, 8 /* clipEnabled */) &&
+           VerifyField<Color>(verifier, 10 /* bgColor */) &&
+           VerifyField<Color>(verifier, 12 /* bgStartColor */) &&
+           VerifyField<Color>(verifier, 14 /* bgEndColor */) &&
+           VerifyField<int32_t>(verifier, 16 /* colorType */) &&
+           VerifyField<uint8_t>(verifier, 18 /* bgColorOpacity */) &&
+           VerifyField<ColorVector>(verifier, 20 /* colorVector */) &&
+           VerifyField<CapInsets>(verifier, 22 /* capInsets */) &&
+           VerifyField<FlatSize>(verifier, 24 /* scale9Size */) &&
+           VerifyField<uint8_t>(verifier, 26 /* backGroundScale9Enabled */) &&
+           VerifyField<FlatSize>(verifier, 28 /* innerSize */) &&
+           VerifyField<int32_t>(verifier, 30 /* direction */) &&
+           VerifyField<uint8_t>(verifier, 32 /* bounceEnabled */) &&
            verifier.EndTable();
   }
 };
@@ -1297,29 +1270,31 @@ struct ScrollViewOptions : private flatbuffers::Table {
 struct ScrollViewOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(4, backGroundImageData); }
-  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(6, clipEnabled, 0); }
-  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(8, bgColor); }
-  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(10, bgStartColor); }
-  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(12, bgEndColor); }
-  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(14, colorType, 0); }
-  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(16, bgColorOpacity, 255); }
-  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(18, colorVector); }
-  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(20, capInsets); }
-  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(22, scale9Size); }
-  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(24, backGroundScale9Enabled, 0); }
-  void add_innerSize(const FlatSize *innerSize) { fbb_.AddStruct(26, innerSize); }
-  void add_direction(int32_t direction) { fbb_.AddElement<int32_t>(28, direction, 0); }
-  void add_bounceEnabled(uint8_t bounceEnabled) { fbb_.AddElement<uint8_t>(30, bounceEnabled, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(6, backGroundImageData); }
+  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(8, clipEnabled, 0); }
+  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(10, bgColor); }
+  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(12, bgStartColor); }
+  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(14, bgEndColor); }
+  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(16, colorType, 0); }
+  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(18, bgColorOpacity, 255); }
+  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(20, colorVector); }
+  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(22, capInsets); }
+  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(24, scale9Size); }
+  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(26, backGroundScale9Enabled, 0); }
+  void add_innerSize(const FlatSize *innerSize) { fbb_.AddStruct(28, innerSize); }
+  void add_direction(int32_t direction) { fbb_.AddElement<int32_t>(30, direction, 0); }
+  void add_bounceEnabled(uint8_t bounceEnabled) { fbb_.AddElement<uint8_t>(32, bounceEnabled, 0); }
   ScrollViewOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ScrollViewOptionsBuilder &operator=(const ScrollViewOptionsBuilder &);
   flatbuffers::Offset<ScrollViewOptions> Finish() {
-    auto o = flatbuffers::Offset<ScrollViewOptions>(fbb_.EndTable(start_, 14));
+    auto o = flatbuffers::Offset<ScrollViewOptions>(fbb_.EndTable(start_, 15));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ScrollViewOptions> CreateScrollViewOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> backGroundImageData = 0,
    uint8_t clipEnabled = 0,
    const Color *bgColor = 0,
@@ -1345,6 +1320,7 @@ inline flatbuffers::Offset<ScrollViewOptions> CreateScrollViewOptions(flatbuffer
   builder_.add_bgStartColor(bgStartColor);
   builder_.add_bgColor(bgColor);
   builder_.add_backGroundImageData(backGroundImageData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_bounceEnabled(bounceEnabled);
   builder_.add_backGroundScale9Enabled(backGroundScale9Enabled);
   builder_.add_bgColorOpacity(bgColorOpacity);
@@ -1353,31 +1329,34 @@ inline flatbuffers::Offset<ScrollViewOptions> CreateScrollViewOptions(flatbuffer
 }
 
 struct PageViewOptions : private flatbuffers::Table {
-  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(4); }
-  uint8_t clipEnabled() const { return GetField<uint8_t>(6, 0); }
-  const Color *bgColor() const { return GetStruct<const Color *>(8); }
-  const Color *bgStartColor() const { return GetStruct<const Color *>(10); }
-  const Color *bgEndColor() const { return GetStruct<const Color *>(12); }
-  int32_t colorType() const { return GetField<int32_t>(14, 0); }
-  uint8_t bgColorOpacity() const { return GetField<uint8_t>(16, 255); }
-  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(18); }
-  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(20); }
-  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(22); }
-  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(24, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(6); }
+  uint8_t clipEnabled() const { return GetField<uint8_t>(8, 0); }
+  const Color *bgColor() const { return GetStruct<const Color *>(10); }
+  const Color *bgStartColor() const { return GetStruct<const Color *>(12); }
+  const Color *bgEndColor() const { return GetStruct<const Color *>(14); }
+  int32_t colorType() const { return GetField<int32_t>(16, 0); }
+  uint8_t bgColorOpacity() const { return GetField<uint8_t>(18, 255); }
+  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(20); }
+  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(22); }
+  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(24); }
+  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(26, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* backGroundImageData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* backGroundImageData */) &&
            verifier.VerifyTable(backGroundImageData()) &&
-           VerifyField<uint8_t>(verifier, 6 /* clipEnabled */) &&
-           VerifyField<Color>(verifier, 8 /* bgColor */) &&
-           VerifyField<Color>(verifier, 10 /* bgStartColor */) &&
-           VerifyField<Color>(verifier, 12 /* bgEndColor */) &&
-           VerifyField<int32_t>(verifier, 14 /* colorType */) &&
-           VerifyField<uint8_t>(verifier, 16 /* bgColorOpacity */) &&
-           VerifyField<ColorVector>(verifier, 18 /* colorVector */) &&
-           VerifyField<CapInsets>(verifier, 20 /* capInsets */) &&
-           VerifyField<FlatSize>(verifier, 22 /* scale9Size */) &&
-           VerifyField<uint8_t>(verifier, 24 /* backGroundScale9Enabled */) &&
+           VerifyField<uint8_t>(verifier, 8 /* clipEnabled */) &&
+           VerifyField<Color>(verifier, 10 /* bgColor */) &&
+           VerifyField<Color>(verifier, 12 /* bgStartColor */) &&
+           VerifyField<Color>(verifier, 14 /* bgEndColor */) &&
+           VerifyField<int32_t>(verifier, 16 /* colorType */) &&
+           VerifyField<uint8_t>(verifier, 18 /* bgColorOpacity */) &&
+           VerifyField<ColorVector>(verifier, 20 /* colorVector */) &&
+           VerifyField<CapInsets>(verifier, 22 /* capInsets */) &&
+           VerifyField<FlatSize>(verifier, 24 /* scale9Size */) &&
+           VerifyField<uint8_t>(verifier, 26 /* backGroundScale9Enabled */) &&
            verifier.EndTable();
   }
 };
@@ -1385,26 +1364,28 @@ struct PageViewOptions : private flatbuffers::Table {
 struct PageViewOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(4, backGroundImageData); }
-  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(6, clipEnabled, 0); }
-  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(8, bgColor); }
-  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(10, bgStartColor); }
-  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(12, bgEndColor); }
-  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(14, colorType, 0); }
-  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(16, bgColorOpacity, 255); }
-  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(18, colorVector); }
-  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(20, capInsets); }
-  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(22, scale9Size); }
-  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(24, backGroundScale9Enabled, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(6, backGroundImageData); }
+  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(8, clipEnabled, 0); }
+  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(10, bgColor); }
+  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(12, bgStartColor); }
+  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(14, bgEndColor); }
+  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(16, colorType, 0); }
+  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(18, bgColorOpacity, 255); }
+  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(20, colorVector); }
+  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(22, capInsets); }
+  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(24, scale9Size); }
+  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(26, backGroundScale9Enabled, 0); }
   PageViewOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   PageViewOptionsBuilder &operator=(const PageViewOptionsBuilder &);
   flatbuffers::Offset<PageViewOptions> Finish() {
-    auto o = flatbuffers::Offset<PageViewOptions>(fbb_.EndTable(start_, 11));
+    auto o = flatbuffers::Offset<PageViewOptions>(fbb_.EndTable(start_, 12));
     return o;
   }
 };
 
 inline flatbuffers::Offset<PageViewOptions> CreatePageViewOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> backGroundImageData = 0,
    uint8_t clipEnabled = 0,
    const Color *bgColor = 0,
@@ -1425,6 +1406,7 @@ inline flatbuffers::Offset<PageViewOptions> CreatePageViewOptions(flatbuffers::F
   builder_.add_bgStartColor(bgStartColor);
   builder_.add_bgColor(bgColor);
   builder_.add_backGroundImageData(backGroundImageData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_backGroundScale9Enabled(backGroundScale9Enabled);
   builder_.add_bgColorOpacity(bgColorOpacity);
   builder_.add_clipEnabled(clipEnabled);
@@ -1432,41 +1414,44 @@ inline flatbuffers::Offset<PageViewOptions> CreatePageViewOptions(flatbuffers::F
 }
 
 struct ListViewOptions : private flatbuffers::Table {
-  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(4); }
-  uint8_t clipEnabled() const { return GetField<uint8_t>(6, 0); }
-  const Color *bgColor() const { return GetStruct<const Color *>(8); }
-  const Color *bgStartColor() const { return GetStruct<const Color *>(10); }
-  const Color *bgEndColor() const { return GetStruct<const Color *>(12); }
-  int32_t colorType() const { return GetField<int32_t>(14, 0); }
-  uint8_t bgColorOpacity() const { return GetField<uint8_t>(16, 255); }
-  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(18); }
-  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(20); }
-  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(22); }
-  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(24, 0); }
-  const FlatSize *innerSize() const { return GetStruct<const FlatSize *>(26); }
-  int32_t direction() const { return GetField<int32_t>(28, 0); }
-  uint8_t bounceEnabled() const { return GetField<uint8_t>(30, 0); }
-  int32_t gravity() const { return GetField<int32_t>(32, 0); }
-  int32_t itemMargin() const { return GetField<int32_t>(34, 0); }
+  const WidgetOptions *widgetOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const ResourceData *backGroundImageData() const { return GetPointer<const ResourceData *>(6); }
+  uint8_t clipEnabled() const { return GetField<uint8_t>(8, 0); }
+  const Color *bgColor() const { return GetStruct<const Color *>(10); }
+  const Color *bgStartColor() const { return GetStruct<const Color *>(12); }
+  const Color *bgEndColor() const { return GetStruct<const Color *>(14); }
+  int32_t colorType() const { return GetField<int32_t>(16, 0); }
+  uint8_t bgColorOpacity() const { return GetField<uint8_t>(18, 255); }
+  const ColorVector *colorVector() const { return GetStruct<const ColorVector *>(20); }
+  const CapInsets *capInsets() const { return GetStruct<const CapInsets *>(22); }
+  const FlatSize *scale9Size() const { return GetStruct<const FlatSize *>(24); }
+  uint8_t backGroundScale9Enabled() const { return GetField<uint8_t>(26, 0); }
+  const FlatSize *innerSize() const { return GetStruct<const FlatSize *>(28); }
+  int32_t direction() const { return GetField<int32_t>(30, 0); }
+  uint8_t bounceEnabled() const { return GetField<uint8_t>(32, 0); }
+  int32_t gravity() const { return GetField<int32_t>(34, 0); }
+  int32_t itemMargin() const { return GetField<int32_t>(36, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* backGroundImageData */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* widgetOptions */) &&
+           verifier.VerifyTable(widgetOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* backGroundImageData */) &&
            verifier.VerifyTable(backGroundImageData()) &&
-           VerifyField<uint8_t>(verifier, 6 /* clipEnabled */) &&
-           VerifyField<Color>(verifier, 8 /* bgColor */) &&
-           VerifyField<Color>(verifier, 10 /* bgStartColor */) &&
-           VerifyField<Color>(verifier, 12 /* bgEndColor */) &&
-           VerifyField<int32_t>(verifier, 14 /* colorType */) &&
-           VerifyField<uint8_t>(verifier, 16 /* bgColorOpacity */) &&
-           VerifyField<ColorVector>(verifier, 18 /* colorVector */) &&
-           VerifyField<CapInsets>(verifier, 20 /* capInsets */) &&
-           VerifyField<FlatSize>(verifier, 22 /* scale9Size */) &&
-           VerifyField<uint8_t>(verifier, 24 /* backGroundScale9Enabled */) &&
-           VerifyField<FlatSize>(verifier, 26 /* innerSize */) &&
-           VerifyField<int32_t>(verifier, 28 /* direction */) &&
-           VerifyField<uint8_t>(verifier, 30 /* bounceEnabled */) &&
-           VerifyField<int32_t>(verifier, 32 /* gravity */) &&
-           VerifyField<int32_t>(verifier, 34 /* itemMargin */) &&
+           VerifyField<uint8_t>(verifier, 8 /* clipEnabled */) &&
+           VerifyField<Color>(verifier, 10 /* bgColor */) &&
+           VerifyField<Color>(verifier, 12 /* bgStartColor */) &&
+           VerifyField<Color>(verifier, 14 /* bgEndColor */) &&
+           VerifyField<int32_t>(verifier, 16 /* colorType */) &&
+           VerifyField<uint8_t>(verifier, 18 /* bgColorOpacity */) &&
+           VerifyField<ColorVector>(verifier, 20 /* colorVector */) &&
+           VerifyField<CapInsets>(verifier, 22 /* capInsets */) &&
+           VerifyField<FlatSize>(verifier, 24 /* scale9Size */) &&
+           VerifyField<uint8_t>(verifier, 26 /* backGroundScale9Enabled */) &&
+           VerifyField<FlatSize>(verifier, 28 /* innerSize */) &&
+           VerifyField<int32_t>(verifier, 30 /* direction */) &&
+           VerifyField<uint8_t>(verifier, 32 /* bounceEnabled */) &&
+           VerifyField<int32_t>(verifier, 34 /* gravity */) &&
+           VerifyField<int32_t>(verifier, 36 /* itemMargin */) &&
            verifier.EndTable();
   }
 };
@@ -1474,31 +1459,33 @@ struct ListViewOptions : private flatbuffers::Table {
 struct ListViewOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(4, backGroundImageData); }
-  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(6, clipEnabled, 0); }
-  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(8, bgColor); }
-  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(10, bgStartColor); }
-  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(12, bgEndColor); }
-  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(14, colorType, 0); }
-  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(16, bgColorOpacity, 255); }
-  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(18, colorVector); }
-  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(20, capInsets); }
-  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(22, scale9Size); }
-  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(24, backGroundScale9Enabled, 0); }
-  void add_innerSize(const FlatSize *innerSize) { fbb_.AddStruct(26, innerSize); }
-  void add_direction(int32_t direction) { fbb_.AddElement<int32_t>(28, direction, 0); }
-  void add_bounceEnabled(uint8_t bounceEnabled) { fbb_.AddElement<uint8_t>(30, bounceEnabled, 0); }
-  void add_gravity(int32_t gravity) { fbb_.AddElement<int32_t>(32, gravity, 0); }
-  void add_itemMargin(int32_t itemMargin) { fbb_.AddElement<int32_t>(34, itemMargin, 0); }
+  void add_widgetOptions(flatbuffers::Offset<WidgetOptions> widgetOptions) { fbb_.AddOffset(4, widgetOptions); }
+  void add_backGroundImageData(flatbuffers::Offset<ResourceData> backGroundImageData) { fbb_.AddOffset(6, backGroundImageData); }
+  void add_clipEnabled(uint8_t clipEnabled) { fbb_.AddElement<uint8_t>(8, clipEnabled, 0); }
+  void add_bgColor(const Color *bgColor) { fbb_.AddStruct(10, bgColor); }
+  void add_bgStartColor(const Color *bgStartColor) { fbb_.AddStruct(12, bgStartColor); }
+  void add_bgEndColor(const Color *bgEndColor) { fbb_.AddStruct(14, bgEndColor); }
+  void add_colorType(int32_t colorType) { fbb_.AddElement<int32_t>(16, colorType, 0); }
+  void add_bgColorOpacity(uint8_t bgColorOpacity) { fbb_.AddElement<uint8_t>(18, bgColorOpacity, 255); }
+  void add_colorVector(const ColorVector *colorVector) { fbb_.AddStruct(20, colorVector); }
+  void add_capInsets(const CapInsets *capInsets) { fbb_.AddStruct(22, capInsets); }
+  void add_scale9Size(const FlatSize *scale9Size) { fbb_.AddStruct(24, scale9Size); }
+  void add_backGroundScale9Enabled(uint8_t backGroundScale9Enabled) { fbb_.AddElement<uint8_t>(26, backGroundScale9Enabled, 0); }
+  void add_innerSize(const FlatSize *innerSize) { fbb_.AddStruct(28, innerSize); }
+  void add_direction(int32_t direction) { fbb_.AddElement<int32_t>(30, direction, 0); }
+  void add_bounceEnabled(uint8_t bounceEnabled) { fbb_.AddElement<uint8_t>(32, bounceEnabled, 0); }
+  void add_gravity(int32_t gravity) { fbb_.AddElement<int32_t>(34, gravity, 0); }
+  void add_itemMargin(int32_t itemMargin) { fbb_.AddElement<int32_t>(36, itemMargin, 0); }
   ListViewOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ListViewOptionsBuilder &operator=(const ListViewOptionsBuilder &);
   flatbuffers::Offset<ListViewOptions> Finish() {
-    auto o = flatbuffers::Offset<ListViewOptions>(fbb_.EndTable(start_, 16));
+    auto o = flatbuffers::Offset<ListViewOptions>(fbb_.EndTable(start_, 17));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ListViewOptions> CreateListViewOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> widgetOptions = 0,
    flatbuffers::Offset<ResourceData> backGroundImageData = 0,
    uint8_t clipEnabled = 0,
    const Color *bgColor = 0,
@@ -1528,6 +1515,7 @@ inline flatbuffers::Offset<ListViewOptions> CreateListViewOptions(flatbuffers::F
   builder_.add_bgStartColor(bgStartColor);
   builder_.add_bgColor(bgColor);
   builder_.add_backGroundImageData(backGroundImageData);
+  builder_.add_widgetOptions(widgetOptions);
   builder_.add_bounceEnabled(bounceEnabled);
   builder_.add_backGroundScale9Enabled(backGroundScale9Enabled);
   builder_.add_bgColorOpacity(bgColorOpacity);
@@ -1536,10 +1524,13 @@ inline flatbuffers::Offset<ListViewOptions> CreateListViewOptions(flatbuffers::F
 }
 
 struct ProjectNodeOptions : private flatbuffers::Table {
-  const flatbuffers::String *fileName() const { return GetPointer<const flatbuffers::String *>(4); }
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const flatbuffers::String *fileName() const { return GetPointer<const flatbuffers::String *>(6); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* fileName */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileName */) &&
            verifier.Verify(fileName()) &&
            verifier.EndTable();
   }
@@ -1548,30 +1539,36 @@ struct ProjectNodeOptions : private flatbuffers::Table {
 struct ProjectNodeOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_fileName(flatbuffers::Offset<flatbuffers::String> fileName) { fbb_.AddOffset(4, fileName); }
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
+  void add_fileName(flatbuffers::Offset<flatbuffers::String> fileName) { fbb_.AddOffset(6, fileName); }
   ProjectNodeOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ProjectNodeOptionsBuilder &operator=(const ProjectNodeOptionsBuilder &);
   flatbuffers::Offset<ProjectNodeOptions> Finish() {
-    auto o = flatbuffers::Offset<ProjectNodeOptions>(fbb_.EndTable(start_, 1));
+    auto o = flatbuffers::Offset<ProjectNodeOptions>(fbb_.EndTable(start_, 2));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ProjectNodeOptions> CreateProjectNodeOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
    flatbuffers::Offset<flatbuffers::String> fileName = 0) {
   ProjectNodeOptionsBuilder builder_(_fbb);
   builder_.add_fileName(fileName);
+  builder_.add_nodeOptions(nodeOptions);
   return builder_.Finish();
 }
 
 struct ComponentOptions : private flatbuffers::Table {
-  const flatbuffers::String *type() const { return GetPointer<const flatbuffers::String *>(4); }
-  const ComAudioOptions *comAudioOptions() const { return GetPointer<const ComAudioOptions *>(6); }
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const flatbuffers::String *type() const { return GetPointer<const flatbuffers::String *>(6); }
+  const ComAudioOptions *comAudioOptions() const { return GetPointer<const ComAudioOptions *>(8); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* type */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* type */) &&
            verifier.Verify(type()) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* comAudioOptions */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* comAudioOptions */) &&
            verifier.VerifyTable(comAudioOptions()) &&
            verifier.EndTable();
   }
@@ -1580,39 +1577,45 @@ struct ComponentOptions : private flatbuffers::Table {
 struct ComponentOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_type(flatbuffers::Offset<flatbuffers::String> type) { fbb_.AddOffset(4, type); }
-  void add_comAudioOptions(flatbuffers::Offset<ComAudioOptions> comAudioOptions) { fbb_.AddOffset(6, comAudioOptions); }
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
+  void add_type(flatbuffers::Offset<flatbuffers::String> type) { fbb_.AddOffset(6, type); }
+  void add_comAudioOptions(flatbuffers::Offset<ComAudioOptions> comAudioOptions) { fbb_.AddOffset(8, comAudioOptions); }
   ComponentOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ComponentOptionsBuilder &operator=(const ComponentOptionsBuilder &);
   flatbuffers::Offset<ComponentOptions> Finish() {
-    auto o = flatbuffers::Offset<ComponentOptions>(fbb_.EndTable(start_, 2));
+    auto o = flatbuffers::Offset<ComponentOptions>(fbb_.EndTable(start_, 3));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ComponentOptions> CreateComponentOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
    flatbuffers::Offset<flatbuffers::String> type = 0,
    flatbuffers::Offset<ComAudioOptions> comAudioOptions = 0) {
   ComponentOptionsBuilder builder_(_fbb);
   builder_.add_comAudioOptions(comAudioOptions);
   builder_.add_type(type);
+  builder_.add_nodeOptions(nodeOptions);
   return builder_.Finish();
 }
 
 struct ComAudioOptions : private flatbuffers::Table {
-  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(4); }
-  uint8_t enabled() const { return GetField<uint8_t>(6, 0); }
-  uint8_t loop() const { return GetField<uint8_t>(8, 0); }
-  int32_t volume() const { return GetField<int32_t>(10, 0); }
-  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(12); }
+  const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
+  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(6); }
+  uint8_t enabled() const { return GetField<uint8_t>(8, 0); }
+  uint8_t loop() const { return GetField<uint8_t>(10, 0); }
+  int32_t volume() const { return GetField<int32_t>(12, 0); }
+  const ResourceData *fileNameData() const { return GetPointer<const ResourceData *>(14); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* name */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+           verifier.VerifyTable(nodeOptions()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* name */) &&
            verifier.Verify(name()) &&
-           VerifyField<uint8_t>(verifier, 6 /* enabled */) &&
-           VerifyField<uint8_t>(verifier, 8 /* loop */) &&
-           VerifyField<int32_t>(verifier, 10 /* volume */) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* fileNameData */) &&
+           VerifyField<uint8_t>(verifier, 8 /* enabled */) &&
+           VerifyField<uint8_t>(verifier, 10 /* loop */) &&
+           VerifyField<int32_t>(verifier, 12 /* volume */) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* fileNameData */) &&
            verifier.VerifyTable(fileNameData()) &&
            verifier.EndTable();
   }
@@ -1621,20 +1624,22 @@ struct ComAudioOptions : private flatbuffers::Table {
 struct ComAudioOptionsBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) { fbb_.AddOffset(4, name); }
-  void add_enabled(uint8_t enabled) { fbb_.AddElement<uint8_t>(6, enabled, 0); }
-  void add_loop(uint8_t loop) { fbb_.AddElement<uint8_t>(8, loop, 0); }
-  void add_volume(int32_t volume) { fbb_.AddElement<int32_t>(10, volume, 0); }
-  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(12, fileNameData); }
+  void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) { fbb_.AddOffset(6, name); }
+  void add_enabled(uint8_t enabled) { fbb_.AddElement<uint8_t>(8, enabled, 0); }
+  void add_loop(uint8_t loop) { fbb_.AddElement<uint8_t>(10, loop, 0); }
+  void add_volume(int32_t volume) { fbb_.AddElement<int32_t>(12, volume, 0); }
+  void add_fileNameData(flatbuffers::Offset<ResourceData> fileNameData) { fbb_.AddOffset(14, fileNameData); }
   ComAudioOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   ComAudioOptionsBuilder &operator=(const ComAudioOptionsBuilder &);
   flatbuffers::Offset<ComAudioOptions> Finish() {
-    auto o = flatbuffers::Offset<ComAudioOptions>(fbb_.EndTable(start_, 5));
+    auto o = flatbuffers::Offset<ComAudioOptions>(fbb_.EndTable(start_, 6));
     return o;
   }
 };
 
 inline flatbuffers::Offset<ComAudioOptions> CreateComAudioOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
    flatbuffers::Offset<flatbuffers::String> name = 0,
    uint8_t enabled = 0,
    uint8_t loop = 0,
@@ -1644,6 +1649,7 @@ inline flatbuffers::Offset<ComAudioOptions> CreateComAudioOptions(flatbuffers::F
   builder_.add_fileNameData(fileNameData);
   builder_.add_volume(volume);
   builder_.add_name(name);
+  builder_.add_nodeOptions(nodeOptions);
   builder_.add_loop(loop);
   builder_.add_enabled(enabled);
   return builder_.Finish();

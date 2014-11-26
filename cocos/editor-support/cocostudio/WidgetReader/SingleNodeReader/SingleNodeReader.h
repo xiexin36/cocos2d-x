@@ -22,36 +22,33 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __TestCpp__PageViewReader__
-#define __TestCpp__PageViewReader__
+#ifndef __cocos2d_libs__SingleNodeReader__
+#define __cocos2d_libs__SingleNodeReader__
 
-#include "cocostudio/WidgetReader/LayoutReader/LayoutReader.h"
+#include "cocos2d.h"
 #include "cocostudio/CocosStudioExport.h"
+#include "cocostudio/WidgetReader/NodeReaderProtocol.h"
+#include "cocostudio/WidgetReader/NodeReaderDefine.h"
+
 
 namespace cocostudio
 {
-    class CC_STUDIO_DLL PageViewReader : public LayoutReader
+    class CC_STUDIO_DLL SingleNodeReader : public cocos2d::Ref, public NodeReaderProtocol
     {
         DECLARE_CLASS_NODE_READER_INFO
         
     public:
-        PageViewReader();
-        virtual ~PageViewReader();
+        SingleNodeReader();
+        ~SingleNodeReader();
         
-        static PageViewReader* getInstance();
+        static SingleNodeReader* getInstance();
         static void purge();
         
-        virtual void setPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options);
-        virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader,  stExpCocoNode* cocoNode) ;
-        virtual void setPropsFromProtocolBuffers(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree);
         flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
                                                                              flatbuffers::FlatBufferBuilder* builder);
-        void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* pageViewOptions);
-        cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* pageViewOptions);
-        
-        int getResourceType(std::string key);
-        
+        void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* singleNodeOptions);
+        cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* singleNodeOptions);
     };
 }
 
-#endif /* defined(__TestCpp__PageViewReader__) */
+#endif /* defined(__cocos2d_libs__SingleNodeReader__) */

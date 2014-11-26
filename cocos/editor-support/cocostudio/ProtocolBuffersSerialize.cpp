@@ -24,7 +24,6 @@
  ****************************************************************************/
 
 #include "ProtocolBuffersSerialize.h"
-#include "cocostudio/ActionTimeline/CCNodeReader.h"
 #include "../ui/CocosGUI.h"
 #include "cocostudio/CocoStudio.h"
 #include "base/CCMap.h"

@@ -22,36 +22,42 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __TestCpp__PageViewReader__
-#define __TestCpp__PageViewReader__
+#ifndef __cocos2d_libs__NodeReaderProtocol__
+#define __cocos2d_libs__NodeReaderProtocol__
 
-#include "cocostudio/WidgetReader/LayoutReader/LayoutReader.h"
 #include "cocostudio/CocosStudioExport.h"
+
+namespace flatbuffers
+{
+    class FlatBufferBuilder;
+    template<typename T> struct Offset;
+    
+    class Table;
+}
+
+namespace tinyxml2
+{
+    class XMLElement;
+}
+
+namespace cocos2d
+{
+    class Node;
+}
 
 namespace cocostudio
 {
-    class CC_STUDIO_DLL PageViewReader : public LayoutReader
+    class CC_STUDIO_DLL NodeReaderProtocol
     {
-        DECLARE_CLASS_NODE_READER_INFO
-        
     public:
-        PageViewReader();
-        virtual ~PageViewReader();
+        NodeReaderProtocol() {};
+        virtual ~NodeReaderProtocol() {};
         
-        static PageViewReader* getInstance();
-        static void purge();
-        
-        virtual void setPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options);
-        virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader,  stExpCocoNode* cocoNode) ;
-        virtual void setPropsFromProtocolBuffers(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree);
-        flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
-                                                                             flatbuffers::FlatBufferBuilder* builder);
-        void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* pageViewOptions);
-        cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* pageViewOptions);
-        
-        int getResourceType(std::string key);
-        
+        virtual flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
+                                                                                     flatbuffers::FlatBufferBuilder* builder) = 0;
+        virtual void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* nodeOptions) = 0;
+        virtual cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions) = 0;
     };
 }
 
-#endif /* defined(__TestCpp__PageViewReader__) */
+#endif /* defined(__cocos2d_libs__NodeReaderProtocol__) */

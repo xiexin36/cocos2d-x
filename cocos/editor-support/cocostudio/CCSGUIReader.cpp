@@ -1644,15 +1644,15 @@ Widget* WidgetPropertiesReader0300::widgetWithFlatBuffers(const flatbuffers::Nod
             setPropsForAllWidgetWithFlatBuffers(reader, widget, options);
             
             // 2nd., custom widget parse with custom reader
-            auto widgetOptions = options->widgetOptions();
-            const char* customProperty = widgetOptions->customProperty()->c_str();
-            rapidjson::Document customJsonDict;
-            customJsonDict.Parse<0>(customProperty);
-            if (customJsonDict.HasParseError())
-            {
-                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
-            }
-            setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
+//            auto widgetOptions = options->widgetOptions();
+//            const char* customProperty = widgetOptions->customProperty()->c_str();
+//            rapidjson::Document customJsonDict;
+//            customJsonDict.Parse<0>(customProperty);
+//            if (customJsonDict.HasParseError())
+//            {
+//                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+//            }
+//            setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
         }
         else
         {
@@ -1700,7 +1700,7 @@ void WidgetPropertiesReader0300::setPropsForAllWidgetWithFlatBuffers(cocostudio:
                                                                      cocos2d::ui::Widget *widget,
                                                                      const flatbuffers::Options *options)
 {
-    reader->setPropsWithFlatBuffers(widget, options);
+//    reader->setPropsWithFlatBuffers(widget, options);
 }
 /**/
     
