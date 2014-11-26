@@ -97,6 +97,27 @@
     <Filter Include="json\FlatBuffers">
       <UniqueIdentifier>{4e197a49-0b3b-45d8-8c6d-2cf0410cb206}</UniqueIdentifier>
     </Filter>
+    <Filter Include="reader\WidgetReader\NodeReader">
+      <UniqueIdentifier>{13d3f587-5dd5-4da4-b823-0ba14c7c815f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reader\WidgetReader\ComAudioReader">
+      <UniqueIdentifier>{79009868-1464-4b1a-a7f5-4e7146ee3a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reader\WidgetReader\GameMapReader">
+      <UniqueIdentifier>{ad534468-d8c0-4b64-8c70-8f43ed26264d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reader\WidgetReader\ParticleReader">
+      <UniqueIdentifier>{f1c49255-d60e-4b3a-a7cc-b87aaac4a7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reader\WidgetReader\ProjectNodeReader">
+      <UniqueIdentifier>{44961a2b-9d66-4b0f-8367-28d2c820cb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reader\WidgetReader\SingleNodeReader">
+      <UniqueIdentifier>{aa67cfa9-c1f1-4c88-a4ba-a76f72c67d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reader\WidgetReader\SpriteReader">
+      <UniqueIdentifier>{fd084498-d572-4795-9122-f925bf8b21a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\CCComAttribute.cpp">
@@ -332,6 +353,33 @@
     </ClCompile>
     <ClCompile Include="..\FlatBuffersSerialize.cpp">
       <Filter>TimelineAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\NodeReaderDefine.cpp">
+      <Filter>reader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\NodeReaderProtocol.cpp">
+      <Filter>reader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\NodeReader\NodeReader.cpp">
+      <Filter>reader\WidgetReader\NodeReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\ComAudioReader\ComAudioReader.cpp">
+      <Filter>reader\WidgetReader\ComAudioReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\GameMapReader\GameMapReader.cpp">
+      <Filter>reader\WidgetReader\GameMapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\ParticleReader\ParticleReader.cpp">
+      <Filter>reader\WidgetReader\ParticleReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\ProjectNodeReader\ProjectNodeReader.cpp">
+      <Filter>reader\WidgetReader\ProjectNodeReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\SingleNodeReader\SingleNodeReader.cpp">
+      <Filter>reader\WidgetReader\SingleNodeReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WidgetReader\SpriteReader\SpriteReader.cpp">
+      <Filter>reader\WidgetReader\SpriteReader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -647,6 +695,33 @@
     </ClInclude>
     <ClInclude Include="..\FlatBuffersSerialize.h">
       <Filter>TimelineAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\NodeReaderDefine.h">
+      <Filter>reader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\NodeReaderProtocol.h">
+      <Filter>reader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\NodeReader\NodeReader.h">
+      <Filter>reader\WidgetReader\NodeReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\ComAudioReader\ComAudioReader.h">
+      <Filter>reader\WidgetReader\ComAudioReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\GameMapReader\GameMapReader.h">
+      <Filter>reader\WidgetReader\GameMapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\ParticleReader\ParticleReader.h">
+      <Filter>reader\WidgetReader\ParticleReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\ProjectNodeReader\ProjectNodeReader.h">
+      <Filter>reader\WidgetReader\ProjectNodeReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\SingleNodeReader\SingleNodeReader.h">
+      <Filter>reader\WidgetReader\SingleNodeReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WidgetReader\SpriteReader\SpriteReader.h">
+      <Filter>reader\WidgetReader\SpriteReader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
