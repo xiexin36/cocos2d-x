@@ -28,10 +28,12 @@
 
 NS_CC_EXT_BEGIN
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 EditBoxImpl* __createSystemEditBox(EditBox* pEditBox)
 {
     return NULL;
 }
+#endif
 
 static const float CHECK_EDITBOX_POSITION_INTERVAL = 0.1f;
 
