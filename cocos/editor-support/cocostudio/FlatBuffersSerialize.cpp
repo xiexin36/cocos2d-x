@@ -1084,29 +1084,29 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
     
     // children
     bool containChildrenElement = false;
-    objectData = objectData->FirstChildElement();
+    const tinyxml2::XMLElement* child = objectData->FirstChildElement();
     
-    while (objectData)
+    while (child)
     {
-        CCLOG("objectData name = %s", objectData->Name());
+        CCLOG("child name = %s", child->Name());
         
-        if (strcmp("Children", objectData->Name()) == 0)
+        if (strcmp("Children", child->Name()) == 0)
         {
             containChildrenElement = true;
             break;
         }
         
-        objectData = objectData->NextSiblingElement();
+        child = child->NextSiblingElement();
     }
     
     if (containChildrenElement)
     {
-        objectData = objectData->FirstChildElement();
-        CCLOG("element name = %s", objectData->Name());
+        child = child->FirstChildElement();
+        CCLOG("element name = %s", child->Name());
         
-        while (objectData)
+        while (child)
         {
-            const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
             bool bHasType = false;
             while (attribute)
             {
@@ -1115,7 +1115,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
                 
                 if (attriname == "ctype")
                 {
-                    children.push_back(createNodeTreeForSimulator(objectData, value));
+                    children.push_back(createNodeTreeForSimulator(child, value));
                     
                     bHasType = true;
                     break;
@@ -1126,10 +1126,10 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
             
             if(!bHasType)
             {
-                children.push_back(createNodeTreeForSimulator(objectData, "NodeObjectData"));
+                children.push_back(createNodeTreeForSimulator(child, "NodeObjectData"));
             }
             
-            objectData = objectData->NextSiblingElement();
+            child = child->NextSiblingElement();
         }
     }
     //
