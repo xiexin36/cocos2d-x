@@ -744,7 +744,9 @@ namespace cocostudio
                                            ignoreSize,
                                            touchEnabled,
                                            builder->CreateString(frameEvent),
-                                           builder->CreateString(customProperty)
+                                           builder->CreateString(customProperty),
+                                           builder->CreateString(callbackType),
+                                           builder->CreateString(callbackName)
                                            );
         
         return *(Offset<Table>*)(&options);
