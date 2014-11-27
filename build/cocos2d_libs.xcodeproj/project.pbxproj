@@ -759,6 +759,10 @@
 		382386341A26069A002C4610 /* WidgetReaderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 382385D71A260699002C4610 /* WidgetReaderProtocol.h */; };
 		382386351A26069A002C4610 /* WidgetReaderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 382385D71A260699002C4610 /* WidgetReaderProtocol.h */; };
 		382386371A260760002C4610 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 382386361A26075F002C4610 /* libglfw.3.0.dylib */; };
+		38ACD1F21A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38ACD1F01A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp */; };
+		38ACD1F31A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38ACD1F01A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp */; };
+		38ACD1F41A27083200C3093D /* WidgetCallBackHandlerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38ACD1F11A27083200C3093D /* WidgetCallBackHandlerProtocol.h */; };
+		38ACD1F51A27083200C3093D /* WidgetCallBackHandlerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38ACD1F11A27083200C3093D /* WidgetCallBackHandlerProtocol.h */; };
 		38BCC59A1994AD2100619F1D /* CSParseBinary.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 38BCC5971994AD2100619F1D /* CSParseBinary.pb.cc */; };
 		38BCC59C1994AD2100619F1D /* CSParseBinary.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 38BCC5981994AD2100619F1D /* CSParseBinary.pb.h */; };
 		38CD81491A148BCF0088B728 /* CSParseBinary_generated.h in Headers */ = {isa = PBXBuildFile; fileRef = 38CD81481A148BCF0088B728 /* CSParseBinary_generated.h */; };
@@ -2639,6 +2643,8 @@
 		382385D61A260699002C4610 /* WidgetReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetReader.h; sourceTree = "<group>"; };
 		382385D71A260699002C4610 /* WidgetReaderProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetReaderProtocol.h; sourceTree = "<group>"; };
 		382386361A26075F002C4610 /* libglfw.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.0.dylib; path = ../../CocoStudioMono/CocoStudio.EngineAdapter/Lib/libglfw.3.0.dylib; sourceTree = "<group>"; };
+		38ACD1F01A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WidgetCallBackHandlerProtocol.cpp; sourceTree = "<group>"; };
+		38ACD1F11A27083200C3093D /* WidgetCallBackHandlerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetCallBackHandlerProtocol.h; sourceTree = "<group>"; };
 		38BCC5971994AD2100619F1D /* CSParseBinary.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSParseBinary.pb.cc; sourceTree = "<group>"; };
 		38BCC5981994AD2100619F1D /* CSParseBinary.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSParseBinary.pb.h; sourceTree = "<group>"; };
 		38CD81481A148BCF0088B728 /* CSParseBinary_generated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSParseBinary_generated.h; sourceTree = "<group>"; };
@@ -4099,6 +4105,8 @@
 				4392C4C119B49883004BD79E /* ProtocolBuffersSerialize.h */,
 				38BCC5971994AD2100619F1D /* CSParseBinary.pb.cc */,
 				38BCC5981994AD2100619F1D /* CSParseBinary.pb.h */,
+				38ACD1F01A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp */,
+				38ACD1F11A27083200C3093D /* WidgetCallBackHandlerProtocol.h */,
 				29E99D1C1957BA7000046604 /* CocoLoader.cpp */,
 				29E99D1D1957BA7000046604 /* CocoLoader.h */,
 				0634A4C4194B19E400E608AF /* ActionTimeline */,
@@ -6444,6 +6452,7 @@
 				382385761A26016C002C4610 /* atomicops_internals_x86_msvc.h in Headers */,
 				B2C59A7819777FD000B452DF /* CCDatas.h in Headers */,
 				3823853E1A26016C002C4610 /* config.h in Headers */,
+				38ACD1F51A27083200C3093D /* WidgetCallBackHandlerProtocol.h in Headers */,
 				3823862B1A26069A002C4610 /* TextFieldReader.h in Headers */,
 				382386131A26069A002C4610 /* ScrollViewReader.h in Headers */,
 				382385641A26016C002C4610 /* atomicops_internals_arm_gcc.h in Headers */,
@@ -6667,6 +6676,7 @@
 				3823853D1A26016C002C4610 /* config.h in Headers */,
 				382385631A26016C002C4610 /* atomicops_internals_arm_gcc.h in Headers */,
 				382385851A26016C002C4610 /* stl_util.h in Headers */,
+				38ACD1F41A27083200C3093D /* WidgetCallBackHandlerProtocol.h in Headers */,
 				3823862A1A26069A002C4610 /* TextFieldReader.h in Headers */,
 				382386121A26069A002C4610 /* ScrollViewReader.h in Headers */,
 				B2DB486219767C7000411E16 /* CCDataReaderHelper.h in Headers */,
@@ -7912,6 +7922,7 @@
 				382385F11A26069A002C4610 /* ListViewReader.cpp in Sources */,
 				B2C59AB71977804800B452DF /* CCSpriteFrameCacheHelper.cpp in Sources */,
 				382385E11A26069A002C4610 /* ComAudioReader.cpp in Sources */,
+				38ACD1F31A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp in Sources */,
 				382386311A26069A002C4610 /* WidgetReader.cpp in Sources */,
 				B2C59AB81977804800B452DF /* CCSSceneReader.cpp in Sources */,
 				B2C59AB91977804800B452DF /* CCTransformHelp.cpp in Sources */,
@@ -8084,6 +8095,7 @@
 				382386041A26069A002C4610 /* PageViewReader.cpp in Sources */,
 				382386081A26069A002C4610 /* ParticleReader.cpp in Sources */,
 				B2DB48B119767D2000411E16 /* CCDecorativeDisplay.cpp in Sources */,
+				38ACD1F21A27083200C3093D /* WidgetCallBackHandlerProtocol.cpp in Sources */,
 				B2DB48B219767D2000411E16 /* CCDisplayFactory.cpp in Sources */,
 				382385FC1A26069A002C4610 /* NodeReaderDefine.cpp in Sources */,
 				3823855D1A26016C002C4610 /* repeated_field.cc in Sources */,

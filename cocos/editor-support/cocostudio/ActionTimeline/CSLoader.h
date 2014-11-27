@@ -28,8 +28,8 @@
 #include "cocostudio/DictionaryHelper.h"
 #include "cocostudio/CocosStudioExport.h"
 #include "cocos2d.h"
+#include "base/ObjectFactory.h"
 
-/* peterson */
 namespace flatbuffers
 {
     struct FlatBufferBuilder;
@@ -46,7 +46,6 @@ namespace flatbuffers
     struct ComponentOptions;
     struct ComAudioOptions;
 }
-/**/
 
 namespace protocolbuffers
 {
@@ -116,6 +115,14 @@ public:
     cocos2d::Node* nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeTree& nodetree);
     /**/
     
+    bool bindCallback(const std::string& callbackName,
+                      const std::string& callbackType,
+                      cocos2d::ui::Widget* sender,
+                      cocos2d::Node* handler);
+    
+    void registReaderObject(const std::string& className,
+                            ObjectFactory::Instance ins);
+    
 protected:
     
     cocos2d::Node* loadNode(const rapidjson::Value& json);
@@ -182,6 +189,9 @@ protected:
     std::string _protocolBuffersPath;
     
     std::string _monoCocos2dxVersion;
+    
+    Node* _rootNode;
+//    std::vector<Node*> _loadingNodeParentHierarchy;
 };
 
 NS_CC_END

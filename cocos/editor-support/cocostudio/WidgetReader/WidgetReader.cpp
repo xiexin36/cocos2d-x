@@ -524,6 +524,8 @@ namespace cocostudio
         bool touchEnabled = false;
         std::string frameEvent = "";
         std::string customProperty = "";
+        std::string callbackType = "";
+        std::string callbackName = "";
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -579,6 +581,14 @@ namespace cocostudio
             else if (attriname == "FrameEvent")
             {
                 frameEvent = value;
+            }
+            else if (attriname == "CallBackType")
+            {
+                callbackType = value;
+            }
+            else if (attriname == "CallBackName")
+            {
+                callbackName = value;
             }
             
             attribute = attribute->Next();
@@ -763,6 +773,7 @@ namespace cocostudio
         
         int actionTag = options->actionTag();
         widget->setActionTag(actionTag);
+        widget->setUserObject(timeline::ActionTimelineData::create(actionTag));
         
         bool touchEnabled = options->touchEnabled();
         widget->setTouchEnabled(touchEnabled);
@@ -805,6 +816,10 @@ namespace cocostudio
         bool flippedY = options->flipY();
         widget->setFlippedY(flippedY);
         
+        std::string callbackType = options->callBackType()->c_str();
+        widget->setCallbackType(callbackType);
+        std::string callbackName = options->callBackName()->c_str();
+        widget->setCallbackName(callbackName);
     }
     
     Node* WidgetReader::createNodeWithFlatBuffers(const flatbuffers::Table *widgetOptions)
