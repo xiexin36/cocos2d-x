@@ -580,17 +580,13 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
             auto visibleFrame = createTimeLineBoolFrame(frameElement);
             frame = CreateFrame(*_builder,
                                 visibleFrame);
-            
-            frames.push_back(frame);
         }
         else if (frameType == FrameType_ZOrderFrame)
         {
-            auto zOrderFrame = createTimeLineIntFrame(objectData);
+            auto zOrderFrame = createTimeLineIntFrame(frameElement);
             frame = CreateFrame(*_builder,
                                 0, // VisibleFrame
                                 zOrderFrame);
-            
-            frames.push_back(frame);
         }
         else if (frameType == FrameType_RotationSkewFrame)
         {
@@ -599,8 +595,6 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // VisibleFrame
                                 0, // ZOrderFrame
                                 rotationSkewFrame);
-            
-            frames.push_back(frame);
         }
         else if (frameType == FrameType_EventFrame)
         {
@@ -610,8 +604,6 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // ZOrderFrame
                                 0, // RotationSkewFrame
                                 eventFrame);
-            
-            frames.push_back(frame);
         }
         else if (frameType == FrameType_AnchorFrame)
         {
@@ -622,8 +614,6 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // RotationSkewFrame
                                 0, // EventFrame
                                 anchorPointFrame);
-            
-            frames.push_back(frame);
         }
         else if (frameType == FrameType_PositionFrame)
         {
@@ -635,12 +625,10 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // EventFrame
                                 0, // AnchorPointFrame
                                 positionFrame);
-            
-            frames.push_back(frame);
         }
         else if (frameType == FrameType_ScaleFrame)
         {
-            auto scaleFrame = createTimeLinePointFrame(objectData);
+            auto scaleFrame = createTimeLinePointFrame(frameElement);
             frame = CreateFrame(*_builder,
                                 0, // VisibleFrame
                                 0, // ZOrderFrame
@@ -652,7 +640,7 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
         }
         else if (frameType == FrameType_ColorFrame)
         {
-            auto colorFrame = createTimeLineColorFrame(objectData);
+            auto colorFrame = createTimeLineColorFrame(frameElement);
             frame = CreateFrame(*_builder,
                                 0, // VisibleFrame
                                 0, // ZOrderFrame
@@ -665,7 +653,7 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
         }
         else if (frameType == FrameType_TextureFrame)
         {
-            auto textureFrame = createTimeLineTextureFrame(objectData);
+            auto textureFrame = createTimeLineTextureFrame(frameElement);
             frame = CreateFrame(*_builder,
                                 0, // VisibleFrame
                                 0, // ZOrderFrame
@@ -677,6 +665,7 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // ColorFrame
                                 textureFrame);
         }
+        frames.push_back(frame);
                 
         frameElement = frameElement->NextSiblingElement();
     }
