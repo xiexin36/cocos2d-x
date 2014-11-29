@@ -1651,9 +1651,24 @@ bool CSLoader::bindCallback(const std::string &callbackName,
 Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filename)
 {	
 	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+    fbs->_isSimulator = true;
 	FlatBufferBuilder* builder = fbs->createFlatBuffersWithXMLFileForSimulator(filename);
 
     auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());
+    
+    // decode plist
+    auto textures = csparsebinary->textures();
+    auto texturePngs = csparsebinary->texturePngs();
+    int textureSize = csparsebinary->textures()->size();
+    CCLOG("textureSize = %d", textureSize);
+    for (int i = 0; i < textureSize; ++i)
+    {
+        std::string texture = textures->Get(i)->c_str();
+        std::string texturePng = texturePngs->Get(i)->c_str();
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texture,
+                                                                 texturePng);
+    }
+    
     auto nodeTree = csparsebinary->nodeTree();
     Node* node = nodeWithFlatBuffersForSimulator(nodeTree);
     

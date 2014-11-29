@@ -1065,6 +1065,7 @@ Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::T
 ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(const std::string& fileName)
 {
 	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+    fbs->_isSimulator = true;
 	auto builder = fbs->createFlatBuffersWithXMLFileForSimulator(fileName);
 
     ActionTimeline* action = ActionTimeline::create();
