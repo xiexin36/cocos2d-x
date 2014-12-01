@@ -858,7 +858,7 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
                 auto zOrderFrame = frameFlatbuf->zOrderFrame();
                 frame = loadZOrderFrameWithFlatBuffers(zOrderFrame);
             }
-            else if (frameType == FrameType_RotationFrame)
+            else if (frameType == FrameType_RotationSkewFrame)
             {
                 auto rotationSkewFrame = frameFlatbuf->rotationSkewFrame();
                 frame = loadRotationSkewFrameWithFlatBuffers(rotationSkewFrame);
@@ -1065,6 +1065,7 @@ Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::T
 ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(const std::string& fileName)
 {
 	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+    fbs->_isSimulator = true;
 	auto builder = fbs->createFlatBuffersWithXMLFileForSimulator(fileName);
 
     ActionTimeline* action = ActionTimeline::create();

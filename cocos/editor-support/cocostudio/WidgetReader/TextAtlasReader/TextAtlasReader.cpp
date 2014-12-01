@@ -1,19 +1,19 @@
 
 
 #include "TextAtlasReader.h"
+
 #include "ui/UITextAtlas.h"
 #include "cocostudio/CocoLoader.h"
-#include "../../CSParseBinary.pb.h"
-#include "tinyxml2/tinyxml2.h"
-
-/* peterson */
-#include "flatbuffers/flatbuffers.h"
-
+#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
-/**/
+#include "cocostudio/FlatBuffersSerialize.h"
+
+#include "tinyxml2/tinyxml2.h"
+#include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
 using namespace ui;
+using namespace flatbuffers;
 
 namespace cocostudio
 {
@@ -25,7 +25,7 @@ namespace cocostudio
     
     static TextAtlasReader* instanceTextAtalsReader = nullptr;
     
-    IMPLEMENT_CLASS_WIDGET_READER_INFO(TextAtlasReader)
+    IMPLEMENT_CLASS_NODE_READER_INFO(TextAtlasReader)
     
     TextAtlasReader::TextAtlasReader()
     {
@@ -41,7 +41,7 @@ namespace cocostudio
     {
         if (!instanceTextAtalsReader)
         {
-            instanceTextAtalsReader = new TextAtlasReader();
+            instanceTextAtalsReader = new (std::nothrow) TextAtlasReader();
         }
         return instanceTextAtalsReader;
     }
@@ -148,11 +148,7 @@ namespace cocostudio
         
         TextAtlas* labelAtlas = static_cast<TextAtlas*>(widget);
         const protocolbuffers::TextAtlasOptions& options = nodeTree.textatlasoptions();
-        //        bool sv = DICTOOL->checkObjectExist_json(options, P_StringValue);
-        //        bool cmf = DICTOOL->checkObjectExist_json(options, P_CharMapFile);
-        //        bool iw = DICTOOL->checkObjectExist_json(options, P_ItemWidth);
-        //        bool ih = DICTOOL->checkObjectExist_json(options, P_ItemHeight);
-        //        bool scm = DICTOOL->checkObjectExist_json(options, P_StartCharMap);
+
         
         const protocolbuffers::ResourceData& cmftDic = options.charmapfiledata();
         int cmfType = cmftDic.resourcetype();
@@ -185,29 +181,122 @@ namespace cocostudio
         WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
     }
     
-    /* peterson */
-    void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::ui::Widget *widget, const flatbuffers::Options *options)
+    Offset<Table> TextAtlasReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
+                                                                flatbuffers::FlatBufferBuilder *builder)
     {
-        WidgetReader::setPropsWithFlatBuffers(widget, options);
+        auto temp = WidgetReader::getInstance()->createOptionsWithFlatBuffers(objectData, builder);
+        auto widgetOptions = *(Offset<WidgetOptions>*)(&temp);
         
-        TextAtlas* labelAtlas = static_cast<TextAtlas*>(widget);
-        auto taop = options->textAtlasOptions();
+        std::string path = "";
+        std::string plistFile = "";
+        int resourceType = 0;
         
-        auto cmftDic = taop->charMapFileData();
+        std::string stringValue = "0123456789";
+        int itemWidth = 0;
+        int itemHeight = 0;
+        std::string startCharMap = "";
+        
+        // attributes
+        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        while (attribute)
+        {
+            std::string name = attribute->Name();
+            std::string value = attribute->Value();
+            
+            if (name == "LabelText")
+            {
+                stringValue = value;
+            }
+            else if (name == "CharWidth")
+            {
+                itemWidth = atoi(value.c_str());
+            }
+            else if (name == "CharHeight")
+            {
+                itemHeight = atoi(value.c_str());
+            }
+            else if (name == "StartChar")
+            {
+                startCharMap = value;
+            }
+            
+            attribute = attribute->Next();
+        }
+        
+        // child elements
+        const tinyxml2::XMLElement* child = objectData->FirstChildElement();
+        while (child)
+        {
+            std::string name = child->Name();
+            
+            if (name == "LabelAtlasFileImage_CNB")
+            {
+                std::string texture = "";
+                std::string texturePng = "";
+                
+                attribute = child->FirstAttribute();
+                
+                while (attribute)
+                {
+                    name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "Path")
+                    {
+                        path = value;
+                    }
+                    else if (name == "Type")
+                    {
+                        resourceType = 0;
+                    }
+                    else if (name == "Plist")
+                    {
+                        plistFile = value;
+                        texture = value;
+                    }
+                    
+                    attribute = attribute->Next();
+                }
+            }
+            
+            child = child->NextSiblingElement();
+        }
+        
+        auto options = CreateTextAtlasOptions(*builder,
+                                              widgetOptions,
+                                              CreateResourceData(*builder,
+                                                                 builder->CreateString(path),
+                                                                 builder->CreateString(plistFile),
+                                                                 resourceType),
+                                              builder->CreateString(stringValue),
+                                              builder->CreateString(startCharMap),
+                                              itemWidth,
+                                              itemHeight
+                                              );
+        
+        return *(Offset<Table>*)(&options);
+    }
+    
+    void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::Node *node, const flatbuffers::Table *textAtlasOptions)
+    {
+        TextAtlas* labelAtlas = static_cast<TextAtlas*>(node);
+        auto options = (TextAtlasOptions*)textAtlasOptions;
+        
+        auto cmftDic = options->charMapFileData();
         int cmfType = cmftDic->resourceType();
         switch (cmfType)
         {
             case 0:
             {
                 const char* cmfPath = cmftDic->path()->c_str();
-                std::string stringValue = taop->stringValue()->c_str();
-                int itemWidth = taop->itemWidth();
-                int itemHeight = taop->itemHeight();
+                std::string stringValue = options->stringValue()->c_str();
+                int itemWidth = options->itemWidth();
+                int itemHeight = options->itemHeight();
                 labelAtlas->setProperty(stringValue,
                                         cmfPath,
                                         itemWidth,
                                         itemHeight,
-                                        taop->startCharMap()->c_str());
+                                        options->startCharMap()->c_str());
                 break;
             }
             case 1:
@@ -217,10 +306,18 @@ namespace cocostudio
                 break;
         }
         
+        auto widgetReader = WidgetReader::getInstance();
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
-        // other commonly protperties
-        WidgetReader::setColorPropsWithFlatBuffers(widget, options);
     }
-    /**/
-
+    
+    Node* TextAtlasReader::createNodeWithFlatBuffers(const flatbuffers::Table *textAtlasOptions)
+    {
+        TextAtlas* textAtlas = TextAtlas::create();
+        
+        setPropsWithFlatBuffers(textAtlas, (Table*)textAtlasOptions);
+        
+        return textAtlas;
+    }
+    
 }

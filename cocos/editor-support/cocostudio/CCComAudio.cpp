@@ -29,6 +29,7 @@ THE SOFTWARE.
 namespace cocostudio {
 
 IMPLEMENT_CLASS_COMPONENT_INFO(ComAudio)
+
 ComAudio::ComAudio(void)
 : _filePath("")
 , _loop(false)
@@ -175,20 +176,19 @@ void ComAudio::end()
 
 void ComAudio::preloadBackgroundMusic(const char* pszFilePath)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic(pszFilePath);
-    setFile(pszFilePath);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic(pszFilePath);
+	setFile(pszFilePath);
 	setLoop(false);
 }
 
 void ComAudio::playBackgroundMusic(const char* pszFilePath, bool loop)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(pszFilePath, loop);
-    
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(pszFilePath, loop);
 }
 
 void ComAudio::playBackgroundMusic(const char* pszFilePath)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(pszFilePath);
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(pszFilePath);
 }
 
 void ComAudio::playBackgroundMusic()
@@ -253,12 +253,12 @@ void ComAudio::setEffectsVolume(float volume)
 
 unsigned int ComAudio::playEffect(const char* pszFilePath, bool loop)
 {
-    return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(pszFilePath, loop);
+	return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(pszFilePath, loop);
 }
 
 unsigned int ComAudio::playEffect(const char* pszFilePath)
 {
-    return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(pszFilePath);
+	return CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(pszFilePath);
 }
 
 unsigned int ComAudio::playEffect()
@@ -298,14 +298,14 @@ void ComAudio::stopAllEffects()
 
 void ComAudio::preloadEffect(const char* pszFilePath)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(pszFilePath);
-    setFile(pszFilePath);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(pszFilePath);
+	setFile(pszFilePath);
     setLoop(false);
 }
 
 void ComAudio::unloadEffect(const char *pszFilePath)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(pszFilePath);
+	CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(pszFilePath);
 }
 
 void ComAudio::setFile(const char* pszFilePath)

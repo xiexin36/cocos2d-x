@@ -23,30 +23,55 @@
  ****************************************************************************/
 
 #include "CSLoader.h"
+
+#include "base/ObjectFactory.h"
+
+#include "../../cocos/ui/CocosGUI.h"
 #include "CCActionTimelineCache.h"
 #include "CCActionTimeline.h"
 #include "../CCSGUIReader.h"
-#include "../../cocos/ui/CocosGUI.h"
 #include "cocostudio/CocoStudio.h"
+#include "cocostudio/CSParseBinary.pb.h"
+#include "cocostudio/CSParseBinary_generated.h"
 
-#include "../CSParseBinary.pb.h"
+#include "cocostudio/WidgetReader/NodeReaderProtocol.h"
+#include "cocostudio/WidgetReader/NodeReaderDefine.h"
 
-/* peterson */
+#include "cocostudio/WidgetReader/NodeReader/NodeReader.h"
+#include "cocostudio/WidgetReader/SingleNodeReader/SingleNodeReader.h"
+#include "cocostudio/WidgetReader/SpriteReader/SpriteReader.h"
+#include "cocostudio/WidgetReader/ParticleReader/ParticleReader.h"
+#include "cocostudio/WidgetReader/GameMapReader/GameMapReader.h"
+#include "cocostudio/WidgetReader/ProjectNodeReader/ProjectNodeReader.h"
+#include "cocostudio/WidgetReader/ComAudioReader/ComAudioReader.h"
+
+#include "cocostudio/WidgetReader/ButtonReader/ButtonReader.h"
+#include "cocostudio/WidgetReader/CheckBoxReader/CheckBoxReader.h"
+#include "cocostudio/WidgetReader/ImageViewReader/ImageViewReader.h"
+#include "cocostudio/WidgetReader/TextBMFontReader/TextBMFontReader.h"
+#include "cocostudio/WidgetReader/TextReader/TextReader.h"
+#include "cocostudio/WidgetReader/TextFieldReader/TextFieldReader.h"
+#include "cocostudio/WidgetReader/TextAtlasReader/TextAtlasReader.h"
+#include "cocostudio/WidgetReader/LoadingBarReader/LoadingBarReader.h"
+#include "cocostudio/WidgetReader/SliderReader/SliderReader.h"
+#include "cocostudio/WidgetReader/LayoutReader/LayoutReader.h"
+#include "cocostudio/WidgetReader/ScrollViewReader/ScrollViewReader.h"
+#include "cocostudio/WidgetReader/PageViewReader/PageViewReader.h"
+#include "cocostudio/WidgetReader/ListViewReader/ListViewReader.h"
+
 #include "flatbuffers/flatbuffers.h"
 #include "flatbuffers/util.h"
 
-#include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
-/**/
+
+#include "cocostudio/WidgetCallBackHandlerProtocol.h"
 
 #include <fstream>
 
 using namespace cocos2d::ui;
 using namespace cocostudio;
 using namespace cocostudio::timeline;
-/* peterson */
 using namespace flatbuffers;
-/**/
 
 NS_CC_BEGIN
 
@@ -153,7 +178,27 @@ CSLoader::CSLoader()
 , _recordProtocolBuffersPath(false)
 , _protocolBuffersPath("")
 , _monoCocos2dxVersion("")
+, _rootNode(nullptr)
 {
+    CREATE_CLASS_NODE_READER_INFO(NodeReader);
+    CREATE_CLASS_NODE_READER_INFO(SingleNodeReader);
+    CREATE_CLASS_NODE_READER_INFO(SpriteReader);
+    CREATE_CLASS_NODE_READER_INFO(ParticleReader);
+    CREATE_CLASS_NODE_READER_INFO(GameMapReader);
+    
+    CREATE_CLASS_NODE_READER_INFO(ButtonReader);
+    CREATE_CLASS_NODE_READER_INFO(CheckBoxReader); 
+    CREATE_CLASS_NODE_READER_INFO(ImageViewReader);
+    CREATE_CLASS_NODE_READER_INFO(TextBMFontReader);
+    CREATE_CLASS_NODE_READER_INFO(TextReader);
+    CREATE_CLASS_NODE_READER_INFO(TextFieldReader);
+    CREATE_CLASS_NODE_READER_INFO(TextAtlasReader);
+    CREATE_CLASS_NODE_READER_INFO(LoadingBarReader);
+    CREATE_CLASS_NODE_READER_INFO(SliderReader);
+    CREATE_CLASS_NODE_READER_INFO(LayoutReader);
+    CREATE_CLASS_NODE_READER_INFO(ScrollViewReader);
+    CREATE_CLASS_NODE_READER_INFO(PageViewReader);
+    CREATE_CLASS_NODE_READER_INFO(ListViewReader);
 }
 
 void CSLoader::purge()
@@ -1422,10 +1467,11 @@ Node* CSLoader::nodeFromProtocolBuffersForSimulator(const protocolbuffers::NodeT
 }
 /**/
 
-/* peterson */
 Node* CSLoader::createNodeWithFlatBuffersFile(const std::string &filename)
 {
     Node* node = nodeWithFlatBuffersFile(filename);
+    
+    _rootNode = nullptr;
     
     return node;
 }
@@ -1471,117 +1517,51 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
     
     auto options = nodetree->options();
     
-    if (classname == "Node")
+    if (classname == "ProjectNode")
     {
-        node = Node::create();
-        setPropsForNodeWithFlatBuffers(options->widgetOptions(), node);
-    }
-    else if (classname == "SingleNode")
-    {
-        node = Node::create();
-        setPropsForSingleNodeWithFlatBuffers(options->singleNodeOptions(), options->widgetOptions(), node);
-    }
-    else if (classname == "Sprite")
-    {
-        node = CCSprite::create();
-        setPropsForSpriteWithFlatBuffers(options->spriteOptions(), options->widgetOptions(), node);
-    }
-    else if (classname == "ProjectNode")
-    {
-        auto nodeOptions = options->widgetOptions();
-        auto projectNodeOptions = options->projectNodeOptions();
-        
+        auto reader = ProjectNodeReader::getInstance();
+        auto projectNodeOptions = (ProjectNodeOptions*)options->data();
         std::string filePath = projectNodeOptions->fileName()->c_str();
         CCLOG("filePath = %s", filePath.c_str());
         if (filePath != "")
         {
             node = createNodeWithFlatBuffersFile(filePath);
-            setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);
-
-			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
-			if (action)
-			{
-				node->runAction(action);
-				action->gotoFrameAndPlay(0);
-			}
+            reader->setPropsWithFlatBuffers(node, options->data());
         }
-    }
-    else if (classname == "Particle")
-    {
-        node = createParticleWithFlatBuffers(options->particleSystemOptions(), options->widgetOptions());
-    }
-    else if (classname == "GameMap")
-    {
-        node = createTMXTiledMapWithFlatBuffers(options->tmxTiledMapOptions(), options->widgetOptions());
     }
     else if (classname == "SimpleAudio")
     {
         node = Node::create();
-        
-        const flatbuffers::WidgetOptions* nodeOptions = options->widgetOptions();
-        
-        const flatbuffers::ComponentOptions* componentOptions = options->componentOptions();
-        Component* component = createComponentWithFlatBuffers(componentOptions);
+        auto reader = ComAudioReader::getInstance();
+        Component* component = reader->createComAudioWithFlatBuffers(options->data());
         if (component)
         {
             node->addComponent(component);
+            reader->setPropsWithFlatBuffers(node, options->data());
+        }
+    }
+    else
+    {
+        std::string readername = getGUIClassName(classname);
+        readername.append("Reader");
+        
+        NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
+        node = reader->createNodeWithFlatBuffers(options->data());
+        
+        Widget* widget = dynamic_cast<Widget*>(node);
+        if (widget)
+        {
+            std::string callbackName = widget->getCallbackName();
+            std::string callbackType = widget->getCallbackType();
+            
+            bindCallback(callbackName, callbackType, widget, _rootNode);
         }
         
-        setPropsForSimpleAudioWithFlatBuffers(node, nodeOptions);
-    }
-    else if (isWidget(classname))
-    {
-        std::string guiClassName = getGUIClassName(classname);
-        std::string readerName = guiClassName;
-        readerName.append("Reader");
-        
-        Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-        reader->setPropsWithFlatBuffers(widget, options);
-        
-        auto widgetOptions = options->widgetOptions();
-        int actionTag = widgetOptions->actionTag();
-        widget->setUserObject(ActionTimelineData::create(actionTag));
-        
-        node = widget;
-    }
-    else if (isCustomWidget(classname))
-    {
-        //        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-        //        //        widget->retain();
-        //
-        //        //
-        //        // 1st., custom widget parse properties of parent widget with parent widget reader
-        //        std::string readerName = getWidgetReaderClassName(widget);
-        //        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-        //        if (reader && widget)
-        //        {
-        //            WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
-        //            widgetPropertiesReader->setPropsForAllWidgetFromProtocolBuffers(reader, widget, nodetree);
-        //
-        //            // 2nd., custom widget parse with custom reader
-        //            const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
-        //            const char* customProperty = widgetOptions.customproperty().c_str();
-        //            rapidjson::Document customJsonDict;
-        //            customJsonDict.Parse<0>(customProperty);
-        //            if (customJsonDict.HasParseError())
-        //            {
-        //                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
-        //            }
-        //
-        //            widgetPropertiesReader->setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
-        //        }
-        //        else
-        //        {
-        //            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your protocol buffers file.");
-        //        }
-        //        //
-        //
-        //        const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
-        //        int actionTag = widgetOptions.actiontag();
-        //        widget->setUserObject(ActionTimelineData::create(actionTag));
-        //
-        //        node = widget;
+        if (_rootNode == nullptr)
+        {
+            _rootNode = node;
+        }
+//        _loadingNodeParentHierarchy.push_back(node);
     }
     
     auto children = nodetree->children();
@@ -1619,277 +1599,80 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         }
     }
     
-    return node;
-}
-
-void CSLoader::setPropsForNodeWithFlatBuffers(const flatbuffers::WidgetOptions *nodeOptions,
-                                              cocos2d::Node *node)
-{
-    auto options = nodeOptions;
-    
-    std::string name = options->name()->c_str();
-    float x             = options->position()->x();
-    float y             = options->position()->y();
-    float scalex        = options->scale()->scaleX();
-    float scaley        = options->scale()->scaleY();
-    //    float rotation      = options.rotation();
-    float rotationSkewX      = options->rotationSkew()->rotationSkewX();
-    float rotationSkewY      = options->rotationSkew()->rotationSkewY();
-    float anchorx       = options->anchorPoint()->scaleX();
-    float anchory       = options->anchorPoint()->scaleY();
-    int zorder		    = options->zOrder();
-    int tag             = options->tag();
-    int actionTag       = options->actionTag();
-    bool visible        = options->visible();
-    float w             = options->size()->width();
-    float h             = options->size()->height();
-    
-    node->setName(name);
-    
-    if(x != 0 || y != 0)
-        node->setPosition(Point(x, y));
-    if(scalex != 1)
-        node->setScaleX(scalex);
-    if(scaley != 1)
-        node->setScaleY(scaley);
-    //    if (rotation != 0)
-    //        node->setRotation(rotation);
-    if (rotationSkewX != 0)
-        node->setRotationSkewX(rotationSkewX);
-    if (rotationSkewY != 0)
-        node->setRotationSkewY(rotationSkewY);
-    if(anchorx != 0.5f || anchory != 0.5f)
-        node->setAnchorPoint(Point(anchorx, anchory));
-    if(zorder != 0)
-        node->setLocalZOrder(zorder);
-    if(visible != true)
-        node->setVisible(visible);
-    if (w != 0 || h != 0)
-        node->setContentSize(Size(w, h));
-    
-    node->setTag(tag);
-    node->setUserObject(ActionTimelineData::create(actionTag));
-    
-    node->setCascadeColorEnabled(true);
-    node->setCascadeOpacityEnabled(true);
-}
-
-void CSLoader::setPropsForSingleNodeWithFlatBuffers(const flatbuffers::SingleNodeOptions *singleNodeOptions,
-                                                    const flatbuffers::WidgetOptions* nodeOptions,
-                                                    cocos2d::Node *node)
-{
-    setPropsForNodeWithFlatBuffers(nodeOptions, node);
-}
-
-void CSLoader::setPropsForSpriteWithFlatBuffers(const flatbuffers::SpriteOptions *spriteOptions,
-                                                const flatbuffers::WidgetOptions *nodeOptions,
-                                                cocos2d::Node *node)
-{
-    Sprite *sprite = static_cast<Sprite*>(node);
-    auto options = spriteOptions;
-    
-    auto fileNameData = options->fileNameData();
-    
-    int resourceType = fileNameData->resourceType();
-    switch (resourceType)
-    {
-        case 0:
-        {
-            std::string path = _protocolBuffersPath + fileNameData->path()->c_str();
-            if (path != "")
-            {
-                sprite->setTexture(path);
-            }
-            break;
-        }
-            
-        case 1:
-        {
-            std::string path = fileNameData->path()->c_str();
-            if (path != "")
-            {
-                sprite->setSpriteFrame(path);
-            }
-            break;
-        }
-            
-        default:
-            break;
-    }
-    
-    setPropsForNodeWithFlatBuffers(nodeOptions, node);
-    
-    GLubyte alpha       = (GLubyte)nodeOptions->color()->a();
-    GLubyte red         = (GLubyte)nodeOptions->color()->r();
-    GLubyte green       = (GLubyte)nodeOptions->color()->g();
-    GLubyte blue        = (GLubyte)nodeOptions->color()->b();
-    
-    if (alpha != 255)
-    {
-        sprite->setOpacity(alpha);
-    }
-    if (red != 255 || green != 255 || blue != 255)
-    {
-        sprite->setColor(Color3B(red, green, blue));
-    }
-    
-    bool flipX   = nodeOptions->flipX();
-    bool flipY   = nodeOptions->flipY();
-    
-    if(flipX != false)
-        sprite->setFlippedX(flipX);
-    if(flipY != false)
-        sprite->setFlippedY(flipY);
-}
-
-Node* CSLoader::createParticleWithFlatBuffers(const flatbuffers::ParticleSystemOptions *particleSystemOptions,
-                                              const flatbuffers::WidgetOptions *nodeOptions)
-{
-    Node* node = nullptr;
-    
-    auto fileNameData = particleSystemOptions->fileNameData();
-    
-    int resourceType = fileNameData->resourceType();
-    switch (resourceType)
-    {
-        case 0:
-        {
-            
-            std::string path = fileNameData->path()->c_str();
-            if (path != "")
-            {
-                node = ParticleSystemQuad::create(path);
-            }
-            break;
-        }
-            
-        default:
-            break;
-    }
-    
-    if (node)
-    {
-        setPropsForNodeWithFlatBuffers(nodeOptions, node);
-    }
+//    _loadingNodeParentHierarchy.pop_back();
     
     return node;
 }
 
-Node* CSLoader::createTMXTiledMapWithFlatBuffers(const flatbuffers::TMXTiledMapOptions *tmxTiledMapOptions,
-                                                 const flatbuffers::WidgetOptions *nodeOptions)
+bool CSLoader::bindCallback(const std::string &callbackName,
+                            const std::string &callbackType,
+                            cocos2d::ui::Widget *sender,
+                            cocos2d::Node *handler)
 {
-    Node* node = nullptr;
-    
-    auto fileNameData = tmxTiledMapOptions->fileNameData();
-    
-    int resourceType = fileNameData->resourceType();
-    switch (resourceType)
+    auto callbackHandler = dynamic_cast<WidgetCallBackHandlerProtocol *>(handler);
+    if (callbackHandler) //The handler can handle callback
     {
-        case 0:
+        if (callbackType == "Click")
         {
-            std::string path = fileNameData->path()->c_str();
-            const char* tmxFile = path.c_str();
-            
-            if (tmxFile && strcmp("", tmxFile) != 0)
+            Widget::ccWidgetClickCallback callbackFunc = callbackHandler->onLocateClickCallback(callbackName);
+            if (callbackFunc)
             {
-                node = TMXTiledMap::create(tmxFile);
+                sender->addClickEventListener(callbackFunc);
+                return true;
             }
-            break;
         }
-            
-        default:
-            break;
-    }
-    
-    if (node)
-    {
-        setPropsForNodeWithFlatBuffers(nodeOptions, node);
-    }
-    
-    return node;
-}
-
-void CSLoader::setPropsForProjectNodeWithFlatBuffers(const flatbuffers::ProjectNodeOptions *projectNodeOptions,
-                                                     const flatbuffers::WidgetOptions *nodeOptions,
-                                                     cocos2d::Node *node)
-{
-    setPropsForNodeWithFlatBuffers(nodeOptions, node);
-}
-
-void CSLoader::setPropsForSimpleAudioWithFlatBuffers(cocos2d::Node *node,
-                                                     const flatbuffers::WidgetOptions *nodeOptions)
-{
-    setPropsForNodeWithFlatBuffers(nodeOptions, node);
-}
-
-Component* CSLoader::createComponentWithFlatBuffers(const flatbuffers::ComponentOptions *componentOptions)
-{
-    Component* component = nullptr;
-    
-    std::string componentType = componentOptions->type()->c_str();
-    
-    if (componentType == "ComAudio")
-    {
-        component = ComAudio::create();
-        const flatbuffers::ComAudioOptions* options = componentOptions->comAudioOptions();
-        setPropsForComAudioWithFlatBuffers(component, options);
-    }
-    
-    return component;
-}
-
-void CSLoader::setPropsForComponentWithFlatBuffers(cocos2d::Component *component,
-                                                   const flatbuffers::ComponentOptions *componentOptions)
-{
-    std::string componentType = componentOptions->type()->c_str();
-    
-    if (componentType == "ComAudio")
-    {
-        component = ComAudio::create();
-        const flatbuffers::ComAudioOptions* options = componentOptions->comAudioOptions();
-        setPropsForComAudioWithFlatBuffers(component, options);
-    }
-}
-
-void CSLoader::setPropsForComAudioWithFlatBuffers(cocos2d::Component *component,
-                                                  const flatbuffers::ComAudioOptions *comAudioOptions)
-{
-    const flatbuffers::ComAudioOptions* options = comAudioOptions;
-    ComAudio* audio = static_cast<ComAudio*>(component);
-    
-    auto fileNameData = options->fileNameData();
-    
-    int resourceType = fileNameData->resourceType();
-    switch (resourceType)
-    {
-        case 0:
+        else if (callbackType == "Touch")
         {
-            std::string path = fileNameData->path()->c_str();
-            audio->setFile(path.c_str());
-            break;
+            Widget::ccWidgetTouchCallback callbackFunc = callbackHandler->onLocateTouchCallback(callbackName);
+            if (callbackFunc)
+            {
+                sender->addTouchEventListener(callbackFunc);
+                return true;
+            }
         }
-            
-        default:
-            break;
+        else if (callbackType == "Event")
+        {
+            Widget::ccWidgetEventCallback callbackFunc = callbackHandler->onLocateEventCallback(callbackName);
+            if (callbackFunc)
+            {
+                sender->addCCSEventListener(callbackFunc);
+                return true;
+            }
+        }
     }
     
-    bool loop = options->loop();
-    audio->setLoop(loop);
+    CCLOG("callBackName %s cannot be found", callbackName.c_str());
     
-    audio->setName(options->name()->c_str());
-    audio->setLoop(options->loop());
+    return false;
+    
 }
-/**/
 
 /* peterson create node with flat buffers for simulator of cocosstudio editor */
 Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filename)
 {	
 	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+    fbs->_isSimulator = true;
 	FlatBufferBuilder* builder = fbs->createFlatBuffersWithXMLFileForSimulator(filename);
 
     auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());
+    
+    // decode plist
+    auto textures = csparsebinary->textures();
+    auto texturePngs = csparsebinary->texturePngs();
+    int textureSize = csparsebinary->textures()->size();
+    CCLOG("textureSize = %d", textureSize);
+    for (int i = 0; i < textureSize; ++i)
+    {
+        std::string texture = textures->Get(i)->c_str();
+        std::string texturePng = texturePngs->Get(i)->c_str();
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texture,
+                                                                 texturePng);
+    }
+    
     auto nodeTree = csparsebinary->nodeTree();
     Node* node = nodeWithFlatBuffersForSimulator(nodeTree);
+    
+    _rootNode = nullptr;
     
     fbs->deleteFlatBufferBuilder();
     
@@ -1905,117 +1688,51 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
     
     auto options = nodetree->options();
     
-    if (classname == "Node")
+    if (classname == "ProjectNode")
     {
-        node = Node::create();
-        setPropsForNodeWithFlatBuffers(options->widgetOptions(), node);
-    }
-    else if (classname == "SingleNode")
-    {
-        node = Node::create();
-        setPropsForSingleNodeWithFlatBuffers(options->singleNodeOptions(), options->widgetOptions(), node);
-    }
-    else if (classname == "Sprite")
-    {
-        node = CCSprite::create();
-        setPropsForSpriteWithFlatBuffers(options->spriteOptions(), options->widgetOptions(), node);
-    }
-    else if (classname == "ProjectNode")
-    {
-        auto nodeOptions = options->widgetOptions();
-        auto projectNodeOptions = options->projectNodeOptions();
-        
+        auto reader = ProjectNodeReader::getInstance();
+        auto projectNodeOptions = (ProjectNodeOptions*)options->data();
         std::string filePath = projectNodeOptions->fileName()->c_str();
         CCLOG("filePath = %s", filePath.c_str());
         if (filePath != "")
         {
-			node = createNodeWithFlatBuffersForSimulator(filePath);
-            setPropsForProjectNodeWithFlatBuffers(projectNodeOptions, nodeOptions, node);			
-            
-			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
-			if (action)
-			{
-				node->runAction(action);
-				action->gotoFrameAndPlay(0);
-			}
+            node = createNodeWithFlatBuffersForSimulator(filePath);
+            reader->setPropsWithFlatBuffers(node, options->data());
         }
-    }
-    else if (classname == "Particle")
-    {
-        node = createParticleWithFlatBuffers(options->particleSystemOptions(), options->widgetOptions());
-    }
-    else if (classname == "GameMap")
-    {
-        node = createTMXTiledMapWithFlatBuffers(options->tmxTiledMapOptions(), options->widgetOptions());
     }
     else if (classname == "SimpleAudio")
     {
         node = Node::create();
-        
-        const flatbuffers::WidgetOptions* nodeOptions = options->widgetOptions();
-        
-        const flatbuffers::ComponentOptions* componentOptions = options->componentOptions();
-        Component* component = createComponentWithFlatBuffers(componentOptions);
+        auto reader = ComAudioReader::getInstance();
+        Component* component = reader->createComAudioWithFlatBuffers(options->data());
         if (component)
         {
             node->addComponent(component);
+            reader->setPropsWithFlatBuffers(node, options->data());
+        }
+    }
+    else
+    {
+        std::string readername = getGUIClassName(classname);
+        readername.append("Reader");
+        
+        NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
+        node = reader->createNodeWithFlatBuffers(options->data());
+        
+        Widget* widget = dynamic_cast<Widget*>(node);
+        if (widget)
+        {
+            std::string callbackName = widget->getCallbackName();
+            std::string callbackType = widget->getCallbackType();
+            
+            bindCallback(callbackName, callbackType, widget, _rootNode);
         }
         
-        setPropsForSimpleAudioWithFlatBuffers(node, nodeOptions);
-    }
-    else if (isWidget(classname))
-    {
-        std::string guiClassName = getGUIClassName(classname);
-        std::string readerName = guiClassName;
-        readerName.append("Reader");
-        
-        Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(guiClassName));
-        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-        reader->setPropsWithFlatBuffers(widget, options);
-        
-        auto widgetOptions = options->widgetOptions();
-        int actionTag = widgetOptions->actionTag();
-        widget->setUserObject(ActionTimelineData::create(actionTag));
-        
-        node = widget;
-    }
-    else if (isCustomWidget(classname))
-    {
-        //        Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-        //        //        widget->retain();
-        //
-        //        //
-        //        // 1st., custom widget parse properties of parent widget with parent widget reader
-        //        std::string readerName = getWidgetReaderClassName(widget);
-        //        WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
-        //        if (reader && widget)
-        //        {
-        //            WidgetPropertiesReader0300* widgetPropertiesReader = new WidgetPropertiesReader0300();
-        //            widgetPropertiesReader->setPropsForAllWidgetFromProtocolBuffers(reader, widget, nodetree);
-        //
-        //            // 2nd., custom widget parse with custom reader
-        //            const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
-        //            const char* customProperty = widgetOptions.customproperty().c_str();
-        //            rapidjson::Document customJsonDict;
-        //            customJsonDict.Parse<0>(customProperty);
-        //            if (customJsonDict.HasParseError())
-        //            {
-        //                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
-        //            }
-        //
-        //            widgetPropertiesReader->setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
-        //        }
-        //        else
-        //        {
-        //            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your protocol buffers file.");
-        //        }
-        //        //
-        //
-        //        const protocolbuffers::WidgetOptions& widgetOptions = nodetree.widgetoptions();
-        //        int actionTag = widgetOptions.actiontag();
-        //        widget->setUserObject(ActionTimelineData::create(actionTag));
-        //
-        //        node = widget;
+        if (_rootNode == nullptr)
+        {
+            _rootNode = node;
+        }
+        //        _loadingNodeParentHierarchy.push_back(node);
     }
     
     auto children = nodetree->children();
@@ -2052,6 +1769,8 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
             }
         }
     }
+    
+    //    _loadingNodeParentHierarchy.pop_back();
     
     return node;
 }
@@ -2188,6 +1907,16 @@ std::string CSLoader::getWidgetReaderClassName(Widget* widget)
     }
     
     return readerName;
+}
+
+void CSLoader::registReaderObject(const std::string &className,
+                                  ObjectFactory::Instance ins)
+{
+    ObjectFactory::TInfo t;
+    t._class = className;
+    t._fun = ins;
+    
+    ObjectFactory::getInstance()->registerType(t);
 }
 
 NS_CC_END
