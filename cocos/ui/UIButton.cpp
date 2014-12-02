@@ -649,7 +649,6 @@ Node* Button::getVirtualRenderer()
 
 void Button::normalTextureScaleChangedWithSize()
 {
-
     if (_ignoreSize && !_unifySize)
     {
         if (!_scale9Enabled)
