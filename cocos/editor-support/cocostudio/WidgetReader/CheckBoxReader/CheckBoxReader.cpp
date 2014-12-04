@@ -531,6 +531,7 @@ namespace cocostudio
         
         bool displaystate = options->displaystate();
         checkBox->setBright(displaystate);
+        checkBox->setEnabled(displaystate);
         
         
         auto widgetReader = WidgetReader::getInstance();
