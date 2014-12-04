@@ -87,7 +87,7 @@ CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFileForSimu
     // xml read
     if (!FileUtils::getInstance()->isFileExist(fullpath))
     {
-        CCLOG("file doesn not exists ");
+//        CCLOG("file doesn not exists ");
         return nullptr;
     }
     
@@ -99,7 +99,7 @@ CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFileForSimu
     document->Parse(content.c_str());
     
     const tinyxml2::XMLElement* rootElement = document->RootElement();// Root
-    CCLOG("rootElement name = %s", rootElement->Name());
+//    CCLOG("rootElement name = %s", rootElement->Name());
     
     const tinyxml2::XMLElement* element = rootElement->FirstChildElement();
     
@@ -110,7 +110,7 @@ CSParseBinary* ProtocolBuffersSerialize::createProtocolBuffersWithXMLFileForSimu
     
     while (element)
     {
-        CCLOG("entity name = %s", element->Name());
+//        CCLOG("entity name = %s", element->Name());
         
         if (strcmp("Content", element->Name()) == 0)
         {
@@ -202,7 +202,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXMLForSimulator
                                                                                  std::string classType)
 {
     std::string classname = classType.substr(0, classType.find("ObjectData"));
-    CCLOG("classname = %s", classname.c_str());
+//    CCLOG("classname = %s", classname.c_str());
     
     nodetree->set_classname(classname);
     
@@ -340,7 +340,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXMLForSimulator
     
     while (objectData)
     {
-        CCLOG("objectData name = %s", objectData->Name());
+//        CCLOG("objectData name = %s", objectData->Name());
         
         if (strcmp("Children", objectData->Name()) == 0)
         {
@@ -354,7 +354,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXMLForSimulator
     if (containChildrenElement)
     {
         objectData = objectData->FirstChildElement();
-        CCLOG("element name = %s", objectData->Name());
+//        CCLOG("element name = %s", objectData->Name());
         
         while (objectData)
         {
@@ -461,7 +461,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
 {
     std::string result = "";    
     
-    CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
+//    CCLOG("protocolbuffersFileName = %s", protocolbuffersFileName.c_str());
 
     
 	std::string fullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
@@ -480,7 +480,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
     document->Parse(content.c_str());
     
     const tinyxml2::XMLElement* rootElement = document->RootElement();// Root
-    CCLOG("rootElement name = %s", rootElement->Name());
+//    CCLOG("rootElement name = %s", rootElement->Name());
     
     const tinyxml2::XMLElement* element = rootElement->FirstChildElement();
     
@@ -491,7 +491,7 @@ std::string ProtocolBuffersSerialize::serializeProtocolBuffersWithXMLFile(const 
 
     while (element)
     {
-        CCLOG("entity name = %s", element->Name());
+//        CCLOG("entity name = %s", element->Name());
         
         if (strcmp("Content", element->Name()) == 0)
         {
@@ -734,7 +734,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
                                                                      std::string classType)
 {
     std::string classname = classType.substr(0, classType.find("ObjectData"));
-    CCLOG("classname = %s", classname.c_str());
+//    CCLOG("classname = %s", classname.c_str());
     
     nodetree->set_classname(classname);
     
@@ -872,7 +872,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
     
     while (objectData)
     {
-        CCLOG("objectData name = %s", objectData->Name());
+//        CCLOG("objectData name = %s", objectData->Name());
         
         if (strcmp("Children", objectData->Name()) == 0)
         {
@@ -886,7 +886,7 @@ void ProtocolBuffersSerialize::convertNodeTreeProtocolBuffersWithXML(protocolbuf
     if (containChildrenElement)
     {
         objectData = objectData->FirstChildElement();
-        CCLOG("element name = %s", objectData->Name());
+//        CCLOG("element name = %s", objectData->Name());
         
         while (objectData)
         {
@@ -962,7 +962,7 @@ void ProtocolBuffersSerialize::setNodeOptions(protocolbuffers::WidgetOptions *no
     options->set_alpha(255);
     
     std::string name = nodeObjectData->Name();
-    CCLOG("entity name = %s", name.c_str());
+//    CCLOG("entity name = %s", name.c_str());
     
     // attributes
     const tinyxml2::XMLAttribute* attribute = nodeObjectData->FirstAttribute();
@@ -4077,7 +4077,7 @@ void ProtocolBuffersSerialize::setComAudioOptions(protocolbuffers::ComAudioOptio
 void ProtocolBuffersSerialize::convertActionProtocolBuffersWithXML(protocolbuffers::NodeAction *nodeAction,
                                                                    const tinyxml2::XMLElement *animation)
 {
-    CCLOG("animation name = %s", animation->Name());
+//    CCLOG("animation name = %s", animation->Name());
     
     // ActionTimeline
     const tinyxml2::XMLAttribute* attribute = animation->FirstAttribute();

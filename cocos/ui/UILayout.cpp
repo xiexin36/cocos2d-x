@@ -452,7 +452,7 @@ void Layout::setClippingEnabled(bool able)
                     glGetIntegerv(GL_STENCIL_BITS, &g_sStencilBits);
                     if (g_sStencilBits <= 0)
                     {
-                        CCLOG("Stencil buffer is not enabled.");
+//                        CCLOG("Stencil buffer is not enabled.");
                     }
                     once = false;
                 }
