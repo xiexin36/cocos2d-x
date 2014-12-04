@@ -253,6 +253,9 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
                                                  aciton);
 		_builder->Finish(csparsebinary);
         
+        _textures.clear();
+        _texturePngs.clear();
+        
         
         std::string outFullPath = FileUtils::getInstance()->fullPathForFilename(flatbuffersFileName);
         size_t pos = outFullPath.find_last_of('.');
@@ -1036,6 +1039,9 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
                                                  nodeTree,
                                                  aciton);        
 		_builder->Finish(csparsebinary);
+        
+        _textures.clear();
+        _texturePngs.clear();
     }
     return _builder;
 }
