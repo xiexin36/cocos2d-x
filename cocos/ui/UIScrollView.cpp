@@ -23,6 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "ui/UIScrollView.h"
+#include "ui/UILayoutComponent.h"
 
 NS_CC_BEGIN
 
@@ -246,11 +247,13 @@ void ScrollView::addChild(Node * child, int localZOrder)
 
 void ScrollView::addChild(Node *child, int zOrder, int tag)
 {
+    this->changeChildLayoutParent(child, true);
     _innerContainer->addChild(child, zOrder, tag);
 }
     
 void ScrollView::addChild(Node* child, int zOrder, const std::string &name)
 {
+    this->changeChildLayoutParent(child, true);
     _innerContainer->addChild(child, zOrder, name);
 }
 
@@ -261,11 +264,21 @@ void ScrollView::removeAllChildren()
     
 void ScrollView::removeAllChildrenWithCleanup(bool cleanup)
 {
+    auto& nodeChildren = this->getChildren();
+    for (auto& child : nodeChildren)
+    {
+        if (child != nullptr)
+        {
+            this->changeChildLayoutParent(child, false);
+        }
+    }
+
     _innerContainer->removeAllChildrenWithCleanup(cleanup);
 }
 
 void ScrollView::removeChild(Node* child, bool cleanup)
 {
+    this->changeChildLayoutParent(child, false);
 	return _innerContainer->removeChild(child, cleanup);
 }
 
@@ -349,7 +362,17 @@ void ScrollView::autoScrollChildren(float dt)
         }
     }
 }
-
+void ScrollView::changeChildLayoutParent(Node* child, bool useGrandParent)
+{
+    if (child == nullptr)
+        return;
+    auto com = child->getComponent(__LAYOUT_COMPONENT_NAME);
+    if (com != nullptr)
+    {
+        LayoutComponent* layoutComponent = (LayoutComponent*)com;
+        layoutComponent->setUseGrandParent(useGrandParent);
+    }
+}
 void ScrollView::bounceChildren(float dt)
 {
     if (_bounceOriginalSpeed <= 0.0f)

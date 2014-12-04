@@ -378,6 +378,7 @@ protected:
     void bounceLeftEvent();
     void bounceRightEvent();
     
+    void changeChildLayoutParent(Node* child,bool useGrandParent);
 protected:
     Layout* _innerContainer;
     

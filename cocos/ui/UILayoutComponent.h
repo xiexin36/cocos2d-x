@@ -116,9 +116,12 @@ namespace ui {
         virtual void setPercentHeight(float percentHeight);
 #pragma endregion
 
-        void setActiveEnable(bool enable);
+        virtual void setUseGrandParent(bool useGrandParent);
+        virtual void setActiveEnable(bool enable);
         virtual void refreshLayout();
 
+    protected:
+        Node* getOwnerParent();
     protected:
         HorizontalEage  _horizontalEage;
         VerticalEage    _verticalEage;
@@ -142,6 +145,8 @@ namespace ui {
         bool            _usingPercentHeight;
 
         bool _actived;
+
+        bool _useGrandParent;
     };
 }
 

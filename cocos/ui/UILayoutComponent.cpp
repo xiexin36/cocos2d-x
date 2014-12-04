@@ -47,6 +47,7 @@ namespace ui {
         , _percentHeight(0)
         , _usingPercentHeight(false)
         , _actived(true)
+        , _useGrandParent(false)
     {
         _name = __LAYOUT_COMPONENT_NAME;
     }
@@ -73,6 +74,18 @@ namespace ui {
         return ret;
     }
 
+    Node* LayoutComponent::getOwnerParent()
+    {
+        Node* parent = _owner->getParent();
+        if (_useGrandParent)
+        {
+            if (parent != nullptr)
+                return parent->getParent();
+            else
+                return nullptr;
+        }
+        return parent;
+    }
 #pragma region OldVersion
     void LayoutComponent::setUsingPercentContentSize(bool isUsed)
     {
@@ -103,7 +116,7 @@ namespace ui {
     {
         _owner->setPosition(position);
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
 
         switch (this->_horizontalEage)
         {
@@ -158,7 +171,7 @@ namespace ui {
     {
         _horizontalEage = hEage;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         switch (this->_horizontalEage)
         {
         case HorizontalEage::Left:
@@ -201,7 +214,7 @@ namespace ui {
     {
         _horizontalMargin = margin;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         switch (this->_horizontalEage)
         {
         case HorizontalEage::Left:
@@ -235,7 +248,7 @@ namespace ui {
     {
         _horizontalPercentMargin = percentMargin;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         if (parent != nullptr)
         {
             Size parentSize = parent->getContentSize();
@@ -266,7 +279,7 @@ namespace ui {
     {
         _verticalEage = vEage;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         switch (this->_verticalEage)
         {
         case VerticalEage::Buttom:
@@ -309,7 +322,7 @@ namespace ui {
     {
         _verticalMargin = margin;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         switch (this->_verticalEage)
         {
         case VerticalEage::Buttom:
@@ -343,7 +356,7 @@ namespace ui {
     {
         _verticalPercentMargin = percentMargin;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         if (parent != nullptr)
         {
             Size parentSize = parent->getContentSize();
@@ -374,7 +387,7 @@ namespace ui {
     }
     void LayoutComponent::setSize(Size _size)
     {
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
 
         switch (this->_sizeType)
         {
@@ -419,7 +432,7 @@ namespace ui {
     {
         _sizeType = type;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
 
         Size ownerSize = _owner->getContentSize();
         switch (this->_sizeType)
@@ -472,7 +485,7 @@ namespace ui {
     {
         _relativeWidth = width;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         Size ownerSize = _owner->getContentSize();
         switch (this->_sizeType)
         {
@@ -508,7 +521,7 @@ namespace ui {
     {
         _percentWidth = percentWidth;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         if (parent != nullptr)
         {
             _relativeWidth = parent->getContentSize().width * _percentWidth;
@@ -549,7 +562,7 @@ namespace ui {
     {
         _relativeHeight = height;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         Size ownerSize = _owner->getContentSize();
         switch (this->_sizeType)
         {
@@ -585,7 +598,7 @@ namespace ui {
     {
         _percentHeight = percentHeight;
 
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         if (parent != nullptr)
         {
             _relativeHeight = parent->getContentSize().height * _percentHeight;
@@ -612,7 +625,7 @@ namespace ui {
 
     void LayoutComponent::refreshLayout()
     {
-        Node* parent = _owner->getParent();
+        Node* parent = this->getOwnerParent();
         if (parent == nullptr)
             return;
 
@@ -682,6 +695,11 @@ namespace ui {
     void LayoutComponent::setActiveEnable(bool enable)
     {
         _actived = enable;
+    }
+
+    void LayoutComponent::setUseGrandParent(bool useGrandParent)
+    {
+        _useGrandParent = useGrandParent;
     }
 }
 
