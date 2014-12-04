@@ -973,6 +973,11 @@ void Sprite::setSpriteFrame(SpriteFrame *spriteFrame)
     setTextureRect(spriteFrame->getRect(), _rectRotated, spriteFrame->getOriginalSize());
 }
 
+void Sprite::setOffsetPosFromCenter(Vec2 offsetFromCenter)
+{
+	_unflippedOffsetPositionFromCenter = offsetFromCenter;
+}
+
 void Sprite::setDisplayFrameWithAnimationName(const std::string& animationName, ssize_t frameIndex)
 {
     CCASSERT(animationName.size()>0, "CCSprite#setDisplayFrameWithAnimationName. animationName must not be nullptr");
