@@ -138,7 +138,7 @@ ActionTimeline* ActionTimelineCache::createAction(const std::string& filename)
     std::string path = filename;
     size_t pos = path.find_last_of('.');
     std::string suffix = path.substr(pos + 1, path.length());
-    CCLOG("suffix = %s", suffix.c_str());
+//    CCLOG("suffix = %s", suffix.c_str());
     
     ActionTimelineCache* cache = ActionTimelineCache::getInstance();
     
@@ -197,7 +197,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithContent(const std::s
     doc.Parse<0>(content.c_str());
     if (doc.HasParseError()) 
     {
-        CCLOG("GetParseError %s\n", doc.GetParseError());
+//        CCLOG("GetParseError %s\n", doc.GetParseError());
     }
 
     const rapidjson::Value& json = DICTOOL->getSubDictionary_json(doc, ACTION);
@@ -511,7 +511,7 @@ Timeline*  ActionTimelineCache::loadTimelineFromProtocolBuffers(const protocolbu
     if(frameType == NULL)
         return NULL;
     
-    CCLOG("frameType = %s", frameType);
+//    CCLOG("frameType = %s", frameType);
     
     if(frameType)
     {
@@ -590,7 +590,7 @@ Frame* ActionTimelineCache::loadVisibleFrameFromProtocolBuffers(const protocolbu
     bool visible = frameProtobuf.value();
     frame->setVisible(visible);
     
-    CCLOG("visible = %d", visible);
+//    CCLOG("visible = %d", visible);
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -609,8 +609,10 @@ Frame* ActionTimelineCache::loadPositionFrameFromProtocolBuffers(const protocolb
     float y = frameProtobuf.y();
     frame->setPosition(Vec2(x,y));
     
+    /*
     CCLOG("x = %f", x);
     CCLOG("y = %f", y);
+     */
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -631,8 +633,10 @@ Frame* ActionTimelineCache::loadScaleFrameFromProtocolBuffers(const protocolbuff
     frame->setScaleX(scalex);
     frame->setScaleY(scaley);
     
+    /*
     CCLOG("scalex = %f", scalex);
     CCLOG("scaley = %f", scaley);
+     */
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -671,8 +675,10 @@ Frame* ActionTimelineCache::loadAnchorPointFrameFromProtocolBuffers(const protoc
     
     frame->setAnchorPoint(Vec2(anchorx, anchory));
     
+    /*
     CCLOG("anchorx = %f", anchorx);
     CCLOG("anchory = %f", anchory);
+     */
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -695,10 +701,12 @@ Frame* ActionTimelineCache::loadColorFrameFromProtocolBuffers(const protocolbuff
     frame->setAlpha(alpha);
     frame->setColor(Color3B(red, green, blue));
     
+    /*
     CCLOG("alpha = %d", alpha);
     CCLOG("red = %d", red);
     CCLOG("green = %d", green);
     CCLOG("blue = %d", blue);
+     */
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -718,7 +726,7 @@ Frame* ActionTimelineCache::loadTextureFrameFromProtocolBuffers(const protocolbu
     if (texture != NULL)
         frame->setTextureName(texture);
     
-    CCLOG("texture = %s", texture);
+//    CCLOG("texture = %s", texture);
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -738,7 +746,7 @@ Frame* ActionTimelineCache::loadEventFrameFromProtocolBuffers(const protocolbuff
     if (evnt != NULL)
         frame->setEvent(evnt);
     
-    CCLOG("evnt = %s", evnt);
+//    CCLOG("evnt = %s", evnt);
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -756,7 +764,7 @@ Frame* ActionTimelineCache::loadZOrderFrameFromProtocolBuffers(const protocolbuf
     int zorder = frameProtobuf.value();
     frame->setZOrder(zorder);
     
-    CCLOG("zorder = %d", zorder);
+//    CCLOG("zorder = %d", zorder);
     
     int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
     frame->setFrameIndex(frameIndex);
@@ -792,7 +800,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFlatBuffersFile(cons
     auto load = LoadFile(fullPath.c_str(), true, &inFile);
     if (!load)
     {
-        CCLOG("couldn't load files");
+//        CCLOG("couldn't load files");
         return nullptr;
     }
     
@@ -831,7 +839,7 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
     if(frameType == "")
         return nullptr;
     
-    CCLOG("frameType = %s", frameType.c_str());
+//    CCLOG("frameType = %s", frameType.c_str());
     
     if(frameType != "")
     {
@@ -908,7 +916,7 @@ Frame* ActionTimelineCache::loadVisibleFrameWithFlatBuffers(const flatbuffers::T
     bool visible = flatbuffers->value();
     frame->setVisible(visible);
     
-    CCLOG("visible = %d", visible);
+//    CCLOG("visible = %d", visible);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -926,7 +934,7 @@ Frame* ActionTimelineCache::loadZOrderFrameWithFlatBuffers(const flatbuffers::Ti
     int zorder = flatbuffers->value();
     frame->setZOrder(zorder);
     
-    CCLOG("zorder = %d", zorder);
+//    CCLOG("zorder = %d", zorder);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -964,7 +972,7 @@ Frame* ActionTimelineCache::loadEventFrameWithFlatBuffers(const flatbuffers::Tim
     if (event != "")
         frame->setEvent(event);
     
-    CCLOG("event = %s", event.c_str());
+//    CCLOG("event = %s", event.c_str());
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);

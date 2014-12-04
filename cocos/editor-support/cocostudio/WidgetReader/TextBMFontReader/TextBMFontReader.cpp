@@ -99,7 +99,7 @@ namespace cocostudio
                 break;
             }
             case 1:
-                CCLOG("Wrong res type of LabelAtlas!");
+//                CCLOG("Wrong res type of LabelAtlas!");
                 break;
             default:
                 break;
@@ -135,7 +135,7 @@ namespace cocostudio
                 break;
             }
             case 1:
-                CCLOG("Wrong res type of LabelAtlas!");
+//                CCLOG("Wrong res type of LabelAtlas!");
                 break;
             default:
                 break;
@@ -239,7 +239,7 @@ namespace cocostudio
             }
                 
             case 1:
-                CCLOG("Wrong res type of LabelAtlas!");
+//                CCLOG("Wrong res type of LabelAtlas!");
                 break;
                 
             default:
