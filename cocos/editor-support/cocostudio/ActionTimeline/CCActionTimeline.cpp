@@ -150,7 +150,7 @@ void ActionTimeline::setCurrentFrame(int frameIndex)
     }
     else
     {
-        CCLOG("frame index is not between start frame and end frame");
+//        CCLOG("frame index is not between start frame and end frame");
     }
 }
 
