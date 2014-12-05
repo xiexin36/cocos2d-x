@@ -61,7 +61,7 @@ namespace cocostudio
 
 		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
         
-        CCLOG("options.clipable() = %d", options.clipable());
+//        CCLOG("options.clipable() = %d", options.clipable());
         pageView->setClippingEnabled(options.clipable());
         
         bool backGroundScale9Enable = options.backgroundscale9enable();
