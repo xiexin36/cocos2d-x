@@ -604,6 +604,10 @@ public:
      *@return void
      */
     void setUnifySizeEnabled(bool enable);
+    /**
+    *@return true represent the widget use Unify Size, false represent the widget couldn't use Unify Size
+    */
+    bool isUnifySizeEnabled()const;
     
     /**
      * callbackName getter and setter.
@@ -652,10 +656,6 @@ CC_CONSTRUCTOR_ACCESS:
      *@return void
      */
     void  dispatchFocusEvent(Widget* widgetLoseFocus, Widget* widgetGetFocus);
-    /**
-     *@return true represent the widget use Unify Size, false represent the widget couldn't use Unify Size
-     */
-    bool isUnifySizeEnabled()const;
     
 protected:
     //call back function called when size changed.
