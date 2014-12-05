@@ -944,7 +944,10 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
 
                 // xml read
                 if (!FileUtils::getInstance()->isFileExist(inFullpath))
+                {
                     path = "";
+                    plistFile = "";
+                }
                 else
                     plistFile = value;
             }
