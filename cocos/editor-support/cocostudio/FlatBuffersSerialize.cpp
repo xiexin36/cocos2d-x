@@ -926,10 +926,11 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
             {
                 std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(value).c_str();
 
-                // xml read
-                if (!FileUtils::getInstance()->isFileExist(inFullpath))
-                    path = "";
-                else
+                // xiexin 这里在转换的过程中不需要判断
+                //// xml read
+                //if (!FileUtils::getInstance()->isFileExist(inFullpath))
+                //    path = "";
+                //else
                     path = value;
             }
             else if (attriname == "Type")
@@ -942,13 +943,14 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
 
                 std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(value).c_str();
 
-                // xml read
-                if (!FileUtils::getInstance()->isFileExist(inFullpath))
-                {
-                    path = "";
-                    plistFile = "";
-                }
-                else
+                // xiexin 这里在转换的过程中不需要判断
+                //// xml read
+                //if (!FileUtils::getInstance()->isFileExist(inFullpath))
+                //{
+                //    path = "";
+                //    plistFile = "";
+                //}
+                //else
                     plistFile = value;
             }
             
