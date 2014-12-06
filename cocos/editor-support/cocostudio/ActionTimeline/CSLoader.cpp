@@ -1704,12 +1704,14 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         {
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
-        }
-        cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
-        if(action)
-        {
-            node->runAction(action);
-            action->gotoFrameAndPlay(0);
+
+            //CS_Todo 这里文件不存在时, 也不能再解析动画
+            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
+            if (action)
+            {
+                node->runAction(action);
+                action->gotoFrameAndPlay(0);
+            }
         }
     }
     else if (classname == "SimpleAudio")
