@@ -157,7 +157,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     document->Parse(content.c_str());
     
     const tinyxml2::XMLElement* rootElement = document->RootElement();// Root
-    CCLOG("rootElement name = %s", rootElement->Name());
+//    CCLOG("rootElement name = %s", rootElement->Name());
     
     const tinyxml2::XMLElement* element = rootElement->FirstChildElement();
     
@@ -166,7 +166,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     
     while (element)
     {
-        CCLOG("entity name = %s", element->Name());
+//        CCLOG("entity name = %s", element->Name());
         
         if (strcmp("Content", element->Name()) == 0)
         {
@@ -253,6 +253,9 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
                                                  aciton);
 		_builder->Finish(csparsebinary);
         
+        _textures.clear();
+        _texturePngs.clear();
+        
         
         std::string outFullPath = FileUtils::getInstance()->fullPathForFilename(flatbuffersFileName);
         size_t pos = outFullPath.find_last_of('.');
@@ -277,7 +280,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTree(const tinyxml2::XMLElement
                                                       std::string classType)
 {
     std::string classname = classType.substr(0, classType.find("ObjectData"));
-    CCLOG("classname = %s", classname.c_str());
+//    CCLOG("classname = %s", classname.c_str());
     
     std::string name = "";
     
@@ -310,7 +313,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTree(const tinyxml2::XMLElement
     
     while (child)
     {
-        CCLOG("child name = %s", child->Name());
+//        CCLOG("child name = %s", child->Name());
         
         if (strcmp("Children", child->Name()) == 0)
         {
@@ -324,7 +327,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTree(const tinyxml2::XMLElement
     if (containChildrenElement)
     {
         child = child->FirstChildElement();
-        CCLOG("element name = %s", child->Name());
+//        CCLOG("element name = %s", child->Name());
         
         while (child)
         {
@@ -503,7 +506,7 @@ Offset<NodeAction> FlatBuffersSerialize::createNodeAction(const tinyxml2::XMLEle
     int duration = 0;
     float speed = 0.0f;
     
-    CCLOG("animation name = %s", objectData->Name());
+//    CCLOG("animation name = %s", objectData->Name());
     
     // ActionTimeline
     const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -921,7 +924,14 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
             
             if (attriname == "Path")
             {
-                path = value;
+                std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(value).c_str();
+
+                // xiexin 这里在转换的过程中不需要判断
+                //// xml read
+                //if (!FileUtils::getInstance()->isFileExist(inFullpath))
+                //    path = "";
+                //else
+                    path = value;
             }
             else if (attriname == "Type")
             {
@@ -930,6 +940,18 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
             else if (attriname == "Plist")
             {
                 plistFile = value;
+
+                std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(value).c_str();
+
+                // xiexin 这里在转换的过程中不需要判断
+                //// xml read
+                //if (!FileUtils::getInstance()->isFileExist(inFullpath))
+                //{
+                //    path = "";
+                //    plistFile = "";
+                //}
+                //else
+                    plistFile = value;
             }
             
             attribute = attribute->Next();
@@ -952,7 +974,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
     // xml read
     if (!FileUtils::getInstance()->isFileExist(inFullpath))
     {
-        CCLOG(".csd file doesn not exists ");
+//        CCLOG(".csd file doesn not exists ");
     }
     
     ssize_t size;
@@ -963,7 +985,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
     document->Parse(content.c_str());
     
     const tinyxml2::XMLElement* rootElement = document->RootElement();// Root
-    CCLOG("rootElement name = %s", rootElement->Name());
+//    CCLOG("rootElement name = %s", rootElement->Name());
     
     const tinyxml2::XMLElement* element = rootElement->FirstChildElement();
     
@@ -972,7 +994,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
     
     while (element)
     {
-        CCLOG("entity name = %s", element->Name());
+//        CCLOG("entity name = %s", element->Name());
         
         if (strcmp("Content", element->Name()) == 0)
         {
@@ -1036,6 +1058,9 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
                                                  nodeTree,
                                                  aciton);        
 		_builder->Finish(csparsebinary);
+        
+        _textures.clear();
+        _texturePngs.clear();
     }
     return _builder;
 }
@@ -1044,7 +1069,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
                                                                   std::string classType)
 {
     std::string classname = classType.substr(0, classType.find("ObjectData"));
-    CCLOG("classname = %s", classname.c_str());
+//    CCLOG("classname = %s", classname.c_str());
     
     std::string name = "";
     
@@ -1077,7 +1102,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
     
     while (child)
     {
-        CCLOG("child name = %s", child->Name());
+//        CCLOG("child name = %s", child->Name());
         
         if (strcmp("Children", child->Name()) == 0)
         {
@@ -1091,7 +1116,7 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
     if (containChildrenElement)
     {
         child = child->FirstChildElement();
-        CCLOG("element name = %s", child->Name());
+//        CCLOG("element name = %s", child->Name());
         
         while (child)
         {
