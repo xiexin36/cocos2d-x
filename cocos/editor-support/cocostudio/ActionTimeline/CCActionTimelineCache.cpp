@@ -1037,11 +1037,14 @@ Frame* ActionTimelineCache::loadScaleFrameWithFlatBuffers(const flatbuffers::Tim
 
 Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::TimeLineColorFrame *flatbuffers)
 {
-    ColorFrame* frame = ColorFrame::create();
+    ColorFrame* frame = ColorFrame::create();    
     
     auto f_color = flatbuffers->color();
     Color3B color(f_color->r(), f_color->g(), f_color->b());
     frame->setColor(color);
+    
+    int alpha = f_color->a();
+    frame->setAlpha(alpha);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -1050,6 +1053,7 @@ Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::Tim
     frame->setTween(tween);
     
     return frame;
+    
 }
 
 Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::TimeLineTextureFrame *flatbuffers)
@@ -1057,6 +1061,15 @@ Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::T
     TextureFrame* frame = TextureFrame::create();
     
     std::string path = flatbuffers->path()->c_str();
+    if (FileUtils::getInstance()->isFileExist(path))
+    {
+        std::string fullPath = FileUtils::getInstance()->fullPathForFilename(path);
+        path = fullPath;
+    }
+    else
+    {
+        path = "";
+    }
     frame->setTextureName(path);
     
     int frameIndex = flatbuffers->frameIndex();
