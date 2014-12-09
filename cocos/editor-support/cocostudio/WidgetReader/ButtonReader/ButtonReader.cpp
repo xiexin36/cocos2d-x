@@ -704,21 +704,9 @@ namespace cocostudio
         bool displaystate = options->displaystate();
         button->setBright(displaystate);
         button->setEnabled(displaystate);
-        
-        Size contentSize;
-        if (!button->isScale9Enabled())
-        {
-            button->setUnifySizeEnabled(true);
-            contentSize = button->getVirtualRendererSize();
-        }
 
         auto widgetReader = WidgetReader::getInstance();
-        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
-
-        if (!button->isScale9Enabled())
-        {
-            button->setContentSize(contentSize);
-        }
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());        
     }
     
     Node* ButtonReader::createNodeWithFlatBuffers(const flatbuffers::Table *buttonOptions)

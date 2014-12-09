@@ -78,7 +78,7 @@ static const char* FrameType_TextureFrame       = "TextureFrame";
 static const char* FrameType_EventFrame         = "EventFrame";
 static const char* FrameType_ZOrderFrame        = "ZOrderFrame";
 
-static FlatBuffersSerialize* sharedFlatBuffersSerialize = nullptr;
+static FlatBuffersSerialize* _instanceFlatBuffersSerialize = nullptr;
     
 FlatBuffersSerialize::FlatBuffersSerialize()
 : _isSimulator(false)
@@ -114,17 +114,17 @@ FlatBuffersSerialize::~FlatBuffersSerialize()
 
 FlatBuffersSerialize* FlatBuffersSerialize::getInstance()
 {
-    if (!sharedFlatBuffersSerialize)
+    if (!_instanceFlatBuffersSerialize)
     {
-        sharedFlatBuffersSerialize = new FlatBuffersSerialize();
+        _instanceFlatBuffersSerialize = new FlatBuffersSerialize();
     }
     
-    return sharedFlatBuffersSerialize;
+    return _instanceFlatBuffersSerialize;
 }
 
 void FlatBuffersSerialize::purge()
 {
-    CC_SAFE_DELETE(sharedFlatBuffersSerialize);
+    CC_SAFE_DELETE(_instanceFlatBuffersSerialize);
 	
 }
 
@@ -924,14 +924,7 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
             
             if (attriname == "Path")
             {
-                std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(value).c_str();
-
-                // xiexin 这里在转换的过程中不需要判断
-                //// xml read
-                //if (!FileUtils::getInstance()->isFileExist(inFullpath))
-                //    path = "";
-                //else
-                    path = value;
+                path = value;
             }
             else if (attriname == "Type")
             {
@@ -940,18 +933,6 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
             else if (attriname == "Plist")
             {
                 plistFile = value;
-
-                std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(value).c_str();
-
-                // xiexin 这里在转换的过程中不需要判断
-                //// xml read
-                //if (!FileUtils::getInstance()->isFileExist(inFullpath))
-                //{
-                //    path = "";
-                //    plistFile = "";
-                //}
-                //else
-                    plistFile = value;
             }
             
             attribute = attribute->Next();
