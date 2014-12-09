@@ -4,12 +4,12 @@
 
 #include "ui/UIListView.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
 #include "tinyxml2/tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
+#include "../../CSParseBinary.pb.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -230,9 +230,10 @@ namespace cocostudio
         Size innerSize(200, 300);
         int direction = 0;
         bool bounceEnabled = false;
-        int gravity = 0;
         int itemMargin = 0;
-        
+        std::string directionType = "";
+        std::string horizontalType = "";
+        std::string verticalType = "";
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -278,64 +279,15 @@ namespace cocostudio
             }
             else if (name == "DirectionType")
             {
-                if (value == "Vertical")
-                {
-                    direction = 1;
-                    
-                    attribute = objectData->FirstAttribute();
-                    while (attribute)
-                    {
-                        name = attribute->Name();
-                        value = attribute->Value();
-                        
-                        if (name == "HorizontalType")
-                        {
-                            if (value == "HORIZONTAL_LEFT")
-                            {
-                                gravity = 0;
-                            }
-                            else if (value == "HORIZONTAL_RIGHT")
-                            {
-                                gravity = 1;
-                            }
-                            else if (value == "HORIZONTAL_CENTER")
-                            {
-                                gravity = 2;
-                            }
-                        }
-                        
-                        attribute = attribute->Next();
-                    }
-                }
-                else if (value == "Horizontal")
-                {
-                    direction = 2;
-                    
-                    attribute = objectData->FirstAttribute();
-                    while (attribute)
-                    {
-                        name = attribute->Name();
-                        value = attribute->Value();
-                        
-                        if (name == "VerticalType")
-                        {
-                            if (value == "VERTICAL_TOP")
-                            {
-                                gravity = 3;
-                            }
-                            else if (value == "VERTICAL_BOTTOM")
-                            {
-                                gravity = 4;
-                            }
-                            else if (value == "VERTICAL_CENTER")
-                            {
-                                gravity = 5;
-                            }
-                        }
-                        
-                        attribute = attribute->Next();
-                    }
-                }
+                directionType = value;
+            }
+            else if (name == "HorizontalType")
+            {
+                horizontalType = value;
+            }
+            else if (name == "VerticalType")
+            {
+                verticalType = value;
             }
             else if (name == "IsBounceEnabled")
             {
@@ -357,7 +309,7 @@ namespace cocostudio
             
             if (name == "InnerNodeSize")
             {
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 while (attribute)
                 {
                     name = attribute->Name();
@@ -377,7 +329,7 @@ namespace cocostudio
             }
             else if (name == "Size" && backGroundScale9Enabled)
             {
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -398,7 +350,7 @@ namespace cocostudio
             }
             else if (name == "SingleColor")
             {
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -423,7 +375,7 @@ namespace cocostudio
             }
             else if (name == "EndColor")
             {
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -448,7 +400,7 @@ namespace cocostudio
             }
             else if (name == "FirstColor")
             {
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -473,7 +425,7 @@ namespace cocostudio
             }
             else if (name == "ColorVector")
             {
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 while (attribute)
                 {
                     name = attribute->Name();
@@ -496,7 +448,7 @@ namespace cocostudio
                 std::string texture = "";
                 std::string texturePng = "";
                 
-                attribute = child->FirstAttribute();
+                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -560,8 +512,10 @@ namespace cocostudio
                                              &f_innerSize,
                                              direction,
                                              bounceEnabled,
-                                             gravity,
-                                             itemMargin);
+                                             itemMargin,
+                                             builder->CreateString(directionType),
+                                             builder->CreateString(horizontalType), 
+                                             builder->CreateString(verticalType));
         
         return *(Offset<Table>*)(&options);
     }
@@ -601,7 +555,7 @@ namespace cocostudio
         
         auto imageFileNameDic = options->backGroundImageData();
         int imageFileNameType = imageFileNameDic->resourceType();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
+        std::string imageFileName = imageFileNameDic->path()->c_str();
         listView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
         
@@ -627,19 +581,54 @@ namespace cocostudio
         auto f_innerSize = options->innerSize();
         Size innerSize(f_innerSize->width(), f_innerSize->height());
         listView->setInnerContainerSize(innerSize);
-        int direction = options->direction();
-        listView->setDirection((ScrollView::Direction)direction);
+//         int direction = options->direction();
+//         listView->setDirection((ScrollView::Direction)direction);
         bool bounceEnabled = options->bounceEnabled();
         listView->setBounceEnabled(bounceEnabled);
         
-        int gravityValue = options->gravity();
-        ListView::Gravity gravity = (ListView::Gravity)gravityValue;
-        listView->setGravity(gravity);
+//         int gravityValue = options->gravity();
+//         ListView::Gravity gravity = (ListView::Gravity)gravityValue;
+//         listView->setGravity(gravity);
+
+        std::string directionType = options->directionType()->c_str();
+        if (directionType == "")
+        {
+            listView->setDirection(ListView::Direction::HORIZONTAL);
+            std::string verticalType = options->verticalType()->c_str();
+            if (verticalType == "")
+            {
+                listView->setGravity(ListView::Gravity::TOP);
+            } 
+            else if (verticalType == "Align_Bottom")
+            {
+                listView->setGravity(ListView::Gravity::BOTTOM);
+            }
+            else if (verticalType == "Align_VerticalCenter")
+            {
+                listView->setGravity(ListView::Gravity::CENTER_VERTICAL);
+            }
+        } 
+        else if (directionType == "Vertical")
+        {
+            listView->setDirection(ListView::Direction::VERTICAL);
+            std::string horizontalType = options->horizontalType()->c_str();
+            if (horizontalType == "")
+            {
+                listView->setGravity(ListView::Gravity::LEFT);
+            }
+            else if (horizontalType == "Align_Right")
+            {
+                listView->setGravity(ListView::Gravity::RIGHT);
+            }
+            else if (horizontalType == "Align_HorizontalCenter")
+            {
+                listView->setGravity(ListView::Gravity::CENTER_HORIZONTAL);
+            }
+        }
         
         float itemMargin = options->itemMargin();
         listView->setItemsMargin(itemMargin);
-        
-        
+
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
