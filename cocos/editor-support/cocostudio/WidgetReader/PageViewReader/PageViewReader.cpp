@@ -491,6 +491,7 @@ namespace cocostudio
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
+        
     }
     
     Node* PageViewReader::createNodeWithFlatBuffers(const flatbuffers::Table *pageViewOptions)
