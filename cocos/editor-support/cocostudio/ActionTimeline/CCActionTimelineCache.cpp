@@ -1037,11 +1037,14 @@ Frame* ActionTimelineCache::loadScaleFrameWithFlatBuffers(const flatbuffers::Tim
 
 Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::TimeLineColorFrame *flatbuffers)
 {
-    ColorFrame* frame = ColorFrame::create();
+    ColorFrame* frame = ColorFrame::create();    
     
     auto f_color = flatbuffers->color();
     Color3B color(f_color->r(), f_color->g(), f_color->b());
     frame->setColor(color);
+    
+    int alpha = f_color->a();
+    frame->setAlpha(alpha);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
