@@ -796,6 +796,7 @@ namespace cocostudio
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
+        
     }
     
     Node* LayoutReader::createNodeWithFlatBuffers(const flatbuffers::Table *layoutOptions)

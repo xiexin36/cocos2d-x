@@ -1053,6 +1053,7 @@ Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::Tim
     frame->setTween(tween);
     
     return frame;
+    
 }
 
 Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::TimeLineTextureFrame *flatbuffers)

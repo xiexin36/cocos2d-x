@@ -388,6 +388,7 @@ namespace cocostudio
             Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
             textField->setContentSize(contentSize);
         }
+     
         
     }
     
