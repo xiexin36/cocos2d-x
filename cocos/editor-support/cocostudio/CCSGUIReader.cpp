@@ -198,7 +198,7 @@ Widget* GUIReader::widgetFromJsonFile(const char *fileName)
 	jsonDict.Parse<0>(contentStr.c_str());
     if (jsonDict.HasParseError())
     {
-        CCLOG("GetParseError %s\n",jsonDict.GetParseError());
+//        CCLOG("GetParseError %s\n",jsonDict.GetParseError());
     }
     Widget* widget = nullptr;
     const char* fileVersion = DICTOOL->getStringValue_json(jsonDict, "version");
@@ -1319,7 +1319,7 @@ Widget* WidgetPropertiesReader0300::widgetFromBinary(CocoLoader* cocoLoader,  st
             }
             else
             {
-                CCLOG("Warning!!! classname not found!");
+//                CCLOG("Warning!!! classname not found!");
             }
         }else if(key == "children"){
             childrenNode = &stChildArray[i];
@@ -1363,11 +1363,11 @@ Widget* WidgetPropertiesReader0300::widgetFromBinary(CocoLoader* cocoLoader,  st
             customJsonDict.Parse<0>(customProperty);
             if (customJsonDict.HasParseError())
             {
-                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+//                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
             }
             setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
         }else{
-            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your csb file.");
+//            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your csb file.");
         }
       
     }
@@ -1464,11 +1464,11 @@ Widget* WidgetPropertiesReader0300::widgetFromJsonDictionary(const rapidjson::Va
             customJsonDict.Parse<0>(customProperty);
             if (customJsonDict.HasParseError())
             {
-                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+//                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
             }
             setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
         }else{
-            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
+//            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
         }
        
     }
@@ -1536,7 +1536,7 @@ void WidgetPropertiesReader0300::setPropsForAllCustomWidgetFromJsonDictionary(co
 Widget* WidgetPropertiesReader0300::widgetFromProtocolBuffers(const protocolbuffers::NodeTree &nodetree)
 {
     std::string classname = nodetree.classname();
-    CCLOG("classname = %s", classname.c_str());
+//    CCLOG("classname = %s", classname.c_str());
     
     Widget* widget = this->createGUI(classname);
     std::string readerName = this->getWidgetReaderClassName(classname);
@@ -1565,24 +1565,24 @@ Widget* WidgetPropertiesReader0300::widgetFromProtocolBuffers(const protocolbuff
             customJsonDict.Parse<0>(customProperty);
             if (customJsonDict.HasParseError())
             {
-                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
+//                CCLOG("GetParseError %s\n", customJsonDict.GetParseError());
             }
             setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
         }
         else
         {
-            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
+//            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
         }
         //
     }
     
     int size = nodetree.children_size();
-    CCLOG("widget children size = %d", size);
+//    CCLOG("widget children size = %d", size);
     for (int i = 0; i < size; ++i)
     {
         protocolbuffers::NodeTree subNodeTree = nodetree.children(i);
         Widget* child = widgetFromProtocolBuffers(subNodeTree);
-        CCLOG("widget child = %p", child);
+//        CCLOG("widget child = %p", child);
         if (child)
         {
             PageView* pageView = dynamic_cast<PageView*>(widget);
@@ -1605,7 +1605,7 @@ Widget* WidgetPropertiesReader0300::widgetFromProtocolBuffers(const protocolbuff
         }
     }
     
-    CCLOG("widget = %p", widget);
+//    CCLOG("widget = %p", widget);
     
     return widget;
 }
@@ -1619,7 +1619,7 @@ void WidgetPropertiesReader0300::setPropsForAllWidgetFromProtocolBuffers(cocostu
 Widget* WidgetPropertiesReader0300::widgetWithFlatBuffers(const flatbuffers::NodeTree *nodeTree)
 {
     std::string classname = nodeTree->classname()->c_str();
-    CCLOG("classname = %s", classname.c_str());
+//    CCLOG("classname = %s", classname.c_str());
     
     Widget* widget = this->createGUI(classname);
     std::string readerName = this->getWidgetReaderClassName(classname);
@@ -1656,19 +1656,19 @@ Widget* WidgetPropertiesReader0300::widgetWithFlatBuffers(const flatbuffers::Nod
         }
         else
         {
-            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
+//            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
         }
         //
     }
     
     auto children = nodeTree->children();
     int size = children->size();
-    CCLOG("widget children size = %d", size);
+//    CCLOG("widget children size = %d", size);
     for (int i = 0; i < size; ++i)
     {
         auto subNodeTree = children->Get(i);
         Widget* child = widgetWithFlatBuffers(subNodeTree);
-        CCLOG("widget child = %p", child);
+//        CCLOG("widget child = %p", child);
         if (child)
         {
             PageView* pageView = dynamic_cast<PageView*>(widget);
@@ -1691,7 +1691,7 @@ Widget* WidgetPropertiesReader0300::widgetWithFlatBuffers(const flatbuffers::Nod
         }
     }
     
-    CCLOG("widget = %p", widget);
+//    CCLOG("widget = %p", widget);
     
     return widget;
 }

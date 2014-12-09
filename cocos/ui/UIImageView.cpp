@@ -157,7 +157,7 @@ void ImageView::setTextureRect(const Rect &rect)
         }
         else
         {
-            CCLOG("Warning!! you should load texture before set the texture's rect!");
+//            CCLOG("Warning!! you should load texture before set the texture's rect!");
         }
     }
 }

@@ -291,7 +291,7 @@ namespace cocostudio
         std::string progressBarPlistFile = "";
         int progressBarResourceType = 0;
         
-        int percent = 50;
+        int percent = 0;
         bool displaystate = true;
         
         // attributes
@@ -577,11 +577,8 @@ namespace cocostudio
         slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
         
         bool displaystate = options->displaystate();
-        if(!displaystate)
-        {
-            slider->setBright(displaystate);
-            slider->setEnabled(false);
-        }
+        slider->setBright(displaystate);
+        slider->setEnabled(displaystate);
         
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
