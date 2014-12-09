@@ -1522,18 +1522,21 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         auto reader = ProjectNodeReader::getInstance();
         auto projectNodeOptions = (ProjectNodeOptions*)options->data();
         std::string filePath = projectNodeOptions->fileName()->c_str();
-        //        CCLOG("filePath = %s", filePath.c_str());
-        if (filePath != "")
+        CCLOG("filePath = %s", filePath.c_str());
+        
+        if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
             node = createNodeWithFlatBuffersFile(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
+            
+            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
+            if(action)
+            {
+                node->runAction(action);
+                action->gotoFrameAndPlay(0);
+            }
         }
-        cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
-        if (action)
-        {
-            node->runAction(action);
-            action->gotoFrameAndPlay(0);
-        }
+        
     }
     else if (classname == "SimpleAudio")
     {
@@ -1699,13 +1702,13 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         auto reader = ProjectNodeReader::getInstance();
         auto projectNodeOptions = (ProjectNodeOptions*)options->data();
         std::string filePath = projectNodeOptions->fileName()->c_str();
-        //        CCLOG("filePath = %s", filePath.c_str());
-        if (filePath != ""&&cocos2d::FileUtils::getInstance()->isFileExist(filePath))
+//        CCLOG("filePath = %s", filePath.c_str());
+        
+        if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
 
-            //CS_Todo 这里文件不存在时, 也不能再解析动画
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
             if (action)
             {

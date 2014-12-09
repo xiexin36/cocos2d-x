@@ -774,9 +774,11 @@ namespace cocostudio
         
         bool ignoreSize = options->ignoreSize();
         widget->ignoreContentAdaptWithSize(ignoreSize);
-        
+
+        /*
         Size contentSize(options->size()->width(), options->size()->height());
         widget->setContentSize(contentSize);
+         */
         
         int tag = options->tag();
         widget->setTag(tag);
