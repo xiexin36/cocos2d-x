@@ -154,6 +154,7 @@ namespace cocostudio
         
         if (IsCustomSize)
         {
+            ((Label*)(widget->getVirtualRenderer()))->setLineBreakWithoutSpace(true);
             const protocolbuffers::WidgetOptions& widgetOptions = nodeTree.widgetoptions();
             textField->setContentSize(Size(widgetOptions.width(), widgetOptions.height()));
         }
@@ -385,6 +386,7 @@ namespace cocostudio
         auto widgetOptions = options->widgetOptions();
         if (!textField->isIgnoreContentAdaptWithSize())
         {
+            ((Label*)(textField->getVirtualRenderer()))->setLineBreakWithoutSpace(true);
             Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
             textField->setContentSize(contentSize);
         }
