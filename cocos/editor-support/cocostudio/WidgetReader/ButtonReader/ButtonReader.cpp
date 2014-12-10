@@ -668,19 +668,6 @@ namespace cocostudio
         std::string disabledTexturePath = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
         button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
         
-        if (scale9Enabled)
-        {
-            button->setUnifySizeEnabled(false);
-            button->ignoreContentAdaptWithSize(false);
-            
-            auto f_capInsets = options->capInsets();
-            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
-            button->setCapInsets(capInsets);
-            
-            Size scale9Size(options->scale9Size()->width(), options->scale9Size()->height());
-            button->setContentSize(scale9Size);
-        }
-        
         std::string titleText = options->text()->c_str();
         button->setTitleText(titleText);
         
@@ -706,7 +693,20 @@ namespace cocostudio
         button->setEnabled(displaystate);
 
         auto widgetReader = WidgetReader::getInstance();
-        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());        
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
+        
+        if (scale9Enabled)
+        {
+            button->setUnifySizeEnabled(false);
+            button->ignoreContentAdaptWithSize(false);
+            
+            auto f_capInsets = options->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            button->setCapInsets(capInsets);
+            
+            Size scale9Size(options->scale9Size()->width(), options->scale9Size()->height());
+            button->setContentSize(scale9Size);
+        }
     }
     
     Node* ButtonReader::createNodeWithFlatBuffers(const flatbuffers::Table *buttonOptions)

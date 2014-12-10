@@ -556,27 +556,6 @@ namespace cocostudio
         std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
         scrollView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
-        
-        if (backGroundScale9Enabled)
-        {
-            auto f_capInsets = options->capInsets();
-            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
-            scrollView->setBackGroundImageCapInsets(capInsets);
-            
-            auto f_scale9Size = options->scale9Size();
-            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
-            scrollView->setContentSize(scale9Size);
-        }
-        else
-        {
-            auto widgetOptions = options->widgetOptions();
-            if (!scrollView->isIgnoreContentAdaptWithSize())
-            {
-                Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
-                scrollView->setContentSize(contentSize);
-            }
-        }
-        
         auto widgetOptions = options->widgetOptions();
         auto f_color = widgetOptions->color();
         Color3B color(f_color->r(), f_color->g(), f_color->b());
@@ -597,6 +576,24 @@ namespace cocostudio
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
+        if (backGroundScale9Enabled)
+        {
+            auto f_capInsets = options->capInsets();
+            Rect capInsets(f_capInsets->x(), f_capInsets->y(), f_capInsets->width(), f_capInsets->height());
+            scrollView->setBackGroundImageCapInsets(capInsets);
+            
+            auto f_scale9Size = options->scale9Size();
+            Size scale9Size(f_scale9Size->width(), f_scale9Size->height());
+            scrollView->setContentSize(scale9Size);
+        }
+        else
+        {
+            if (!scrollView->isIgnoreContentAdaptWithSize())
+            {
+                Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
+                scrollView->setContentSize(contentSize);
+            }
+        }
         
     }
     
