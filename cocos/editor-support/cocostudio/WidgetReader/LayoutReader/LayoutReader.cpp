@@ -764,6 +764,17 @@ namespace cocostudio
         std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
         panel->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
+        auto widgetOptions = options->widgetOptions();
+        auto f_color = widgetOptions->color();
+        Color3B color(f_color->r(), f_color->g(), f_color->b());
+        panel->setColor(color);
+        
+        int opacity = widgetOptions->alpha();
+        panel->setOpacity(opacity);
+        
+        auto widgetReader = WidgetReader::getInstance();
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
+        
         
         if (backGroundScale9Enabled)
         {
@@ -777,25 +788,12 @@ namespace cocostudio
         }
         else
         {
-            auto widgetOptions = options->widgetOptions();
             if (!panel->isIgnoreContentAdaptWithSize())
             {
                 Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
                 panel->setContentSize(contentSize);
             }
         }
-        
-        auto widgetOptions = options->widgetOptions();
-        auto f_color = widgetOptions->color();
-        Color3B color(f_color->r(), f_color->g(), f_color->b());
-        panel->setColor(color);
-        
-        int opacity = widgetOptions->alpha();
-        panel->setOpacity(opacity);
-        
-        auto widgetReader = WidgetReader::getInstance();
-        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
-        
         
     }
     
