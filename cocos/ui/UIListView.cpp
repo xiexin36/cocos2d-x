@@ -152,7 +152,15 @@ void ListView::remedyLayoutParameter(Widget *item)
                 }
                 else
                 {
-                    defaultLp->setMargin(Margin(0.0f, _itemsMargin, 0.0f, 0.0f));
+                    if (_itemsMargin >= 0)
+                    {
+                        defaultLp->setMargin(Margin(0.0f, _itemsMargin, 0.0f, 0.0f));
+                    }
+                    else
+                    {
+                        auto preItem = getItem(getIndex(item) - 1);
+                        defaultLp->setMargin(Margin(0.0f, _itemsMargin - preItem->getContentSize().height - item->getContentSize().height, 0.0f, 0.0f));
+                    }
                 }
                 item->setLayoutParameter(defaultLp);
             }
@@ -164,7 +172,15 @@ void ListView::remedyLayoutParameter(Widget *item)
                 }
                 else
                 {
-                    llp->setMargin(Margin(0.0f, _itemsMargin, 0.0f, 0.0f));
+                    if (_itemsMargin >= 0)
+                    {
+                        llp->setMargin(Margin(0.0f, _itemsMargin, 0.0f, 0.0f));
+                    }
+                    else
+                    {
+                        auto preItem = getItem(getIndex(item) - 1);
+                        llp->setMargin(Margin(0.0f, _itemsMargin - preItem->getContentSize().height - item->getContentSize().height, 0.0f, 0.0f));
+                    }
                 }
                 switch (_gravity) {
                     case Gravity::LEFT:
@@ -207,7 +223,15 @@ void ListView::remedyLayoutParameter(Widget *item)
                 }
                 else
                 {
-                    defaultLp->setMargin(Margin(_itemsMargin, 0.0f, 0.0f, 0.0f));
+                    if (_itemsMargin >= 0)
+                    {
+                        defaultLp->setMargin(Margin(_itemsMargin, 0.0f, 0.0f, 0.0f));
+                    }
+                    else
+                    {
+                        auto preItem = getItem(getIndex(item) - 1);
+                        defaultLp->setMargin(Margin(_itemsMargin - preItem->getContentSize().width - item->getContentSize().width, 0.0f, 0.0f, 0.0f));
+                    }
                 }
                 item->setLayoutParameter(defaultLp);
             }
@@ -219,7 +243,15 @@ void ListView::remedyLayoutParameter(Widget *item)
                 }
                 else
                 {
-                    llp->setMargin(Margin(_itemsMargin, 0.0f, 0.0f, 0.0f));
+                    if (_itemsMargin >= 0)
+                    {
+                        llp->setMargin(Margin(_itemsMargin, 0.0f, 0.0f, 0.0f));
+                    }
+                    else
+                    {
+                        auto preItem = getItem(getIndex(item) - 1);
+                        llp->setMargin(Margin(_itemsMargin - preItem->getContentSize().width - item->getContentSize().width, 0.0f, 0.0f, 0.0f));
+                    }
                 }
                 switch (_gravity) {
                     case Gravity::TOP:
