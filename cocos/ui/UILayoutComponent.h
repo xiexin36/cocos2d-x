@@ -41,12 +41,14 @@ namespace ui {
         enum class HorizontalEage
         {
             Left,
-            Right
+            Right,
+            Center
         };
         enum class VerticalEage
         {
             Buttom,
-            Top
+            Top,
+            Center
         };
         enum class SizeType
         {
@@ -62,6 +64,9 @@ namespace ui {
 #pragma endregion
 
 #pragma region Position & Margin
+        virtual Point getAnchorPosition();
+        virtual void setAnchorPosition(Point point);
+
         virtual Point getPosition();
         virtual void setPosition(Point position);
 
@@ -127,12 +132,12 @@ namespace ui {
         VerticalEage    _verticalEage;
 
         float           _horizontalMargin;
-        bool            _usingHorizontalPercent;
-        float           _horizontalPercentMargin;
+        bool            _usingPositionPercentX;
+        float           _positionPercentX;
 
         float           _verticalMargin;
-        bool            _usingVerticalPercnet;
-        float           _verticalPercentMargin;
+        bool            _usingPositionPercentY;
+        float           _positionPercentY;
 
         SizeType        _sizeType;
 
