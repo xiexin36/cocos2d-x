@@ -458,6 +458,17 @@ namespace cocostudio
         std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
         pageView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
+        auto widgetOptions = options->widgetOptions();
+        auto f_color = widgetOptions->color();
+        Color3B color(f_color->r(), f_color->g(), f_color->b());
+        pageView->setColor(color);
+        
+        int opacity = widgetOptions->alpha();
+        pageView->setOpacity(opacity);
+        
+        
+        auto widgetReader = WidgetReader::getInstance();
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
         if (backGroundScale9Enabled)
         {
@@ -471,27 +482,12 @@ namespace cocostudio
         }
         else
         {
-            auto widgetOptions = options->widgetOptions();
             if (!pageView->isIgnoreContentAdaptWithSize())
             {
                 Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
                 pageView->setContentSize(contentSize);
             }
         }
-        
-        auto widgetOptions = options->widgetOptions();
-        auto f_color = widgetOptions->color();
-        Color3B color(f_color->r(), f_color->g(), f_color->b());
-        pageView->setColor(color);
-        
-        int opacity = widgetOptions->alpha();
-        pageView->setOpacity(opacity);
-        
-        
-        auto widgetReader = WidgetReader::getInstance();
-        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
-        
-        
     }
     
     Node* PageViewReader::createNodeWithFlatBuffers(const flatbuffers::Table *pageViewOptions)
