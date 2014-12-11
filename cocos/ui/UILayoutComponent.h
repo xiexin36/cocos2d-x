@@ -40,20 +40,17 @@ namespace ui {
 
         enum class HorizontalEage
         {
+            None,
             Left,
             Right,
             Center
         };
         enum class VerticalEage
         {
+            None,
             Buttom,
             Top,
             Center
-        };
-        enum class SizeType
-        {
-            Normal,
-            Inverse
         };
 #pragma region OldVersion
         virtual void setUsingPercentContentSize(bool isUsed);
@@ -70,88 +67,99 @@ namespace ui {
         virtual Point getPosition();
         virtual void setPosition(Point position);
 
+        virtual bool isUsingPositionPercentX();
+        virtual void setPositionPercentXEnabled(bool isUsed);
+
+        virtual float getPositionPercentX();
+        virtual void setPositionPercentX(float percentMargin);
+
+        virtual bool isUsingPositionPercentY();
+        virtual void setPositionPercentYEnabled(bool isUsed);
+
+        virtual float getPositionPercentY();
+        virtual void setPositionPercentY(float percentMargin);
+
         virtual HorizontalEage getHorizontalEage();
         virtual void setHorizontalEage(HorizontalEage hEage);
-
-        virtual bool isUsingHorizontalPercent();
-        virtual void setHorizontalPercentUsedState(bool isUsed);
-
-        virtual float getHorizontalMargin();
-        virtual void setHorizontalMargin(float margin);
-
-        virtual float getHorizontalPercentMargin();
-        virtual void setHorizontalPercentMargin(float percentMargin);
 
         virtual VerticalEage getVerticalEage();
         virtual void setVerticalEage(VerticalEage vEage);
 
-        virtual bool isUsingVerticalPercent();
-        virtual void setVerticalPercentUsedState(bool isUsed);
+        virtual float getLeftMargin();
+        virtual void setLeftMargin(float margin);
 
-        virtual float getVerticalMargin();
-        virtual void setVerticalMargin(float margin);
+        virtual float getRightMargin();
+        virtual void setRightMargin(float margin);
 
-        virtual float getVerticalPercentMargin();
-        virtual void setVerticalPercentMargin(float percentMargin);
+        virtual float getTopMargin();
+        virtual void setTopMargin(float margin);
+
+        virtual float getButtomMargin();
+        virtual void setButtomMargin(float margin);
+
 #pragma endregion
 
 #pragma region Size & Percent
         virtual Size getSize();
         virtual void setSize(Size _size);
 
-        virtual SizeType getSizeType();
-        virtual void changeSizeType(SizeType type);
-
         virtual bool isUsingPercentWidth();
-        virtual void setPercentWidthUsedState(bool isUsed);
+        virtual void setPercentWidthEnabled(bool isUsed);
 
-        virtual float getRelativeWidth();
-        virtual void setRelativeWidth(float width);
+        virtual float getSizeWidth();
+        virtual void setSizeWidth(float width);
 
         virtual float getPercentWidth();
         virtual void setPercentWidth(float percentWidth);
 
         virtual bool isUsingPercentHeight();
-        virtual void setPercentHeightUsedState(bool isUsed);
+        virtual void setPercentHeightEnabled(bool isUsed);
 
-        virtual float getRelativeHeight();
-        virtual void setRelativeHeight(float height);
+        virtual float getSizeHeight();
+        virtual void setSizeHeight(float height);
 
         virtual float getPercentHeight();
         virtual void setPercentHeight(float percentHeight);
+
+        virtual bool isUsingStretchWidth();
+        virtual void setStretchWidthEnabled(bool isUsed);
+
+        virtual bool isUsingStretchHeight();
+        virtual void setStretchHeightEnabled(bool isUsed);
+
 #pragma endregion
 
-        virtual void setUseGrandParent(bool useGrandParent);
         virtual void setActiveEnable(bool enable);
         virtual void refreshLayout();
 
     protected:
         Node* getOwnerParent();
+        virtual void refreshHorizontalMargin();
+        virtual void refreshVerticalMargin();
     protected:
         HorizontalEage  _horizontalEage;
         VerticalEage    _verticalEage;
 
-        float           _horizontalMargin;
+        float           _leftMargin;
+        float           _rightMargin;
+        float           _buttomMargin;
+        float           _topMargin;
+
         bool            _usingPositionPercentX;
         float           _positionPercentX;
-
-        float           _verticalMargin;
         bool            _usingPositionPercentY;
         float           _positionPercentY;
 
-        SizeType        _sizeType;
+        bool            _usingStretchWidth;
+        bool            _usingStretchHeight;
 
-        float           _relativeWidth;
         float           _percentWidth;
         bool            _usingPercentWidth;
-
-        float           _relativeHeight;
+        
         float           _percentHeight;
         bool            _usingPercentHeight;
 
         bool _actived;
-
-        bool _useGrandParent;
     };
 }
 
