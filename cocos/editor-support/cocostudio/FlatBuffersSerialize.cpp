@@ -895,6 +895,9 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
     std::string plistFile = "";
     int resourceType = 0;
     
+    std::string texture = "";
+    std::string texturePng = "";
+    
     const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
     while (attribute)
     {
@@ -933,9 +936,15 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
             else if (attriname == "Plist")
             {
                 plistFile = value;
+                texture = value;
             }
             
             attribute = attribute->Next();
+        }
+        
+        if (resourceType == 1)
+        {
+            _textures.push_back(_builder->CreateString(texture));                        
         }
         
         child = child->NextSiblingElement();
@@ -944,7 +953,10 @@ Offset<TimeLineTextureFrame> FlatBuffersSerialize::createTimeLineTextureFrame(co
     return CreateTimeLineTextureFrame(*_builder,
                                       frameIndex,
                                       tween,
-                                      _builder->CreateString(path));
+                                      CreateResourceData(*_builder,
+                                                         _builder->CreateString(path),
+                                                         _builder->CreateString(plistFile),
+                                                         resourceType));
 }
 
 /* create flat buffers with XML */

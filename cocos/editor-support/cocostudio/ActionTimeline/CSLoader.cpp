@@ -1667,15 +1667,12 @@ Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filenam
 
     // decode plist
     auto textures = csparsebinary->textures();
-    auto texturePngs = csparsebinary->texturePngs();
     int textureSize = csparsebinary->textures()->size();
     //    CCLOG("textureSize = %d", textureSize);
     for (int i = 0; i < textureSize; ++i)
     {
         std::string texture = textures->Get(i)->c_str();
-        std::string texturePng = texturePngs->Get(i)->c_str();
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texture,
-            texturePng);
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texture);
     }
 
     auto nodeTree = csparsebinary->nodeTree();
