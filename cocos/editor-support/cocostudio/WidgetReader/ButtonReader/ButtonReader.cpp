@@ -499,9 +499,6 @@ namespace cocostudio
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
                     fbs->_textures.push_back(builder->CreateString(texture));
-                    
-                    texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
-                    fbs->_texturePngs.push_back(builder->CreateString(texturePng));
                 }
             }
             else if (name == "PressedFileData")
@@ -537,9 +534,6 @@ namespace cocostudio
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
                     fbs->_textures.push_back(builder->CreateString(texture));
-                    
-                    texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
-                    fbs->_texturePngs.push_back(builder->CreateString(texturePng));
                 }
             }
             else if (name == "NormalFileData")
@@ -574,10 +568,7 @@ namespace cocostudio
                 if (normalResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
-                    
-                    texturePng = texture.substr(0, texture.find_last_of('.')).append(".png");
-                    fbs->_texturePngs.push_back(builder->CreateString(texturePng));
+                    fbs->_textures.push_back(builder->CreateString(texture));                                        
                 }
             }
             else if (name == "FontResource")
