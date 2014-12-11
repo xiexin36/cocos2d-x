@@ -349,13 +349,9 @@ namespace cocostudio
         Text* label = static_cast<Text*>(node);
         auto options = (TextOptions*)textOptions;
         
-        bool IsCustomSize = options->isCustomSize();
-        label->ignoreContentAdaptWithSize(!IsCustomSize);
-        
-        label->setUnifySizeEnabled(false);
-        
         bool touchScaleEnabled = options->touchScaleEnable();
         label->setTouchScaleChangeEnabled(touchScaleEnabled);
+        
         std::string text = options->text()->c_str();
         label->setString(text);
         
@@ -386,6 +382,19 @@ namespace cocostudio
         
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
+        
+        label->setUnifySizeEnabled(false);
+        
+        bool IsCustomSize = options->isCustomSize();
+        label->ignoreContentAdaptWithSize(!IsCustomSize);
+        
+        auto widgetOptions = options->widgetOptions();
+        if (!label->isIgnoreContentAdaptWithSize())
+        {
+            Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
+            label->setContentSize(contentSize);
+        }
+        
     }
     
     Node* TextReader::createNodeWithFlatBuffers(const flatbuffers::Table *textOptions)

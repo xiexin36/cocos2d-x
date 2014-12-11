@@ -1522,18 +1522,21 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         auto reader = ProjectNodeReader::getInstance();
         auto projectNodeOptions = (ProjectNodeOptions*)options->data();
         std::string filePath = projectNodeOptions->fileName()->c_str();
-        //        CCLOG("filePath = %s", filePath.c_str());
-        if (filePath != "")
+        CCLOG("filePath = %s", filePath.c_str());
+        
+        if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
             node = createNodeWithFlatBuffersFile(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
+            
+            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
+            if(action)
+            {
+                node->runAction(action);
+                action->gotoFrameAndPlay(0);
+            }
         }
-        cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
-        if (action)
-        {
-            node->runAction(action);
-            action->gotoFrameAndPlay(0);
-        }
+        
     }
     else if (classname == "SimpleAudio")
     {
@@ -1664,15 +1667,12 @@ Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filenam
 
     // decode plist
     auto textures = csparsebinary->textures();
-    auto texturePngs = csparsebinary->texturePngs();
     int textureSize = csparsebinary->textures()->size();
     //    CCLOG("textureSize = %d", textureSize);
     for (int i = 0; i < textureSize; ++i)
     {
         std::string texture = textures->Get(i)->c_str();
-        std::string texturePng = texturePngs->Get(i)->c_str();
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texture,
-            texturePng);
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(texture);
     }
 
     auto nodeTree = csparsebinary->nodeTree();
@@ -1699,13 +1699,13 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         auto reader = ProjectNodeReader::getInstance();
         auto projectNodeOptions = (ProjectNodeOptions*)options->data();
         std::string filePath = projectNodeOptions->fileName()->c_str();
-        //        CCLOG("filePath = %s", filePath.c_str());
-        if (filePath != ""&&cocos2d::FileUtils::getInstance()->isFileExist(filePath))
+//        CCLOG("filePath = %s", filePath.c_str());
+        
+        if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
 
-            //CS_Todo 这里文件不存在时, 也不能再解析动画
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
             if (action)
             {
