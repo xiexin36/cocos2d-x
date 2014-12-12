@@ -90,28 +90,8 @@ namespace ui {
         Size ownerSize = _owner->getContentSize();
         Size parentSize = parent->getContentSize();
 
-        switch (this->_horizontalEage)
-        {
-        case HorizontalEage::None:
-            break;
-        case HorizontalEage::Left:
-            _leftMargin = ownerPoint.x - ownerAnchor.x * ownerSize.width;
-            break;
-        case HorizontalEage::Right:
-            _rightMargin = parentSize.width - (ownerPoint.x + (1 - ownerAnchor.x) * ownerSize.width);
-            break;
-        case HorizontalEage::Center:
-            if (_usingPercentWidth || _usingStretchWidth)
-            {
-                _leftMargin = ownerPoint.x - ownerAnchor.x * ownerSize.width;
-                _rightMargin = parentSize.width - (ownerPoint.x + (1 - ownerAnchor.x) * ownerSize.width);
-            }
-            else
-                _usingPositionPercentX = true;
-            break;
-        default:
-            break;
-        }
+        _leftMargin = ownerPoint.x - ownerAnchor.x * ownerSize.width;
+        _rightMargin = parentSize.width - (ownerPoint.x + (1 - ownerAnchor.x) * ownerSize.width);
     }
     void LayoutComponent::refreshVerticalMargin()
     {
@@ -124,28 +104,8 @@ namespace ui {
         Size ownerSize = _owner->getContentSize();
         Size parentSize = parent->getContentSize();
 
-        switch (this->_verticalEage)
-        {
-        case VerticalEage::None:
-            break;
-        case VerticalEage::Buttom:
-            _buttomMargin = ownerPoint.y - ownerAnchor.y * ownerSize.height;
-            break;
-        case VerticalEage::Top:
-            _topMargin = parentSize.height - (ownerPoint.y + (1 - ownerAnchor.y) * ownerSize.height);
-            break;
-        case VerticalEage::Center:
-            if (_usingPercentHeight || _usingStretchHeight)
-            {
-                _buttomMargin = ownerPoint.y - ownerAnchor.y * ownerSize.height;
-                _topMargin = parentSize.height - (ownerPoint.y + (1 - ownerAnchor.y) * ownerSize.height);
-            }
-            else
-                _usingPositionPercentY = true;
-            break;
-        default:
-            break;
-        }
+        _buttomMargin = ownerPoint.y - ownerAnchor.y * ownerSize.height;
+        _topMargin = parentSize.height - (ownerPoint.y + (1 - ownerAnchor.y) * ownerSize.height);
     }
 
 #pragma region OldVersion
