@@ -176,7 +176,17 @@ namespace ui {
     }
     void LayoutComponent::setAnchorPosition(Point point)
     {
+        Rect oldRect = _owner->getBoundingBox();
         _owner->setAnchorPoint(point);
+        Rect newRect = _owner->getBoundingBox();
+        float offSetX = oldRect.origin.x - newRect.origin.x;
+        float offSetY = oldRect.origin.y - newRect.origin.y;
+
+        Point ownerPosition = _owner->getPosition();
+        ownerPosition.x += offSetX;
+        ownerPosition.y += offSetY;
+
+        this->setPosition(ownerPosition);
     }
 
     Point LayoutComponent::getPosition()
