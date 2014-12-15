@@ -57,7 +57,7 @@ namespace ui {
         virtual bool getUsingPercentContentSize();
 
         virtual void setPercentContentSize(const Vec2 &percent);
-        virtual Vec2& getPercentContentSize();
+        virtual Vec2 getPercentContentSize();
 #pragma endregion
 
 #pragma region Position & Margin
