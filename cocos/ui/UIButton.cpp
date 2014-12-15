@@ -240,6 +240,9 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
     updateFlippedY();
     this->updateChildrenDisplayedRGBA();
     
+    _normalTextureLoaded = true;
+    _normalTextureAdaptDirty = true;
+
     if (_unifySize )
     {
         if (!_scale9Enabled)
@@ -251,8 +254,6 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
     {
         updateContentSizeWithTextureSize(_normalTextureSize);
     }
-    _normalTextureLoaded = true;
-    _normalTextureAdaptDirty = true;
 }
 
 void Button::loadTexturePressed(const std::string& selected,TextureResType texType)
@@ -648,7 +649,6 @@ Node* Button::getVirtualRenderer()
 
 void Button::normalTextureScaleChangedWithSize()
 {
-
     if (_ignoreSize && !_unifySize)
     {
         if (!_scale9Enabled)
