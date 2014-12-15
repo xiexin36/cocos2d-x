@@ -373,11 +373,31 @@ namespace cocostudio
         TextVAlignment v_alignment = (TextVAlignment)options->vAlignment();
         label->setTextVerticalAlignment((TextVAlignment)v_alignment);
         
+        bool fileExist = false;
+        std::string errorFilePath = "";
         auto resourceData = options->fontResource();
         std::string path = resourceData->path()->c_str();
         if (path != "")
         {
-            label->setFontName(path);
+            if (FileUtils::getInstance()->isFileExist(path))
+            {
+                fileExist = true;
+            }
+            else
+            {
+                errorFilePath = path;
+                fileExist = false;
+            }
+            if (fileExist)
+            {
+                label->setFontName(path);
+            }
+            else
+            {
+                auto alert = Label::create();
+                alert->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+                label->addChild(alert);
+            }
         }
         
         auto widgetReader = WidgetReader::getInstance();
