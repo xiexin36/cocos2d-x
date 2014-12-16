@@ -455,63 +455,66 @@ namespace cocostudio
         auto imageFileNameDic = options->backGroundImageData();
         int imageFileNameType = imageFileNameDic->resourceType();
         std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
-        switch (imageFileNameType)
+        if (imageFileName != "")
         {
-            case 0:
+            switch (imageFileNameType)
             {
-                if (FileUtils::getInstance()->isFileExist(imageFileName))
+                case 0:
                 {
-                    fileExist = true;
-                }
-                else
-                {
-                    errorFilePath = imageFileName;
-                    fileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = imageFileNameDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
-                if (spriteFrame)
-                {
-                    fileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
+                    if (FileUtils::getInstance()->isFileExist(imageFileName))
                     {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            errorFilePath = textureFileName;
-                        }
+                        fileExist = true;
                     }
                     else
                     {
-                        errorFilePath = plist;
+                        errorFilePath = imageFileName;
+                        fileExist = false;
                     }
-                    fileExist = false;
+                    break;
                 }
-                break;
+                    
+                case 1:
+                {
+                    std::string plist = imageFileNameDic->plistFile()->c_str();
+                    SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+                    if (spriteFrame)
+                    {
+                        fileExist = true;
+                    }
+                    else
+                    {
+                        if (FileUtils::getInstance()->isFileExist(plist))
+                        {
+                            ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
+                            ValueMap metadata = value["metadata"].asValueMap();
+                            std::string textureFileName = metadata["textureFileName"].asString();
+                            if (!FileUtils::getInstance()->isFileExist(textureFileName))
+                            {
+                                errorFilePath = textureFileName;
+                            }
+                        }
+                        else
+                        {
+                            errorFilePath = plist;
+                        }
+                        fileExist = false;
+                    }
+                    break;
+                }
+                    
+                default:
+                    break;
             }
-                
-            default:
-                break;
-        }
-        if (fileExist)
-        {
-            pageView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-            pageView->addChild(label);
+            if (fileExist)
+            {
+                pageView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
+            }
+            else
+            {
+                auto label = Label::create();
+                label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+                pageView->addChild(label);
+            }
         }
         
         auto widgetOptions = options->widgetOptions();
