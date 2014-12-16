@@ -1725,19 +1725,19 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
 			bool isloop = projectNodeOptions->isLoop();
 			bool isautoplay = projectNodeOptions->isAutoPlay();
 
-            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
-            if (action)
-            {
-                node->runAction(action);
+			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
+			if (action)
+			{
+				node->runAction(action);
 				if (isautoplay)
 				{
-				action->gotoFrameAndPlay(0, isloop);
+					action->gotoFrameAndPlay(0, isloop);
 				}
 				else
 				{
 					action->gotoFrameAndPause(0);
 				}
-            }
+			}
         }
     }
     else if (classname == "SimpleAudio")
