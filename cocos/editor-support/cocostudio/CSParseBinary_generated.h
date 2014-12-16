@@ -1557,16 +1557,16 @@ inline flatbuffers::Offset<ListViewOptions> CreateListViewOptions(flatbuffers::F
 struct ProjectNodeOptions : private flatbuffers::Table {
 	const WidgetOptions *nodeOptions() const { return GetPointer<const WidgetOptions *>(4); }
 	const flatbuffers::String *fileName() const { return GetPointer<const flatbuffers::String *>(6); }
-	uint8_t isloop() const { return GetField<uint8_t>(8, 0); }
-	uint8_t isautoplay() const { return GetField<uint8_t>(10, 0); }
+	uint8_t isLoop() const { return GetField<uint8_t>(8, 1); }
+	uint8_t isAutoPlay() const { return GetField<uint8_t>(10, 1); }
 	bool Verify(flatbuffers::Verifier &verifier) const {
 		return VerifyTableStart(verifier) &&
 			VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
 			verifier.VerifyTable(nodeOptions()) &&
 			VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileName */) &&
 			verifier.Verify(fileName()) &&
-			VerifyField<uint8_t>(verifier, 8 /* isloop */) &&
-			VerifyField<uint8_t>(verifier, 10 /* isautoplay */) &&
+			VerifyField<uint8_t>(verifier, 8 /* isLoop */) &&
+			VerifyField<uint8_t>(verifier, 10 /* isAutoPlay */) &&
 			verifier.EndTable();
 	}
 };
@@ -1576,8 +1576,8 @@ struct ProjectNodeOptionsBuilder {
 	flatbuffers::uoffset_t start_;
 	void add_nodeOptions(flatbuffers::Offset<WidgetOptions> nodeOptions) { fbb_.AddOffset(4, nodeOptions); }
 	void add_fileName(flatbuffers::Offset<flatbuffers::String> fileName) { fbb_.AddOffset(6, fileName); }
-	void add_isloop(uint8_t isloop) { fbb_.AddElement<uint8_t>(8, isloop, 0); }
-	void add_isautoplay(uint8_t isautoplay) { fbb_.AddElement<uint8_t>(10, isautoplay, 0); }
+	void add_isLoop(uint8_t isLoop) { fbb_.AddElement<uint8_t>(8, isLoop, 1); }
+	void add_isAutoPlay(uint8_t isAutoPlay) { fbb_.AddElement<uint8_t>(10, isAutoPlay, 1); }
 	ProjectNodeOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
 	ProjectNodeOptionsBuilder &operator=(const ProjectNodeOptionsBuilder &);
 	flatbuffers::Offset<ProjectNodeOptions> Finish() {
@@ -1589,15 +1589,16 @@ struct ProjectNodeOptionsBuilder {
 inline flatbuffers::Offset<ProjectNodeOptions> CreateProjectNodeOptions(flatbuffers::FlatBufferBuilder &_fbb,
 	flatbuffers::Offset<WidgetOptions> nodeOptions = 0,
 	flatbuffers::Offset<flatbuffers::String> fileName = 0,
-	uint8_t isloop = 0,
-	uint8_t isautoplay = 0) {
+	uint8_t isLoop = 1,
+	uint8_t isAutoPlay = 1) {
 	ProjectNodeOptionsBuilder builder_(_fbb);
 	builder_.add_fileName(fileName);
 	builder_.add_nodeOptions(nodeOptions);
-	builder_.add_isautoplay(isautoplay);
-	builder_.add_isloop(isloop);
+	builder_.add_isAutoPlay(isAutoPlay);
+	builder_.add_isLoop(isLoop);
 	return builder_.Finish();
 }
+
 
 
 struct ComponentOptions : private flatbuffers::Table {

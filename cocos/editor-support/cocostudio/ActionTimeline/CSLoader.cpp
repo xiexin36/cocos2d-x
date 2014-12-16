@@ -1535,8 +1535,8 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
 			node = createNodeWithFlatBuffersFile(filePath);
 			reader->setPropsWithFlatBuffers(node, options->data());
 
-			bool isloop = projectNodeOptions->isloop();
-			bool isautoplay = projectNodeOptions->isautoplay();
+			bool isloop = projectNodeOptions->isLoop();
+			bool isautoplay = projectNodeOptions->isAutoPlay();
 
 			cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
 			if (action)
@@ -1722,8 +1722,8 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
 
-			bool isloop = projectNodeOptions->isloop();
-			bool isautoplay = projectNodeOptions->isautoplay();
+			bool isloop = projectNodeOptions->isLoop();
+			bool isautoplay = projectNodeOptions->isAutoPlay();
 
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
             if (action)

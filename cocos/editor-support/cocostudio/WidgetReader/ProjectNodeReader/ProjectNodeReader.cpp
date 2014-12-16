@@ -29,12 +29,9 @@
 
 #include "tinyxml2/tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
-#include "cocostudio/ActionTimeline/CCActionTimeline.h"
-#include "cocostudio/ActionTimeline/CCActionTimelineCache.h"
 
 USING_NS_CC;
 using namespace flatbuffers;
-using namespace cocostudio::timeline;
 
 
 namespace cocostudio
