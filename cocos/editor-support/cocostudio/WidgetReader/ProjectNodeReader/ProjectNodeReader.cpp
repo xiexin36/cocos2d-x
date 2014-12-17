@@ -70,26 +70,26 @@ namespace cocostudio
         auto nodeOptions = *(Offset<WidgetOptions>*)(&temp);
         
         std::string filename = "";
- 		bool isloop = true;
- 		bool isAutoPlay = true;
+        bool isloop = true;
+        bool isAutoPlay = true;
  
- 		const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
- 		while (attribute)
- 		{
- 			std::string attriname = attribute->Name();
- 			std::string value = attribute->Value();
+        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        while (attribute)
+        {
+            std::string attriname = attribute->Name();
+            std::string value = attribute->Value();
  
- 			if (attriname == "IsLoop")
- 			{
- 				isloop = (value == "True") ? true : false;
- 			}
- 			else if (attriname == "IsAutoPlay")
- 			{
- 				isAutoPlay = (value == "True") ? true : false;
- 			}
+            if (attriname == "IsLoop")
+            {
+                isloop = (value == "True") ? true : false;
+            }
+            else if (attriname == "IsAutoPlay")
+            {
+                isAutoPlay = (value == "True") ? true : false;
+            }
  
- 			attribute = attribute->Next();
- 		}
+            attribute = attribute->Next();
+        }
         // FileData
         const tinyxml2::XMLElement* child = objectData->FirstChildElement();
         while (child)
@@ -122,8 +122,8 @@ namespace cocostudio
         auto options = CreateProjectNodeOptions(*builder,
                                                 nodeOptions,
                                                 builder->CreateString(filename),
-												isloop,
-												isAutoPlay);
+                                                isloop,
+                                                isAutoPlay);
         
         return *(Offset<Table>*)(&options);
     }    
@@ -131,9 +131,9 @@ namespace cocostudio
     void ProjectNodeReader::setPropsWithFlatBuffers(cocos2d::Node *node,
                                                     const flatbuffers::Table* projectNodeOptions)
     {
-        auto options = (ProjectNodeOptions*)projectNodeOptions;		
+        auto options = (ProjectNodeOptions*)projectNodeOptions;
 
-		//super node properties set
+        //super node properties set
         auto nodeReader = NodeReader::getInstance();
         nodeReader->setPropsWithFlatBuffers(node, (Table*)options->nodeOptions());
     }
