@@ -1748,6 +1748,12 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         }
         //        _loadingNodeParentHierarchy.push_back(node);
     }
+    
+    // If node is invalid, there is no necessity to process children of node.
+    if (!node)
+    {
+        return nullptr;
+    }
 
     auto children = nodetree->children();
     int size = children->size();
