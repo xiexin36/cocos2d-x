@@ -122,8 +122,8 @@ void ArmatureNodeReader::setPropsWithFlatBuffers(cocos2d::Node *node,
 	std::string filepath(options->fileData()->path()->c_str());
 	ArmatureDataManager::getInstance()->addArmatureFileInfo(FileUtils::getInstance()->fullPathForFilename(filepath));
 	custom->init(getArmatureName(filepath));
-	if (options->isautoplay())
-		custom->getAnimation()->play(options->currentAnimationName()->c_str(), -1, options->isloop());
+	if (options->isAutoPlay())
+		custom->getAnimation()->play(options->currentAnimationName()->c_str(), -1, options->isLoop());
 	else
 		custom->getAnimation()->setIsPlaying(false);
 }
