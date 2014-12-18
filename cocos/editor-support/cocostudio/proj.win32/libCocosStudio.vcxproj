@@ -37,6 +37,7 @@
     <ClCompile Include="..\ActionTimeline\CCActionTimelineCache.cpp" />
     <ClCompile Include="..\ActionTimeline\CCTimeLine.cpp" />
     <ClCompile Include="..\ActionTimeline\CSLoader.cpp" />
+    <ClCompile Include="..\ArmatureNodeReader.cpp" />
     <ClCompile Include="..\CCActionFrame.cpp" />
     <ClCompile Include="..\CCActionFrameEasing.cpp" />
     <ClCompile Include="..\CCActionManagerEx.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="..\ActionTimeline\CCTimeLine.h" />
     <ClInclude Include="..\ActionTimeline\CCTimelineMacro.h" />
     <ClInclude Include="..\ActionTimeline\CSLoader.h" />
+    <ClInclude Include="..\ArmatureNodeReader.h" />
     <ClInclude Include="..\CCActionFrame.h" />
     <ClInclude Include="..\CCActionFrameEasing.h" />
     <ClInclude Include="..\CCActionManagerEx.h" />
@@ -181,6 +183,7 @@
     <ClInclude Include="..\CCUtilMath.h" />
     <ClInclude Include="..\CocoLoader.h" />
     <ClInclude Include="..\CocoStudio.h" />
+    <ClInclude Include="..\CSArmatureNode_generated.h" />
     <ClInclude Include="..\CSParseBinary.pb.h" />
     <ClInclude Include="..\CSParseBinary_generated.h" />
     <ClInclude Include="..\DictionaryHelper.h" />

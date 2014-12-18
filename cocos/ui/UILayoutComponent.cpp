@@ -123,9 +123,10 @@ namespace ui {
         this->setPercentWidth(percent.x);
         this->setPercentHeight(percent.y);
     }
-    Vec2& LayoutComponent::getPercentContentSize()
+    Vec2 LayoutComponent::getPercentContentSize()
     {
-        return Vec2(_percentWidth,_percentHeight);
+        Vec2 vec2=Vec2(_percentWidth,_percentHeight);
+        return vec2;
     }
 #pragma endregion
 
