@@ -125,7 +125,7 @@ FlatBuffersSerialize* FlatBuffersSerialize::getInstance()
 void FlatBuffersSerialize::purge()
 {
     CC_SAFE_DELETE(_instanceFlatBuffersSerialize);
-	
+
 }
 
 void FlatBuffersSerialize::deleteFlatBufferBuilder()
@@ -242,28 +242,28 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
                 const tinyxml2::XMLElement* objectData = child;
                 nodeTree = createNodeTree(objectData, rootType);
             }
-            
+
             child = child->NextSiblingElement();
         }
-        
+
         auto csparsebinary = CreateCSParseBinary(*_builder,
-                                                 _builder->CreateVector(_textures),
-												 _builder->CreateVector(_texturePngs),
-                                                 nodeTree,
-                                                 aciton);
-		_builder->Finish(csparsebinary);
-        
+            _builder->CreateVector(_textures),
+            _builder->CreateVector(_texturePngs),
+            nodeTree,
+            aciton);
+        _builder->Finish(csparsebinary);
+
         _textures.clear();
         _texturePngs.clear();
-        
-        
+
+
         std::string outFullPath = FileUtils::getInstance()->fullPathForFilename(flatbuffersFileName);
         size_t pos = outFullPath.find_last_of('.');
         std::string convert = outFullPath.substr(0, pos).append(".csb");
         auto save = flatbuffers::SaveFile(convert.c_str(),
-										  reinterpret_cast<const char *>(_builder->GetBufferPointer()),
-										  _builder->GetSize(),
-                                          true);
+            reinterpret_cast<const char *>(_builder->GetBufferPointer()),
+            _builder->GetSize(),
+            true);
         if (!save)
         {
             return "couldn't save files!";
@@ -1044,14 +1044,14 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
             
             child = child->NextSiblingElement();
         }
-        
-		auto csparsebinary = CreateCSParseBinary(*_builder,
-			_builder->CreateVector(_textures),
-			_builder->CreateVector(_texturePngs),
-                                                 nodeTree,
-                                                 aciton);        
-		_builder->Finish(csparsebinary);
-        
+
+        auto csparsebinary = CreateCSParseBinary(*_builder,
+            _builder->CreateVector(_textures),
+            _builder->CreateVector(_texturePngs),
+            nodeTree,
+            aciton);
+        _builder->Finish(csparsebinary);
+
         _textures.clear();
         _texturePngs.clear();
     }
@@ -1171,7 +1171,28 @@ Offset<ProjectNodeOptions> FlatBuffersSerialize::createProjectNodeOptionsForSimu
     auto nodeOptions = *(Offset<WidgetOptions>*)(&temp);
     
     std::string filename = "";
-    
+
+    bool isloop = true;
+    bool isAutoPlay = true;
+
+    const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+    while (attribute)
+    {
+        std::string attriname = attribute->Name();
+        std::string value = attribute->Value();
+
+        if (attriname == "IsLoop")
+        {
+            isloop = (value == "True") ? true : false;
+        }
+        else if (attriname == "IsAutoPlay")
+        {
+            isAutoPlay = (value == "True") ? true : false;
+        }
+
+        attribute = attribute->Next();
+    }
+ 
     // FileData
     const tinyxml2::XMLElement* child = objectData->FirstChildElement();
     while (child)
@@ -1198,11 +1219,13 @@ Offset<ProjectNodeOptions> FlatBuffersSerialize::createProjectNodeOptionsForSimu
         
         child = child->NextSiblingElement();
     }
-    
+
     return CreateProjectNodeOptions(*_builder,
-                                    nodeOptions,
-                                    _builder->CreateString(filename));
+        nodeOptions,
+        _builder->CreateString(filename),
+        isloop,
+        isAutoPlay);
 }
-    
+
 }
 /**/

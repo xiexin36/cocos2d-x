@@ -40,6 +40,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		156C30881A3F554C0020D217 /* ArmatureNodeReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 156C30851A3F55350020D217 /* ArmatureNodeReader.cpp */; };
 		1A01C68418F57BE800EFE3A6 /* CCArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A01C67618F57BE800EFE3A6 /* CCArray.cpp */; };
 		1A01C68518F57BE800EFE3A6 /* CCArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A01C67618F57BE800EFE3A6 /* CCArray.cpp */; };
 		1A01C68618F57BE800EFE3A6 /* CCArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A01C67718F57BE800EFE3A6 /* CCArray.h */; };
@@ -2138,6 +2139,9 @@
 		06CAAAC1186AD63B0012A414 /* TriggerObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerObj.h; sourceTree = "<group>"; };
 		1551A33F158F2AB200E66CFE /* libcocos2dx Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2dx Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1551A342158F2AB200E66CFE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		156C30851A3F55350020D217 /* ArmatureNodeReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArmatureNodeReader.cpp; sourceTree = "<group>"; };
+		156C30861A3F55350020D217 /* ArmatureNodeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArmatureNodeReader.h; sourceTree = "<group>"; };
+		156C30871A3F55350020D217 /* CSArmatureNode_generated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSArmatureNode_generated.h; sourceTree = "<group>"; };
 		1A01C67618F57BE800EFE3A6 /* CCArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCArray.cpp; sourceTree = "<group>"; };
 		1A01C67718F57BE800EFE3A6 /* CCArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCArray.h; sourceTree = "<group>"; };
 		1A01C67818F57BE800EFE3A6 /* CCBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBool.h; sourceTree = "<group>"; };
@@ -3482,6 +3486,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		156C30841A3F551A0020D217 /* ArmatureNode */ = {
+			isa = PBXGroup;
+			children = (
+				156C30851A3F55350020D217 /* ArmatureNodeReader.cpp */,
+				156C30861A3F55350020D217 /* ArmatureNodeReader.h */,
+				156C30871A3F55350020D217 /* CSArmatureNode_generated.h */,
+			);
+			name = ArmatureNode;
+			sourceTree = "<group>";
+		};
 		1A01C67518F57BE800EFE3A6 /* deprecated */ = {
 			isa = PBXGroup;
 			children = (
@@ -4098,6 +4112,7 @@
 		1A8C5946180E930E00EF57C3 /* cocostudio */ = {
 			isa = PBXGroup;
 			children = (
+				156C30841A3F551A0020D217 /* ArmatureNode */,
 				38CD814D1A148BF20088B728 /* FlatBuffersSerialize.cpp */,
 				38CD814E1A148BF20088B728 /* FlatBuffersSerialize.h */,
 				38CD81481A148BCF0088B728 /* CSParseBinary_generated.h */,
@@ -8038,6 +8053,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				156C30881A3F554C0020D217 /* ArmatureNodeReader.cpp in Sources */,
 				382385F81A26069A002C4610 /* NodeReader.cpp in Sources */,
 				3823857F1A26016C002C4610 /* once.cc in Sources */,
 				3823850A1A26013B002C4610 /* idl_parser.cpp in Sources */,
