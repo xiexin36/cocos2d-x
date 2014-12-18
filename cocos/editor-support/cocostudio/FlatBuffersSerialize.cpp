@@ -1192,7 +1192,7 @@ Offset<ProjectNodeOptions> FlatBuffersSerialize::createProjectNodeOptionsForSimu
 
         attribute = attribute->Next();
     }
-
+ 
     // FileData
     const tinyxml2::XMLElement* child = objectData->FirstChildElement();
     while (child)

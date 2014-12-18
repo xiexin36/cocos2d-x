@@ -338,6 +338,16 @@ public:
     CC_DEPRECATED_ATTRIBUTE bool isFlipY() { return isFlippedY(); };
     /** @deprecated Use setFlippedY() instead */
     CC_DEPRECATED_ATTRIBUTE void setFlipY(bool flipY) { setFlippedY(flipY); };
+    
+    //override the setScale function of Node
+    virtual void setScaleX(float scaleX) override;
+    virtual void setScaleY(float scaleY) override;
+    virtual void setScale(float scale) override;
+    virtual void setScale(float scalex, float scaley) override;
+    using Node::setScaleZ;
+    virtual float getScaleX() const override;
+    virtual float getScaleY() const override;
+    virtual float getScale() const override;
 
     /*
      * Checks a point if in parent's area.
