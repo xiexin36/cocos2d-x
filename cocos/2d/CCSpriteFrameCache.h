@@ -108,6 +108,13 @@ public:
      If the name already exists, then the contents of the old name will be replaced with the new one.
      */
     void addSpriteFrame(SpriteFrame *frame, const std::string& frameName);
+     /** Reload texture from the plist file
+     * If the file image hasn't loaded before, load it.
+     * Otherwise the texture will be reloaded from the plist file.
+     * The "pszPlist" parameter is the related/absolute path of the file image.
+     * Return pszPlist if the reloading is succeed, otherwise return false.
+     */
+    bool reloadTexture(const std::string& plist);
 
     /** Purges the dictionary of loaded sprite frames.
      * Call this method if you receive the "Memory Warning".
@@ -164,6 +171,9 @@ protected:
      */
     void addSpriteFramesWithDictionary(ValueMap& dictionary, Texture2D *texture);
 
+	/*reload multiple Sprite Frames with a dictionary. The texture will be associated with the created sprite frames.
+     */
+    void reloadSpriteFramesWithDictionary(ValueMap& dictionary, Texture2D *texture);
     /** Removes multiple Sprite Frames from Dictionary.
     * @since v0.99.5
     */

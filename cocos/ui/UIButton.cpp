@@ -875,6 +875,10 @@ Size Button::getNormalSize() const
     return Size(width,height);
 }
 
+Size Button::getNormalTextureSize() const
+{
+    return _normalTextureSize;
+}
 }
 
 NS_CC_END

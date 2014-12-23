@@ -57,6 +57,7 @@ class CC_DLL GLViewImpl : public GLView
 {
 public:
     static GLViewImpl* create(const std::string& viewName);
+	static GLViewImpl* createWithglfwInit(const std::string& viewName);
     static GLViewImpl* createWithRect(const std::string& viewName, Rect size, float frameZoomFactor = 1.0f);
     static GLViewImpl* createWithFullScreen(const std::string& viewName);
     static GLViewImpl* createWithFullScreen(const std::string& viewName, const GLFWvidmode &videoMode, GLFWmonitor *monitor);
@@ -110,6 +111,7 @@ public:
 
 protected:
     GLViewImpl();
+	GLViewImpl(bool initglfw);
     virtual ~GLViewImpl();
 
     bool initWithRect(const std::string& viewName, Rect rect, float frameZoomFactor);

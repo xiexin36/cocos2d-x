@@ -225,6 +225,10 @@ public:
      */
     virtual void setSpriteFrame(const std::string &spriteFrameName);
     virtual void setSpriteFrame(SpriteFrame* newFrame);
+	/**
+	* update Sprite offset position from center, for temporary fix change frame form a plist png to normal png
+	**/
+	void setOffsetPosFromCenter(Vec2 offsetFromCenter);
 
     /** @deprecated Use `setSpriteFrame()` instead. */
     CC_DEPRECATED_ATTRIBUTE virtual void setDisplayFrame(SpriteFrame *newFrame) { setSpriteFrame(newFrame); }

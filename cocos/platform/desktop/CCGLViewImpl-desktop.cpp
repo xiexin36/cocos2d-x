@@ -284,8 +284,35 @@ GLViewImpl::GLViewImpl()
 
     GLFWEventHandler::setGLViewImpl(this);
 
-    glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
-    glfwInit();
+    //glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
+    //glfwInit();
+}
+
+GLViewImpl::GLViewImpl(bool initglfw)
+	: _captured(false)
+	, _supportTouch(false)
+	, _isInRetinaMonitor(false)
+	, _isRetinaEnabled(false)
+	, _retinaFactor(1)
+	, _frameZoomFactor(1.0f)
+	, _mainWindow(nullptr)
+	, _monitor(nullptr)
+	, _mouseX(0.0f)
+	, _mouseY(0.0f)
+{
+	_viewName = "cocos2dx";
+	g_keyCodeMap.clear();
+	for (auto& item : g_keyCodeStructArray)
+	{
+		g_keyCodeMap[item.glfwKeyCode] = item.keyCode;
+	}
+
+	GLFWEventHandler::setGLViewImpl(this);
+	if (initglfw)
+	{
+		glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
+		glfwInit();
+	}
 }
 
 GLViewImpl::~GLViewImpl()
@@ -304,6 +331,17 @@ GLViewImpl* GLViewImpl::create(const std::string& viewName)
     }
 
     return nullptr;
+}
+
+GLViewImpl* GLViewImpl::createWithglfwInit(const std::string& viewName)
+{
+	auto ret = new (std::nothrow) GLViewImpl(true);
+	if (ret && ret->initWithRect(viewName, Rect(0, 0, 960, 640), 1)) {
+		ret->autorelease();
+		return ret;
+	}
+
+	return nullptr;
 }
 
 GLViewImpl* GLViewImpl::createWithRect(const std::string& viewName, Rect rect, float frameZoomFactor)
