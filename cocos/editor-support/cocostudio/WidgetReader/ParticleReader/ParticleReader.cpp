@@ -134,22 +134,15 @@ namespace cocostudio
         auto options = (ParticleSystemOptions*)particleOptions;
         auto fileNameData = options->fileNameData();
         
-        bool fileExist = false;
-        std::string errorFilePath = "";
-        std::string path = fileNameData->path()->c_str();
         int resourceType = fileNameData->resourceType();
         switch (resourceType)
         {
             case 0:
             {
-                if (FileUtils::getInstance()->isFileExist(path))
+                std::string path = fileNameData->path()->c_str();
+                if (path != "")
                 {
-                    fileExist = true;
-                }
-                else
-                {
-                    errorFilePath = path;
-                    fileExist = false;
+                    particle = ParticleSystemQuad::create(path);
                 }
                 break;
             }
@@ -157,22 +150,10 @@ namespace cocostudio
             default:
                 break;
         }
-        if (fileExist)
+        
+        if (particle)
         {
-            particle = ParticleSystemQuad::create(path);
-            if (particle)
-            {
-                setPropsWithFlatBuffers(particle, (Table*)particleOptions);
-            }
-        }
-        else
-        {
-            Node* node = Node::create();
-            setPropsWithFlatBuffers(node, (Table*)particleOptions);
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-            node->addChild(label);
-            return node;
+            setPropsWithFlatBuffers(particle, (Table*)particleOptions);
         }
         
         return particle;

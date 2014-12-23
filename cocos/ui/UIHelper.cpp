@@ -153,7 +153,6 @@ void Helper::changeLayoutSystemActiveState(bool bActive)
 {
     _activeLayout = bActive;
 }
-
 void Helper::doLayout(cocos2d::Node *rootNode)
 {
     if(!_activeLayout)
@@ -168,20 +167,19 @@ void Helper::doLayout(cocos2d::Node *rootNode)
         if (nullptr != com && nullptr != parent) {
             LayoutComponent* layoutComponent = (LayoutComponent*)com;
 
-            layoutComponent->refreshLayout();
-            //if (layoutComponent->isUsingPercentPosition())
-            //{
-            //    layoutComponent->setPercentPosition(layoutComponent->getPercentPosition());
-            //}
-            //else if (layoutComponent->getReferencePoint() != LayoutComponent::ReferencePoint::BOTTOM_LEFT)
-            //{
-            //    layoutComponent->setRelativePosition(layoutComponent->getRelativePosition());
-            //}
+            if (layoutComponent->isUsingPercentPosition())
+            {
+                layoutComponent->setPercentPosition(layoutComponent->getPercentPosition());
+            }
+            else if (layoutComponent->getReferencePoint() != LayoutComponent::ReferencePoint::BOTTOM_LEFT)
+            {
+                layoutComponent->setRelativePosition(layoutComponent->getRelativePosition());
+            }
 
-            //if (layoutComponent->isUsingPercentContentSize())
-            //{
-            //    layoutComponent->setPercentContentSize(layoutComponent->getPercentContentSize());
-            //}
+            if (layoutComponent->isUsingPercentContentSize())
+            {
+                layoutComponent->setPercentContentSize(layoutComponent->getPercentContentSize());
+            }
         }
     }
 }

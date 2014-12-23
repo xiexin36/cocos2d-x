@@ -152,7 +152,7 @@ public:
     * The "filenName" parameter is the related/absolute path of the file image.
     * Return true if the reloading is succeed, otherwise return false.
     */
-    Texture2D* reloadTexture(const std::string& fileName);
+    bool reloadTexture(const std::string& fileName);
 
     /** Purges the dictionary of loaded textures.
     * Call this method if you receive the "Memory Warning"
@@ -269,7 +269,7 @@ protected:
     FontDefinition            _fontDefinition;
 };
 
-class VolatileTextureMgr
+class CC_DLL VolatileTextureMgr
 {
 public:
     static void addImageTexture(Texture2D *tt, const std::string& imageFileName);

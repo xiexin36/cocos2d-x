@@ -4,7 +4,6 @@
 
 #include "ui/UISlider.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
@@ -193,77 +192,7 @@ namespace cocostudio
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-    
-    void SliderReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        Slider* slider = static_cast<Slider*>(widget);
-        const protocolbuffers::SliderOptions& options = nodeTree.slideroptions();
-
-		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-        
-        bool barTextureScale9Enable = options.scale9enable();
-        if (barTextureScale9Enable)
-        {
-            slider->setUnifySizeEnabled(false);
-        }
-        slider->setScale9Enabled(barTextureScale9Enable);
-        
-        slider->setPercent(options.percent());
-        
-        
-        //        bool bt = DICTOOL->checkObjectExist_json(options, P_BarFileName);
-        float barLength = options.has_length() ? options.length() : 290;
-        
-		const protocolbuffers::ResourceData& imageFileNameDic = options.barfilenamedata();
-        int imageFileNameType = imageFileNameDic.resourcetype();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
-        slider->loadBarTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
-        
-        
-        
-        if (barTextureScale9Enable)
-        {
-            slider->setContentSize(Size(barLength, slider->getContentSize().height));
-        }
-        
-        //loading normal slider ball texture
-        const protocolbuffers::ResourceData& normalDic = options.ballnormaldata();
-        int normalType = normalDic.resourcetype();
-        imageFileName = this->getResourcePath(normalDic.path(), (Widget::TextureResType)normalType);
-        slider->loadSlidBallTextureNormal(imageFileName, (Widget::TextureResType)normalType);
-        
-        
-        //loading slider ball press texture
-        const protocolbuffers::ResourceData& pressedDic = options.ballpresseddata();
-        int pressedType = pressedDic.resourcetype();
-        std::string pressedFileName = this->getResourcePath(pressedDic.path(), (Widget::TextureResType)pressedType);
-        slider->loadSlidBallTexturePressed(pressedFileName, (Widget::TextureResType)pressedType);
-        
-        //loading silder ball disable texture
-        const protocolbuffers::ResourceData& disabledDic = options.balldisableddata();
-        int disabledType = disabledDic.resourcetype();
-        std::string disabledFileName = this->getResourcePath(disabledDic.path(), (Widget::TextureResType)disabledType);
-        slider->loadSlidBallTextureDisabled(disabledFileName, (Widget::TextureResType)disabledType);
-        
-        //load slider progress texture
-        const protocolbuffers::ResourceData& progressBarDic = options.progressbardata();
-        int progressBarType = progressBarDic.resourcetype();
-        std::string progressBarFileName = this->getResourcePath(progressBarDic.path(), (Widget::TextureResType)progressBarType);
-        slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
-        
-        bool displaystate = true;
-		if(options.has_displaystate())
-		{
-			displaystate = options.displaystate();
-		}
-		slider->setBright(displaystate);
-
-        // other commonly protperties
-        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-    }
+    }        
     
     Offset<Table> SliderReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
                                                              flatbuffers::FlatBufferBuilder *builder)
@@ -491,7 +420,7 @@ namespace cocostudio
                 if (progressBarResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             
@@ -534,329 +463,34 @@ namespace cocostudio
         int percent = options->percent();
         slider->setPercent(percent);
         
-        bool imageFileExist = false;
-        std::string imageErrorFilePath = "";
         auto imageFileNameDic = options->barFileNameData();
         int imageFileNameType = imageFileNameDic->resourceType();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
-        switch (imageFileNameType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(imageFileName))
-                {
-                    imageFileExist = true;
-                }
-                else
-                {
-                    imageErrorFilePath = imageFileName;
-                    imageFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = imageFileNameDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
-                if (spriteFrame)
-                {
-                    imageFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            imageErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        imageErrorFilePath = plist;
-                    }
-                    imageFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (imageFileExist)
-        {
-            slider->loadBarTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", imageErrorFilePath.c_str())->getCString());
-            slider->addChild(label);
-        }
+        std::string imageFileName = imageFileNameDic->path()->c_str();
+        slider->loadBarTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
         //loading normal slider ball texture
-        bool normalFileExist = false;
-        std::string normalErrorFilePath = "";
         auto normalDic = options->ballNormalData();
         int normalType = normalDic->resourceType();
-        std::string normalFileName = this->getResourcePath(normalDic->path()->c_str(), (Widget::TextureResType)normalType);
-        switch (normalType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(normalFileName))
-                {
-                    normalFileExist = true;
-                }
-                else
-                {
-                    normalErrorFilePath = normalFileName;
-                    normalFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = normalDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(normalFileName);
-                if (spriteFrame)
-                {
-                    normalFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            normalErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        normalErrorFilePath = plist;
-                    }
-                    normalFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (normalFileExist)
-        {
-            slider->loadSlidBallTextureNormal(normalFileName, (Widget::TextureResType)normalType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
-            slider->addChild(label);
-        }
+        std::string normalFileName = normalDic->path()->c_str();
+        slider->loadSlidBallTextureNormal(normalFileName, (Widget::TextureResType)normalType);
         
         //loading slider ball press texture
-        bool pressedFileExist = false;
-        std::string pressedErrorFilePath = "";
         auto pressedDic = options->ballPressedData();
         int pressedType = pressedDic->resourceType();
-        std::string pressedFileName = this->getResourcePath(pressedDic->path()->c_str(), (Widget::TextureResType)pressedType);
-        switch (pressedType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(pressedFileName))
-                {
-                    pressedFileExist = true;
-                }
-                else
-                {
-                    pressedErrorFilePath = pressedFileName;
-                    pressedFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = pressedDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(pressedFileName);
-                if (spriteFrame)
-                {
-                    pressedFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            pressedErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        pressedErrorFilePath = plist;
-                    }
-                    pressedFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (pressedFileExist)
-        {
-            slider->loadSlidBallTexturePressed(pressedFileName, (Widget::TextureResType)pressedType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", pressedErrorFilePath.c_str())->getCString());
-            slider->addChild(label);
-        }
+        std::string pressedFileName = pressedDic->path()->c_str();
+        slider->loadSlidBallTexturePressed(pressedFileName, (Widget::TextureResType)pressedType);
         
         //loading silder ball disable texture
-        bool disabledFileExist = false;
-        std::string disabledErrorFilePath = "";
         auto disabledDic = options->ballDisabledData();
         int disabledType = disabledDic->resourceType();
-        std::string disabledFileName = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
-        switch (disabledType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(disabledFileName))
-                {
-                    disabledFileExist = true;
-                }
-                else
-                {
-                    disabledErrorFilePath = disabledFileName;
-                    disabledFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = disabledDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(disabledFileName);
-                if (spriteFrame)
-                {
-                    disabledFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            disabledErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        disabledErrorFilePath = plist;
-                    }
-                    disabledFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (disabledFileExist)
-        {
-            slider->loadSlidBallTextureDisabled(disabledFileName, (Widget::TextureResType)disabledType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", disabledErrorFilePath.c_str())->getCString());
-            slider->addChild(label);
-        }
+        std::string disabledFileName = disabledDic->path()->c_str();
+        slider->loadSlidBallTextureDisabled(disabledFileName, (Widget::TextureResType)disabledType);
         
         //load slider progress texture
-        bool progressFileExist = false;
-        std::string progressErrorFilePath = "";
         auto progressBarDic = options->progressBarData();
         int progressBarType = progressBarDic->resourceType();
-        std::string progressBarFileName = this->getResourcePath(progressBarDic->path()->c_str(), (Widget::TextureResType)progressBarType);
-        switch (progressBarType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(progressBarFileName))
-                {
-                    progressFileExist = true;
-                }
-                else
-                {
-                    progressErrorFilePath = progressBarFileName;
-                    progressFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = progressBarDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(progressBarFileName);
-                if (spriteFrame)
-                {
-                    progressFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            progressErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        progressErrorFilePath = plist;
-                    }
-                    progressFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (progressFileExist)
-        {
-            slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", progressErrorFilePath.c_str())->getCString());
-            slider->addChild(label);
-        }
+        std::string progressBarFileName = progressBarDic->path()->c_str();
+        slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
         
         bool displaystate = options->displaystate();
         slider->setBright(displaystate);

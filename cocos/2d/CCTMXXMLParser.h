@@ -33,13 +33,13 @@ THE SOFTWARE.
 #include "platform/CCSAXParser.h"
 #include "base/CCVector.h"
 #include "base/CCValue.h"
+#include "2d/CCTMXObjectGroup.h" // needed for Vector<TMXObjectGroup*> for binding
 
 #include <string>
 
 NS_CC_BEGIN
 
 class TMXLayerInfo;
-class TMXObjectGroup;
 class TMXTilesetInfo;
 
 /** @file
@@ -135,7 +135,6 @@ public:
     int             _margin;
     //! filename containing the tiles (should be spritesheet / texture atlas)
     std::string     _sourceImage;
-	std::string     _originSourceImage;
     //! size in pixels of the image
     Size            _imageSize;
 public:

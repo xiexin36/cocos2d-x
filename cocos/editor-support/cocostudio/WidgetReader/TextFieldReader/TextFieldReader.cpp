@@ -4,7 +4,6 @@
 
 #include "ui/UITextField.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 
 #include "tinyxml2/tinyxml2.h"
@@ -108,7 +107,7 @@ namespace cocostudio
         textField->setFontSize(DICTOOL->getIntValue_json(options, P_FontSize,20));
     
        
-        textField->setFontName(DICTOOL->getStringValue_json(options, P_FontName,"微软雅黑"));
+        textField->setFontName(DICTOOL->getStringValue_json(options, P_FontName, ""));
         
         bool tsw = DICTOOL->checkObjectExist_json(options, P_TouchSizeWidth);
         bool tsh = DICTOOL->checkObjectExist_json(options, P_TouchSizeHeight);
@@ -140,73 +139,7 @@ namespace cocostudio
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-    
-    void TextFieldReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        TextField* textField = static_cast<TextField*>(widget);
-        const protocolbuffers::TextFieldOptions& options = nodeTree.textfieldoptions();
-        
-        std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-        
-		bool IsCustomSize = options.iscustomsize();
-		widget->ignoreContentAdaptWithSize(!IsCustomSize);
-        
-        if (IsCustomSize)
-        {
-            ((Label*)(widget->getVirtualRenderer()))->setLineBreakWithoutSpace(true);
-            const protocolbuffers::WidgetOptions& widgetOptions = nodeTree.widgetoptions();
-            textField->setContentSize(Size(widgetOptions.width(), widgetOptions.height()));
-        }
-
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        WidgetReader::setAnchorPointForWidget(widget, nodeTree);
-        
-        textField->setUnifySizeEnabled(false);
-        
-        bool ph = options.has_placeholder();
-        if (ph)
-        {
-            std::string placeholder = options.has_placeholder() ? options.placeholder() : "inputs words here";
-            textField->setPlaceHolder(placeholder);
-        }
-        std::string text = options.has_text() ? options.text() : "Text Field";
-        textField->setString(text);
-        
-        int fontSize = options.has_fontsize() ? options.fontsize() : 20;
-        textField->setFontSize(fontSize);
-        
-        
-        std::string fontName = options.has_fontname() ? options.fontname() : "微软雅黑";
-        textField->setFontName(fontName);
-        
-
-        bool maxLengthEnable = options.maxlengthenable();
-        textField->setMaxLengthEnabled(maxLengthEnable);
-        
-        if (maxLengthEnable)
-        {
-            int maxLength = options.has_maxlength() ? options.maxlength() : 10;
-            textField->setMaxLength(maxLength);
-        }
-        bool passwordEnable = options.passwordenable();
-        textField->setPasswordEnabled(passwordEnable);
-        if (passwordEnable)
-        {
-            std::string passwordStyleText = options.has_passwordstyletext() ? options.passwordstyletext() : "*";
-            textField->setPasswordStyleText(passwordStyleText.c_str());
-        }
-        
-		if (options.has_fontresource())
-		{
-			const protocolbuffers::ResourceData& resourceData = options.fontresource();
-		    textField->setFontName(protocolBuffersPath + resourceData.path());
-		}
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-
-    }
+    }        
     
     Offset<Table> TextFieldReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
                                                                 flatbuffers::FlatBufferBuilder *builder)
@@ -370,31 +303,11 @@ namespace cocostudio
         }
         
         
-        bool fileExist = false;
-        std::string errorFilePath = "";
         auto resourceData = options->fontResource();
         std::string path = resourceData->path()->c_str();
         if (path != "")
         {
-            if (FileUtils::getInstance()->isFileExist(path))
-            {
-                fileExist = true;
-            }
-            else
-            {
-                errorFilePath = path;
-                fileExist = false;
-            }
-            if (fileExist)
-            {
-                textField->setFontName(path);
-            }
-            else
-            {
-                auto label = Label::create();
-                label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-                textField->addChild(label);
-            }
+            textField->setFontName(path);
         }
         
         auto widgetReader = WidgetReader::getInstance();
@@ -410,8 +323,6 @@ namespace cocostudio
             Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
             textField->setContentSize(contentSize);
         }
-     
-        
     }
     
     Node* TextFieldReader::createNodeWithFlatBuffers(const flatbuffers::Table *textFieldOptions)

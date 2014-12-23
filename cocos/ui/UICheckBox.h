@@ -194,20 +194,6 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* temp */
-    const std::string& getBackGroundFileName() const { return _backGroundFileName; };
-    const std::string& getBackGroundSelectedFileName() const { return _backGroundSelectedFileName; };
-    const std::string& getFrontCrossFileName() const { return _frontCrossFileName; };
-    const std::string& getBackGroundDisabledFileName() const { return _backGroundDisabledFileName; };
-    const std::string& getFrontCrossDisabledFileName() const { return _frontCrossDisabledFileName; };
-    
-    const TextureResType getBackGroundTextureResType() const { return _backGroundTexType; };
-    const TextureResType getBackGroundSelectedTextureResType() const { return _backGroundSelectedTexType; };
-    const TextureResType getFrontCrossTextureResType() const { return _frontCrossDisabledTexType; };
-    const TextureResType getBackGroundDisabledTextureResType() const { return _backGroundDisabledTexType; };
-    const TextureResType getFrontCrossDisabledTextureResType() const { return _frontCrossDisabledTexType; };
-    /**/
-    
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
     virtual bool init(const std::string& backGround,
@@ -229,9 +215,6 @@ protected:
     virtual void releaseUpEvent();
     
     virtual void onSizeChanged() override;
-  
-    virtual void updateFlippedX() override;
-    virtual void updateFlippedY() override;
     
     void backGroundTextureScaleChangedWithSize();
     void backGroundSelectedTextureScaleChangedWithSize();

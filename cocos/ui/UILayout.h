@@ -270,7 +270,7 @@ public:
     /**
      * force refresh widget layout
      */
-    virtual void forceDoLayout();
+    void forceDoLayout();
     
     /**
      * request to refresh widget layout
@@ -317,11 +317,6 @@ public:
      * @return return the index of widget in the layout
      */
     std::function<int(FocusDirection, Widget*)> onPassFocusToChild;
-    
-    /* temp */
-    const std::string& getBackGroundImageFileName() const { return _backGroundImageFileName; };
-    const TextureResType getBackGroundImageTextureResType() const { return _bgImageTexType; };
-    /**/
 
 CC_CONSTRUCTOR_ACCESS:
     //override "init" method of widget.

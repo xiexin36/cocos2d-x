@@ -134,45 +134,28 @@ namespace cocostudio
         auto options = (GameMapOptions*)gameMapOptions;
         auto fileNameData = options->fileNameData();
         
-        bool fileExist = false;
-        std::string errorFilePath = "";
-        std::string path = fileNameData->path()->c_str();
         int resourceType = fileNameData->resourceType();
         switch (resourceType)
         {
             case 0:
             {
-                if (FileUtils::getInstance()->isFileExist(path))
+                std::string path = fileNameData->path()->c_str();
+                const char* tmxFile = path.c_str();
+                
+                if (tmxFile && strcmp("", tmxFile) != 0)
                 {
-                    fileExist = true;
+                    tmx = TMXTiledMap::create(tmxFile);
                 }
-                else
-                {
-                    errorFilePath = path;
-                    fileExist = false;
-                }                
                 break;
             }
                 
             default:
                 break;
         }
-        if (fileExist)
+        
+        if (tmx)
         {
-            tmx = TMXTiledMap::create(path);
-            if (tmx)
-            {
-                setPropsWithFlatBuffers(tmx, (Table*)gameMapOptions);
-            }
-        }
-        else
-        {
-            Node* node = Node::create();
-            setPropsWithFlatBuffers(node, (Table*)gameMapOptions);
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-            node->addChild(label);
-            return node;
+            setPropsWithFlatBuffers(tmx, (Table*)gameMapOptions);
         }
         
         return tmx;

@@ -4,7 +4,6 @@
 
 #include "ui/UIImageView.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
@@ -154,54 +153,7 @@ namespace cocostudio
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-    
-    void ImageViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        const protocolbuffers::ImageViewOptions& options = nodeTree.imageviewoptions();        
-        ImageView* imageView = static_cast<ImageView*>(widget);
-
-		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-        
-        const protocolbuffers::ResourceData& imageFileNameDic = options.filenamedata();
-        int imageFileNameType = imageFileNameDic.resourcetype();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
-        imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
-        
-        
-        bool scale9EnableExist = options.has_scale9enable();
-        bool scale9Enable = false;
-        if (scale9EnableExist)
-        {
-            scale9Enable = options.scale9enable();
-        }
-        imageView->setScale9Enabled(scale9Enable);
-        
-        
-        if (scale9Enable)
-        {
-            imageView->setUnifySizeEnabled(false);
-            imageView->ignoreContentAdaptWithSize(false);
-            
-            float swf = options.has_scale9width() ? options.scale9width() : 80.0f;
-            float shf = options.has_scale9height() ? options.scale9height() : 80.0f;
-            imageView->setContentSize(Size(swf, shf));
-            
-            
-            float cx = options.capinsetsx();
-            float cy = options.capinsetsy();
-            float cw = options.has_capinsetswidth() ? options.capinsetswidth() : 1.0;
-            float ch = options.has_capinsetsheight() ? options.capinsetsheight() : 1.0;
-            
-            imageView->setCapInsets(Rect(cx, cy, cw, ch));
-            
-        }
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-    }
+    }        
     
     Offset<Table> ImageViewReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
                                                                 flatbuffers::FlatBufferBuilder *builder)
@@ -310,7 +262,7 @@ namespace cocostudio
                 if (resourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             
@@ -339,69 +291,10 @@ namespace cocostudio
         auto options = (ImageViewOptions*)imageViewOptions;
         
         
-        bool fileExist = false;
-        std::string errorFilePath = "";
         auto imageFileNameDic = options->fileNameData();
         int imageFileNameType = imageFileNameDic->resourceType();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
-        switch (imageFileNameType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(imageFileName))
-                {
-                    fileExist = true;
-                }
-                else
-                {
-                    errorFilePath = imageFileName;
-                    fileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = imageFileNameDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
-                if (spriteFrame)
-                {
-                    fileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            errorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        errorFilePath = plist;
-                    }
-                    fileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (fileExist)
-        {
-            imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-            imageView->addChild(label);
-        }
+        std::string imageFileName = imageFileNameDic->path()->c_str();
+        imageView->loadTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         
         bool scale9Enabled = options->scale9Enabled();
         imageView->setScale9Enabled(scale9Enabled);

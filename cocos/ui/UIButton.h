@@ -205,15 +205,6 @@ public:
      */
     float getZoomScale()const;
     
-	    /* temp */
-    const std::string& getNormalFileName() const { return _normalFileName; };
-    const std::string& getPressedFileName() const { return _clickedFileName; };
-    const std::string& getDisableFileName() const { return _disabledFileName; };
-    const TextureResType getNormalTextureResType() const { return _normalTexType; };
-    const TextureResType getPressedTextureResType() const { return _pressedTexType; };
-    const TextureResType getDisabledTextureResType() const { return _disabledTexType; };
-    /**/
-	
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
     virtual bool init(const std::string& normalImage,
@@ -221,7 +212,6 @@ CC_CONSTRUCTOR_ACCESS:
                       const std::string& disableImage = "",
                       TextureResType texType = TextureResType::LOCAL);
 
-    virtual Size getNormalTextureSize() const;
 
 protected:
     virtual void initRenderer() override;
@@ -230,9 +220,6 @@ protected:
     virtual void onPressStateChangedToDisabled() override;
     virtual void onSizeChanged() override;
   
-    virtual void updateFlippedX() override;
-    virtual void updateFlippedY() override;
-        
     void normalTextureScaleChangedWithSize();
     void pressedTextureScaleChangedWithSize();
     void disabledTextureScaleChangedWithSize();
@@ -245,7 +232,6 @@ protected:
     virtual void copySpecialProperties(Widget* model) override;
    
     virtual Size getNormalSize() const;
-
 protected:
     Scale9Sprite* _buttonNormalRenderer;
     Scale9Sprite* _buttonClickedRenderer;

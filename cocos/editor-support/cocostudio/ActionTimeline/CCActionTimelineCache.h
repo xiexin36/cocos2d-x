@@ -25,12 +25,13 @@ THE SOFTWARE.
 #ifndef __CCTIMELINE_ACTION_CACHE_H__
 #define __CCTIMELINE_ACTION_CACHE_H__
 
-#include "cocos2d.h"
+#include <unordered_map>
+#include "base/CCMap.h"
+
 #include "cocostudio/DictionaryHelper.h"
 #include "CCTimelineMacro.h"
 #include "cocostudio/CocosStudioExport.h"
 
-/* peterson */
 namespace flatbuffers
 {
     struct FlatBufferBuilder;
@@ -43,26 +44,6 @@ namespace flatbuffers
     struct TimeLinePointFrame;
     struct TimeLineColorFrame;
     struct TimeLineTextureFrame;
-}
-/**/
-
-namespace protocolbuffers
-{
-    class CSParseBinary;
-    class NodeAction;
-    class TimeLine;
-    class Frame;
-    class TimeLineBoolFrame;
-    class TimeLinePointFrame;
-    class TimeLineIntFrame;
-    class TimeLineColorFrame;
-    class TimeLineTextureFrame;
-    class TimeLineStringFrame;
-}
-
-namespace tinyxml2
-{
-    class XMLElement;
 }
 
 NS_TIMELINE_BEGIN
@@ -95,20 +76,10 @@ public:
     ActionTimeline* loadAnimationActionWithFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithContent(const std::string&fileName, const std::string& content);
     
-    /* create node from protocol buffers for simulator of cocosstudio editor */
-    ActionTimeline* createActionFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary* protobuf);
-    /**/
-    
-    ActionTimeline* createActionFromProtocolBuffers(const std::string& fileName);
-    ActionTimeline* loadAnimationActionWithFileFromProtocolBuffers(const std::string& fileName);
-    
-    /* peterson */
     ActionTimeline* createActionWithFlatBuffersFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithFlatBuffersFile(const std::string& fileName);
-    /**/
-    /* peterson create ActionTimeline with flat buffers from .csd for simulator of cocosstudio editor */
-	ActionTimeline* createActionWithFlatBuffersForSimulator(const std::string& fileName);
-    /**/
+    
+    ActionTimeline* createActionWithFlatBuffersForSimulator(const std::string& fileName);
     
 protected:
 
@@ -128,20 +99,6 @@ protected:
     Frame* loadZOrderFrame      (const rapidjson::Value& json);
     
     
-    Timeline* loadTimelineFromProtocolBuffers(const protocolbuffers::TimeLine& timelineProtobuf);
-    
-    Frame* loadVisibleFrameFromProtocolBuffers     (const protocolbuffers::TimeLineBoolFrame& frameProtobuf);
-    Frame* loadPositionFrameFromProtocolBuffers    (const protocolbuffers::TimeLinePointFrame& frameProtobuf);
-    Frame* loadScaleFrameFromProtocolBuffers       (const protocolbuffers::TimeLinePointFrame& frameProtobuf);
-	Frame* loadRotationSkewFrameFromProtocolBuffers(const protocolbuffers::TimeLinePointFrame& frameProtobuf);
-    Frame* loadAnchorPointFrameFromProtocolBuffers (const protocolbuffers::TimeLinePointFrame& frameProtobuf);
-    Frame* loadColorFrameFromProtocolBuffers       (const protocolbuffers::TimeLineColorFrame& frameProtobuf);
-    Frame* loadTextureFrameFromProtocolBuffers     (const protocolbuffers::TimeLineTextureFrame& frameProtobuf);
-    Frame* loadEventFrameFromProtocolBuffers       (const protocolbuffers::TimeLineStringFrame& frameProtobuf);
-    Frame* loadZOrderFrameFromProtocolBuffers      (const protocolbuffers::TimeLineIntFrame& frameProtobuf);
-    
-    
-    /* peterson */
     Timeline* loadTimelineWithFlatBuffers(const flatbuffers::TimeLine* flatbuffers);
     
     Frame* loadVisibleFrameWithFlatBuffers      (const flatbuffers::TimeLineBoolFrame* flatbuffers);
@@ -153,8 +110,6 @@ protected:
     Frame* loadScaleFrameWithFlatBuffers        (const flatbuffers::TimeLinePointFrame* flatbuffers);
     Frame* loadColorFrameWithFlatBuffers        (const flatbuffers::TimeLineColorFrame* flatbuffers);
     Frame* loadTextureFrameWithFlatBuffers      (const flatbuffers::TimeLineTextureFrame* flatbuffers);
-    /**/
-            
 
 protected:
 

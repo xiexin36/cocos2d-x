@@ -113,7 +113,7 @@ namespace cocostudio
                 if (resourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             
@@ -141,66 +141,30 @@ namespace cocostudio
         auto fileNameData = options->fileNameData();
         
         int resourceType = fileNameData->resourceType();
-        std::string path = fileNameData->path()->c_str();
-        
-        bool fileExist = false;
-        std::string errorFilePath = "";
-        
         switch (resourceType)
         {
             case 0:
             {
-                if (FileUtils::getInstance()->isFileExist(path))
+                std::string path = fileNameData->path()->c_str();
+                if (path != "")
                 {
                     sprite->setTexture(path);
-                    fileExist = true;
-                }
-                else
-                {
-                    errorFilePath = path;
-                    fileExist = false;
                 }
                 break;
             }
                 
             case 1:
             {
-                std::string plist = fileNameData->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
-                if (spriteFrame)
+                std::string path = fileNameData->path()->c_str();
+                if (path != "")
                 {
-                    sprite->setSpriteFrame(spriteFrame);
-                    fileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            errorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        errorFilePath = plist;
-                    }
-                    fileExist = false;
+                    sprite->setSpriteFrame(path);
                 }
                 break;
             }
                 
             default:
                 break;
-        }
-        if (!fileExist)
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-            sprite->addChild(label);
         }
         
         

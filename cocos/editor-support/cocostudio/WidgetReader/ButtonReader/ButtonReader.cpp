@@ -4,7 +4,6 @@
 
 #include "ui/UIButton.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
@@ -233,107 +232,12 @@ namespace cocostudio
         button->setTitleFontSize(DICTOOL->getIntValue_json(options, P_FontSize,14));
         
 
-        button->setTitleFontName(DICTOOL->getStringValue_json(options, P_FontName,"微软雅黑"));
+        button->setTitleFontName(DICTOOL->getStringValue_json(options, P_FontName, ""));
         
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-    
-    void ButtonReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        Button* button = static_cast<Button*>(widget);
-        const protocolbuffers::ButtonOptions& options = nodeTree.buttonoptions();
-        
-        std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();;
-        
-        bool scale9Enable = options.scale9enable();
-        button->setScale9Enabled(scale9Enable);
-        
-        
-		const protocolbuffers::ResourceData& normalDic = options.normaldata();
-        int normalType = normalDic.resourcetype();
-        std::string normalTexturePath = this->getResourcePath(normalDic.path(), (Widget::TextureResType)normalType);		
-        button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
-        
-        
-        const protocolbuffers::ResourceData& pressedDic = options.presseddata();
-        int pressedType = pressedDic.resourcetype();
-        std::string pressedTexturePath = this->getResourcePath(pressedDic.path(), (Widget::TextureResType)pressedType);
-        button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
-        
-        
-        const protocolbuffers::ResourceData& disabledDic = options.disableddata();
-        int disabledType = disabledDic.resourcetype();
-        std::string disabledTexturePath = this->getResourcePath(disabledDic.path(), (Widget::TextureResType)disabledType);
-        button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
-        
-        if (scale9Enable)
-        {
-            button->setUnifySizeEnabled(false);
-            button->ignoreContentAdaptWithSize(false);
-            
-            float cx = options.capinsetsx();
-            float cy = options.capinsetsy();
-            float cw = options.capinsetswidth();
-            float ch = options.capinsetsheight();
-            
-            button->setCapInsets(Rect(cx, cy, cw, ch));
-            bool sw = options.has_scale9width();
-            bool sh = options.has_scale9height();
-            if (sw && sh)
-            {
-                float swf = options.scale9width();
-                float shf = options.scale9height();
-                button->setContentSize(Size(swf, shf));
-            }
-        }
-        bool tt = options.has_text();
-        if (tt)
-        {
-            const char* text = options.text().c_str();
-            if (text)
-            {
-                button->setTitleText(text);
-            }
-        }
-        
-        
-        int cri = options.has_textcolorr() ? options.textcolorr() : 255;
-        int cgi = options.has_textcolorg() ? options.textcolorg() : 255;
-        int cbi = options.has_textcolorb() ? options.textcolorb() : 255;
-        button->setTitleColor(Color3B(cri,cgi,cbi));
-        
-        
-        int fontSize = options.has_fontsize() ? options.fontsize() : 14;
-        button->setTitleFontSize(fontSize);
-        
-		bool displaystate = true;
-		if(options.has_displaystate())
-		{
-			displaystate = options.displaystate();
-		}
-		button->setBright(displaystate);
-
-        const char* fontName = options.has_fontname() ? options.fontname().c_str() : "微软雅黑";
-        button->setTitleFontName(fontName);
-        
-        if (options.has_fontresource())
-		{
-			const protocolbuffers::ResourceData& resourceData = options.fontresource();
-		    button->setTitleFontName(protocolBuffersPath + resourceData.path());
-		}
-        
-        const protocolbuffers::WidgetOptions& widgetOption = nodeTree.widgetoptions();
-        button->setColor(Color3B(widgetOption.colorr(), widgetOption.colorg(), widgetOption.colorb()));
-        button->setOpacity(widgetOption.has_alpha() ? widgetOption.alpha() : 255);
-        
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-    }
+    }    
     
     Offset<Table> ButtonReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData, flatbuffers::FlatBufferBuilder *builder)
     {
@@ -533,7 +437,7 @@ namespace cocostudio
                 if (pressedResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             else if (name == "NormalFileData")
@@ -568,7 +472,7 @@ namespace cocostudio
                 if (normalResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             else if (name == "FontResource")
@@ -643,195 +547,21 @@ namespace cocostudio
         bool scale9Enabled = options->scale9Enabled();
         button->setScale9Enabled(scale9Enabled);
         
-        bool normalFileExist = false;
-        std::string normalErrorFilePath = "";
+        
         auto normalDic = options->normalData();
         int normalType = normalDic->resourceType();
-        std::string normalTexturePath = this->getResourcePath(normalDic->path()->c_str(), (Widget::TextureResType)normalType);
-        switch (normalType)
-        {
-            case 0:
-                if (FileUtils::getInstance()->isFileExist(normalTexturePath))
-                {
-                    normalFileExist = true;
-                }
-                else
-                {
-                    normalErrorFilePath = normalTexturePath;
-                    normalFileExist = false;
-                }
-                break;
-                
-            case 1:
-            {
-                std::string plist = normalDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(normalTexturePath);
-                if (spriteFrame)
-                {
-                    normalFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            normalErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        normalErrorFilePath = plist;
-                    }
-                    normalFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (normalFileExist)
-        {
-            button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
-            button->addChild(label);
-        }
+        std::string normalTexturePath = normalDic->path()->c_str();
+        button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
         
-        bool pressedFileExist = false;
-        std::string pressedErrorFilePath = "";
         auto pressedDic = options->pressedData();
         int pressedType = pressedDic->resourceType();
-        std::string pressedTexturePath = this->getResourcePath(pressedDic->path()->c_str(), (Widget::TextureResType)pressedType);
-        switch (pressedType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(pressedTexturePath))
-                {
-                    pressedFileExist = true;
-                }
-                else
-                {
-                    pressedErrorFilePath = pressedTexturePath;
-                    pressedFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = pressedDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(pressedTexturePath);
-                if (spriteFrame)
-                {
-                    pressedFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            pressedErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        pressedErrorFilePath = plist;
-                    }
-                    pressedFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }
-        if (pressedFileExist)
-        {
-            button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", pressedErrorFilePath.c_str())->getCString());
-            button->addChild(label);
-        }
+        std::string pressedTexturePath = pressedDic->path()->c_str();
+        button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
         
-        bool disabledFileExist = false;
-        std::string disabledErrorFilePath = "";
         auto disabledDic = options->disabledData();
         int disabledType = disabledDic->resourceType();
-        std::string disabledTexturePath = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
-        switch (disabledType)
-        {
-            case 0:
-            {
-                if (FileUtils::getInstance()->isFileExist(disabledTexturePath))
-                {
-                    disabledFileExist = true;
-                }
-                else
-                {
-                    disabledErrorFilePath = disabledTexturePath;
-                    disabledFileExist = false;
-                }
-                break;
-            }
-                
-            case 1:
-            {
-                std::string plist = disabledDic->plistFile()->c_str();
-                SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(disabledTexturePath);
-                if (spriteFrame)
-                {
-                    disabledFileExist = true;
-                }
-                else
-                {
-                    if (FileUtils::getInstance()->isFileExist(plist))
-                    {
-                        ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                        ValueMap metadata = value["metadata"].asValueMap();
-                        std::string textureFileName = metadata["textureFileName"].asString();
-                        if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                        {
-                            disabledErrorFilePath = textureFileName;
-                        }
-                    }
-                    else
-                    {
-                        disabledErrorFilePath = plist;
-                    }
-                    disabledFileExist = false;
-                }
-                break;
-            }
-                
-            default:
-                break;
-        }        
-        if (disabledFileExist)
-        {
-            button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
-        }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", disabledErrorFilePath.c_str())->getCString());
-            button->addChild(label);
-        }
+        std::string disabledTexturePath = disabledDic->path()->c_str();
+        button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
         
         std::string titleText = options->text()->c_str();
         button->setTitleText(titleText);
@@ -847,30 +577,10 @@ namespace cocostudio
         button->setTitleFontName(titleFontName);
         
         auto resourceData = options->fontResource();
-        bool fileExist = false;
-        std::string errorFilePath = "";
         std::string path = resourceData->path()->c_str();
         if (path != "")
         {
-            if (FileUtils::getInstance()->isFileExist(path))
-            {
-                fileExist = true;
-            }
-            else
-            {
-                errorFilePath = path;
-                fileExist = false;
-            }
-            if (fileExist)
-            {
-                button->setTitleFontName(path);
-            }
-            else
-            {
-                auto label = Label::create();
-                label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-                button->addChild(label);
-            }
+            button->setTitleFontName(path);
         }
         
         bool displaystate = options->displaystate();

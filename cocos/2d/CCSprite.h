@@ -28,15 +28,11 @@ THE SOFTWARE.
 #ifndef __SPRITE_NODE_CCSPRITE_H__
 #define __SPRITE_NODE_CCSPRITE_H__
 
+#include <string>
 #include "2d/CCNode.h"
+#include "2d/CCDrawNode.h"
 #include "base/CCProtocols.h"
 #include "renderer/CCTextureAtlas.h"
-#include "base/ccTypes.h"
-#include <string>
-#ifdef EMSCRIPTEN
-#include "CCGLBufferedNode.h"
-#endif // EMSCRIPTEN
-#include "physics/CCPhysicsBody.h"
 #include "renderer/CCQuadCommand.h"
 #include "renderer/CCCustomCommand.h"
 
@@ -171,7 +167,7 @@ public:
      * @return The SpriteBatchNode object if this sprite is rendered by SpriteBatchNode,
      *         nullptr if the sprite isn't used batch node.
      */
-    virtual SpriteBatchNode* getBatchNode(void);
+    virtual SpriteBatchNode* getBatchNode() const;
     /**
      * Sets the batch node to sprite
      * @warning This method is not recommended for game developers. Sample code for using batch node
@@ -185,7 +181,6 @@ public:
     virtual void setBatchNode(SpriteBatchNode *spriteBatchNode);
 
     /// @} end of BatchNode methods
-
 
 
     /// @{
@@ -230,11 +225,6 @@ public:
      */
     virtual void setSpriteFrame(const std::string &spriteFrameName);
     virtual void setSpriteFrame(SpriteFrame* newFrame);
-
-	/**
-	* update Sprite offset position from center, for temporary fix change frame form a plist png to normal png
-	**/
-	void setOffsetPosFromCenter(Vec2 offsetFromCenter);
 
     /** @deprecated Use `setSpriteFrame()` instead. */
     CC_DEPRECATED_ATTRIBUTE virtual void setDisplayFrame(SpriteFrame *newFrame) { setSpriteFrame(newFrame); }
@@ -431,11 +421,6 @@ public:
     virtual bool isOpacityModifyRGB(void) const override;
     /// @}
 
-    /* temp */
-    void setFileName(const std::string& fileName) { _fileName = fileName; };
-    const std::string& getFileName() const { return _fileName; };
-    /**/
-
 CC_CONSTRUCTOR_ACCESS:
 
     Sprite(void);
@@ -555,8 +540,7 @@ protected:
     Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
     QuadCommand      _quadCommand;          /// quad command
 #if CC_SPRITE_DEBUG_DRAW
-    CustomCommand   _customDebugDrawCommand;
-    void drawDebugData();
+    DrawNode *_debugDrawNode;
 #endif //CC_SPRITE_DEBUG_DRAW
     //
     // Shared data
@@ -581,11 +565,6 @@ protected:
     bool _flippedY;                         /// Whether the sprite is flipped vertically or not
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
-
-    /* temp */
-    std::string _fileName;
-    /**/
-
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(Sprite);
 };

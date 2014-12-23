@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __UIWIDGET_H__
 #define __UIWIDGET_H__
 
-#include "ui/CCProtectedNode.h"
+#include "2d/CCProtectedNode.h"
 #include "ui/UILayoutParameter.h"
 #include "ui/GUIDefine.h"
 #include "ui/GUIExport.h"
@@ -338,7 +338,7 @@ public:
     CC_DEPRECATED_ATTRIBUTE bool isFlipY() { return isFlippedY(); };
     /** @deprecated Use setFlippedY() instead */
     CC_DEPRECATED_ATTRIBUTE void setFlipY(bool flipY) { setFlippedY(flipY); };
-    
+
     //override the setScale function of Node
     virtual void setScaleX(float scaleX) override;
     virtual void setScaleY(float scaleY) override;
@@ -348,7 +348,8 @@ public:
     virtual float getScaleX() const override;
     virtual float getScaleY() const override;
     virtual float getScale() const override;
-
+    using Node::getScaleZ;
+    
     /*
      * Checks a point if in parent's area.
      *
@@ -517,6 +518,10 @@ public:
 
     virtual void onEnter() override;
     virtual void onExit() override;
+
+    void updateSizeAndPosition();
+
+    void updateSizeAndPosition(const Size& parentSize);
     
     void setActionTag(int tag);
 	int getActionTag()const;
@@ -618,7 +623,6 @@ public:
     *@return true represent the widget use Unify Size, false represent the widget couldn't use Unify Size
     */
     bool isUnifySizeEnabled()const;
-    
     /**
      * callbackName getter and setter.
      */
@@ -687,8 +691,7 @@ protected:
     virtual void releaseUpEvent();
     virtual void cancelUpEvent();
 
-    virtual void updateFlippedX(){};
-    virtual void updateFlippedY(){};
+    
     virtual void adaptRenderers(){};
     void updateChildrenDisplayedRGBA();
     
@@ -768,7 +771,6 @@ protected:
     
     std::string _callbackType;
     std::string _callbackName;
-    
 private:
     class FocusNavigationController;
     static FocusNavigationController* _focusNavigationController;

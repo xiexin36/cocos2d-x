@@ -112,7 +112,7 @@ void ImageView::initRenderer()
 
 void ImageView::loadTexture(const std::string& fileName, TextureResType texType)
 {
-    if (fileName.empty())
+    if (fileName.empty() || (_textureFile == fileName && _imageTexType == texType))
     {
         return;
     }
@@ -131,14 +131,10 @@ void ImageView::loadTexture(const std::string& fileName, TextureResType texType)
     }
     
     _imageTextureSize = _imageRenderer->getContentSize();
-    updateFlippedX();
-    updateFlippedY();
+  
     this->updateChildrenDisplayedRGBA();
 
-    if (!_scale9Enabled)
-    {
-        updateContentSizeWithTextureSize(_imageTextureSize);
-    }
+    updateContentSizeWithTextureSize(_imageTextureSize);
     _imageRendererAdaptDirty = true;
 }
 
@@ -157,22 +153,11 @@ void ImageView::setTextureRect(const Rect &rect)
         }
         else
         {
-//            CCLOG("Warning!! you should load texture before set the texture's rect!");
+            CCLOG("Warning!! you should load texture before set the texture's rect!");
         }
     }
 }
     
-void ImageView::updateFlippedX()
-{
-    _imageRenderer->setFlippedX(_flippedX);
-}
-    
-void ImageView::updateFlippedY()
-{
-    _imageRenderer->setFlippedY(_flippedY);
-
-}
-
 void ImageView::setScale9Enabled(bool able)
 {
     if (_scale9Enabled == able)
@@ -204,20 +189,6 @@ bool ImageView::isScale9Enabled()const
 
 void ImageView::ignoreContentAdaptWithSize(bool ignore)
 {
-    if (_unifySize)
-    {
-        if (_scale9Enabled)
-        {
-            ProtectedNode::setContentSize(_customSize);
-        }
-        else
-        {
-            Size s = _imageTextureSize;
-            ProtectedNode::setContentSize(s);
-        }
-        onSizeChanged();
-        return;
-    }
     if (!_scale9Enabled || (_scale9Enabled && !ignore))
     {
         Widget::ignoreContentAdaptWithSize(ignore);
@@ -267,11 +238,7 @@ Node* ImageView::getVirtualRenderer()
 
 void ImageView::imageTextureScaleChangedWithSize()
 {
-    if (_unifySize)
-    {
-        _imageRenderer->setPreferredSize(_contentSize);
-    }
-    else if (_ignoreSize)
+    if (_ignoreSize)
     {
         if (!_scale9Enabled)
         {
@@ -283,11 +250,10 @@ void ImageView::imageTextureScaleChangedWithSize()
         if (_scale9Enabled)
         {
             _imageRenderer->setPreferredSize(_contentSize);
-            _imageRenderer->setScale(1.0f);
         }
         else
         {
-            Size textureSize = _imageTextureSize;
+            Size textureSize = _imageRenderer->getContentSize();
             if (textureSize.width <= 0.0f || textureSize.height <= 0.0f)
             {
                 _imageRenderer->setScale(1.0f);

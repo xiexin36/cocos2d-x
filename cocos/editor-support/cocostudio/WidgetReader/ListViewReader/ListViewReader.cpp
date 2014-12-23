@@ -9,7 +9,6 @@
 
 #include "tinyxml2/tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
-#include "../../CSParseBinary.pb.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -82,130 +81,7 @@ namespace cocostudio
         
         float itemMargin = DICTOOL->getFloatValue_json(options, P_ItemMargin);
         listView->setItemsMargin(itemMargin);
-    }
-    
-    void ListViewReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        
-        
-        ListView* listView = static_cast<ListView*>(widget);
-        const protocolbuffers::ListViewOptions& options = nodeTree.listviewoptions();
-
-		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-        
-        listView->setClippingEnabled(options.clipable());
-        
-        bool backGroundScale9Enable = options.backgroundscale9enable();
-        listView->setBackGroundImageScale9Enabled(backGroundScale9Enable);
-        
-        
-        int cr;
-        int cg;
-        int cb;
-        int scr;
-        int scg;
-        int scb;
-        int ecr;
-        int ecg;
-        int ecb;
-        
-        
-        
-        cr = options.has_bgcolorr() ? options.bgcolorr() : 150;
-        cg = options.has_bgcolorg() ? options.bgcolorg() : 150;
-        cb = options.has_bgcolorb() ? options.bgcolorb() : 255;
-        
-        scr = options.has_bgstartcolorr() ? options.bgstartcolorr() : 255;
-        scg = options.has_bgstartcolorg() ? options.bgstartcolorg() : 255;
-        scb = options.has_bgstartcolorb() ? options.bgstartcolorb() : 255;
-        
-        ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 150;
-        ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-        ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 255;
-        
-        float bgcv1 = options.vectorx();
-        float bgcv2 = options.has_vectory() ? options.vectory() : -0.5f;
-        listView->setBackGroundColorVector(Vec2(bgcv1, bgcv2));
-        
-        int co = options.has_bgcoloropacity() ? options.bgcoloropacity() : 100;
-        
-        int colorType = options.has_colortype() ? options.colortype() : 1;
-        listView->setBackGroundColorType(Layout::BackGroundColorType(colorType));
-        
-        listView->setBackGroundColor(Color3B(scr, scg, scb),Color3B(ecr, ecg, ecb));
-        listView->setBackGroundColor(Color3B(cr, cg, cb));
-        listView->setBackGroundColorOpacity(co);
-        
-        
-		const protocolbuffers::ResourceData& imageFileNameDic = options.backgroundimagedata();
-        int imageFileNameType = imageFileNameDic.resourcetype();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
-        listView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
-        
-        
-        if (backGroundScale9Enable)
-        {
-            float cx = options.capinsetsx();
-            float cy = options.capinsetsy();
-            float cw = options.has_capinsetswidth() ? options.capinsetswidth() : 1;
-            float ch = options.has_capinsetsheight() ? options.capinsetsheight() : 1;
-            listView->setBackGroundImageCapInsets(Rect(cx, cy, cw, ch));
-
-            bool sw = options.has_scale9width();
-            bool sh = options.has_scale9height();
-            if (sw && sh)
-            {
-                float swf = options.scale9width();
-                float shf = options.scale9height();
-                listView->setContentSize(Size(swf, shf));
-            }
-        }
-        
-        const protocolbuffers::WidgetOptions& widgetOptions = nodeTree.widgetoptions();
-        
-        int red = widgetOptions.has_colorr() ? widgetOptions.colorr() : 255;
-        int green = widgetOptions.has_colorg() ? widgetOptions.colorg() : 255;
-        int blue = widgetOptions.has_colorb() ? widgetOptions.colorb() : 255;
-        listView->setColor(Color3B(red, green, blue));
-        
-        int opacity = widgetOptions.has_alpha() ? widgetOptions.alpha() : 255;
-        listView->setOpacity(opacity);
-        
-        
-        
-        
-        float innerWidth = options.has_innerwidth() ? options.innerwidth() : 200;
-        float innerHeight = options.has_innerheight() ? options.innerheight() : 200;
-        listView->setInnerContainerSize(Size(innerWidth, innerHeight));
-        listView->setBounceEnabled(options.bounceenable());
-        
-        int direction = options.has_direction() ? options.direction() : 2;
-        listView->setDirection((ScrollView::Direction)direction);
-        
-        int gravityValue = options.has_gravity() ? options.gravity() : 3;
-        ListView::Gravity gravity = (ListView::Gravity)gravityValue;
-        listView->setGravity(gravity);
-        
-        float itemMargin = options.itemmargin();
-        listView->setItemsMargin(itemMargin);
-        
-        
-        // other commonly protperties
-        setAnchorPointForWidget(widget, nodeTree);
-        
-        bool flipX = widgetOptions.flipx();
-        bool flipY = widgetOptions.flipy();
-        if (flipX)
-        {
-            widget->setFlippedX(flipX);
-        }
-        if (flipY)
-        {
-            widget->setFlippedY(flipY);
-        }
-    }
+    }        
     
     Offset<Table> ListViewReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
                                                                flatbuffers::FlatBufferBuilder *builder)
@@ -213,8 +89,8 @@ namespace cocostudio
         auto temp = WidgetReader::getInstance()->createOptionsWithFlatBuffers(objectData, builder);
         auto widgetOptions = *(Offset<WidgetOptions>*)(&temp);
         
-        std::string path = "";
-        std::string plistFile = "";
+        std::string path;
+        std::string plistFile;
         int resourceType = 0;
         
         bool clipEnabled = false;
@@ -231,12 +107,12 @@ namespace cocostudio
         int direction = 0;
         bool bounceEnabled = false;
         int itemMargin = 0;
-        std::string directionType = "";
-        std::string horizontalType = "";
-        std::string verticalType = "";
+        std::string directionType;
+        std::string horizontalType;
+        std::string verticalType;
         
         // attributes
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        auto attribute = objectData->FirstAttribute();
         while (attribute)
         {
             std::string name = attribute->Name();
@@ -309,7 +185,7 @@ namespace cocostudio
             
             if (name == "InnerNodeSize")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 while (attribute)
                 {
                     name = attribute->Name();
@@ -329,7 +205,7 @@ namespace cocostudio
             }
             else if (name == "Size" && backGroundScale9Enabled)
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -350,7 +226,7 @@ namespace cocostudio
             }
             else if (name == "SingleColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -375,7 +251,7 @@ namespace cocostudio
             }
             else if (name == "EndColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -400,7 +276,7 @@ namespace cocostudio
             }
             else if (name == "FirstColor")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -425,7 +301,7 @@ namespace cocostudio
             }
             else if (name == "ColorVector")
             {
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 while (attribute)
                 {
                     name = attribute->Name();
@@ -445,10 +321,10 @@ namespace cocostudio
             }
             else if (name == "FileData")
             {
-                std::string texture = "";
-                std::string texturePng = "";
+                std::string texture;
+                std::string texturePng;
                 
-                const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+                auto attribute = child->FirstAttribute();
                 
                 while (attribute)
                 {
@@ -475,7 +351,7 @@ namespace cocostudio
                 if (resourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             
@@ -550,72 +426,10 @@ namespace cocostudio
         listView->setBackGroundColorOpacity(bgColorOpacity);
         
         
-        bool fileExist = false;
-        std::string errorFilePath = "";
         auto imageFileNameDic = options->backGroundImageData();
         int imageFileNameType = imageFileNameDic->resourceType();
         std::string imageFileName = imageFileNameDic->path()->c_str();
-        if (imageFileName != "")
-        {
-            switch (imageFileNameType)
-            {
-                case 0:
-                {
-                    if (FileUtils::getInstance()->isFileExist(imageFileName))
-                    {
-                        fileExist = true;
-                    }
-                    else
-                    {
-                        errorFilePath = imageFileName;
-                        fileExist = false;
-                    }
-                    break;
-                }
-                    
-                case 1:
-                {
-                    std::string plist = imageFileNameDic->plistFile()->c_str();
-                    SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
-                    if (spriteFrame)
-                    {
-                        fileExist = true;
-                    }
-                    else
-                    {
-                        if (FileUtils::getInstance()->isFileExist(plist))
-                        {
-                            ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                            ValueMap metadata = value["metadata"].asValueMap();
-                            std::string textureFileName = metadata["textureFileName"].asString();
-                            if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                            {
-                                errorFilePath = textureFileName;
-                            }
-                        }
-                        else
-                        {
-                            errorFilePath = plist;
-                        }
-                        fileExist = false;
-                    }
-                    break;
-                }
-                    
-                default:
-                    break;
-            }
-            if (fileExist)
-            {
-                listView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
-            }
-            else
-            {
-                auto label = Label::create();
-                label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-                listView->addChild(label);
-            }
-        }
+        listView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
         auto widgetOptions = options->widgetOptions();
         auto f_color = widgetOptions->color();
@@ -628,15 +442,9 @@ namespace cocostudio
         auto f_innerSize = options->innerSize();
         Size innerSize(f_innerSize->width(), f_innerSize->height());
         listView->setInnerContainerSize(innerSize);
-//         int direction = options->direction();
-//         listView->setDirection((ScrollView::Direction)direction);
         bool bounceEnabled = options->bounceEnabled();
         listView->setBounceEnabled(bounceEnabled);
         
-//         int gravityValue = options->gravity();
-//         ListView::Gravity gravity = (ListView::Gravity)gravityValue;
-//         listView->setGravity(gravity);
-
         std::string directionType = options->directionType()->c_str();
         if (directionType == "")
         {
@@ -677,8 +485,8 @@ namespace cocostudio
         listView->setItemsMargin(itemMargin);
 
         auto widgetReader = WidgetReader::getInstance();
-        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());        
-     
+        widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
+        
         if (backGroundScale9Enabled)
         {
             auto f_capInsets = options->capInsets();
@@ -691,6 +499,7 @@ namespace cocostudio
         }
         else
         {
+            auto widgetOptions = options->widgetOptions();
             if (!listView->isIgnoreContentAdaptWithSize())
             {
                 Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());

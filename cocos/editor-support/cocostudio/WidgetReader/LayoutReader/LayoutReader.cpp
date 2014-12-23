@@ -7,7 +7,6 @@
 #include "ui/UIScrollView.h"
 #include "ui/UIPageView.h"
 #include "ui/UIListView.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
@@ -308,164 +307,7 @@ namespace cocostudio
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-
-
-    void LayoutReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        Layout* panel = static_cast<Layout*>(widget);
-		const protocolbuffers::PanelOptions& options = nodeTree.paneloptions();
-
-		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-        
-        panel->setClippingEnabled(options.clipable());
-        
-        bool backGroundScale9Enable = options.backgroundscale9enable();
-        panel->setBackGroundImageScale9Enabled(backGroundScale9Enable);
-        
-        
-        int cr;
-        int cg;
-        int cb;
-        int scr;
-        int scg;
-        int scb;
-        int ecr;
-        int ecg;
-        int ecb;
-        
-        if (dynamic_cast<ui::PageView*>(widget))
-        {
-            cr = options.has_bgcolorr() ? options.bgcolorr() : 150;
-            cg = options.has_bgcolorg() ? options.bgcolorg() : 150;
-            cb = options.has_bgcolorb() ? options.bgcolorb() : 150;
-            
-            scr = options.has_bgstartcolorr() ? options.bgstartcolorr() : 255;
-            scg = options.has_bgstartcolorg() ? options.bgstartcolorg() : 255;
-            scb = options.has_bgstartcolorb() ? options.bgstartcolorb() : 255;
-            
-            ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 255;
-            ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 100;
-        }
-        else if(dynamic_cast<ui::ListView*>(widget))
-        {
-            cr = options.has_bgcolorr() ? options.bgcolorr() : 150;
-            cg = options.has_bgcolorg() ? options.bgcolorg() : 150;
-            cb = options.has_bgcolorb() ? options.bgcolorb() : 255;
-            
-            scr = options.has_bgstartcolorr() ? options.bgstartcolorr() : 255;
-            scg = options.has_bgstartcolorg() ? options.bgstartcolorg() : 255;
-            scb = options.has_bgstartcolorb() ? options.bgstartcolorb() : 255;
-            
-            ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 150;
-            ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 255;
-        }
-        else if(dynamic_cast<ui::ScrollView*>(widget))
-        {
-            cr = options.has_bgcolorr() ? options.bgcolorr() : 255;
-            cg = options.has_bgcolorg() ? options.bgcolorg() : 150;
-            cb = options.has_bgcolorb() ? options.bgcolorb() : 100;
-            
-            scr = options.has_bgstartcolorr() ? options.bgstartcolorr() : 255;
-            scg = options.has_bgstartcolorg() ? options.bgstartcolorg() : 255;
-            scb = options.has_bgstartcolorb() ? options.bgstartcolorb() : 255;
-            
-            ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 255;
-            ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 150;
-            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 100;
-        }
-        else
-        {
-            cr = options.has_bgcolorr() ? options.bgcolorr() : 150;
-            cg = options.has_bgcolorg() ? options.bgcolorg() : 200;
-            cb = options.has_bgcolorb() ? options.bgcolorb() : 255;
-            
-            scr = options.has_bgstartcolorr() ? options.bgstartcolorr() : 255;
-            scg = options.has_bgstartcolorg() ? options.bgstartcolorg() : 255;
-            scb = options.has_bgstartcolorb() ? options.bgstartcolorb() : 255;
-            
-            ecr = options.has_bgendcolorr() ? options.bgendcolorr() : 150;
-            ecg = options.has_bgendcolorg() ? options.bgendcolorg() : 200;
-            ecb = options.has_bgendcolorb() ? options.bgendcolorb() : 255;
-        }
-        
-        float bgcv1 = 0.0f;
-        float bgcv2 = -0.5f;
-		if(options.has_vectorx())
-		{
-			bgcv1 = options.vectorx();
-		}
-		if(options.has_vectory())
-		{
-			bgcv2 = options.vectory();
-		}
-        panel->setBackGroundColorVector(Vec2(bgcv1, bgcv2));
-        
-        int co = options.has_bgcoloropacity() ? options.bgcoloropacity() : 100;
-        
-        int colorType = options.has_colortype() ? options.colortype() : 1;
-        panel->setBackGroundColorType(Layout::BackGroundColorType(colorType));
-        
-        panel->setBackGroundColor(Color3B(scr, scg, scb),Color3B(ecr, ecg, ecb));
-        panel->setBackGroundColor(Color3B(cr, cg, cb));
-        panel->setBackGroundColorOpacity(co);
-        
-        
-		const protocolbuffers::ResourceData& imageFileNameDic = options.backgroundimagedata();
-        int imageFileNameType = imageFileNameDic.resourcetype();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic.path(), (Widget::TextureResType)imageFileNameType);
-        panel->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
-        
-        
-        if (backGroundScale9Enable)
-        {
-            float cx = options.capinsetsx();
-            float cy = options.capinsetsy();
-            float cw = options.has_capinsetswidth() ? options.capinsetswidth() : 1;
-            float ch = options.has_capinsetsheight() ? options.capinsetsheight() : 1;
-            panel->setBackGroundImageCapInsets(Rect(cx, cy, cw, ch));
-
-            bool sw = options.has_scale9width();
-            bool sh = options.has_scale9height();
-            if (sw && sh)
-            {
-                float swf = options.scale9width();
-                float shf = options.scale9height();
-                panel->setContentSize(Size(swf, shf));
-            }
-        }
-        
-        panel->setLayoutType((Layout::Type)options.layouttype());
-        
-        const protocolbuffers::WidgetOptions& widgetOptions = nodeTree.widgetoptions();
-        
-        int red = widgetOptions.has_colorr() ? widgetOptions.colorr() : 255;
-        int green = widgetOptions.has_colorg() ? widgetOptions.colorg() : 255;
-        int blue = widgetOptions.has_colorb() ? widgetOptions.colorb() : 255;
-        panel->setColor(Color3B(red, green, blue));
-        
-        int opacity = widgetOptions.has_alpha() ? widgetOptions.alpha() : 255;
-        panel->setOpacity(opacity);
-        
-        
-        // other commonly protperties
-        setAnchorPointForWidget(widget, nodeTree);
-        
-        bool flipX = widgetOptions.flipx();
-        bool flipY = widgetOptions.flipy();
-        if (flipX)
-        {
-            widget->setFlippedX(flipX);
-        }
-        if (flipY)
-        {
-            widget->setFlippedY(flipY);
-        }
-    }
+    }    
     
     Offset<Table> LayoutReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
                                                              flatbuffers::FlatBufferBuilder *builder)
@@ -689,7 +531,7 @@ namespace cocostudio
                 if (resourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             
@@ -756,72 +598,10 @@ namespace cocostudio
         panel->setBackGroundColorOpacity(bgColorOpacity);
         
         
-        bool fileExist = false;
-        std::string errorFilePath = "";
         auto imageFileNameDic = options->backGroundImageData();
         int imageFileNameType = imageFileNameDic->resourceType();
-        std::string imageFileName = this->getResourcePath(imageFileNameDic->path()->c_str(), (Widget::TextureResType)imageFileNameType);
-        if (imageFileName != "")
-        {
-            switch (imageFileNameType)
-            {
-                case 0:
-                {
-                    if (FileUtils::getInstance()->isFileExist(imageFileName))
-                    {
-                        fileExist = true;
-                    }
-                    else
-                    {
-                        errorFilePath = imageFileName;
-                        fileExist = false;
-                    }
-                    break;
-                }
-                    
-                case 1:
-                {
-                    std::string plist = imageFileNameDic->plistFile()->c_str();
-                    SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
-                    if (spriteFrame)
-                    {
-                        fileExist = true;
-                    }
-                    else
-                    {
-                        if (FileUtils::getInstance()->isFileExist(plist))
-                        {
-                            ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
-                            ValueMap metadata = value["metadata"].asValueMap();
-                            std::string textureFileName = metadata["textureFileName"].asString();
-                            if (!FileUtils::getInstance()->isFileExist(textureFileName))
-                            {
-                                errorFilePath = textureFileName;
-                            }
-                        }
-                        else
-                        {
-                            errorFilePath = plist;
-                        }
-                        fileExist = false;
-                    }
-                    break;
-                }
-                    
-                default:
-                    break;
-            }
-            if (fileExist)
-            {
-                panel->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
-            }
-            else
-            {
-                auto label = Label::create();
-                label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-                panel->addChild(label);
-            }
-        }
+        std::string imageFileName = imageFileNameDic->path()->c_str();
+        panel->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
         
         auto widgetOptions = options->widgetOptions();
         auto f_color = widgetOptions->color();
@@ -833,7 +613,6 @@ namespace cocostudio
         
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
-        
         
         if (backGroundScale9Enabled)
         {

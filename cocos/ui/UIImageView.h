@@ -111,11 +111,6 @@ public:
     virtual Size getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
     
-    /* temp */
-    const std::string& getTextureFile() const { return _textureFile; };
-    const TextureResType getTextureResType() const { return _imageTexType; };
-    /**/
-    
 CC_CONSTRUCTOR_ACCESS:
     //initializes state of widget.
     virtual bool init() override;
@@ -124,9 +119,6 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;
-  
-    virtual void updateFlippedX() override;
-    virtual void updateFlippedY() override;
     
     virtual void adaptRenderers() override;
     

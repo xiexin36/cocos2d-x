@@ -162,8 +162,6 @@ public:
     
     float getItemsMargin()const;
     
-    virtual void forceDoLayout()override;
-
     virtual void doLayout() override;
     
     virtual void addChild(Node* child)override;
@@ -193,10 +191,6 @@ public:
     
     void requestRefreshView();
     void refreshView();
-    
-    /* temp */
-    const ListView::Gravity getGravity() const { return _gravity; };
-    /**/
 
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

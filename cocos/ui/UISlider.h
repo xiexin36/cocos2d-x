@@ -209,20 +209,6 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* temp */
-    const std::string& getTextureFile() const { return _textureFile; };
-    const std::string& getProgressBarTextureFile() const { return _progressBarTextureFile; };
-    const std::string& getSlidBallNormalTextureFile() const { return _slidBallNormalTextureFile; };
-    const std::string& getSlidBallPressedTextureFile() const { return _slidBallPressedTextureFile; };
-    const std::string& getSlidBallDisabledTextureFile() const { return _slidBallDisabledTextureFile; };
-    
-    const TextureResType getBarTextureResType() const { return _barTexType; };
-    const TextureResType getProgressBarTextureResType() const { return _progressBarTexType; };
-    const TextureResType getBallNormalTexureResType() const { return _ballNTexType; };
-    const TextureResType getBallPressedTexureResType() const { return _ballPTexType; };
-    const TextureResType getBallDisabledTextureResType() const { return _ballDTexType; };
-    /**/
-    
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
 

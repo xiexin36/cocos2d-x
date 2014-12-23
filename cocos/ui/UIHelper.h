@@ -26,7 +26,7 @@ THE SOFTWARE.
 #define __UIHELPER_H__
 
 #include <string>
-#include "base/CCPlatformMacros.h"
+#include "platform/CCPlatformMacros.h"
 #include "ui/GUIExport.h"
 #include "2d/CCNode.h"
 
@@ -79,12 +79,6 @@ public:
                                    std::string::size_type start,
                                    std::string::size_type length);
     
-    /**
-     * Refresh object and it's children lay out state
-     *
-     *@param rootNode   object which will be changed
-     *
-     */
     static void doLayout(Node *rootNode);
 
     static void changeLayoutSystemActiveState(bool bActive);

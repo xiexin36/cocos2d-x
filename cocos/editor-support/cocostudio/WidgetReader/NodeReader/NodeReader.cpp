@@ -78,7 +78,8 @@ namespace cocostudio
         Vec2 position = Vec2::ZERO;
         Vec2 scale = Vec2(1.0f, 1.0f);
         Vec2 anchorPoint = Vec2::ZERO;
-        Color4B color = { 255, 255, 255, 255 };
+        Color4B color(255, 255, 255, 255);
+
         Vec2 size = Vec2::ZERO;
         bool flipX = false;
         bool flipY = false;
@@ -121,7 +122,7 @@ namespace cocostudio
             else if (attriname == "FlipY")
             {
                 flipY = (value == "True") ? true : false;
-            }            
+            }
             else if (attriname == "ZOrder")
             {
                 zOrder = atoi(value.c_str());
@@ -289,7 +290,7 @@ namespace cocostudio
         
         auto options = CreateWidgetOptions(*builder,
                                            builder->CreateString(name),
-                                           actionTag,
+                                           (int)actionTag,
                                            &f_rotationskew,
                                            zOrder,
                                            visible,
