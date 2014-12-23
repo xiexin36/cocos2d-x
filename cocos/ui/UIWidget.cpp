@@ -291,15 +291,10 @@ void Widget::setSize(const Size &size)
 
 void Widget::setSizePercent(const Vec2 &percent)
 {
-
     auto component = this->getOrCreateLayoutComponent();
     component->setUsingPercentContentSize(true);
     component->setPercentContentSize(percent);
-    
-    if (nullptr != _parent)
-    {
-        Helper::doLayout(_parent);
-    }
+    component->refreshLayout();
 }
 
 
@@ -381,7 +376,6 @@ Node* Widget::getVirtualRenderer()
 
 void Widget::onSizeChanged()
 {
-
 }
 
 Size Widget::getVirtualRendererSize() const
@@ -839,34 +833,38 @@ void Widget::interceptTouchEvent(cocos2d::ui::Widget::TouchEventType event, coco
 void Widget::setPosition(const Vec2 &pos)
 {
     ProtectedNode::setPosition(pos);
-    _positionType = PositionType::ABSOLUTE;
-    
 }
 
 void Widget::setPositionPercent(const Vec2 &percent)
 {
-    this->setNormalizedPosition(percent);
-    _positionType = PositionType::PERCENT;
+    auto component = this->getOrCreateLayoutComponent();
+    component->setPositionPercentX(percent.x);
+    component->setPositionPercentY(percent.y);
+    component->refreshLayout();
 }
 
-const Vec2& Widget::getPositionPercent()const{
-    return this->getNormalizedPosition();
+Vec2 Widget::getPositionPercent(){
+
+    auto component = this->getOrCreateLayoutComponent();
+    float percentX = component->getPositionPercentX();
+    float percentY = component->getPositionPercentY();
+
+    return Vec2(percentX,percentY);
 }
 
 void Widget::setPositionType(PositionType type)
 {
+    auto component = this->getOrCreateLayoutComponent();
     _positionType = type;
     if (type == Widget::PositionType::ABSOLUTE)
     {
-        Vec2 oldPosition = this->getPosition();
-        this->setPosition(this->getPosition() + Vec2(10,0));
-        this->setPosition(oldPosition);
+        component->setPositionPercentXEnabled(false);
+        component->setPositionPercentYEnabled(false);
     }
     else
     {
-        Vec2 oldNormalizedPosition = this->getNormalizedPosition();
-        this->setNormalizedPosition(oldNormalizedPosition + Vec2(0.2,0.1));
-        this->setNormalizedPosition(oldNormalizedPosition);
+        component->setPositionPercentXEnabled(true);
+        component->setPositionPercentYEnabled(true);
     }
 }
 
