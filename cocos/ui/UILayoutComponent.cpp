@@ -25,7 +25,7 @@
 #include "UILayoutComponent.h"
 #include "2d/CCNode.h"
 #include "GUIDefine.h"
-
+#include "UIHelper.h"
 
 NS_CC_BEGIN
 
@@ -584,6 +584,8 @@ namespace ui {
 
         _owner->setPosition(ownerPosition);
         _owner->setContentSize(ownerSize);
+
+        ui::Helper::doLayout(_owner);
     }
 
     void LayoutComponent::setActiveEnable(bool enable)
