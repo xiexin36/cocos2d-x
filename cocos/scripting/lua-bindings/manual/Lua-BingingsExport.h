@@ -1,5 +1,5 @@
-#ifndef __CCEXTENSIONEXPORT_H__
-#define __CCEXTENSIONEXPORT_H__
+#ifndef __LUABINDINGEXPROT_H__
+#define __LUABINDINGEXPROT_H__
 
 #if (defined(WIN32) && defined(_WINDOWS)) || defined(WINRT) || defined(WP8)
     #ifdef __MINGW32__
@@ -7,12 +7,12 @@
     #endif
 
     #if defined(CC_STATIC)
-        #define CC_EX_DLL
+        #define CC_LUA_DLL
     #else
-        #if defined(_USREXDLL)
-            #define CC_EX_DLL     __declspec(dllexport)
+        #if defined(_USRLUADLL)
+            #define CC_LUA_DLL     __declspec(dllexport)
         #else         /* use a DLL library */
-            #define CC_EX_DLL     __declspec(dllimport)
+            #define CC_LUA_DLL     __declspec(dllimport)
         #endif
     #endif
 
@@ -25,9 +25,9 @@
         #endif
     #endif
 #elif defined(_SHARED_)
-    #define CC_EX_DLL     __attribute__((visibility("default")))
+    #define CC_LUA_DLL     __attribute__((visibility("default")))
 #else
-    #define CC_EX_DLL
+    #define CC_LUA_DLL
 #endif
 
 #endif /* __CCEXTENSIONEXPORT_H__*/

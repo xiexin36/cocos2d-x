@@ -44,7 +44,7 @@ typedef std::function<void(int trackIndex, spEvent* event)> EventListener;
 
 /** Draws an animated skeleton, providing an AnimationState for applying one or more animations and queuing animations to be
   * played later. */
-class SkeletonAnimation: public SkeletonRenderer {
+class CC_DLL SkeletonAnimation: public SkeletonRenderer {
 public:
 	static SkeletonAnimation* createWithData (spSkeletonData* skeletonData);
 	static SkeletonAnimation* createWithFile (const std::string& skeletonDataFile, spAtlas* atlas, float scale = 1);

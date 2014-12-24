@@ -39,7 +39,7 @@ namespace spine {
 class PolygonBatch;
 
 /** Draws a skeleton. */
-class SkeletonRenderer: public cocos2d::Node, public cocos2d::BlendProtocol {
+class CC_DLL SkeletonRenderer: public cocos2d::Node, public cocos2d::BlendProtocol {
 public:
 	static SkeletonRenderer* createWithData (spSkeletonData* skeletonData, bool ownsSkeletonData = false);
 	static SkeletonRenderer* createWithFile (const std::string& skeletonDataFile, spAtlas* atlas, float scale = 1);
