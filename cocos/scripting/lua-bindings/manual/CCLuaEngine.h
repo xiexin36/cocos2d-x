@@ -35,11 +35,12 @@ extern "C" {
 #include "CCLuaStack.h"
 #include "CCLuaValue.h"
 #include "cocos2d/LuaScriptHandlerMgr.h"
+#include "Lua-BingingsExport.h"
 
 NS_CC_BEGIN
 
 // Lua support for cocos2d-x
-class LuaEngine : public ScriptEngineProtocol
+class CC_LUA_DLL LuaEngine : public ScriptEngineProtocol
 {
 public:
     static LuaEngine* getInstance(void);

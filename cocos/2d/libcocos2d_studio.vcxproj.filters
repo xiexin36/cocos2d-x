@@ -238,6 +238,12 @@
     <Filter Include="cocostudio\reader\WidgetReader\SpriteReader">
       <UniqueIdentifier>{9aee531c-f935-4836-bf84-be42e78e38bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\ArmatureNodeReader">
+      <UniqueIdentifier>{1b821c9f-340b-43b7-9455-058cfbe4c796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\shaders">
+      <UniqueIdentifier>{2c03e02d-df3a-46b2-9a89-dfd1565bf830}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
@@ -1288,6 +1294,15 @@
     </ClCompile>
     <ClCompile Include="..\editor-support\cocostudio\WidgetCallBackHandlerProtocol.cpp">
       <Filter>cocostudio\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\ArmatureNodeReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\ArmatureNodeReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\shaders\UIShaders.cpp">
+      <Filter>ui\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCActionTimelineNode.cpp">
+      <Filter>cocostudio\TimelineAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2505,6 +2520,18 @@
     <ClInclude Include="..\editor-support\cocostudio\WidgetCallBackHandlerProtocol.h">
       <Filter>cocostudio\json</Filter>
     </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\ArmatureNodeReader.h">
+      <Filter>cocostudio\reader\WidgetReader\ArmatureNodeReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\CSArmatureNode_generated.h">
+      <Filter>cocostudio\reader\WidgetReader\ArmatureNodeReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\shaders\UIShaders.h">
+      <Filter>ui\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCActionTimelineNode.h">
+      <Filter>cocostudio\TimelineAction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\math\Mat4.inl">
@@ -2531,6 +2558,9 @@
     <None Include="cocos2d.def" />
     <None Include="..\3d\CCAnimationCurve.inl">
       <Filter>3d</Filter>
+    </None>
+    <None Include="..\ui\shaders\ccShader_grayscale.frag">
+      <Filter>ui\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
