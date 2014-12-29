@@ -252,7 +252,7 @@
 		3E2BDB0619C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3E2BDB0419C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp */; };
 		3E2BDB0A19C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E2BDB0819C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp */; };
 		3E2BDB0B19C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E2BDB0919C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h */; };
-		434E490F1A4B15CD0094BF9D /* libcocos2d Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 434E490E1A4B15CD0094BF9D /* libcocos2d Mac.dylib */; };
+		430084C21A5197CC0070AB2A /* libcocos2d Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */; };
 		434E49111A4B19D50094BF9D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434E49101A4B19D50094BF9D /* OpenGL.framework */; };
 		4359FC391A4B25E500705159 /* Lua-BingingsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 4359FC381A4B25E500705159 /* Lua-BingingsExport.h */; };
 		566F015F19B5EB0F00FCA620 /* CustomGUIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 566F015D19B5EB0F00FCA620 /* CustomGUIReader.cpp */; };
@@ -284,6 +284,23 @@
 		F4FE0D7819ECD02400B8B12B /* LuaTouchTargetNode.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE0D6519ECD02400B8B12B /* LuaTouchTargetNode.h */; };
 		F4FE0D7919ECD02400B8B12B /* LuaTouchTargetNode.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE0D6519ECD02400B8B12B /* LuaTouchTargetNode.h */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		430084BE1A5197C50070AB2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 430084B91A5197C40070AB2A /* cocos2d_libs_studio.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1551A33F158F2AB200E66CFE;
+			remoteInfo = "libcocos2d Mac";
+		};
+		430084C01A5197C50070AB2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 430084B91A5197C40070AB2A /* cocos2d_libs_studio.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A07A4D641783777C0073F6A7;
+			remoteInfo = "libcocos2d iOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1516227F19A0F3E3006099B8 /* lua_cocos2dx_3d_auto.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_cocos2dx_3d_auto.cpp; sourceTree = "<group>"; };
@@ -419,6 +436,7 @@
 		3E2BDB0419C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = lua_cocos2dx_audioengine_auto.hpp; sourceTree = "<group>"; };
 		3E2BDB0819C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_cocos2dx_audioengine_manual.cpp; sourceTree = "<group>"; };
 		3E2BDB0919C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua_cocos2dx_audioengine_manual.h; sourceTree = "<group>"; };
+		430084B91A5197C40070AB2A /* cocos2d_libs_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs_studio.xcodeproj; path = ../../../../build/cocos2d_libs_studio.xcodeproj; sourceTree = "<group>"; };
 		434E490E1A4B15CD0094BF9D /* libcocos2d Mac.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libcocos2d Mac.dylib"; path = "../../../../../CocoStudioMono/CocoStudio.EngineAdapter/pro.mac/Build/Products/Debug/libcocos2d Mac.dylib"; sourceTree = "<group>"; };
 		434E49101A4B19D50094BF9D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		4359FC381A4B25E500705159 /* Lua-BingingsExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Lua-BingingsExport.h"; sourceTree = "<group>"; };
@@ -444,8 +462,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430084C21A5197CC0070AB2A /* libcocos2d Mac.dylib in Frameworks */,
 				434E49111A4B19D50094BF9D /* OpenGL.framework in Frameworks */,
-				434E490F1A4B15CD0094BF9D /* libcocos2d Mac.dylib in Frameworks */,
 				15AC69E4198771FF00D17520 /* libluajit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,6 +502,7 @@
 		1551A334158F2AB200E66CFE = {
 			isa = PBXGroup;
 			children = (
+				430084B91A5197C40070AB2A /* cocos2d_libs_studio.xcodeproj */,
 				434E49101A4B19D50094BF9D /* OpenGL.framework */,
 				434E490E1A4B15CD0094BF9D /* libcocos2d Mac.dylib */,
 				C0D9BAFA1974D30000EC35BB /* liblua.a */,
@@ -793,6 +812,15 @@
 			path = audioengine;
 			sourceTree = "<group>";
 		};
+		430084BA1A5197C40070AB2A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */,
+				430084C11A5197C50070AB2A /* libcocos2d iOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F4FE0D5B19ECD02400B8B12B /* quick */ = {
 			isa = PBXGroup;
 			children = (
@@ -1013,6 +1041,12 @@
 			mainGroup = 1551A334158F2AB200E66CFE;
 			productRefGroup = 1551A334158F2AB200E66CFE;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 430084BA1A5197C40070AB2A /* Products */;
+					ProjectRef = 430084B91A5197C40070AB2A /* cocos2d_libs_studio.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				15C1C255198748D200A46ACC /* libluacocos2d Mac */,
@@ -1020,6 +1054,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libcocos2d Mac.dylib";
+			remoteRef = 430084BE1A5197C50070AB2A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		430084C11A5197C50070AB2A /* libcocos2d iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libcocos2d iOS.a";
+			remoteRef = 430084C01A5197C50070AB2A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		15C1C256198748D200A46ACC /* Sources */ = {
