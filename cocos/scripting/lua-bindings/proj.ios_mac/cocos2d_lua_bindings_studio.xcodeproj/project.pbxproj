@@ -1309,7 +1309,7 @@
 					/Users/dc/Desktop/CocosStudio/cocosstudio/CocoStudioMono/CocoStudio.EngineAdapter/pro.mac/Build/Products/Debug,
 				);
 				MACH_O_TYPE = mh_dylib;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "libluacocos2d Mac";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac";
