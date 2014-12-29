@@ -27,6 +27,9 @@
 #include "2d/CCSpriteFrameCache.h"
 #include "base/CCVector.h"
 #include "base/CCDirector.h"
+#include "renderer/CCGLProgram.h"
+#include "ui/shaders/UIShaders.h"
+#include "renderer/ccShaders.h"
 
 NS_CC_BEGIN
 namespace ui {
@@ -804,6 +807,40 @@ y+=ytranslate;         \
         return NULL;
     }
     
+    void Scale9Sprite::setState(cocos2d::ui::Scale9Sprite::State state)
+    {
+        GLProgramState *glState = nullptr;
+        switch (state)
+        {
+            case State::NORMAL:
+            {
+                glState = GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP);
+            }
+                break;
+            case State::GRAY:
+            {
+                auto program = GLProgram::createWithByteArrays(ccPositionTextureColor_noMVP_vert,
+                                                               ccUIGrayScale_frag);
+                glState = GLProgramState::getOrCreateWithGLProgram(program);
+            }
+            default:
+                break;
+        }
+        
+        if (nullptr != _scale9Image)
+        {
+            _scale9Image->setGLProgramState(glState);
+        }
+        
+        if (_scale9Enabled)
+        {
+            for (auto& sp : _protectedChildren)
+            {
+                sp->setGLProgramState(glState);
+            }
+        }
+    }
+    
     /** sets the opacity.
      @warning If the the texture has premultiplied alpha then, the R, G and B channels will be modifed.
      Values goes from 0 to 255, where 255 means fully opaque.
@@ -945,7 +982,7 @@ y+=ytranslate;         \
         //
         // draw self
         //
-        //if (isVisitableByVisitingCamera())
+        if (isVisitableByVisitingCamera())
             this->draw(renderer, _modelViewTransform, flags);
         
         //

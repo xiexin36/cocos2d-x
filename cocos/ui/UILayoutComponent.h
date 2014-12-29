@@ -38,111 +38,109 @@ namespace ui {
         virtual bool init()override;
         CREATE_FUNC(LayoutComponent);
 
-        enum class HorizontalEage
+        static LayoutComponent* bindLayoutComponent(Node* node);
+
+        enum class HorizontalEdge
         {
             None,
             Left,
             Right,
             Center
         };
-        enum class VerticalEage
+        enum class VerticalEdge
         {
             None,
-            Buttom,
+            Bottom,
             Top,
             Center
         };
-#pragma region OldVersion
-        virtual void setUsingPercentContentSize(bool isUsed);
-        virtual bool getUsingPercentContentSize();
 
-        virtual void setPercentContentSize(const Vec2 &percent);
-        virtual Vec2 getPercentContentSize();
-#pragma endregion
+        // OldVersion
+        void setUsingPercentContentSize(bool isUsed);
+        bool getUsingPercentContentSize()const;
 
-#pragma region Position & Margin
-        virtual Point getAnchorPosition();
-        virtual void setAnchorPosition(Point point);
+        void setPercentContentSize(const Vec2 &percent);
+        Vec2 getPercentContentSize()const;
 
-        virtual Point getPosition();
-        virtual void setPosition(Point position);
+        // Position & Margin
+        const Point& getAnchorPosition()const;
+        void setAnchorPosition(const Point& point);
 
-        virtual bool isUsingPositionPercentX();
-        virtual void setPositionPercentXEnabled(bool isUsed);
+        const Point& getPosition()const;
+        void setPosition(const Point& position);
 
-        virtual float getPositionPercentX();
-        virtual void setPositionPercentX(float percentMargin);
+        bool isPositionPercentXEnabled()const;
+        void setPositionPercentXEnabled(bool isUsed);
 
-        virtual bool isUsingPositionPercentY();
-        virtual void setPositionPercentYEnabled(bool isUsed);
+        float getPositionPercentX()const;
+        void setPositionPercentX(float percentMargin);
 
-        virtual float getPositionPercentY();
-        virtual void setPositionPercentY(float percentMargin);
+        bool isPositionPercentYEnabled()const;
+        void setPositionPercentYEnabled(bool isUsed);
 
-        virtual HorizontalEage getHorizontalEage();
-        virtual void setHorizontalEage(HorizontalEage hEage);
+        float getPositionPercentY()const;
+        void setPositionPercentY(float percentMargin);
 
-        virtual VerticalEage getVerticalEage();
-        virtual void setVerticalEage(VerticalEage vEage);
+        HorizontalEdge getHorizontalEdge()const;
+        void setHorizontalEdge(HorizontalEdge hEage);
 
-        virtual float getLeftMargin();
-        virtual void setLeftMargin(float margin);
+        VerticalEdge getVerticalEdge()const;
+        void setVerticalEdge(VerticalEdge vEage);
 
-        virtual float getRightMargin();
-        virtual void setRightMargin(float margin);
+        float getLeftMargin()const;
+        void setLeftMargin(float margin);
 
-        virtual float getTopMargin();
-        virtual void setTopMargin(float margin);
+        float getRightMargin()const;
+        void setRightMargin(float margin);
 
-        virtual float getButtomMargin();
-        virtual void setButtomMargin(float margin);
+        float getTopMargin()const;
+        void setTopMargin(float margin);
 
-#pragma endregion
+        float getBottomMargin()const;
+        void setBottomMargin(float margin);
 
-#pragma region Size & Percent
-        virtual Size getSize();
-        virtual void setSize(Size _size);
+        // Size & Percent
+        const Size& getSize()const;
+        void setSize(const Size& size);
 
-        virtual bool isUsingPercentWidth();
-        virtual void setPercentWidthEnabled(bool isUsed);
+        bool isPercentWidthEnabled()const;
+        void setPercentWidthEnabled(bool isUsed);
 
-        virtual float getSizeWidth();
-        virtual void setSizeWidth(float width);
+        float getSizeWidth()const;
+        void setSizeWidth(float width);
 
-        virtual float getPercentWidth();
-        virtual void setPercentWidth(float percentWidth);
+        float getPercentWidth()const;
+        void setPercentWidth(float percentWidth);
 
-        virtual bool isUsingPercentHeight();
-        virtual void setPercentHeightEnabled(bool isUsed);
+        bool isPercentHeightEnabled()const;
+        void setPercentHeightEnabled(bool isUsed);
 
-        virtual float getSizeHeight();
-        virtual void setSizeHeight(float height);
+        float getSizeHeight()const;
+        void setSizeHeight(float height);
 
-        virtual float getPercentHeight();
-        virtual void setPercentHeight(float percentHeight);
+        float getPercentHeight()const;
+        void setPercentHeight(float percentHeight);
 
-        virtual bool isUsingStretchWidth();
-        virtual void setStretchWidthEnabled(bool isUsed);
+        bool isStretchWidthEnabled()const;
+        void setStretchWidthEnabled(bool isUsed);
 
-        virtual bool isUsingStretchHeight();
-        virtual void setStretchHeightEnabled(bool isUsed);
+        bool isStretchHeightEnabled()const;
+        void setStretchHeightEnabled(bool isUsed);
 
-#pragma endregion
-
-        virtual void setActiveEnable(bool enable);
-        virtual void refreshLayout();
+        void setActiveEnabled(bool enable);
+        void refreshLayout();
 
     protected:
         Node* getOwnerParent();
-        virtual void refreshHorizontalMargin();
-        virtual void refreshVerticalMargin();
+        void refreshHorizontalMargin();
+        void refreshVerticalMargin();
     protected:
-        HorizontalEage  _horizontalEage;
-        VerticalEage    _verticalEage;
+        HorizontalEdge  _horizontalEdge;
+        VerticalEdge    _verticalEdge;
 
         float           _leftMargin;
         float           _rightMargin;
-        float           _buttomMargin;
+        float           _bottomMargin;
         float           _topMargin;
 
         bool            _usingPositionPercentX;
@@ -159,7 +157,7 @@ namespace ui {
         float           _percentHeight;
         bool            _usingPercentHeight;
 
-        bool _actived;
+        bool            _actived;
     };
 }
 

@@ -28,12 +28,11 @@ THE SOFTWARE.
 #define __CCTMX_TILE_MAP_H__
 
 #include "2d/CCNode.h"
-#include "CCTMXObjectGroup.h"
+#include "2d/CCTMXObjectGroup.h"
 #include "base/CCValue.h"
 
 NS_CC_BEGIN
 
-class TMXObjectGroup;
 class TMXLayer;
 class TMXLayerInfo;
 class TMXTilesetInfo;
@@ -55,7 +54,7 @@ enum
 
     /** Isometric orientation */
     TMXOrientationIso,
-
+    
     /** Isometric staggered orientation*/
     TMXOrientationStaggered,
 };
@@ -180,12 +179,6 @@ public:
 
     virtual std::string getDescription() const override;
     
-    /* temp */
-    const std::string getTMXFile() const { return _tmxFile; };
-    const std::string getTMXString() const { return _tmxString; };
-    const std::string getResourcePath() const { return _resourcePath; };
-    /**/
-    
 CC_CONSTRUCTOR_ACCESS:
     /**
      * @js ctor
@@ -221,12 +214,6 @@ protected:
     
     //! tile properties
     ValueMapIntKey _tileProperties;
-    
-    /* temp */
-    std::string _tmxFile;
-    std::string _tmxString;
-    std::string _resourcePath;
-    /**/
 
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(TMXTiledMap);

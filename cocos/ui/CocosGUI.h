@@ -54,6 +54,7 @@ THE SOFTWARE.
 #include "ui/UIDeprecated.h"
 #include "ui/GUIExport.h"
 #include "ui/UIScale9Sprite.h"
+#include "ui/UIEditBox/UIEditBox.h"
 #include "ui/UILayoutComponent.h"
 
 NS_CC_BEGIN

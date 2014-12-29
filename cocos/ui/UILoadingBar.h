@@ -67,6 +67,10 @@ public:
      **/
     static LoadingBar* create(const std::string& textureName, float percentage = 0);
     
+    static LoadingBar* create(const std::string& textureName,
+                              TextureResType texType,
+                              float percentage = 0);
+    
     /**
      * Changes the progress direction of loadingbar.
      *
@@ -139,12 +143,6 @@ public:
      * Returns the "class name" of widget.
      */
     virtual std::string getDescription() const override;
-    
-    /* temp */
-    const std::string& getTextureFile() const { return _textureFile; };
-    const TextureResType getTextureResType() const { return _renderBarTexType; };
-    /**/
-    
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

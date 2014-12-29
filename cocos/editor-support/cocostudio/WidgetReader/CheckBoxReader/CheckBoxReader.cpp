@@ -4,11 +4,10 @@
 
 #include "ui/UICheckBox.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
@@ -157,59 +156,7 @@ namespace cocostudio
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-    
-    void CheckBoxReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        CheckBox* checkBox = static_cast<CheckBox*>(widget);
-        const protocolbuffers::CheckBoxOptions& options = nodeTree.checkboxoptions();
-
-		std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();
-        
-        //load background image
-		const protocolbuffers::ResourceData& backGroundDic = options.backgroundboxdata();
-        int backGroundType = backGroundDic.resourcetype();
-        std::string backGroundTexturePath = this->getResourcePath(backGroundDic.path(), (Widget::TextureResType)backGroundType);
-        checkBox->loadTextureBackGround(backGroundTexturePath, (Widget::TextureResType)backGroundType);
-        
-        //load background selected image
-        const protocolbuffers::ResourceData& backGroundSelectedDic = options.backgroundboxselecteddata();
-        int backGroundSelectedType = backGroundSelectedDic.resourcetype();
-        std::string backGroundSelectedTexturePath = this->getResourcePath(backGroundSelectedDic.path(), (Widget::TextureResType)backGroundSelectedType);
-        checkBox->loadTextureBackGroundSelected(backGroundSelectedTexturePath, (Widget::TextureResType)backGroundSelectedType);
-        
-        //load frontCross image
-        const protocolbuffers::ResourceData& frontCrossDic = options.frontcrossdata();
-        int frontCrossType = frontCrossDic.resourcetype();
-        std::string frontCrossFileName = this->getResourcePath(frontCrossDic.path(), (Widget::TextureResType)frontCrossType);
-        checkBox->loadTextureFrontCross(frontCrossFileName, (Widget::TextureResType)frontCrossType);
-        
-        //load backGroundBoxDisabledData
-        const protocolbuffers::ResourceData& backGroundDisabledDic = options.backgroundboxdisableddata();
-        int backGroundDisabledType = backGroundDisabledDic.resourcetype();
-        std::string backGroundDisabledFileName = this->getResourcePath(backGroundDisabledDic.path(), (Widget::TextureResType)backGroundDisabledType);
-        checkBox->loadTextureBackGroundDisabled(backGroundDisabledFileName, (Widget::TextureResType)backGroundDisabledType);
-        
-        ///load frontCrossDisabledData
-        const protocolbuffers::ResourceData& frontCrossDisabledDic = options.frontcrossdisableddata();
-        int frontCrossDisabledType = frontCrossDisabledDic.resourcetype();
-        std::string frontCrossDisabledFileName = this->getResourcePath(frontCrossDisabledDic.path(), (Widget::TextureResType)frontCrossDisabledType);
-        checkBox->loadTextureFrontCrossDisabled(frontCrossDisabledFileName, (Widget::TextureResType)frontCrossDisabledType);
-        
-        checkBox->setSelected(options.selectedstate());
-        
-		bool displaystate = true;
-		if(options.has_displaystate())
-		{
-			displaystate = options.displaystate();
-		}
-		checkBox->setBright(displaystate);
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-    }
+    }        
     
     Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData,
                                                                flatbuffers::FlatBufferBuilder *builder)
@@ -402,7 +349,7 @@ namespace cocostudio
                 if (backGroundBoxDisabledResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             else if (name == "NodeDisableFileData")
@@ -437,7 +384,7 @@ namespace cocostudio
                 if (frontCrossDisabledResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             
@@ -486,7 +433,7 @@ namespace cocostudio
         std::string backGroundErrorFilePath = "";
         auto backGroundDic = options->backGroundBoxData();
         int backGroundType = backGroundDic->resourceType();
-        std::string backGroundTexturePath = this->getResourcePath(backGroundDic->path()->c_str(), (Widget::TextureResType)backGroundType);
+        std::string backGroundTexturePath = backGroundDic->path()->c_str();
         switch (backGroundType)
         {
             case 0:
@@ -551,7 +498,7 @@ namespace cocostudio
         std::string backGroundSelectedErrorFilePath = "";
         auto backGroundSelectedDic = options->backGroundBoxSelectedData();
         int backGroundSelectedType = backGroundSelectedDic->resourceType();
-        std::string backGroundSelectedTexturePath = this->getResourcePath(backGroundSelectedDic->path()->c_str(), (Widget::TextureResType)backGroundSelectedType);
+        std::string backGroundSelectedTexturePath = backGroundSelectedDic->path()->c_str();
         switch (backGroundSelectedType)
         {
             case 0:
@@ -616,7 +563,7 @@ namespace cocostudio
         std::string frontCrossErrorFilePath = "";
         auto frontCrossDic = options->frontCrossData();
         int frontCrossType = frontCrossDic->resourceType();
-        std::string frontCrossFileName = this->getResourcePath(frontCrossDic->path()->c_str(), (Widget::TextureResType)frontCrossType);
+        std::string frontCrossFileName = frontCrossDic->path()->c_str();
         switch (frontCrossType)
         {
             case 0:
@@ -681,7 +628,7 @@ namespace cocostudio
         std::string backGroundBoxDisabledErrorFilePath = "";
         auto backGroundDisabledDic = options->backGroundBoxDisabledData();
         int backGroundDisabledType = backGroundDisabledDic->resourceType();
-        std::string backGroundDisabledFileName = this->getResourcePath(backGroundDisabledDic->path()->c_str(), (Widget::TextureResType)backGroundDisabledType);
+        std::string backGroundDisabledFileName = backGroundDisabledDic->path()->c_str();
         switch (backGroundDisabledType)
         {
             case 0:
@@ -746,7 +693,7 @@ namespace cocostudio
         std::string frontCrossDisabledErrorFilePath = "";
         auto frontCrossDisabledDic = options->frontCrossDisabledData();
         int frontCrossDisabledType = frontCrossDisabledDic->resourceType();
-        std::string frontCrossDisabledFileName = this->getResourcePath(frontCrossDisabledDic->path()->c_str(), (Widget::TextureResType)frontCrossDisabledType);
+        std::string frontCrossDisabledFileName = frontCrossDisabledDic->path()->c_str();
         switch (frontCrossDisabledType)
         {
             case 0:

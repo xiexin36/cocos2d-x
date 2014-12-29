@@ -193,10 +193,6 @@ public:
     
     void requestRefreshView();
     void refreshView();
-    
-    /* temp */
-    const ListView::Gravity getGravity() const { return _gravity; };
-    /**/
 
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

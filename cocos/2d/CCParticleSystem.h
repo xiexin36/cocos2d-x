@@ -30,7 +30,6 @@ THE SOFTWARE.
 #include "base/CCProtocols.h"
 #include "2d/CCNode.h"
 #include "base/CCValue.h"
-#include "deprecated/CCString.h"
 
 NS_CC_BEGIN
 
@@ -372,10 +371,6 @@ public:
     * @lua NA
     */
     virtual const BlendFunc &getBlendFunc() const override;
-    
-    /* temp */
-    const std::string getPlistFile () const { return _plistFile; };
-    /**/
     
 CC_CONSTRUCTOR_ACCESS:
     /**

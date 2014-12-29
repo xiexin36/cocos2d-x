@@ -23,7 +23,6 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "ui/UIScrollView.h"
-#include "ui/UILayoutComponent.h"
 
 NS_CC_BEGIN
 
@@ -158,7 +157,7 @@ void ScrollView::setInnerContainerSize(const Size &size)
     Size originalInnerSize = _innerContainer->getContentSize();
     if (size.width < _contentSize.width)
     {
-//        CCLOG("Inner width <= scrollview width, it will be force sized!");
+        CCLOG("Inner width <= scrollview width, it will be force sized!");
     }
     else
     {
@@ -166,7 +165,7 @@ void ScrollView::setInnerContainerSize(const Size &size)
     }
     if (size.height < _contentSize.height)
     {
-//        CCLOG("Inner height <= scrollview height, it will be force sized!");
+        CCLOG("Inner height <= scrollview height, it will be force sized!");
     }
     else
     {
@@ -704,7 +703,7 @@ bool ScrollView::checkCustomScrollDestination(float* touchOffsetX, float* touchO
     bool scrollenabled = true;
     switch (_direction)
     {
-        case Direction::VERTICAL: // vertical
+        case Direction::VERTICAL:
         {
             if (_autoScrollDir.y > 0)
             {
@@ -726,7 +725,7 @@ bool ScrollView::checkCustomScrollDestination(float* touchOffsetX, float* touchO
             }
             break;
         }
-        case Direction::HORIZONTAL: // horizontal
+        case Direction::HORIZONTAL:
         {
             if (_autoScrollDir.x > 0)
             {
@@ -1251,7 +1250,7 @@ void ScrollView::scrollToTopLeft(float time, bool attenuated)
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     startAutoScrollChildrenWithDestination(Vec2(0.0f, _contentSize.height - _innerContainer->getContentSize().height), time, attenuated);
@@ -1261,7 +1260,7 @@ void ScrollView::scrollToTopRight(float time, bool attenuated)
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     startAutoScrollChildrenWithDestination(Vec2(_contentSize.width - _innerContainer->getContentSize().width,
@@ -1272,7 +1271,7 @@ void ScrollView::scrollToBottomLeft(float time, bool attenuated)
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     startAutoScrollChildrenWithDestination(Vec2::ZERO, time, attenuated);
@@ -1282,7 +1281,7 @@ void ScrollView::scrollToBottomRight(float time, bool attenuated)
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     startAutoScrollChildrenWithDestination(Vec2(_contentSize.width - _innerContainer->getContentSize().width, 0.0f), time, attenuated);
@@ -1338,7 +1337,7 @@ void ScrollView::jumpToTopLeft()
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     jumpToDestination(Vec2(0.0f, _contentSize.height - _innerContainer->getContentSize().height));
@@ -1348,7 +1347,7 @@ void ScrollView::jumpToTopRight()
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     jumpToDestination(Vec2(_contentSize.width - _innerContainer->getContentSize().width,
@@ -1359,7 +1358,7 @@ void ScrollView::jumpToBottomLeft()
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     jumpToDestination(Vec2::ZERO);
@@ -1369,7 +1368,7 @@ void ScrollView::jumpToBottomRight()
 {
     if (_direction != Direction::BOTH)
     {
-//        CCLOG("Scroll diretion is not both!");
+        CCLOG("Scroll diretion is not both!");
         return;
     }
     jumpToDestination(Vec2(_contentSize.width - _innerContainer->getContentSize().width, 0.0f));
@@ -1613,7 +1612,8 @@ void ScrollView::scrollToTopEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_SCROLL_TO_TOP);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::SCROLL_TO_TOP);
     }
     if (_ccEventCallback)
@@ -1630,7 +1630,8 @@ void ScrollView::scrollToBottomEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_SCROLL_TO_BOTTOM);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::SCROLL_TO_BOTTOM);
     }
     if (_ccEventCallback)
@@ -1647,7 +1648,8 @@ void ScrollView::scrollToLeftEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_SCROLL_TO_LEFT);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::SCROLL_TO_LEFT);
     }
     if (_ccEventCallback)
@@ -1664,7 +1666,8 @@ void ScrollView::scrollToRightEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_SCROLL_TO_RIGHT);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::SCROLL_TO_RIGHT);
     }
     if (_ccEventCallback)
@@ -1681,7 +1684,8 @@ void ScrollView::scrollingEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_SCROLLING);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::SCROLLING);
     }
     if (_ccEventCallback)
@@ -1698,7 +1702,8 @@ void ScrollView::bounceTopEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_BOUNCE_TOP);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::BOUNCE_TOP);
     }
     if (_ccEventCallback)
@@ -1715,7 +1720,8 @@ void ScrollView::bounceBottomEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_BOUNCE_BOTTOM);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::BOUNCE_BOTTOM);
     }
     if (_ccEventCallback)
@@ -1732,7 +1738,8 @@ void ScrollView::bounceLeftEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_BOUNCE_LEFT);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::BOUNCE_LEFT);
     }
     if (_ccEventCallback)
@@ -1749,7 +1756,8 @@ void ScrollView::bounceRightEvent()
     {
         (_scrollViewEventListener->*_scrollViewEventSelector)(this, SCROLLVIEW_EVENT_BOUNCE_RIGHT);
     }
-    if (_eventCallback) {
+    if (_eventCallback)
+    {
         _eventCallback(this,EventType::BOUNCE_RIGHT);
     }
     if (_ccEventCallback)
@@ -1859,7 +1867,8 @@ void ScrollView::copySpecialProperties(Widget *widget)
 Widget* ScrollView::findNextFocusedWidget(cocos2d::ui::Widget::FocusDirection direction, cocos2d::ui::Widget *current)
 {
     if (this->getLayoutType() == Layout::Type::VERTICAL
-        || this->getLayoutType() == Layout::Type::HORIZONTAL) {
+        || this->getLayoutType() == Layout::Type::HORIZONTAL)
+    {
         return _innerContainer->findNextFocusedWidget(direction, current);
     }
     else

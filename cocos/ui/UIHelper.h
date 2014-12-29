@@ -26,7 +26,7 @@ THE SOFTWARE.
 #define __UIHELPER_H__
 
 #include <string>
-#include "base/CCPlatformMacros.h"
+#include "platform/CCPlatformMacros.h"
 #include "ui/GUIExport.h"
 #include "2d/CCNode.h"
 
@@ -80,7 +80,7 @@ public:
                                    std::string::size_type length);
     
     /**
-     * Refresh object and it's children lay out state
+     * Refresh object and it's children layout state
      *
      *@param rootNode   object which will be changed
      *
@@ -88,6 +88,15 @@ public:
     static void doLayout(Node *rootNode);
 
     static void changeLayoutSystemActiveState(bool bActive);
+    
+    /**
+     *@brief  restrict capInsetSize, when the capInsets's width is larger than the textureSize, it will restrict to 0,
+     *        the height goes the same way as width.
+     *@param  capInsets A user defined capInsets.
+     *@param  textureSize  The size of a scale9enabled texture
+     *@return a restricted capInset.
+     */
+    static Rect restrictCapInsetRect(const Rect& capInsets, const Size& textureSize);
 };
 }
 

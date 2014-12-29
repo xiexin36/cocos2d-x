@@ -4,11 +4,10 @@
 
 #include "ui/UIButton.h"
 #include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
@@ -233,107 +232,12 @@ namespace cocostudio
         button->setTitleFontSize(DICTOOL->getIntValue_json(options, P_FontSize,14));
         
 
-        button->setTitleFontName(DICTOOL->getStringValue_json(options, P_FontName,"微软雅黑"));
+        button->setTitleFontName(DICTOOL->getStringValue_json(options, P_FontName, ""));
         
         
         
         WidgetReader::setColorPropsFromJsonDictionary(widget, options);
-    }
-    
-    void ButtonReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        WidgetReader::setPropsFromProtocolBuffers(widget, nodeTree);
-        
-        Button* button = static_cast<Button*>(widget);
-        const protocolbuffers::ButtonOptions& options = nodeTree.buttonoptions();
-        
-        std::string protocolBuffersPath = GUIReader::getInstance()->getFilePath();;
-        
-        bool scale9Enable = options.scale9enable();
-        button->setScale9Enabled(scale9Enable);
-        
-        
-		const protocolbuffers::ResourceData& normalDic = options.normaldata();
-        int normalType = normalDic.resourcetype();
-        std::string normalTexturePath = this->getResourcePath(normalDic.path(), (Widget::TextureResType)normalType);		
-        button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
-        
-        
-        const protocolbuffers::ResourceData& pressedDic = options.presseddata();
-        int pressedType = pressedDic.resourcetype();
-        std::string pressedTexturePath = this->getResourcePath(pressedDic.path(), (Widget::TextureResType)pressedType);
-        button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
-        
-        
-        const protocolbuffers::ResourceData& disabledDic = options.disableddata();
-        int disabledType = disabledDic.resourcetype();
-        std::string disabledTexturePath = this->getResourcePath(disabledDic.path(), (Widget::TextureResType)disabledType);
-        button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
-        
-        if (scale9Enable)
-        {
-            button->setUnifySizeEnabled(false);
-            button->ignoreContentAdaptWithSize(false);
-            
-            float cx = options.capinsetsx();
-            float cy = options.capinsetsy();
-            float cw = options.capinsetswidth();
-            float ch = options.capinsetsheight();
-            
-            button->setCapInsets(Rect(cx, cy, cw, ch));
-            bool sw = options.has_scale9width();
-            bool sh = options.has_scale9height();
-            if (sw && sh)
-            {
-                float swf = options.scale9width();
-                float shf = options.scale9height();
-                button->setContentSize(Size(swf, shf));
-            }
-        }
-        bool tt = options.has_text();
-        if (tt)
-        {
-            const char* text = options.text().c_str();
-            if (text)
-            {
-                button->setTitleText(text);
-            }
-        }
-        
-        
-        int cri = options.has_textcolorr() ? options.textcolorr() : 255;
-        int cgi = options.has_textcolorg() ? options.textcolorg() : 255;
-        int cbi = options.has_textcolorb() ? options.textcolorb() : 255;
-        button->setTitleColor(Color3B(cri,cgi,cbi));
-        
-        
-        int fontSize = options.has_fontsize() ? options.fontsize() : 14;
-        button->setTitleFontSize(fontSize);
-        
-		bool displaystate = true;
-		if(options.has_displaystate())
-		{
-			displaystate = options.displaystate();
-		}
-		button->setBright(displaystate);
-
-        const char* fontName = options.has_fontname() ? options.fontname().c_str() : "微软雅黑";
-        button->setTitleFontName(fontName);
-        
-        if (options.has_fontresource())
-		{
-			const protocolbuffers::ResourceData& resourceData = options.fontresource();
-		    button->setTitleFontName(protocolBuffersPath + resourceData.path());
-		}
-        
-        const protocolbuffers::WidgetOptions& widgetOption = nodeTree.widgetoptions();
-        button->setColor(Color3B(widgetOption.colorr(), widgetOption.colorg(), widgetOption.colorb()));
-        button->setOpacity(widgetOption.has_alpha() ? widgetOption.alpha() : 255);
-        
-        
-        // other commonly protperties
-        WidgetReader::setColorPropsFromProtocolBuffers(widget, nodeTree);
-    }
+    }    
     
     Offset<Table> ButtonReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData, flatbuffers::FlatBufferBuilder *builder)
     {
@@ -533,7 +437,7 @@ namespace cocostudio
                 if (pressedResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             else if (name == "NormalFileData")
@@ -568,7 +472,7 @@ namespace cocostudio
                 if (normalResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));                                        
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             else if (name == "FontResource")
@@ -647,7 +551,7 @@ namespace cocostudio
         std::string normalErrorFilePath = "";
         auto normalDic = options->normalData();
         int normalType = normalDic->resourceType();
-        std::string normalTexturePath = this->getResourcePath(normalDic->path()->c_str(), (Widget::TextureResType)normalType);
+        std::string normalTexturePath = normalDic->path()->c_str();
         switch (normalType)
         {
             case 0:
@@ -709,7 +613,7 @@ namespace cocostudio
         std::string pressedErrorFilePath = "";
         auto pressedDic = options->pressedData();
         int pressedType = pressedDic->resourceType();
-        std::string pressedTexturePath = this->getResourcePath(pressedDic->path()->c_str(), (Widget::TextureResType)pressedType);
+        std::string pressedTexturePath = pressedDic->path()->c_str();
         switch (pressedType)
         {
             case 0:
@@ -773,7 +677,7 @@ namespace cocostudio
         std::string disabledErrorFilePath = "";
         auto disabledDic = options->disabledData();
         int disabledType = disabledDic->resourceType();
-        std::string disabledTexturePath = this->getResourcePath(disabledDic->path()->c_str(), (Widget::TextureResType)disabledType);
+        std::string disabledTexturePath = disabledDic->path()->c_str();
         switch (disabledType)
         {
             case 0:
@@ -821,7 +725,7 @@ namespace cocostudio
                 
             default:
                 break;
-        }        
+        }
         if (disabledFileExist)
         {
             button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
@@ -876,7 +780,7 @@ namespace cocostudio
         bool displaystate = options->displaystate();
         button->setBright(displaystate);
         button->setEnabled(displaystate);
-
+        
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
@@ -891,6 +795,11 @@ namespace cocostudio
             
             Size scale9Size(options->scale9Size()->width(), options->scale9Size()->height());
             button->setContentSize(scale9Size);
+        }
+        else
+        {
+            Size contentSize(options->widgetOptions()->size()->width(), options->widgetOptions()->size()->height());
+            button->setContentSize(contentSize);
         }
     }
     

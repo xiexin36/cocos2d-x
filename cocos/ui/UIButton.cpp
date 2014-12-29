@@ -216,7 +216,7 @@ void Button::loadTextures(const std::string& normal,
 
 void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
 {
-    if (normal.empty())
+    if (normal.empty() || (_normalFileName == normal && _normalTexType == texType))
     {
         return;
     }
@@ -236,13 +236,9 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
     }
     
     _normalTextureSize = _buttonNormalRenderer->getContentSize();
-    updateFlippedX();
-    updateFlippedY();
+   
     this->updateChildrenDisplayedRGBA();
     
-    _normalTextureLoaded = true;
-    _normalTextureAdaptDirty = true;
-
     if (_unifySize )
     {
         if (!_scale9Enabled)
@@ -254,11 +250,13 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
     {
         updateContentSizeWithTextureSize(_normalTextureSize);
     }
+    _normalTextureLoaded = true;
+    _normalTextureAdaptDirty = true;
 }
 
 void Button::loadTexturePressed(const std::string& selected,TextureResType texType)
 {
-    if (selected.empty())
+    if (selected.empty() || (_clickedFileName == selected && _pressedTexType == texType))
     {
         return;
     }
@@ -278,9 +276,7 @@ void Button::loadTexturePressed(const std::string& selected,TextureResType texTy
     }
     
     _pressedTextureSize = _buttonClickedRenderer->getContentSize();
-    //TODO: mark as dirty
-    updateFlippedX();
-    updateFlippedY();
+  
     this->updateChildrenDisplayedRGBA();
 
     _pressedTextureLoaded = true;
@@ -289,7 +285,7 @@ void Button::loadTexturePressed(const std::string& selected,TextureResType texTy
 
 void Button::loadTextureDisabled(const std::string& disabled,TextureResType texType)
 {
-    if (disabled.empty())
+    if (disabled.empty() || (_disabledFileName == disabled && _disabledTexType == texType))
     {
         return;
     }
@@ -309,8 +305,7 @@ void Button::loadTextureDisabled(const std::string& disabled,TextureResType texT
     }
 
     _disabledTextureSize = _buttonDisableRenderer->getContentSize();
-    updateFlippedX();
-    updateFlippedY();
+   
     this->updateChildrenDisplayedRGBA();
 
     _disabledTextureLoaded = true;
@@ -540,25 +535,6 @@ void Button::onPressStateChangedToDisabled()
     _buttonNormalRenderer->setScale(_normalTextureScaleXInSize, _normalTextureScaleYInSize);
     _buttonClickedRenderer->setScale(_pressedTextureScaleXInSize, _pressedTextureScaleYInSize);
 }
-
-void Button::updateFlippedX()
-{
-    float flip = _flippedX ? -1.0f : 1.0f;
-    _titleRenderer->setScaleX(flip);
-
-    _buttonNormalRenderer->setFlippedX(_flippedX);
-    _buttonClickedRenderer->setFlippedX(_flippedX);
-    _buttonDisableRenderer->setFlippedX(_flippedX);
-}
-    
-void Button::updateFlippedY()
-{
-    float flip = _flippedY ? -1.0f : 1.0f;
-    _titleRenderer->setScaleY(flip);
-    _buttonNormalRenderer->setFlippedY(_flippedY);
-    _buttonClickedRenderer->setFlippedY(_flippedY);
-    _buttonDisableRenderer->setFlippedY(_flippedY);
-}
     
 void Button::updateTitleLocation()
 {
@@ -649,6 +625,7 @@ Node* Button::getVirtualRenderer()
 
 void Button::normalTextureScaleChangedWithSize()
 {
+
     if (_ignoreSize && !_unifySize)
     {
         if (!_scale9Enabled)
@@ -764,6 +741,10 @@ void Button::setPressedActionEnabled(bool enabled)
 
 void Button::setTitleText(const std::string& text)
 {
+    if (text == getTitleText())
+    {
+        return;
+    }
     _titleRenderer->setString(text);
     updateContentSize();
 }
@@ -886,14 +867,7 @@ Size Button::getNormalSize() const
     Size imageSize;
     if (_buttonNormalRenderer != nullptr)
     {
-        if (_scale9Enabled)
-        {
-            imageSize = _buttonNormalRenderer->getContentSize();
-        }
-        else
-        {
-            imageSize = _normalTextureSize;
-        }
+        imageSize = _buttonNormalRenderer->getContentSize();
     }
     float width = titleSize.width > imageSize.width ? titleSize.width : imageSize.width;
     float height = titleSize.height > imageSize.height ? titleSize.height : imageSize.height;

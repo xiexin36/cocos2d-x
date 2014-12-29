@@ -31,17 +31,14 @@ THE SOFTWARE.
 #include "base/ObjectFactory.h"
 #include "cocostudio/CocosStudioExport.h"
 
-/* peterson */
-namespace flatbuffers
-{
-    struct NodeTree;
-    struct Options;
-}
-/**/
-
 namespace protocolbuffers
 {
     class NodeTree;
+}
+
+namespace tinyxml2
+{
+    class XMLElement;
 }
 
 namespace cocostudio {
@@ -85,6 +82,11 @@ public:
                                  cocos2d::ObjectFactory::Instance ins,
                                  Ref* object,
                                  SEL_ParseEvent callBack);
+
+    void registerTypeAndCallBack(const std::string& classType,
+                                 cocos2d::ObjectFactory::InstanceFunc ins,
+                                 Ref* object,
+                                 SEL_ParseEvent callBack);
 protected:
     GUIReader();
     ~GUIReader();
@@ -98,8 +100,8 @@ protected:
     ParseObjectMap _mapObject;
     
 public:
-    ParseCallBackMap getParseCallBackMap() { return _mapParseSelector; };
-    ParseObjectMap getParseObjectMap() { return _mapObject; };
+    ParseCallBackMap* getParseCallBackMap() { return &_mapParseSelector; };
+    ParseObjectMap* getParseObjectMap() { return &_mapObject; };
     
 };
 
@@ -123,18 +125,6 @@ public:
                                                 cocos2d::ui::Widget* widget,
                                                 CocoLoader* cocoLoader,
                                                 stExpCocoNode*	pCocoNode) = 0;
-    
-    virtual cocos2d::ui::Widget* widgetFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree) = 0;
-    virtual void setPropsForAllWidgetFromProtocolBuffers(WidgetReaderProtocol* reader,
-                                                         cocos2d::ui::Widget* widget,
-                                                         const protocolbuffers::NodeTree& nodetree) = 0;
-    
-    /* peterson */
-    virtual cocos2d::ui::Widget* widgetWithFlatBuffers(const flatbuffers::NodeTree* nodeTree) = 0;
-    virtual void setPropsForAllWidgetWithFlatBuffers(WidgetReaderProtocol* reader,
-                                                     cocos2d::ui::Widget* widget,
-                                                     const flatbuffers::Options* options) = 0;
-    /**/
     
 protected:
     void setAnchorPointForWidget(cocos2d::ui::Widget* widget, const rapidjson::Value&options);
@@ -195,18 +185,6 @@ public:
     virtual void setPropsForAllCustomWidgetFromJsonDictionary(const std::string& classType,
                                                               cocos2d::ui::Widget* widget,
                                                               const rapidjson::Value& customOptions);
-    
-    virtual cocos2d::ui::Widget* widgetFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree) { return NULL; };
-    virtual void setPropsForAllWidgetFromProtocolBuffers(WidgetReaderProtocol* reader,
-                                                         cocos2d::ui::Widget* widget,
-                                                         const protocolbuffers::NodeTree& nodetree) {};
-    
-    /* peterson */
-    virtual cocos2d::ui::Widget* widgetWithFlatBuffers(const flatbuffers::NodeTree* nodeTree) { return nullptr; };
-    virtual void setPropsForAllWidgetWithFlatBuffers(WidgetReaderProtocol* reader,
-                                                     cocos2d::ui::Widget* widget,
-                                                     const flatbuffers::Options* options) {};
-    /**/
 };
    
 class CC_STUDIO_DLL WidgetPropertiesReader0300 : public WidgetPropertiesReader
@@ -250,20 +228,7 @@ public:
     
     virtual void setPropsForAllCustomWidgetFromJsonDictionary(const std::string& classType,
                                                               cocos2d::ui::Widget* widget,
-                                                              const rapidjson::Value& customOptions);
-    
-    virtual cocos2d::ui::Widget* widgetFromProtocolBuffers(const protocolbuffers::NodeTree& nodetree);
-    virtual void setPropsForAllWidgetFromProtocolBuffers(WidgetReaderProtocol* reader,
-                                                         cocos2d::ui::Widget* widget,
-                                                         const protocolbuffers::NodeTree& nodetree);
-    
-    /* peterson */
-    virtual cocos2d::ui::Widget* widgetWithFlatBuffers(const flatbuffers::NodeTree* nodeTree);
-    virtual void setPropsForAllWidgetWithFlatBuffers(WidgetReaderProtocol* reader,
-                                                     cocos2d::ui::Widget* widget,
-                                                     const flatbuffers::Options* options);
-    /**/
-   
+                                                              const rapidjson::Value& customOptions);        
 };
 
 

@@ -95,6 +95,13 @@ public:
                             const std::string& backGroundDisabled,
                             const std::string& frontCrossDisabled,
                             TextureResType texType = TextureResType::LOCAL);
+    
+    /**
+     * use less resource to create a CheckBox
+     */
+    static CheckBox* create(const std::string& backGround,
+                            const std::string& cross,
+                            TextureResType texType = TextureResType::LOCAL);
 
     /**
      * Load textures for checkbox.
@@ -194,19 +201,16 @@ public:
      */
     virtual std::string getDescription() const override;
     
-    /* temp */
-    const std::string& getBackGroundFileName() const { return _backGroundFileName; };
-    const std::string& getBackGroundSelectedFileName() const { return _backGroundSelectedFileName; };
-    const std::string& getFrontCrossFileName() const { return _frontCrossFileName; };
-    const std::string& getBackGroundDisabledFileName() const { return _backGroundDisabledFileName; };
-    const std::string& getFrontCrossDisabledFileName() const { return _frontCrossDisabledFileName; };
-    
-    const TextureResType getBackGroundTextureResType() const { return _backGroundTexType; };
-    const TextureResType getBackGroundSelectedTextureResType() const { return _backGroundSelectedTexType; };
-    const TextureResType getFrontCrossTextureResType() const { return _frontCrossDisabledTexType; };
-    const TextureResType getBackGroundDisabledTextureResType() const { return _backGroundDisabledTexType; };
-    const TextureResType getFrontCrossDisabledTextureResType() const { return _frontCrossDisabledTexType; };
-    /**/
+    /** When user pressed the button, the button will zoom to a scale.
+     * The final scale of the button  equals (button original scale + _zoomScale)
+     * @since v3.3
+     */
+    void setZoomScale(float scale);
+    /**
+     * @brief Return a zoom scale
+     * @since v3.3
+     */
+    float getZoomScale()const;
     
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
@@ -229,9 +233,6 @@ protected:
     virtual void releaseUpEvent();
     
     virtual void onSizeChanged() override;
-  
-    virtual void updateFlippedX() override;
-    virtual void updateFlippedY() override;
     
     void backGroundTextureScaleChangedWithSize();
     void backGroundSelectedTextureScaleChangedWithSize();
@@ -273,6 +274,9 @@ protected:
     TextureResType _backGroundDisabledTexType;
     TextureResType _frontCrossDisabledTexType;
 
+    float _zoomScale;
+    float _backgroundTextureScaleX;
+    float _backgroundTextureScaleY;
     std::string _backGroundFileName;
     std::string _backGroundSelectedFileName;
     std::string _frontCrossFileName;

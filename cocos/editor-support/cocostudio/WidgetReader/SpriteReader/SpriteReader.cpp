@@ -28,7 +28,7 @@
 #include "cocostudio/FlatBuffersSerialize.h"
 #include "cocostudio/WidgetReader/NodeReader/NodeReader.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
@@ -113,7 +113,7 @@ namespace cocostudio
                 if (resourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(texture));                    
                 }
             }
             

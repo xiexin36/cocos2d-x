@@ -54,16 +54,13 @@ namespace cocostudio
         virtual void setColorPropsFromJsonDictionary(cocos2d::ui::Widget* widget,
                                                      const rapidjson::Value& options);
         
-        virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader,  stExpCocoNode*	pCocoNode);
-        
-        virtual void setPropsFromProtocolBuffers(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree);
-        virtual void setColorPropsFromProtocolBuffers(cocos2d::ui::Widget* widget,
-                                                      const protocolbuffers::NodeTree& nodeTree);
+        virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader,  stExpCocoNode*	pCocoNode);        
         
         /* flatbuffers refactoring */
         flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
                                                                              flatbuffers::FlatBufferBuilder* builder);
         void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* widgetOptions);
+        void setLayoutComponentPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* widgetOptions);
         cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* widgetOptions);
         /**/
         
@@ -76,9 +73,7 @@ namespace cocostudio
         
         std::string getResourcePath(CocoLoader* cocoLoader,
                                     stExpCocoNode*	pCocoNode,
-                                    cocos2d::ui::Widget::TextureResType texType);
-        
-        void setAnchorPointForWidget(cocos2d::ui::Widget* widget, const protocolbuffers::NodeTree& nodeTree);
+                                    cocos2d::ui::Widget::TextureResType texType);                
         
         std::string getResourcePath(const std::string& path,
                                     cocos2d::ui::Widget::TextureResType texType);

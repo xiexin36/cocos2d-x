@@ -5,11 +5,12 @@
 #include "cocostudio/CocoLoader.h"
 #include "ui/UIButton.h"
 #include "../ActionTimeline/CCActionTimeline.h"
-#include "cocostudio/CSParseBinary.pb.h"
 #include "cocostudio/CSParseBinary_generated.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
+#include "ui/UILayoutComponent.h"
+#include "cocostudio/ActionTimeline/CSLoader.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -20,7 +21,6 @@ using namespace flatbuffers;
 
 namespace cocostudio
 {
-    
     
     const char* P_IgnoreSize = "ignoreSize";
     const char* P_SizeType = "sizeType";
@@ -66,6 +66,24 @@ namespace cocostudio
     
     const char* P_ResourceType = "resourceType";
     const char* P_Path = "path";
+
+    const char* P_Layout_PositionPercentXEnabled = "PositionPercentXEnable";
+    const char* P_Layout_PositionPercentYEnabled = "PositionPercentYEnable";
+    const char* P_Layout_PercentWidthEnable = "PercentWidthEnable";
+    const char* P_Layout_PercentHeightEnable = "PercentHeightEnable";
+    const char* P_Layout_StretchWidthEnable = "StretchWidthEnable";
+    const char* P_Layout_StretchHeightEnable = "StretchHeightEnable";
+    const char* P_Layout_HorizontalEdge = "HorizontalEdge";
+    const char* P_Layout_VerticalEdge = "VerticalEdge";
+    const char* P_Layout_LeftMargin = "LeftMargin";
+    const char* P_Layout_RightMargin = "RightMargin";
+    const char* P_Layout_TopMargin = "TopMargin";
+    const char* P_Layout_BottomMargin = "BottomMargin";
+    const char* P_Layout_BothEdge = "BothEdge";
+    const char* P_Layout_LeftEdge = "LeftEdge";
+    const char* P_Layout_RightEdge = "RightEdge";
+    const char* P_Layout_TopEdge = "TopEdge";
+    const char* P_Layout_BottomEdge = "BottomEdge";
 
     
     static WidgetReader* instanceWidgetReader = nullptr;
@@ -361,148 +379,7 @@ namespace cocostudio
         }
         
         this->endSetBasicProperties(widget);
-    }
-    
-    void WidgetReader::setPropsFromProtocolBuffers(ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        
-        const protocolbuffers::WidgetOptions& options = nodeTree.widgetoptions();
-        
-        widget->setCascadeColorEnabled(true);
-        widget->setCascadeOpacityEnabled(true);
-        widget->setAnchorPoint(Vec2::ZERO);
-        
-        widget->setUnifySizeEnabled(true);
-        
-        bool ignoreSizeExsit = options.has_ignoresize();
-        if (ignoreSizeExsit)
-        {
-            widget->ignoreContentAdaptWithSize(options.ignoresize());
-        }
-        
-        widget->setSizeType((Widget::SizeType)options.sizetype());
-        widget->setPositionType((Widget::PositionType)options.positiontype());
-        
-        widget->setSizePercent(Vec2(options.sizepercentx(), options.sizepercenty()));
-        widget->setPositionPercent(Vec2(options.positionpercentx(), options.positionpercenty()));
-        
-        float w = options.width();
-        float h = options.height();
-        widget->setContentSize(Size(w, h));
-        
-        widget->setTag(options.tag());
-        widget->setActionTag(options.actiontag());
-        widget->setTouchEnabled(options.touchable());
-        const char* name = options.name().c_str();
-        const char* widgetName = name ? name : "default";
-        widget->setName(widgetName);
-        
-        float x = options.x();
-        float y = options.y();
-        widget->setPosition(Vec2(x, y));
-        
-		if(options.has_alpha())
-		{
-			widget->setOpacity(options.alpha());
-		}
-        
-        widget->setScaleX(options.has_scalex() ? options.scalex() : 1.0);
-        
-        
-        widget->setScaleY(options.has_scaley() ? options.scaley() : 1.0);
-
-		widget->setRotationSkewX(options.has_rotationskewx() ? options.rotationskewx() : 0.0);
-
-		widget->setRotationSkewY(options.has_rotationskewy() ? options.rotationskewy() : 0.0);
-        
-        bool vb = options.has_visible();
-        if (vb)
-        {
-            widget->setVisible(options.visible());
-        }
-        
-        int z = options.zorder();
-        widget->setLocalZOrder(z);        
-        
-        
-        bool layout = options.has_layoutparameter();
-        if (layout)
-        {
-            
-            const protocolbuffers::LayoutParameter& layoutParameterDic = options.layoutparameter();;
-            int paramType = layoutParameterDic.type();
-            
-            LayoutParameter* parameter = nullptr;
-            switch (paramType)
-            {
-                case 0:
-                    break;
-                case 1:
-                {
-                    parameter = LinearLayoutParameter::create();
-                    int gravity = layoutParameterDic.gravity();
-                    ((LinearLayoutParameter*)parameter)->setGravity((cocos2d::ui::LinearLayoutParameter::LinearGravity)gravity);
-                    break;
-                }
-                case 2:
-                {
-                    parameter = RelativeLayoutParameter::create();
-                    RelativeLayoutParameter* rParameter = (RelativeLayoutParameter*)parameter;
-                    const char* relativeName = layoutParameterDic.relativename().c_str();
-                    rParameter->setRelativeName(relativeName);
-                    const char* relativeToName = layoutParameterDic.relativetoname().c_str();
-                    rParameter->setRelativeToWidgetName(relativeToName);
-                    int align = layoutParameterDic.align();
-                    rParameter->setAlign((cocos2d::ui::RelativeLayoutParameter::RelativeAlign)align);
-                    break;
-                }
-                default:
-                    break;
-            }
-            if (parameter)
-            {
-                float mgl = layoutParameterDic.marginleft();
-                float mgt = layoutParameterDic.margintop();
-                float mgr = layoutParameterDic.marginright();
-                float mgb = layoutParameterDic.margindown();
-                parameter->setMargin(Margin(mgl, mgt, mgr, mgb));
-                widget->setLayoutParameter(parameter);
-            }
-        }
-        
-    }
-    
-    void WidgetReader::setColorPropsFromProtocolBuffers(cocos2d::ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        const protocolbuffers::WidgetOptions& options = nodeTree.widgetoptions();
-        
-       
-        bool isColorRExists = options.has_colorr();
-        bool isColorGExists = options.has_colorg();
-        bool isColorBExists = options.has_colorb();
-        
-        int colorR = options.colorr();
-        int colorG = options.colorg();
-        int colorB = options.colorb();
-        
-        if (isColorRExists && isColorGExists && isColorBExists)
-        {
-            widget->setColor(Color3B(colorR, colorG, colorB));
-        }
-        
-        setAnchorPointForWidget(widget, nodeTree);
-        
-        bool flipX = options.flipx();
-        bool flipY = options.flipy();
-        if (flipX)
-        {
-            widget->setFlippedX(flipX);
-        }
-        if (flipY)
-        {
-            widget->setFlippedY(flipY);
-        }
-    }
+    }        
     
     Offset<Table> WidgetReader::createOptionsWithFlatBuffers(const tinyxml2::XMLElement *objectData, flatbuffers::FlatBufferBuilder *builder)
     {
@@ -526,6 +403,23 @@ namespace cocostudio
         std::string customProperty = "";
         std::string callbackType = "";
         std::string callbackName = "";
+
+        bool positionXPercentEnabled = false;
+        bool positionYPercentEnabled = false;
+        float positionXPercent = 0;
+        float positionYPercent = 0;
+        bool sizeXPercentEnable = false;
+        bool sizeYPercentEnable = false;
+        float sizeXPercent = 0;
+        float sizeYPercent = 0;
+        bool stretchHorizontalEnabled = false;
+        bool stretchVerticalEnabled = false;
+        std::string horizontalEdge;
+        std::string verticalEdge;
+        float leftMargin = 0;
+        float rightMargin = 0;
+        float topMargin = 0;
+        float bottomMargin = 0;
         
         // attributes
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -598,7 +492,55 @@ namespace cocostudio
             {
                 callbackName = value;
             }
-            
+            else if (attriname == P_Layout_PositionPercentXEnabled)
+            {
+                positionXPercentEnabled = value == "True";
+            }
+            else if (attriname == P_Layout_PositionPercentYEnabled)
+            {
+                positionYPercentEnabled = value == "True";
+            }
+            else if (attriname == P_Layout_PercentWidthEnable)
+            {
+                sizeXPercentEnable = value == "True";
+            }
+            else if (attriname == P_Layout_PercentHeightEnable)
+            {
+                sizeYPercentEnable = value == "True";
+            }
+            else if (attriname == P_Layout_StretchWidthEnable)
+            {
+                stretchHorizontalEnabled = value == "True";
+            }
+            else if (attriname == P_Layout_StretchHeightEnable)
+            {
+                stretchVerticalEnabled = value == "True";
+            }
+            else if (attriname == P_Layout_HorizontalEdge)
+            {
+                horizontalEdge = value;
+            }
+            else if (attriname == P_Layout_VerticalEdge)
+            {
+                verticalEdge = value;
+            }
+            else if (attriname == P_Layout_LeftMargin)
+            {
+                leftMargin = atof(value.c_str());
+            }
+            else if (attriname == P_Layout_RightMargin)
+            {
+                rightMargin = atof(value.c_str());
+            }
+            else if (attriname == P_Layout_TopMargin)
+            {
+                topMargin = atof(value.c_str());
+            }
+            else if (attriname == P_Layout_BottomMargin)
+            {
+                bottomMargin = atof(value.c_str());
+            }
+
             attribute = attribute->Next();
         }
         
@@ -723,6 +665,48 @@ namespace cocostudio
                     attribute = attribute->Next();
                 }
             }
+            else if (attriname == "PrePosition")
+            {
+                attribute = child->FirstAttribute();
+
+                while (attribute)
+                {
+                    attriname = attribute->Name();
+                    std::string value = attribute->Value();
+
+                    if (attriname == "X")
+                    {
+                        positionXPercent = atof(value.c_str());
+                    }
+                    else if (attriname == "Y")
+                    {
+                        positionYPercent = atof(value.c_str());
+                    }
+
+                    attribute = attribute->Next();
+                }
+            }
+            else if (attriname == "PreSize")
+            {
+                attribute = child->FirstAttribute();
+
+                while (attribute)
+                {
+                    attriname = attribute->Name();
+                    std::string value = attribute->Value();
+
+                    if (attriname == "X")
+                    {
+                        sizeXPercent = atof(value.c_str());
+                    }
+                    else if (attriname == "Y")
+                    {
+                        sizeYPercent = atof(value.c_str());
+                    }
+
+                    attribute = attribute->Next();
+                }
+            }
             
             child = child->NextSiblingElement();
         }
@@ -733,6 +717,23 @@ namespace cocostudio
         AnchorPoint f_anchortpoint(anchorPoint.x, anchorPoint.y);
         Color f_color(color.a, color.r, color.g, color.b);
         FlatSize f_size(size.x, size.y);
+        auto f_layoutComponent = CreateLayoutComponentTable(*builder,
+                                                            positionXPercentEnabled,
+                                                            positionYPercentEnabled,
+                                                            positionXPercent,
+                                                            positionYPercent,
+                                                            sizeXPercentEnable,
+                                                            sizeYPercentEnable,
+                                                            sizeXPercent,
+                                                            sizeYPercent,
+                                                            stretchHorizontalEnabled,
+                                                            stretchVerticalEnabled,
+                                                            builder->CreateString(horizontalEdge),
+                                                            builder->CreateString(verticalEdge),
+                                                            leftMargin,
+                                                            rightMargin,
+                                                            topMargin,
+                                                            bottomMargin);
         
         auto options = CreateWidgetOptions(*builder,
                                            builder->CreateString(name),
@@ -754,8 +755,8 @@ namespace cocostudio
                                            builder->CreateString(frameEvent),
                                            builder->CreateString(customProperty),
                                            builder->CreateString(callbackType),
-                                           builder->CreateString(callbackName)
-                                           );
+                                           builder->CreateString(callbackName),
+                                           f_layoutComponent);
         
         return *(Offset<Table>*)(&options);
     }
@@ -771,14 +772,40 @@ namespace cocostudio
         widget->setAnchorPoint(Vec2::ZERO);
         
         widget->setUnifySizeEnabled(true);
-        
         bool ignoreSize = options->ignoreSize();
         widget->ignoreContentAdaptWithSize(ignoreSize);
 
-        /*
-        Size contentSize(options->size()->width(), options->size()->height());
-        widget->setContentSize(contentSize);
-         */
+        std::string versionString = CSLoader::getInstance()->getCsdVersion();
+        //assume versionString is like "2.0.6.0"
+        if (versionString.length() > 0)
+        {
+            int p1, p2, p3, v1, v2, v3;
+            p1 = p2 = p3 = v1 = v2 = v3 = 0;
+            p1 = versionString.find('.');
+            if (p1 > 0)
+            {
+                p2 = versionString.find('.', p1 + 1);
+                v1 = atoi(versionString.substr(0, p1).c_str());
+            }
+            if (p2 > p1)
+            {
+                p3 = versionString.find('.', p2 + 1);
+                v2 = atoi(versionString.substr(p1 + 1, p2 - p1 - 1).c_str());
+            }
+            if (p3 > p2)
+            {
+                v3 = atoi(versionString.substr(p2 + 1, p3 - p2 - 1).c_str());
+            }
+
+            if (!(v1 <= 2 && v2 == 0 && v3 <= 6))
+            {
+                widget->setUnifySizeEnabled(false);
+                widget->setLayoutComponentEnabled(true);
+                widget->ignoreContentAdaptWithSize(false);
+                Size contentSize(options->size()->width(), options->size()->height());
+                widget->setContentSize(contentSize);
+            }
+        }
         
         int tag = options->tag();
         widget->setTag(tag);
@@ -832,6 +859,77 @@ namespace cocostudio
         widget->setCallbackType(callbackType);
         std::string callbackName = options->callBackName()->c_str();
         widget->setCallbackName(callbackName);
+        
+        setLayoutComponentPropsWithFlatBuffers(widget, widgetOptions);
+    }
+
+    void WidgetReader::setLayoutComponentPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* nodeOptions)
+    {
+        auto layoutComponentTable = ((WidgetOptions*)nodeOptions)->layoutComponent();
+        if (!layoutComponentTable) return;
+
+        auto layoutComponent = ui::LayoutComponent::bindLayoutComponent(node);
+
+        bool positionXPercentEnabled = layoutComponentTable->positionXPercentEnabled();
+        bool positionYPercentEnabled = layoutComponentTable->positionYPercentEnabled();
+        float positionXPercent = layoutComponentTable->positionXPercent();
+        float positionYPercent = layoutComponentTable->positionYPercent();
+        bool sizeXPercentEnable = layoutComponentTable->sizeXPercentEnable();
+        bool sizeYPercentEnable = layoutComponentTable->sizeYPercentEnable();
+        float sizeXPercent = layoutComponentTable->sizeXPercent();
+        float sizeYPercent = layoutComponentTable->sizeYPercent();
+        bool stretchHorizontalEnabled = layoutComponentTable->stretchHorizontalEnabled();
+        bool stretchVerticalEnabled = layoutComponentTable->stretchVerticalEnabled();
+        std::string horizontalEdge = layoutComponentTable->horizontalEdge()->c_str();
+        std::string verticalEdge = layoutComponentTable->verticalEdge()->c_str();
+        float leftMargin = layoutComponentTable->leftMargin();
+        float rightMargin = layoutComponentTable->rightMargin();
+        float topMargin = layoutComponentTable->topMargin();
+        float bottomMargin = layoutComponentTable->bottomMargin();
+
+        layoutComponent->setPositionPercentXEnabled(positionXPercentEnabled);
+        layoutComponent->setPositionPercentYEnabled(positionYPercentEnabled);
+        layoutComponent->setPositionPercentX(positionXPercent);
+        layoutComponent->setPositionPercentY(positionYPercent);
+        layoutComponent->setPercentWidthEnabled(sizeXPercentEnable);
+        layoutComponent->setPercentHeightEnabled(sizeYPercentEnable);
+        layoutComponent->setPercentWidth(sizeXPercent);
+        layoutComponent->setPercentHeight(sizeYPercent);
+        layoutComponent->setStretchWidthEnabled(stretchHorizontalEnabled);
+        layoutComponent->setStretchHeightEnabled(stretchVerticalEnabled);
+        ui::LayoutComponent::HorizontalEdge horizontalEdgeType = ui::LayoutComponent::HorizontalEdge::None;
+        if (horizontalEdge == P_Layout_LeftEdge)
+        {
+            horizontalEdgeType = ui::LayoutComponent::HorizontalEdge::Left;
+        }
+        else if (horizontalEdge == P_Layout_RightEdge)
+        {
+            horizontalEdgeType = ui::LayoutComponent::HorizontalEdge::Right;
+        }
+        else if (horizontalEdge == P_Layout_BothEdge)
+        {
+            horizontalEdgeType = ui::LayoutComponent::HorizontalEdge::Center;
+        }
+        layoutComponent->setHorizontalEdge(horizontalEdgeType);
+        ui::LayoutComponent::VerticalEdge verticalEdgeType = ui::LayoutComponent::VerticalEdge::None;
+        if (verticalEdge == P_Layout_TopEdge)
+        {
+            verticalEdgeType = ui::LayoutComponent::VerticalEdge::Top;
+        }
+        else if (verticalEdge == P_Layout_BottomEdge)
+        {
+            verticalEdgeType = ui::LayoutComponent::VerticalEdge::Bottom;
+        }
+        else if (verticalEdge == P_Layout_BothEdge)
+        {
+            verticalEdgeType = ui::LayoutComponent::VerticalEdge::Center;
+        }
+        layoutComponent->setVerticalEdge(verticalEdgeType);
+
+        layoutComponent->setTopMargin(topMargin);
+        layoutComponent->setBottomMargin(bottomMargin);
+        layoutComponent->setLeftMargin(leftMargin);
+        layoutComponent->setRightMargin(rightMargin);
     }
     
     Node* WidgetReader::createNodeWithFlatBuffers(const flatbuffers::Table *widgetOptions)
@@ -841,38 +939,6 @@ namespace cocostudio
         setPropsWithFlatBuffers(widget, (Table*)widgetOptions);
         
         return widget;
-    }
-    
-    void WidgetReader::setAnchorPointForWidget(cocos2d::ui::Widget *widget, const protocolbuffers::NodeTree &nodeTree)
-    {
-        const protocolbuffers::WidgetOptions& options = nodeTree.widgetoptions();
-        
-        bool isAnchorPointXExists = options.has_anchorpointx();
-        float anchorPointXInFile;
-        if (isAnchorPointXExists)
-        {
-            anchorPointXInFile = options.anchorpointx();
-        }
-        else
-        {
-            anchorPointXInFile = widget->getAnchorPoint().x;
-        }
-        
-        bool isAnchorPointYExists = options.has_anchorpointy();
-        float anchorPointYInFile;
-        if (isAnchorPointYExists)
-        {
-            anchorPointYInFile = options.anchorpointy();
-        }
-        else
-        {
-            anchorPointYInFile = widget->getAnchorPoint().y;
-        }
-        
-        if (isAnchorPointXExists || isAnchorPointYExists)
-        {
-            widget->setAnchorPoint(Vec2(anchorPointXInFile, anchorPointYInFile));
-        }
     }
     
     std::string WidgetReader::getResourcePath(const std::string &path, cocos2d::ui::Widget::TextureResType texType)

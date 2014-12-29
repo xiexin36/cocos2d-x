@@ -196,21 +196,6 @@ public:
     void setTextHorizontalAlignment(TextHAlignment alignment);
     void setTextVerticalAlignment(TextVAlignment alignment);
     
-    /* temp */
-    const Size getTextAreaSize() const
-    {
-        return _textFieldRenderer->getDimensions();
-    };
-    const TextHAlignment getTextHorizontalAlignment() const
-    {
-        return _textFieldRenderer->getHorizontalAlignment();
-    }
-    const TextVAlignment getTextVerticalAlignment() const
-    {
-        return _textFieldRenderer->getVerticalAlignment();
-    }
-    /**/
-    
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
     

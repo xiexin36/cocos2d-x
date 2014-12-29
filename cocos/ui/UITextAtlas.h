@@ -104,14 +104,6 @@ public:
     virtual std::string getDescription() const override;
     
     virtual void adaptRenderers() override;
-    
-    /* temp */
-    const std::string& getCharMapFileName() const { return _charMapFileName; };
-    const int getItemWidth() const { return _itemWidth; };
-    const int getItemHeight() const { return _itemHeight; };
-    const std::string& getStartCharMap() const { return _startCharMap; };
-    /**/
-    
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

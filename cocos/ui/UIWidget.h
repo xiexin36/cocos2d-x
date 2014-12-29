@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __UIWIDGET_H__
 #define __UIWIDGET_H__
 
-#include "ui/CCProtectedNode.h"
+#include "2d/CCProtectedNode.h"
 #include "ui/UILayoutParameter.h"
 #include "ui/GUIDefine.h"
 #include "ui/GUIExport.h"
@@ -272,7 +272,7 @@ public:
      *
      * @return The percent (x,y) of the widget in OpenGL coordinates
      */
-    Vec2 getPositionPercent();
+    const Vec2& getPositionPercent();
 
     /**
      * Changes the position type of the widget
@@ -338,7 +338,7 @@ public:
     CC_DEPRECATED_ATTRIBUTE bool isFlipY() { return isFlippedY(); };
     /** @deprecated Use setFlippedY() instead */
     CC_DEPRECATED_ATTRIBUTE void setFlipY(bool flipY) { setFlippedY(flipY); };
-    
+
     //override the setScale function of Node
     virtual void setScaleX(float scaleX) override;
     virtual void setScaleY(float scaleY) override;
@@ -348,7 +348,8 @@ public:
     virtual float getScaleX() const override;
     virtual float getScaleY() const override;
     virtual float getScale() const override;
-
+    using Node::getScaleZ;
+    
     /*
      * Checks a point if in parent's area.
      *
@@ -517,6 +518,10 @@ public:
 
     virtual void onEnter() override;
     virtual void onExit() override;
+
+    void updateSizeAndPosition();
+
+    void updateSizeAndPosition(const Size& parentSize);
     
     void setActionTag(int tag);
 	int getActionTag()const;
@@ -618,7 +623,6 @@ public:
     *@return true represent the widget use Unify Size, false represent the widget couldn't use Unify Size
     */
     bool isUnifySizeEnabled()const;
-    
     /**
      * callbackName getter and setter.
      */
@@ -630,6 +634,16 @@ public:
      */
     void setCallbackType(const std::string& callbackType) { _callbackType = callbackType; }
     const std::string& getCallbackType() const{ return _callbackType; }
+
+    /**
+    *@param enable Layout Component of a widget
+    *@return void
+    */
+    void setLayoutComponentEnabled(bool enable);
+    /**
+    *@return true represent the widget use Layout Component, false represent the widget couldn't use Layout Component.
+    */
+    bool isLayoutComponentEnabled()const;
 
 CC_CONSTRUCTOR_ACCESS:
 
@@ -668,6 +682,20 @@ CC_CONSTRUCTOR_ACCESS:
     void  dispatchFocusEvent(Widget* widgetLoseFocus, Widget* widgetGetFocus);
     
 protected:
+    /**
+     * Get a normal state GLProgramState
+     *@since v3.4
+     */
+    
+    GLProgramState* getNormalGLProgramState()const;
+    
+    /**
+     * Get a disabled state GLProgramState
+     *@since v3.4
+     */
+    GLProgramState* getGrayGLProgramState()const;
+     
+    
     //call back function called when size changed.
     virtual void onSizeChanged();
 
@@ -687,8 +715,7 @@ protected:
     virtual void releaseUpEvent();
     virtual void cancelUpEvent();
 
-    virtual void updateFlippedX(){};
-    virtual void updateFlippedY(){};
+    
     virtual void adaptRenderers(){};
     void updateChildrenDisplayedRGBA();
     
@@ -708,6 +735,7 @@ protected:
     LayoutComponent* getOrCreateLayoutComponent();
 
 protected:
+    bool _usingLayoutComponent;
     bool _unifySize;
     bool _enabled;
     bool _bright;
@@ -768,7 +796,6 @@ protected:
     
     std::string _callbackType;
     std::string _callbackName;
-    
 private:
     class FocusNavigationController;
     static FocusNavigationController* _focusNavigationController;

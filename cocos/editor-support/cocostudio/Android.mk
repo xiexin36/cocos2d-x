@@ -40,6 +40,13 @@ TriggerBase.cpp \
 TriggerMng.cpp \
 TriggerObj.cpp \
 CocoLoader.cpp \
+WidgetReader/NodeReader/NodeReader.cpp \
+WidgetReader/SingleNodeReader/SingleNodeReader.cpp \
+WidgetReader/SpriteReader/SpriteReader.cpp \
+WidgetReader/ParticleReader/ParticleReader.cpp \
+WidgetReader/GameMapReader/GameMapReader.cpp \
+WidgetReader/ProjectNodeReader/ProjectNodeReader.cpp \
+WidgetReader/ComAudioReader/ComAudioReader.cpp \
 WidgetReader/WidgetReader.cpp \
 WidgetReader/ButtonReader/ButtonReader.cpp \
 WidgetReader/CheckBoxReader/CheckBoxReader.cpp \
@@ -59,67 +66,22 @@ ActionTimeline/CCActionTimelineCache.cpp \
 ActionTimeline/CCFrame.cpp \
 ActionTimeline/CCTimeLine.cpp \
 ActionTimeline/CCActionTimeline.cpp \
-CSParseBinary.pb.cc \
-../../../external/protocolBuf/src/google/protobuf/descriptor.cc \
-../../../external/protocolBuf/src/google/protobuf/descriptor.pb.cc \
-../../../external/protocolBuf/src/google/protobuf/descriptor_database.cc \
-../../../external/protocolBuf/src/google/protobuf/dynamic_message.cc \
-../../../external/protocolBuf/src/google/protobuf/extension_set.cc \
-../../../external/protocolBuf/src/google/protobuf/extension_set_heavy.cc \
-../../../external/protocolBuf/src/google/protobuf/generated_message_reflection.cc \
-../../../external/protocolBuf/src/google/protobuf/generated_message_util.cc \
-../../../external/protocolBuf/src/google/protobuf/message.cc \
-../../../external/protocolBuf/src/google/protobuf/message_lite.cc \
-../../../external/protocolBuf/src/google/protobuf/reflection_ops.cc \
-../../../external/protocolBuf/src/google/protobuf/repeated_field.cc \
-../../../external/protocolBuf/src/google/protobuf/service.cc \
-../../../external/protocolBuf/src/google/protobuf/text_format.cc \
-../../../external/protocolBuf/src/google/protobuf/unknown_field_set.cc \
-../../../external/protocolBuf/src/google/protobuf/wire_format.cc \
-../../../external/protocolBuf/src/google/protobuf/wire_format_lite.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_enum.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_enum_field.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_extension.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_field.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_file.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_generator.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_helpers.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_message.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_message_field.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_primitive_field.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_service.cc \
-../../../external/protocolBuf/src/google/protobuf/compiler/cpp/cpp_string_field.cc \
-../../../external/protocolBuf/src/google/protobuf/io/coded_stream.cc \
-../../../external/protocolBuf/src/google/protobuf/io/gzip_stream.cc \
-../../../external/protocolBuf/src/google/protobuf/io/printer.cc \
-../../../external/protocolBuf/src/google/protobuf/io/tokenizer.cc \
-../../../external/protocolBuf/src/google/protobuf/io/zero_copy_stream.cc \
-../../../external/protocolBuf/src/google/protobuf/io/zero_copy_stream_impl.cc \
-../../../external/protocolBuf/src/google/protobuf/io/zero_copy_stream_impl_lite.cc \
-../../../external/protocolBuf/src/google/protobuf/stubs/common.cc \
-../../../external/protocolBuf/src/google/protobuf/stubs/once.cc \
-../../../external/protocolBuf/src/google/protobuf/stubs/stringprintf.cc \
-../../../external/protocolBuf/src/google/protobuf/stubs/structurally_valid.cc \
-../../../external/protocolBuf/src/google/protobuf/stubs/strutil.cc \
-../../../external/protocolBuf/src/google/protobuf/stubs/substitute.cc \
+ActionTimeline/CCActionTimelineNode.cpp \
+ActionTimeline/CSLoader.cpp \
+FlatBuffersSerialize.cpp \
+WidgetCallBackHandlerProtocol.cpp \
+WidgetReader/ArmatureNodeReader/ArmatureNodeReader.cpp
 
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/.. \
-$(LOCAL_PATH)/../../../external
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../.. \
-$(LOCAL_PATH)/../../../external \
-$(LOCAL_PATH)/../../../external/protocolBuf/src/google/protobuf \
-$(LOCAL_PATH)/../../../external/protocolBuf/src \
-$(LOCAL_PATH)/.. \
-$(LOCAL_PATH)/../..
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
+                    $(LOCAL_PATH)/WidgetReader
 
 LOCAL_CFLAGS += -fexceptions
 
-
-LOCAL_WHOLE_STATIC_LIBRARIES := cocos_ui_static
-LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
+LOCAL_STATIC_LIBRARIES := cocos_ui_static
+LOCAL_STATIC_LIBRARIES += cocosdenshion_static
+LOCAL_STATIC_LIBRARIES += cocos_flatbuffers_static
 
 include $(BUILD_STATIC_LIBRARY)
-
-$(call import-module,ui)
-$(call import-module,audio/android)

@@ -27,24 +27,22 @@ THE SOFTWARE.
 #include "CCFrame.h"
 #include "CCTimeLine.h"
 #include "CCActionTimeline.h"
-#include "../CSParseBinary.pb.h"
-#include "tinyxml2/tinyxml2.h"
-
-/* peterson */
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/util.h"
+#include "platform/CCFileUtils.h"
+#include "2d/CCSpriteFrameCache.h"
+#include "2d/CCSpriteFrame.h"
 
 #include "cocostudio/CSParseBinary_generated.h"
 
+#include "tinyxml2.h"
+#include "flatbuffers/flatbuffers.h"
+#include "flatbuffers/util.h"
+
 #include "cocostudio/FlatBuffersSerialize.h"
-/**/
 
 #include <fstream>
 
 using namespace cocos2d;
-/* peterson */
 using namespace flatbuffers;
-/**/
 
 namespace cocostudio {
 namespace timeline{
@@ -90,7 +88,7 @@ ActionTimelineCache* ActionTimelineCache::getInstance()
 {
     if (! _sharedActionCache)
     {
-        _sharedActionCache = new ActionTimelineCache();
+        _sharedActionCache = new (std::nothrow) ActionTimelineCache();
         _sharedActionCache->init();
     }
 
@@ -138,13 +136,13 @@ ActionTimeline* ActionTimelineCache::createAction(const std::string& filename)
     std::string path = filename;
     size_t pos = path.find_last_of('.');
     std::string suffix = path.substr(pos + 1, path.length());
-//    CCLOG("suffix = %s", suffix.c_str());
+    CCLOG("suffix = %s", suffix.c_str());
     
     ActionTimelineCache* cache = ActionTimelineCache::getInstance();
     
     if (suffix == "csb")
     {
-        return cache->createActionFromProtocolBuffers(filename);
+        return cache->createActionWithFlatBuffersFile(filename);
     }
     else if (suffix == "json" || suffix == "ExportJson")
     {
@@ -163,24 +161,11 @@ ActionTimeline* ActionTimelineCache::createActionFromJson(const std::string& fil
     }
     return action->clone();
 }
-// before
-/*
- ActionTimeline* ActionTimelineCache::createAction(const std::string& fileName)
- {
-    ActionTimeline* action = _animationActions.at(fileName);
-    if (action == nullptr)
-    {
-        action = loadAnimationActionWithFile(fileName);
-    }
-        return action->clone();
-}
- */
-/**/
 
 ActionTimeline* ActionTimelineCache::loadAnimationActionWithFile(const std::string& fileName)
 {
     // Read content from file
-    std::string fullPath    = CCFileUtils::getInstance()->fullPathForFilename(fileName);
+    std::string fullPath    = FileUtils::getInstance()->fullPathForFilename(fileName);
     std::string contentStr  = FileUtils::getInstance()->getStringFromFile(fullPath);
 
     return loadAnimationActionWithContent(fileName, contentStr);
@@ -197,7 +182,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithContent(const std::s
     doc.Parse<0>(content.c_str());
     if (doc.HasParseError()) 
     {
-//        CCLOG("GetParseError %s\n", doc.GetParseError());
+        CCLOG("GetParseError %s\n", doc.GetParseError());
     }
 
     const rapidjson::Value& json = DICTOOL->getSubDictionary_json(doc, ACTION);
@@ -221,87 +206,6 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithContent(const std::s
 
     return action;
 }
-    
-/* create node from protocol buffers for simulator of cocosstudio editor */
-ActionTimeline* ActionTimelineCache::createActionFromProtocolBuffersForSimulator(protocolbuffers::CSParseBinary *protobuf)
-{
-    ActionTimeline* action = ActionTimeline::create();
-    
-    
-    const protocolbuffers::NodeAction& actionProtobuf = protobuf->action();
-    
-    action = ActionTimeline::create();
-    
-    action->setDuration(actionProtobuf.duration());
-    action->setTimeSpeed((actionProtobuf.has_speed()) ? actionProtobuf.speed() : 1.0f);
-    
-    int timelineLength = actionProtobuf.timelines_size();
-    for (int i = 0; i < timelineLength; i++)
-    {
-        const protocolbuffers::TimeLine& timelineProtobuf = actionProtobuf.timelines(i);
-        Timeline* timeline = loadTimelineFromProtocolBuffers(timelineProtobuf);
-        
-        if (timeline)
-            action->addTimeline(timeline);
-    }
-    
-    return action;
-}
-/**/
-    
-ActionTimeline* ActionTimelineCache::createActionFromProtocolBuffers(const std::string &fileName)
-{
-    ActionTimeline* action = _animationActions.at(fileName);
-    if (action == NULL)
-    {
-        action = loadAnimationActionWithFileFromProtocolBuffers(fileName);
-    }
-    return action->clone();
-}
-
-ActionTimeline* ActionTimelineCache::loadAnimationActionWithFileFromProtocolBuffers(const std::string &fileName)
-{
-    // if already exists an action with filename, then return this action
-    ActionTimeline* action = _animationActions.at(fileName);
-    if (action)
-        return action;
-    
-    std::string path = fileName;
-    //    int pos = path.find_last_of('/');
-    //	_protocolBuffersPath = path.substr(0, pos + 1);
-    
-    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName.c_str());
-	Data content = FileUtils::getInstance()->getDataFromFile(fullPath);
-    protocolbuffers::CSParseBinary gpbwp;
-    //    protocolbuffers::GUIProtocolBuffersProtobuf gpbwp;
-	if (!gpbwp.ParseFromArray(content.getBytes(), (int)content.getSize()))
-    {
-        return NULL;
-    }
-    
-
-    const protocolbuffers::NodeAction& actionProtobuf = gpbwp.action();
-    
-    action = ActionTimeline::create();
-    
-    action->setDuration(actionProtobuf.duration());
-    action->setTimeSpeed((actionProtobuf.has_speed()) ? actionProtobuf.speed() : 1.0f);
-    
-    int timelineLength = actionProtobuf.timelines_size();
-    for (int i = 0; i < timelineLength; i++)
-    {
-        const protocolbuffers::TimeLine& timelineProtobuf = actionProtobuf.timelines(i);
-        Timeline* timeline = loadTimelineFromProtocolBuffers(timelineProtobuf);
-        
-        if (timeline)
-            action->addTimeline(timeline);
-    }
-    
-    _animationActions.insert(fileName, action);
-    
-    return action;
-}
-
 
 Timeline* ActionTimelineCache::loadTimeline(const rapidjson::Value& json)
 {
@@ -315,8 +219,6 @@ Timeline* ActionTimelineCache::loadTimeline(const rapidjson::Value& json)
     if(frameType && _funcs.find(frameType) != _funcs.end())
     {
         timeline = Timeline::create();
-        
-        timeline->setFrameType(frameType);
 
         int actionTag = DICTOOL->getIntValue_json(json, ACTION_TAG);
         timeline->setActionTag(actionTag);
@@ -471,7 +373,7 @@ Frame* ActionTimelineCache::loadTextureFrame(const rapidjson::Value& json)
         SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
         if(spriteFrame == nullptr)
         {
-            std::string jsonPath = cocos2d::CSLoader::getInstance()->getJsonPath();
+            std::string jsonPath = CSLoader::getInstance()->getJsonPath();
             path = jsonPath + texture;
         }
 
@@ -502,280 +404,6 @@ Frame* ActionTimelineCache::loadZOrderFrame(const rapidjson::Value& json)
     return frame;
 }
     
-Timeline*  ActionTimelineCache::loadTimelineFromProtocolBuffers(const protocolbuffers::TimeLine &timelineProtobuf)
-{
-    Timeline* timeline = NULL;
-    
-    // get frame type
-    const char* frameType = timelineProtobuf.frametype().c_str();
-    if(frameType == NULL)
-        return NULL;
-    
-//    CCLOG("frameType = %s", frameType);
-    
-    if(frameType)
-    {
-        timeline = Timeline::create();
-        
-        int actionTag = timelineProtobuf.actiontag();
-        timeline->setActionTag(actionTag);
-        
-        timeline->setFrameType(frameType);
-        
-        
-        int length = timelineProtobuf.frames_size();
-        for (int i = 0; i < length; i++)
-        {
-            const protocolbuffers::Frame& frameProtobuf = timelineProtobuf.frames(i);
-            
-            Frame* frame = NULL;
-            
-            if (strcmp(FrameType_VisibleFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLineBoolFrame& visibleFrame = frameProtobuf.visibleframe();
-                frame = loadVisibleFrameFromProtocolBuffers(visibleFrame);
-            }
-            else if (strcmp(FrameType_PositionFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLinePointFrame& positionFrame = frameProtobuf.positionframe();
-                frame = loadPositionFrameFromProtocolBuffers(positionFrame);
-            }
-            else if (strcmp(FrameType_ScaleFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLinePointFrame& scaleFrame = frameProtobuf.scaleframe();
-                frame = loadScaleFrameFromProtocolBuffers(scaleFrame);
-            }
-            else if (strcmp(FrameType_RotationSkewFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLinePointFrame& rotationSkewFrame = frameProtobuf.rotationskewframe();
-                frame = loadRotationSkewFrameFromProtocolBuffers(rotationSkewFrame);
-            }
-            else if (strcmp(FrameType_AnchorFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLinePointFrame& anchorFrame = frameProtobuf.anchorpointframe();
-                frame = loadAnchorPointFrameFromProtocolBuffers(anchorFrame);
-            }
-            else if (strcmp(FrameType_ColorFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLineColorFrame& colorFrame = frameProtobuf.colorframe();
-                frame = loadColorFrameFromProtocolBuffers(colorFrame);
-            }
-            else if (strcmp(FrameType_TextureFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLineTextureFrame& textureFrame = frameProtobuf.textureframe();
-                frame = loadTextureFrameFromProtocolBuffers(textureFrame);
-            }
-            else if (strcmp(FrameType_EventFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLineStringFrame& eventFrame = frameProtobuf.eventframe();
-                frame = loadEventFrameFromProtocolBuffers(eventFrame);
-            }
-            else if (strcmp(FrameType_ZOrderFrame, frameType) == 0)
-            {
-                const protocolbuffers::TimeLineIntFrame& zOrderFrame = frameProtobuf.zorderframe();
-                frame = loadZOrderFrameFromProtocolBuffers(zOrderFrame);
-            }
-            
-            timeline->addFrame(frame);
-        }
-    }
-    
-    return timeline;
-}
-
-Frame* ActionTimelineCache::loadVisibleFrameFromProtocolBuffers(const protocolbuffers::TimeLineBoolFrame &frameProtobuf)
-{
-    VisibleFrame* frame = VisibleFrame::create();
-    
-    bool visible = frameProtobuf.value();
-    frame->setVisible(visible);
-    
-//    CCLOG("visible = %d", visible);
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadPositionFrameFromProtocolBuffers(const protocolbuffers::TimeLinePointFrame &frameProtobuf)
-{
-    PositionFrame* frame = PositionFrame::create();
-    
-    float x = frameProtobuf.x();
-    float y = frameProtobuf.y();
-    frame->setPosition(Vec2(x,y));
-    
-    /*
-    CCLOG("x = %f", x);
-    CCLOG("y = %f", y);
-     */
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadScaleFrameFromProtocolBuffers(const protocolbuffers::TimeLinePointFrame &frameProtobuf)
-{
-    ScaleFrame* frame = ScaleFrame::create();
-    
-    float scalex = frameProtobuf.x();
-    float scaley = frameProtobuf.y();
-    
-    frame->setScaleX(scalex);
-    frame->setScaleY(scaley);
-    
-    /*
-    CCLOG("scalex = %f", scalex);
-    CCLOG("scaley = %f", scaley);
-     */
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadRotationSkewFrameFromProtocolBuffers(const protocolbuffers::TimeLinePointFrame &frameProtobuf)
-{
-    RotationSkewFrame* frame = RotationSkewFrame::create();
-    
-    float skewx = frameProtobuf.x();
-    float skewy = frameProtobuf.y();
-    
-    frame->setSkewX(skewx);
-    frame->setSkewY(skewy);
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadAnchorPointFrameFromProtocolBuffers(const protocolbuffers::TimeLinePointFrame &frameProtobuf)
-{
-    AnchorPointFrame* frame = AnchorPointFrame::create();
-    
-    float anchorx = frameProtobuf.x();
-    float anchory = frameProtobuf.y();
-    
-    frame->setAnchorPoint(Vec2(anchorx, anchory));
-    
-    /*
-    CCLOG("anchorx = %f", anchorx);
-    CCLOG("anchory = %f", anchory);
-     */
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadColorFrameFromProtocolBuffers(const protocolbuffers::TimeLineColorFrame &frameProtobuf)
-{
-    ColorFrame* frame = ColorFrame::create();
-    
-    GLubyte alpha = (GLubyte)frameProtobuf.alpha();
-    GLubyte red   = (GLubyte)frameProtobuf.red();
-    GLubyte green = (GLubyte)frameProtobuf.green();
-    GLubyte blue  = (GLubyte)frameProtobuf.blue();
-    
-    frame->setAlpha(alpha);
-    frame->setColor(Color3B(red, green, blue));
-    
-    /*
-    CCLOG("alpha = %d", alpha);
-    CCLOG("red = %d", red);
-    CCLOG("green = %d", green);
-    CCLOG("blue = %d", blue);
-     */
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadTextureFrameFromProtocolBuffers(const protocolbuffers::TimeLineTextureFrame &frameProtobuf)
-{
-    TextureFrame* frame = TextureFrame::create();
-    
-    const char* texture = frameProtobuf.filepath().c_str();
-    
-    if (texture != NULL)
-        frame->setTextureName(texture);
-    
-//    CCLOG("texture = %s", texture);
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadEventFrameFromProtocolBuffers(const protocolbuffers::TimeLineStringFrame &frameProtobuf)
-{
-    EventFrame* frame = EventFrame::create();
-    
-    const char* evnt = frameProtobuf.value().c_str();
-    
-    if (evnt != NULL)
-        frame->setEvent(evnt);
-    
-//    CCLOG("evnt = %s", evnt);
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-
-Frame* ActionTimelineCache::loadZOrderFrameFromProtocolBuffers(const protocolbuffers::TimeLineIntFrame &frameProtobuf)
-{
-    ZOrderFrame* frame = ZOrderFrame::create();
-    
-    int zorder = frameProtobuf.value();
-    frame->setZOrder(zorder);
-    
-//    CCLOG("zorder = %d", zorder);
-    
-    int frameIndex = frameProtobuf.has_frameindex() ? frameProtobuf.frameindex() : 0;
-    frame->setFrameIndex(frameIndex);
-    
-    bool tween = (frameProtobuf.has_tween() ? frameProtobuf.tween() : false);
-    frame->setTween(tween);
-    
-    return frame;
-}
-    
-/* peterson */
 ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersFile(const std::string &fileName)
 {
     ActionTimeline* action = _animationActions.at(fileName);
@@ -796,17 +424,14 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFlatBuffersFile(cons
     std::string path = fileName;
     
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName.c_str());
-    std::string inFile;
-    auto load = LoadFile(fullPath.c_str(), true, &inFile);
-    if (!load)
-    {
-//        CCLOG("couldn't load files");
-        return nullptr;
-    }
     
-    auto csparsebinary = GetCSParseBinary(inFile.data());
-    auto nodeAction = csparsebinary->action();
+    CC_ASSERT(FileUtils::getInstance()->isFileExist(fullPath));
     
+    Data buf = FileUtils::getInstance()->getDataFromFile(fullPath);
+    
+    auto csparsebinary = GetCSParseBinary(buf.getBytes());
+    
+    auto nodeAction = csparsebinary->action();    
     action = ActionTimeline::create();
     
     int duration = nodeAction->duration();
@@ -839,7 +464,7 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
     if(frameType == "")
         return nullptr;
     
-//    CCLOG("frameType = %s", frameType.c_str());
+    CCLOG("frameType = %s", frameType.c_str());
     
     if(frameType != "")
     {
@@ -916,7 +541,7 @@ Frame* ActionTimelineCache::loadVisibleFrameWithFlatBuffers(const flatbuffers::T
     bool visible = flatbuffers->value();
     frame->setVisible(visible);
     
-//    CCLOG("visible = %d", visible);
+    CCLOG("visible = %d", visible);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -934,7 +559,7 @@ Frame* ActionTimelineCache::loadZOrderFrameWithFlatBuffers(const flatbuffers::Ti
     int zorder = flatbuffers->value();
     frame->setZOrder(zorder);
     
-//    CCLOG("zorder = %d", zorder);
+    CCLOG("zorder = %d", zorder);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -972,7 +597,7 @@ Frame* ActionTimelineCache::loadEventFrameWithFlatBuffers(const flatbuffers::Tim
     if (event != "")
         frame->setEvent(event);
     
-//    CCLOG("event = %s", event.c_str());
+    CCLOG("event = %s", event.c_str());
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -1037,7 +662,7 @@ Frame* ActionTimelineCache::loadScaleFrameWithFlatBuffers(const flatbuffers::Tim
 
 Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::TimeLineColorFrame *flatbuffers)
 {
-    ColorFrame* frame = ColorFrame::create();    
+    ColorFrame* frame = ColorFrame::create();
     
     auto f_color = flatbuffers->color();
     Color3B color(f_color->r(), f_color->g(), f_color->b());
@@ -1053,7 +678,6 @@ Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::Tim
     frame->setTween(tween);
     
     return frame;
-    
 }
 
 Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::TimeLineTextureFrame *flatbuffers)
@@ -1113,15 +737,13 @@ Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::T
     
     return frame;
 }
-/**/
     
-/* peterson create ActionTimeline with flat buffers for simulator of cocosstudio editor */
 ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(const std::string& fileName)
 {
-	FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
+    FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
     fbs->_isSimulator = true;
-	auto builder = fbs->createFlatBuffersWithXMLFileForSimulator(fileName);
-
+    auto builder = fbs->createFlatBuffersWithXMLFileForSimulator(fileName);
+    
     ActionTimeline* action = ActionTimeline::create();
     
     auto csparsebinary = GetCSParseBinary(builder->GetBufferPointer());
@@ -1150,7 +772,6 @@ ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(con
     
     return action;
 }
-/**/
 
 }
 }
