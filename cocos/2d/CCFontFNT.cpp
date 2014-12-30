@@ -150,8 +150,8 @@ private:
 	std::set<unsigned int>* parseBinaryConfigFile(unsigned char* pData, unsigned long size, const std::string& controlFile);
     void parseCharacterDefinition(std::string line, BMFontDef *characterDefinition);
     void parseInfoArguments(std::string line);
-    void parseCommonArguments(std::string line);
-    void parseImageFileName(std::string line, const std::string& fntFile);
+    bool parseCommonArguments(std::string line);
+    bool parseImageFileName(std::string line, const std::string& fntFile);
     void parseKerningEntry(std::string line);
     void purgeKerningDictionary();
     void purgeFontDefDictionary();
@@ -322,11 +322,18 @@ std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& 
         // Check to see if the start of the line is something we are interested in
         else if(line.substr(0,strlen("common lineHeight")) == "common lineHeight")
         {
-            this->parseCommonArguments(line);
+			if (!this->parseCommonArguments(line))
+            {
+				return nullptr;
+            }
+            
         }
         else if(line.substr(0,strlen("page id")) == "page id")
         {
-            this->parseImageFileName(line, controlFile);
+			if (!this->parseImageFileName(line, controlFile))
+			{
+				return nullptr;
+			}
         }
         else if(line.substr(0,strlen("chars c")) == "chars c")
         {
@@ -515,7 +522,7 @@ std::set<unsigned int>* BMFontConfiguration::parseBinaryConfigFile(unsigned char
     return validCharsString;
 }
 
-void BMFontConfiguration::parseImageFileName(std::string line, const std::string& fntFile)
+bool BMFontConfiguration::parseImageFileName(std::string line, const std::string& fntFile)
 {
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
@@ -526,13 +533,17 @@ void BMFontConfiguration::parseImageFileName(std::string line, const std::string
     auto index = line.find('=')+1;
     auto index2 = line.find(' ', index);
     std::string value = line.substr(index, index2-index);
-    CCASSERT(atoi(value.c_str()) == 0, "LabelBMFont file could not be found");
+	if (atoi(value.c_str()) != 0)
+	{
+		return false;
+	}
     // file 
     index = line.find('"')+1;
     index2 = line.find('"', index);
     value = line.substr(index, index2-index);
 
     _atlasName = FileUtils::getInstance()->fullPathFromRelativeFile(value.c_str(), fntFile);
+	return true;
 }
 
 void BMFontConfiguration::parseInfoArguments(std::string line)
@@ -551,7 +562,7 @@ void BMFontConfiguration::parseInfoArguments(std::string line)
     CCLOG("cocos2d: padding: %d,%d,%d,%d", _padding.left, _padding.top, _padding.right, _padding.bottom);
 }
 
-void BMFontConfiguration::parseCommonArguments(std::string line)
+bool BMFontConfiguration::parseCommonArguments(std::string line)
 {
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
@@ -567,18 +578,27 @@ void BMFontConfiguration::parseCommonArguments(std::string line)
     index = line.find("scaleW=") + strlen("scaleW=");
     index2 = line.find(' ', index);
     value = line.substr(index, index2-index);
-    CCASSERT(atoi(value.c_str()) <= Configuration::getInstance()->getMaxTextureSize(), "CCLabelBMFont: page can't be larger than supported");
+	if (atoi(value.c_str()) > Configuration::getInstance()->getMaxTextureSize())
+    {
+		return false;
+    }
     // scaleH. sanity check
     index = line.find("scaleH=") + strlen("scaleH=");
     index2 = line.find(' ', index);
     value = line.substr(index, index2-index);
-    CCASSERT(atoi(value.c_str()) <= Configuration::getInstance()->getMaxTextureSize(), "CCLabelBMFont: page can't be larger than supported");
+	if (atoi(value.c_str()) > Configuration::getInstance()->getMaxTextureSize())
+	{
+		return false;
+	}
     // pages. sanity check
     index = line.find("pages=") + strlen("pages=");
     index2 = line.find(' ', index);
     value = line.substr(index, index2-index);
-    CCASSERT(atoi(value.c_str()) == 1, "CCBitfontAtlas: only supports 1 page");
-
+	if (atoi(value.c_str()) != 1)
+	{
+		return false;
+	}
+	return true;
     // packed (ignore) What does this mean ??
 }
 
@@ -687,6 +707,21 @@ FontFNT * FontFNT::create(const std::string& fntFilePath, const Vec2& imageOffse
     }
     tempFont->autorelease();
     return tempFont;
+}
+
+bool FontFNT::CheckBMFontResource(const std::string& fntFilePath)
+{
+	BMFontConfiguration *newConf = BMFontConfiguration::create(fntFilePath);
+	if (!newConf)
+		return false;
+
+	// add the texture
+	std::string atlasName = newConf->getAtlasName();
+	if (!atlasName.empty())
+	{
+		return true;
+	}
+	return false;
 }
 
 FontFNT::FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset /* = Vec2::ZERO */)

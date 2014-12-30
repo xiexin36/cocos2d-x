@@ -89,7 +89,8 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
     ZWTCoordinatesFormatOptionXML1_1 = 2, // Desktop Version 1.0.0 - 1.0.1
     ZWTCoordinatesFormatOptionXML1_2 = 3, // Desktop Version 1.0.2+
     */
-
+    if (dictionary["frames"].getType() != cocos2d::Value::Type::MAP)
+        return;
     
     ValueMap& framesDict = dictionary["frames"].asValueMap();
     int format = 0;
@@ -553,6 +554,9 @@ void SpriteFrameCache::removeSpriteFramesFromFileContent(const std::string& plis
 
 void SpriteFrameCache::removeSpriteFramesFromDictionary(ValueMap& dictionary)
 {
+    if (dictionary["frames"].getType() != cocos2d::Value::Type::MAP)
+        return;
+
     ValueMap framesDict = dictionary["frames"].asValueMap();
     std::vector<std::string> keysToRemove;
 

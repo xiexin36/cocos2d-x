@@ -65,8 +65,8 @@ namespace flatbuffers
     
     struct TextAtlasOptions;
     
-    
     struct NodeAction;
+    struct AnimationInfo;
     struct TimeLine;
     struct Frame;
     struct TimeLineBoolFrame;
@@ -116,6 +116,9 @@ public:
     flatbuffers::Offset<flatbuffers::TimeLinePointFrame> createTimeLinePointFrame(const tinyxml2::XMLElement* objectData);
     flatbuffers::Offset<flatbuffers::TimeLineColorFrame> createTimeLineColorFrame(const tinyxml2::XMLElement* objectData);
     flatbuffers::Offset<flatbuffers::TimeLineTextureFrame> createTimeLineTextureFrame(const tinyxml2::XMLElement* objectData);
+
+    //Animation Info
+    flatbuffers::Offset<flatbuffers::AnimationInfo> createAnimationInfo(const tinyxml2::XMLElement* objectData);
     /**/
     
     int getResourceType(std::string key);
@@ -126,7 +129,7 @@ public:
     flatbuffers::FlatBufferBuilder* createFlatBuffersWithXMLFileForSimulator(const std::string& xmlFileName);
     flatbuffers::Offset<flatbuffers::NodeTree> createNodeTreeForSimulator(const tinyxml2::XMLElement* objectData,
                                                                           std::string classType);
-    flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement* objectData);	
+    flatbuffers::Offset<flatbuffers::ProjectNodeOptions> createProjectNodeOptionsForSimulator(const tinyxml2::XMLElement* objectData);
 	/**/
     std::string getCsdVersion() { return _csdVersion; }
     
