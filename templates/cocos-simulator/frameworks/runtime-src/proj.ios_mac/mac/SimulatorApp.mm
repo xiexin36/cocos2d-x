@@ -144,7 +144,7 @@ std::string getCurAppName(void)
     }
     
     // set project directory as search root path
-    FileUtils::getInstance()->setSearchRootPath(tmpConfig.getProjectDir().c_str());
+    //FileUtils::getInstance()->setSearchRootPath(tmpConfig.getProjectDir().c_str());
     
     // parse config.json
     auto parser = ConfigParser::getInstance();
@@ -226,7 +226,7 @@ std::string getCurAppName(void)
     const cocos2d::Rect frameRect = cocos2d::Rect(0, 0, frameSize.width, frameSize.height);
     std::stringstream title;
     title << "Cocos Simulator - " << ConfigParser::getInstance()->getInitViewName();
-    GLViewImpl *eglView = GLViewImpl::createWithRect(title.str(), frameRect, frameScale);
+    GLViewImpl *eglView = GLViewImpl::createWithRectWithglfwInit(title.str(), frameRect, frameScale);
     
     auto director = Director::getInstance();
     director->setOpenGLView(eglView);
@@ -270,7 +270,7 @@ std::string getCurAppName(void)
     const string projectDir = _project.getProjectDir();
     if (projectDir.length())
     {
-        FileUtils::getInstance()->setSearchRootPath(projectDir.c_str());
+        //FileUtils::getInstance()->setSearchRootPath(projectDir.c_str());
         if (_project.isWriteDebugLogToFile())
         {
             [self writeDebugLogToFile:_project.getDebugLogFilePath()];
@@ -280,7 +280,7 @@ std::string getCurAppName(void)
     const string writablePath = _project.getWritableRealPath();
     if (writablePath.length())
     {
-        FileUtils::getInstance()->setWritablePath(writablePath.c_str());
+        //FileUtils::getInstance()->setWritablePath(writablePath.c_str());
     }
     
     // path for looking Lang file, Studio Default images

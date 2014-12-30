@@ -36,6 +36,7 @@ extern "C" {
 
 #include "base/ccTypes.h"
 #include "base/CCRef.h"
+#include "Lua-BingingsExport.h"
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_BLACKBERRY
 using std::memset;
@@ -75,7 +76,7 @@ typedef union {
     Ref*           ccobjectValue;
 } LuaValueField;
 
-class LuaValue
+class CC_LUA_DLL LuaValue
 {
 public:
     static const LuaValue intValue(const int intValue);

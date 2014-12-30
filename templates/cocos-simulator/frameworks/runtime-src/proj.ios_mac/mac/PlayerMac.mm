@@ -73,10 +73,10 @@ PlayerEditBoxServiceProtocol *PlayerMac::getEditBoxService()
 PlayerTaskServiceProtocol *PlayerMac::getTaskService()
 {
     
-    if (!_taskService)
-    {
-        _taskService = new PlayerTaskServiceMac();
-    }
+    //if (!_taskService)
+    //{
+        //_taskService = new PlayerTaskServiceMac();
+    //}
     return _taskService;
 }
 
