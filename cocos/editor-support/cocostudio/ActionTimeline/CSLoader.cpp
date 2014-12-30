@@ -181,6 +181,7 @@ CSLoader::CSLoader()
 , _jsonPath("")
 , _monoCocos2dxVersion("")
 , _rootNode(nullptr)
+, _csdVersion("2.0.8.0")
 {
     CREATE_CLASS_NODE_READER_INFO(NodeReader);
     CREATE_CLASS_NODE_READER_INFO(SingleNodeReader);
@@ -783,6 +784,21 @@ Node* CSLoader::nodeWithFlatBuffersFile(const std::string &fileName)
     
     auto csparsebinary = GetCSParseBinary(buf.getBytes());
     
+    auto csBuildId = csparsebinary->version();
+    if (csBuildId)
+    {
+        CCASSERT(strcmp(_csdVersion.c_str(), csBuildId->c_str()) == 0,
+            String::createWithFormat("%s%s%s%s%s%s%s%s",
+            "The build id of your CocosStudio exported file(",
+            csBuildId->c_str(),
+            ") and the build id of your cocos reader(",
+            _csdVersion.c_str(),
+            ") are not match.\n",
+            "Please get the correct cocos reader from ",
+            "https://github.com/chukong/cocos-reader",
+            " and replace the reader in your Cocos2d-x")->getCString());
+    }
+
     // decode plist
     auto textures = csparsebinary->textures();
     int textureSize = csparsebinary->textures()->size();
