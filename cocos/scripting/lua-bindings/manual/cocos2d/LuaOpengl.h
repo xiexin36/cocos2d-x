@@ -34,8 +34,9 @@ extern "C" {
 
 #include "2d/CCNode.h"
 #include "renderer/CCCustomCommand.h"
+#include "Lua-BingingsExport.h"
 
-class GLNode:public cocos2d::Node
+class CC_LUA_DLL GLNode :public cocos2d::Node
 {
 public:
     virtual ~GLNode(){}

@@ -32,7 +32,9 @@ extern "C" {
 }
 #endif
 
-TOLUA_API int  register_audioengine_module(lua_State* L);
+#include "Lua-BingingsExport.h"
+
+CC_LUA_DLL TOLUA_API int  register_audioengine_module(lua_State* L);
 
 
 #endif // #ifndef COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_AUDIOENGINE_LUA_COCOS2DX_AUDIOENGINE_MANUAL_H__

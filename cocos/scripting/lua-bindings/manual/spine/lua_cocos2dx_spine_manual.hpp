@@ -32,7 +32,9 @@ extern "C" {
 }
 #endif
 
-TOLUA_API int register_all_cocos2dx_spine_manual(lua_State* L);
-TOLUA_API int register_spine_module(lua_State* L);
+#include "Lua-BingingsExport.h"
+
+CC_LUA_DLL TOLUA_API int register_all_cocos2dx_spine_manual(lua_State* L);
+CC_LUA_DLL TOLUA_API int register_spine_module(lua_State* L);
 
 #endif // #ifndef COCOS_SCRIPTING_LUA_BINDINGS_LUA_COCOS2DX_SPINE_MANUAL_H

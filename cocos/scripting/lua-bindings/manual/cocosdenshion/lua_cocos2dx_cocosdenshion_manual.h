@@ -32,7 +32,9 @@ extern "C" {
 }
 #endif
 
-TOLUA_API int  register_cocosdenshion_module(lua_State* L);
+#include "Lua-BingingsExport.h"
+
+CC_LUA_DLL TOLUA_API int  register_cocosdenshion_module(lua_State* L);
 
 
 #endif // #ifndef COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_COCOSDENSHION_LUA_COCOS2DX_COCOSDENSHION_MANUAL_H__

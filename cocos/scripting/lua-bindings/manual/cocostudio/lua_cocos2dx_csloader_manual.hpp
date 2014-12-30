@@ -34,7 +34,8 @@ extern "C" {
 
 #include "base/CCRef.h"
 #include <string>
+#include "Lua-BingingsExport.h"
 
-TOLUA_API int  register_all_cocos2dx_csloader_manual(lua_State* L);
+CC_LUA_DLL TOLUA_API int  register_all_cocos2dx_csloader_manual(lua_State* L);
 
 #endif // #ifndef COCOS_SCRIPTING_LUA_BINDINGS_LUA_COCOS2DX_COCO_STUDIO_MANUAL_H

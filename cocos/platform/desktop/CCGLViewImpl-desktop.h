@@ -59,6 +59,7 @@ public:
     static GLViewImpl* create(const std::string& viewName);
 	static GLViewImpl* createWithglfwInit(const std::string& viewName);
     static GLViewImpl* createWithRect(const std::string& viewName, Rect size, float frameZoomFactor = 1.0f);
+	static GLViewImpl* createWithRectWithglfwInit(const std::string& viewName, Rect size, float frameZoomFactor = 1.0f);
     static GLViewImpl* createWithFullScreen(const std::string& viewName);
     static GLViewImpl* createWithFullScreen(const std::string& viewName, const GLFWvidmode &videoMode, GLFWmonitor *monitor);
 

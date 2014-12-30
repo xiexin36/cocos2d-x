@@ -355,6 +355,17 @@ GLViewImpl* GLViewImpl::createWithRect(const std::string& viewName, Rect rect, f
     return nullptr;
 }
 
+GLViewImpl* GLViewImpl::createWithRectWithglfwInit(const std::string& viewName, Rect rect, float frameZoomFactor)
+{
+	auto ret = new (std::nothrow) GLViewImpl(true);
+	if (ret && ret->initWithRect(viewName, rect, frameZoomFactor)) {
+		ret->autorelease();
+		return ret;
+	}
+
+	return nullptr;
+}
+
 GLViewImpl* GLViewImpl::createWithFullScreen(const std::string& viewName)
 {
     auto ret = new (std::nothrow) GLViewImpl();

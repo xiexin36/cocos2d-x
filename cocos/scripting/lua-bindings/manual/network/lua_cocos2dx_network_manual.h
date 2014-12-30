@@ -28,10 +28,11 @@
 extern "C" {
 #endif
 #include "tolua++.h"
+#include "Lua-BingingsExport.h"
 #ifdef __cplusplus
 }
 #endif
 
-TOLUA_API int register_network_module(lua_State* L);
+CC_LUA_DLL TOLUA_API int register_network_module(lua_State* L);
 
 #endif //#ifndef __COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_NETWORK_LUA_COCOS2DX_NETWORK_MANUAL_H__

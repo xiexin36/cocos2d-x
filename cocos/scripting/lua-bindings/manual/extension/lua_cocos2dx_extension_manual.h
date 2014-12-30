@@ -32,8 +32,10 @@ extern "C" {
 }
 #endif
 
-TOLUA_API int  register_all_cocos2dx_extension_manual(lua_State* tolua_S);
-TOLUA_API int  register_extension_module(lua_State* tolua_S);
+#include "Lua-BingingsExport.h"
+
+CC_LUA_DLL TOLUA_API int  register_all_cocos2dx_extension_manual(lua_State* tolua_S);
+CC_LUA_DLL TOLUA_API int  register_extension_module(lua_State* tolua_S);
 
 struct LuaAssetsManagerEventData
 {
