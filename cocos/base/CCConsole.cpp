@@ -40,7 +40,7 @@
 #include <WS2tcpip.h>
 #include <Winsock2.h>
 #define bzero(a, b) memset(a, 0, b);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
 #include "inet_ntop_winrt.h"
 #include "CCWinRTUtils.h"
 #endif
@@ -56,11 +56,12 @@
 
 #include "base/CCDirector.h"
 #include "base/CCScheduler.h"
-#include "platform/CCPlatformConfig.h"
+//#include "base/CCPlatformConfig.h"
 #include "base/CCConfiguration.h"
 #include "2d/CCScene.h"
 #include "platform/CCFileUtils.h"
 #include "renderer/CCTextureCache.h"
+#include "CCGLView.h"
 #include "base/base64.h"
 #include "base/ccUtils.h"
 NS_CC_BEGIN
@@ -111,6 +112,8 @@ static bool isFloat( std::string myString ) {
     return iss.eof() && !iss.fail(); 
 }
 
+#if CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+
 // helper free functions
 
 // dprintf() is not defined in Android
@@ -129,7 +132,7 @@ static ssize_t mydprintf(int sock, const char *format, ...)
 static void sendPrompt(int fd)
 {
     const char prompt[] = "> ";
-    send(fd, prompt, strlen(prompt),0);
+    send(fd, prompt, sizeof(prompt),0);
 }
 
 static int printSceneGraph(int fd, Node* node, int level)
@@ -181,23 +184,24 @@ static void printFileUtils(int fd)
     }
     sendPrompt(fd);
 }
+#endif
 
 
 #if defined(__MINGW32__)
-static const char* inet_ntop(int af, const void* src, char* dst, int cnt)
-{
-    struct sockaddr_in srcaddr;
-
-    memset(&srcaddr, 0, sizeof(struct sockaddr_in));
-    memcpy(&(srcaddr.sin_addr), src, sizeof(srcaddr.sin_addr));
-
-    srcaddr.sin_family = af;
-    if (WSAAddressToStringA((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD) &cnt) != 0)
-    {
-        return nullptr;
-    }
-    return dst;
-}
+//static const char* inet_ntop(int af, const void* src, char* dst, int cnt)
+//{
+//    struct sockaddr_in srcaddr;
+//
+//    memset(&srcaddr, 0, sizeof(struct sockaddr_in));
+//    memcpy(&(srcaddr.sin_addr), src, sizeof(srcaddr.sin_addr));
+//
+//    srcaddr.sin_family = af;
+//    if (WSAAddressToStringA((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD) &cnt) != 0)
+//    {
+//        return nullptr;
+//    }
+//    return dst;
+//}
 #endif
 
 
@@ -224,15 +228,17 @@ static void _log(const char *format, va_list args)
     fflush(stdout);
 #else
     // Linux, Mac, iOS, etc
-    fprintf(stdout, "%s", buf);
+    fprintf(stdout, "cocos2d: %s", buf);
     fflush(stdout);
 #endif
 
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     Director::getInstance()->getConsole()->log(buf);
+#endif
 
 }
 
-// FIXME: Deprecated
+// XXX: Deprecated
 void CCLog(const char * format, ...)
 {
     va_list args;
@@ -248,6 +254,8 @@ void log(const char * format, ...)
     _log(format, args);
     va_end(args);
 }
+
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
 
 //
 // Console code
@@ -321,7 +329,7 @@ bool Console::listenOnTCP(int port)
     hints.ai_family = AF_INET; // AF_UNSPEC: Do we need IPv6 ?
     hints.ai_socktype = SOCK_STREAM;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     WSADATA wsaData;
     n = WSAStartup(MAKEWORD(2, 2),&wsaData);
 
@@ -347,7 +355,7 @@ bool Console::listenOnTCP(int port)
             break;          /* success */
 
 /* bind error, close and try next one */
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
         closesocket(listenfd);
 #else
         close(listenfd);
@@ -362,21 +370,21 @@ bool Console::listenOnTCP(int port)
 
     listen(listenfd, 50);
 
-    if (res->ai_family == AF_INET) {
-        char buf[INET_ADDRSTRLEN] = "";
-        struct sockaddr_in *sin = (struct sockaddr_in*) res->ai_addr;
-        if( inet_ntop(res->ai_family, &sin->sin_addr, buf, sizeof(buf)) != nullptr )
-            cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin_port));
-        else
-            perror("inet_ntop");
-    } else if (res->ai_family == AF_INET6) {
-        char buf[INET6_ADDRSTRLEN] = "";
-        struct sockaddr_in6 *sin = (struct sockaddr_in6*) res->ai_addr;
-        if( inet_ntop(res->ai_family, &sin->sin6_addr, buf, sizeof(buf)) != nullptr )
-            cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin6_port));
-        else
-            perror("inet_ntop");
-    }
+    //if (res->ai_family == AF_INET) {
+    //    char buf[INET_ADDRSTRLEN] = "";
+    //    struct sockaddr_in *sin = (struct sockaddr_in*) res->ai_addr;
+    //    if( inet_ntop(res->ai_family, &sin->sin_addr, buf, sizeof(buf)) != nullptr )
+    //        cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin_port));
+    //    else
+    //        perror("inet_ntop");
+    //} else if (res->ai_family == AF_INET6) {
+    //    char buf[INET6_ADDRSTRLEN] = "";
+    //    struct sockaddr_in6 *sin = (struct sockaddr_in6*) res->ai_addr;
+    //    if( inet_ntop(res->ai_family, &sin->sin6_addr, buf, sizeof(buf)) != nullptr )
+    //        cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin6_port));
+    //    else
+    //        perror("inet_ntop");
+    //}
 
 
     freeaddrinfo(ressave);
@@ -434,7 +442,7 @@ void Console::commandExit(int fd, const std::string &args)
 {
     FD_CLR(fd, &_read_set);
     _fds.erase(std::remove(_fds.begin(), _fds.end(), fd), _fds.end());
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
         closesocket(fd);
 #else
         close(fd);
@@ -1067,7 +1075,7 @@ void Console::loop()
                     //receive a SIGPIPE, which will cause linux system shutdown the sending process.
                     //Add this ioctl code to check if the socket has been closed by peer.
                     
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
                     u_long n = 0;
                     ioctlsocket(fd, FIONREAD, &n);
 #else
@@ -1112,14 +1120,14 @@ void Console::loop()
     // clean up: ignore stdin, stdout and stderr
     for(const auto &fd: _fds )
     {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
         closesocket(fd);
 #else
         close(fd);
 #endif
     }
     
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     closesocket(_listenfd);
 	WSACleanup();
 #else
@@ -1128,6 +1136,7 @@ void Console::loop()
     _running = false;
 }
 
+#endif /* #if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) */
 
 
 NS_CC_END
