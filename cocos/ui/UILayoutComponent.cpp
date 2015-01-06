@@ -595,7 +595,7 @@ namespace ui {
         case HorizontalEdge::Center:
             if (_isPercentOnly)
                 break;
-            if (_usingPercentWidth || _usingStretchWidth)
+            if (_usingStretchWidth)
             {
                 ownerSize.width = parentSize.width - _leftMargin - _rightMargin;
                 if (ownerSize.width < 0)
@@ -603,7 +603,11 @@ namespace ui {
                 ownerPosition.x = _leftMargin + ownerAnchor.x * ownerSize.width;
             }
             else
+            {
+                if (_usingPercentWidth)
+                    ownerSize.width = parentSize.width * _percentWidth;
                 ownerPosition.x = parentSize.width * _positionPercentX;
+            }
             break;
         default:
             break;
@@ -642,7 +646,7 @@ namespace ui {
         case VerticalEdge::Center:
             if (_isPercentOnly)
                 break;
-            if (_usingPercentHeight || _usingStretchHeight)
+            if (_usingStretchHeight)
             {
                 ownerSize.height = parentSize.height - _topMargin - _bottomMargin;
                 if (ownerSize.height < 0)
@@ -650,7 +654,11 @@ namespace ui {
                 ownerPosition.y = _bottomMargin + ownerAnchor.y * ownerSize.height;
             }
             else
+            {
+                if (_usingPercentHeight)
+                    ownerSize.height = parentSize.height * _percentHeight;
                 ownerPosition.y = parentSize.height* _positionPercentY;
+            }
             break;
         default:
             break;
