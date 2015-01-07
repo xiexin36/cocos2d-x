@@ -48,7 +48,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration).win32\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration).win32\runtime\win32</OutDir>
     <IntDir>$(Configuration).win32\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
@@ -56,7 +56,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration).win32\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration).win32\runtime\win32</OutDir>
     <IntDir>$(Configuration).win32\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -88,9 +88,9 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir)../../;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libcurl_imp.lib;lua51.lib;websockets.lib;libcocos2d.lib;libluacocos2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ProgramDatabaseFile>$(ProjectDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <ResourceCompile>
@@ -111,13 +111,34 @@
       </DllDataFileName>
     </Midl>
     <PreBuildEvent>
-      <Command>xcopy /Y /Q "$(ProjectDir)..\Classes\lang" "$(OutputPath)"</Command>
+      <Command>xcopy /Y /Q "$(ProjectDir)..\Classes\lang" "$(OutDir)"
+</Command>
       <Message>
       </Message>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>
-      </Command>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\freetype2\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\glfw3\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\curl\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\jpeg\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\png\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\tiff\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\webp\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\websockets\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\zlib\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\icon\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\gles\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\OpenalSoft\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\MP3Decoder\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\OggDecoder\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\vc\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\sqlite3\libraries\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\chipmunk\prebuilt\win32\debug-lib\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\lua\luajit\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(OutDir)..\..\libluacocos2d.dll" "$(OutDir)"
+xcopy /Y /Q "$(OutDir)..\..\libcocos2d.dll" "$(OutDir)"
+xcopy /Y /Q "$(OutDir)..\..\libSpine.dll" "$(OutDir)"</Command>
     </PreLinkEvent>
     <PostBuildEvent>
       <Command>
@@ -145,7 +166,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir)../../;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libcurl_imp.lib;lua51.lib;websockets.lib;libcocos2d.lib;libluacocos2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -168,13 +189,33 @@
       </DllDataFileName>
     </Midl>
     <PreBuildEvent>
-      <Command>xcopy /Y /Q "$(ProjectDir)..\Classes\lang" "$(OutputPath)"</Command>
+      <Command>xcopy /Y /Q "$(ProjectDir)..\Classes\lang" "$(OutDir)"</Command>
       <Message>
       </Message>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>
-      </Command>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\freetype2\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\glfw3\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\curl\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\jpeg\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\png\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\tiff\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\webp\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\websockets\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\zlib\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\icon\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\gles\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\OpenalSoft\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\MP3Decoder\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\OggDecoder\prebuilt\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\vc\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\sqlite3\libraries\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\chipmunk\prebuilt\win32\debug-lib\*.*" "$(OutDir)"
+xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\lua\luajit\prebuilt\win32\*.*" "$(OutDir)"
+xcopy /Y /Q "$(OutDir)..\..\libluacocos2d.dll" "$(OutDir)"
+xcopy /Y /Q "$(OutDir)..\..\libcocos2d.dll" "$(OutDir)"
+xcopy /Y /Q "$(OutDir)..\..\libSpine.dll" "$(OutDir)"</Command>
     </PreLinkEvent>
     <PostBuildEvent>
       <Command>
@@ -182,6 +223,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\CocoStudioMono\Addins\ModelExtend\Addins.ModelExtendCPP\RegisterWidget.h" />
     <ClInclude Include="..\..\..\..\..\external\lua\tolua\tolua++.h" />
     <ClInclude Include="..\..\..\..\..\external\lua\tolua\tolua_event.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -243,6 +285,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\CocoStudioMono\Addins\ModelExtend\Addins.ModelExtendCPP\RegisterWidget.cpp" />
     <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_event.c" />
     <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_is.c" />
     <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_map.c" />
