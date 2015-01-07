@@ -69,12 +69,13 @@ namespace flatbuffers
     struct AnimationInfo;
     struct TimeLine;
     struct Frame;
-    struct TimeLineBoolFrame;
-    struct TimeLineIntFrame;
-    struct TimeLineStringFrame;
-    struct TimeLinePointFrame;
-    struct TimeLineColorFrame;
-    struct TimeLineTextureFrame;
+    struct PointFrame;
+    struct ScaleFrame;
+    struct ColorFrame;
+    struct TextureFrame;
+    struct EventFrame;
+    struct IntFrame;
+    struct BoolFrame;
 }
 
 namespace tinyxml2
@@ -109,13 +110,14 @@ public:
     
     // NodeAction
     flatbuffers::Offset<flatbuffers::NodeAction> createNodeAction(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLine> createTimeLine(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLineBoolFrame> createTimeLineBoolFrame(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLineIntFrame> createTimeLineIntFrame(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLineStringFrame> createTimeLineStringFrame(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLinePointFrame> createTimeLinePointFrame(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLineColorFrame> createTimeLineColorFrame(const tinyxml2::XMLElement* objectData);
-    flatbuffers::Offset<flatbuffers::TimeLineTextureFrame> createTimeLineTextureFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::TimeLine> createTimeLine(const tinyxml2::XMLElement* objectData);    
+    flatbuffers::Offset<flatbuffers::PointFrame> createPointFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::ScaleFrame> createScaleFrame(const tinyxml2::XMLElement* objectData);    
+    flatbuffers::Offset<flatbuffers::ColorFrame> createColorFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::TextureFrame> createTextureFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::EventFrame> createEventFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::IntFrame> createIntFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::BoolFrame> createBoolFrame(const tinyxml2::XMLElement* objectData);
 
     //Animation Info
     flatbuffers::Offset<flatbuffers::AnimationInfo> createAnimationInfo(const tinyxml2::XMLElement* objectData);
