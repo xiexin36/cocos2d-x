@@ -98,7 +98,7 @@ private:
 // Wrapper for converting websocket callback from static function to member function of WebSocket class.
 class WebSocketCallbackWrapper {
 public:
-    
+   /* 
     static int onSocketCallback(struct libwebsocket_context *ctx,
                                 struct libwebsocket *wsi,
                                 enum libwebsocket_callback_reasons reason,
@@ -112,6 +112,7 @@ public:
         //}
         return 0;
     }
+    */
 };
 
 // Implementation of WsThreadHelper
