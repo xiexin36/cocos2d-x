@@ -47,14 +47,15 @@ using namespace flatbuffers;
 namespace cocostudio {
 namespace timeline{
 
-static const char* Property_Position     = "Position";
-static const char* Property_Scale        = "Scale";
-static const char* Property_RotationSkew = "RotationSkew";
-static const char* Property_CColor       = "CColor";
-static const char* Property_FileData     = "FileData";
-static const char* Property_FrameEvent   = "FrameEvent";
-static const char* Property_Alpha        = "Alpha";
 static const char* Property_VisibleForFrame = "VisibleForFrame";
+static const char* Property_Position        = "Position";
+static const char* Property_Scale           = "Scale";
+static const char* Property_RotationSkew    = "RotationSkew";
+static const char* Property_CColor          = "CColor";
+static const char* Property_FileData        = "FileData";
+static const char* Property_FrameEvent      = "FrameEvent";
+static const char* Property_Alpha           = "Alpha";
+static const char* Property_ZOrder          = "ZOrder";
 
 static const char* ACTION           = "action";
 static const char* DURATION         = "duration";
@@ -479,7 +480,12 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
             auto frameFlatbuf = framesFlatbuf->Get(i);
             Frame* frame = nullptr;
             
-            if (property == Property_Position)
+            if (property == Property_VisibleForFrame)
+            {
+                auto boolFrame = frameFlatbuf->boolFrame();
+                frame = loadVisibleFrameWithFlatBuffers(boolFrame);
+            }
+            else if (property == Property_Position)
             {
                 auto potisionFrame = frameFlatbuf->pointFrame();
                 frame = loadPositionFrameWithFlatBuffers(potisionFrame);
@@ -512,12 +518,12 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
             else if (property == Property_Alpha)
             {
                 auto intFrame = frameFlatbuf->intFrame();
-                frame = loadIntFrameWithFlatBuffers(intFrame);
+                frame = loadAlphaFrameWithFlatBuffers(intFrame);
             }
-            else if (property == Property_VisibleForFrame)
+            else if (property == Property_ZOrder)
             {
-                auto boolFrame = frameFlatbuf->boolFrame();
-                frame = loadBoolFrameWithFlatBuffers(boolFrame);
+                auto intFrame = frameFlatbuf->intFrame();
+                frame = loadZOrderFrameWithFlatBuffers(intFrame);
             }
             
             if (!frame)
@@ -530,6 +536,23 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
     }
     
     return timeline;
+}
+    
+Frame* ActionTimelineCache::loadVisibleFrameWithFlatBuffers(const flatbuffers::BoolFrame *flatbuffers)
+{
+    VisibleFrame* frame = VisibleFrame::create();
+    
+    bool visible = flatbuffers->value();
+    
+    frame->setVisible(visible);
+    
+    int frameIndex = flatbuffers->frameIndex();
+    frame->setFrameIndex(frameIndex);
+    
+    bool tween = flatbuffers->tween();
+    frame->setTween(tween);
+    
+    return frame;
 }
     
 Frame* ActionTimelineCache::loadPositionFrameWithFlatBuffers(const flatbuffers::PointFrame *flatbuffers)
@@ -679,7 +702,7 @@ Frame* ActionTimelineCache::loadEventFrameWithFlatBuffers(const flatbuffers::Eve
     return frame;
 }
     
-Frame* ActionTimelineCache::loadIntFrameWithFlatBuffers(const flatbuffers::IntFrame *flatbuffers)
+Frame* ActionTimelineCache::loadAlphaFrameWithFlatBuffers(const flatbuffers::IntFrame *flatbuffers)
 {
     AlphaFrame* frame = AlphaFrame::create();
     
@@ -696,13 +719,13 @@ Frame* ActionTimelineCache::loadIntFrameWithFlatBuffers(const flatbuffers::IntFr
     return frame;
 }
     
-Frame* ActionTimelineCache::loadBoolFrameWithFlatBuffers(const flatbuffers::BoolFrame *flatbuffers)
+Frame* ActionTimelineCache::loadZOrderFrameWithFlatBuffers(const flatbuffers::IntFrame *flatbuffers)
 {
-    VisibleFrame* frame = VisibleFrame::create();
+    ZOrderFrame* frame = ZOrderFrame::create();
     
-    bool visible = flatbuffers->value();
+    int zorder = flatbuffers->value();
     
-    frame->setVisible(visible);
+    frame->setZOrder(zorder);
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);

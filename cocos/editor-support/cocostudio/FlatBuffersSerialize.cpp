@@ -68,6 +68,7 @@ using namespace flatbuffers;
 
 namespace cocostudio {
 
+static const char* Property_VisibleForFrame = "VisibleForFrame";
 static const char* Property_Position        = "Position";
 static const char* Property_Scale           = "Scale";
 static const char* Property_RotationSkew    = "RotationSkew";
@@ -75,7 +76,7 @@ static const char* Property_CColor          = "CColor";
 static const char* Property_FileData        = "FileData";
 static const char* Property_FrameEvent      = "FrameEvent";
 static const char* Property_Alpha           = "Alpha";
-static const char* Property_VisibleForFrame = "VisibleForFrame";
+static const char* Property_ZOrder          = "ZOrder";
 
 static FlatBuffersSerialize* _instanceFlatBuffersSerialize = nullptr;
     
@@ -632,7 +633,19 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
     {
         Offset<flatbuffers::Frame> frame;
         
-        if (property == Property_Position)
+        if (property == Property_VisibleForFrame)
+        {
+            auto boolFrame = createBoolFrame(frameElement);
+            frame = CreateFrame(*_builder,
+                                0, // PointFrame
+                                0, // ScaleFrame
+                                0, // ColorFrame
+                                0, // TextureFrame
+                                0, // EventFrame
+                                0, // IntFrame
+                                boolFrame);
+        }
+        else if (property == Property_Position)
         {
             auto pointFrame = createPointFrame(frameElement);
             frame = CreateFrame(*_builder,
@@ -690,18 +703,18 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // EventFrame
                                 intFrame);
         }
-        else if (property == Property_VisibleForFrame)
+        else if (property == Property_ZOrder)
         {
-            auto boolFrame = createBoolFrame(frameElement);
+            auto intFrame = createIntFrame(frameElement);
             frame = CreateFrame(*_builder,
                                 0, // PointFrame
                                 0, // ScaleFrame
                                 0, // ColorFrame
                                 0, // TextureFrame
                                 0, // EventFrame
-                                0, // IntFrame
-                                boolFrame);
+                                intFrame);
         }
+        
         frames.push_back(frame);
                 
         frameElement = frameElement->NextSiblingElement();

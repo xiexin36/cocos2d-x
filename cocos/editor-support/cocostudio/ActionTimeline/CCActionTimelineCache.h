@@ -102,15 +102,16 @@ protected:
     
     
     Timeline* loadTimelineWithFlatBuffers(const flatbuffers::TimeLine* flatbuffers);
-    
+
+    Frame* loadVisibleFrameWithFlatBuffers      (const flatbuffers::BoolFrame* flatbuffers);
     Frame* loadPositionFrameWithFlatBuffers     (const flatbuffers::PointFrame* flatbuffers);
     Frame* loadScaleFrameWithFlatBuffers        (const flatbuffers::ScaleFrame* flatbuffers);
     Frame* loadRotationSkewFrameWithFlatBuffers (const flatbuffers::ScaleFrame* flatbuffers);
     Frame* loadColorFrameWithFlatBuffers        (const flatbuffers::ColorFrame* flatbuffers);
     Frame* loadTextureFrameWithFlatBuffers      (const flatbuffers::TextureFrame* flatbuffers);
     Frame* loadEventFrameWithFlatBuffers        (const flatbuffers::EventFrame* flatbuffers);
-    Frame* loadIntFrameWithFlatBuffers          (const flatbuffers::IntFrame* flatbuffers);
-    Frame* loadBoolFrameWithFlatBuffers         (const flatbuffers::BoolFrame* flatbuffers);
+    Frame* loadAlphaFrameWithFlatBuffers        (const flatbuffers::IntFrame* flatbuffers);
+    Frame* loadZOrderFrameWithFlatBuffers       (const flatbuffers::IntFrame* flatbuffers);
 
 protected:
 
