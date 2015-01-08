@@ -301,6 +301,12 @@ void ActionTimeline::removeIndexes(std::string name)
     _indexes.erase(name);
 }
 
+bool ActionTimeline::IsIndexesExists(const std::string& name)
+{
+    return _indexes.find(name) != _indexes.end();
+}
+
+
 
 void ActionTimeline::setFrameEventCallFunc(std::function<void(Frame *)> listener)
 {
