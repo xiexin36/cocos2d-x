@@ -443,11 +443,11 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFlatBuffersFile(cons
     for (int i = 0; i < animationcount; i++)
     {
         auto animationdata = animationlist->Get(i);
-        ActionIndexes indexes;
-        indexes.name = animationdata->name()->c_str();
-        indexes.startIndex = animationdata->startIndex();
-        indexes.endIndex = animationdata->endIndex();
-        action->addIndexes(indexes);
+        AnimationInfo info;
+        info.name = animationdata->name()->c_str();
+        info.startIndex = animationdata->startIndex();
+        info.endIndex = animationdata->endIndex();
+        action->addAnimationInfo(info);
     }
 
     auto timelines = nodeAction->timeLines();
@@ -772,11 +772,11 @@ ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(con
     for (int i = 0; i < animationcount; i++)
     {
         auto animationdata = animationlist->Get(i);
-        ActionIndexes indexes;
-        indexes.name = animationdata->name()->c_str();
-        indexes.startIndex = animationdata->startIndex();
-        indexes.endIndex = animationdata->endIndex();
-        action->addIndexes(indexes);
+        AnimationInfo info;
+        info.name = animationdata->name()->c_str();
+        info.startIndex = animationdata->startIndex();
+        info.endIndex = animationdata->endIndex();
+        action->addAnimationInfo(info);
     }
 
     auto timeLines = nodeAction->timeLines();

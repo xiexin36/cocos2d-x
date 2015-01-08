@@ -232,7 +232,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
         
         Offset<NodeTree> nodeTree;
         Offset<NodeAction> aciton;
-        std::vector<Offset<AnimationInfo>> animationInfos;
+        std::vector<Offset<flatbuffers::AnimationInfo>> animationInfos;
         
         const tinyxml2::XMLElement* child = element->FirstChildElement();
         
@@ -573,7 +573,7 @@ Offset<NodeAction> FlatBuffersSerialize::createNodeAction(const tinyxml2::XMLEle
 }
 
 
-Offset<AnimationInfo> FlatBuffersSerialize::createAnimationInfo(const tinyxml2::XMLElement *objectData)
+Offset<flatbuffers::AnimationInfo> FlatBuffersSerialize::createAnimationInfo(const tinyxml2::XMLElement *objectData)
  {
      std::string infoName = "";
      int startIndex = 0;
@@ -1114,7 +1114,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
 
         Offset<NodeTree> nodeTree;
         Offset<NodeAction> aciton;
-        std::vector<Offset<AnimationInfo> > animationInfos;
+        std::vector<Offset<flatbuffers::AnimationInfo> > animationInfos;
         
         const tinyxml2::XMLElement* child = element->FirstChildElement();
         
