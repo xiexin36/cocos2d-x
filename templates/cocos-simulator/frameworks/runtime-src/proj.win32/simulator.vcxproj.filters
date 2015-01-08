@@ -151,6 +151,9 @@
     <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_to.c">
       <Filter>tolua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\CocoStudioMono\Addins\ModelExtend\Addins.ModelExtendCPP\RegisterWidget.cpp">
+      <Filter>Addin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -320,6 +323,9 @@
     <ClInclude Include="..\..\..\..\..\external\lua\tolua\tolua++.h">
       <Filter>tolua</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\CocoStudioMono\Addins\ModelExtend\Addins.ModelExtendCPP\RegisterWidget.h">
+      <Filter>Addin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
@@ -348,6 +354,9 @@
     </Filter>
     <Filter Include="tolua">
       <UniqueIdentifier>{632e0b13-00fe-499c-a801-8041dcf765b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Addin">
+      <UniqueIdentifier>{585e4ee4-07d1-491e-ab92-89cf65ce2282}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

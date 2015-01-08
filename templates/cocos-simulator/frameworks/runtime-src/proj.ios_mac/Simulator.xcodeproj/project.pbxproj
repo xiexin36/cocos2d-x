@@ -59,12 +59,18 @@
 		43301FAF1A52DCF1000D889B /* CCNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43301FAA1A52DCF1000D889B /* CCNetwork.cpp */; };
 		43301FB41A52DE71000D889B /* PlayerTaskServiceMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 43301FB31A52DE71000D889B /* PlayerTaskServiceMac.mm */; };
 		43301FB51A52DE71000D889B /* PlayerTaskServiceMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 43301FB31A52DE71000D889B /* PlayerTaskServiceMac.mm */; };
-		43E117DA1A4346E8009F1F47 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43E117D71A4346E8009F1F47 /* Base.lproj */; };
-		43E117DB1A4346E8009F1F47 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43E117D71A4346E8009F1F47 /* Base.lproj */; };
-		43E117DC1A4346E8009F1F47 /* ConsoleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 43E117D81A4346E8009F1F47 /* ConsoleWindow.nib */; };
-		43E117DD1A4346E8009F1F47 /* ConsoleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 43E117D81A4346E8009F1F47 /* ConsoleWindow.nib */; };
-		43E117DE1A4346E8009F1F47 /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43E117D91A4346E8009F1F47 /* zh-Hans.lproj */; };
-		43E117DF1A4346E8009F1F47 /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43E117D91A4346E8009F1F47 /* zh-Hans.lproj */; };
+		43301FE41A5E87A3000D889B /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43301FE11A5E87A3000D889B /* Base.lproj */; };
+		43301FE51A5E87A3000D889B /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43301FE11A5E87A3000D889B /* Base.lproj */; };
+		43301FE61A5E87A3000D889B /* ConsoleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 43301FE21A5E87A3000D889B /* ConsoleWindow.nib */; };
+		43301FE71A5E87A3000D889B /* ConsoleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 43301FE21A5E87A3000D889B /* ConsoleWindow.nib */; };
+		43301FE81A5E87A3000D889B /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43301FE31A5E87A3000D889B /* zh-Hans.lproj */; };
+		43301FE91A5E87A3000D889B /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 43301FE31A5E87A3000D889B /* zh-Hans.lproj */; };
+		43301FEB1A5E87ED000D889B /* lang in Resources */ = {isa = PBXBuildFile; fileRef = 43301FEA1A5E87ED000D889B /* lang */; };
+		43301FEC1A5E87ED000D889B /* lang in Resources */ = {isa = PBXBuildFile; fileRef = 43301FEA1A5E87ED000D889B /* lang */; };
+		43301FF21A5E8E76000D889B /* libcocos2d Mac.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 434FAFE41A52D677004D7AA1 /* libcocos2d Mac.dylib */; };
+		43301FF31A5E8E76000D889B /* libluacocos2d Mac.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 434FAFEE1A52D684004D7AA1 /* libluacocos2d Mac.dylib */; };
+		43301FFD1A5E965C000D889B /* RegisterWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43301FFB1A5E965C000D889B /* RegisterWidget.cpp */; };
+		43301FFE1A5E965C000D889B /* RegisterWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43301FFB1A5E965C000D889B /* RegisterWidget.cpp */; };
 		5023811817EBBCAC00990C9B /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5023810817EBBCAC00990C9B /* AppController.mm */; };
 		5023811917EBBCAC00990C9B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5023810917EBBCAC00990C9B /* Default-568h@2x.png */; };
 		5023811A17EBBCAC00990C9B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5023810A17EBBCAC00990C9B /* Default.png */; };
@@ -124,7 +130,6 @@
 		9FE3D2E31A35A9860049191B /* ConsoleCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FE3D2DC1A35A9860049191B /* ConsoleCommand.cpp */; };
 		9FE3D2E41A35A9860049191B /* FileServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FE3D2DE1A35A9860049191B /* FileServer.cpp */; };
 		9FE3D2E51A35A9860049191B /* FileServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FE3D2DE1A35A9860049191B /* FileServer.cpp */; };
-		9FE3D3301A3707A80049191B /* lang in Resources */ = {isa = PBXBuildFile; fileRef = 9FE3D32F1A3707A80049191B /* lang */; };
 		9FE3D33A1A3815B90049191B /* Device-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE3D3381A38154F0049191B /* Device-mac.mm */; };
 		9FE3D3401A3817B80049191B /* OpenUDIDMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE3D33F1A3817B80049191B /* OpenUDIDMac.m */; };
 		C00FD4921938512100C6382D /* Landscape_png.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C00FD48A1938512100C6382D /* Landscape_png.cpp */; };
@@ -187,6 +192,20 @@
 			remoteInfo = "libluacocos2d iOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		43301FF11A5E8E6A000D889B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				43301FF21A5E8E76000D889B /* libcocos2d Mac.dylib in CopyFiles */,
+				43301FF31A5E8E76000D889B /* libluacocos2d Mac.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		15427CE2198F237300DC375D /* lua_module_register.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua_module_register.h; path = ../Classes/lua_module_register.h; sourceTree = "<group>"; };
@@ -251,11 +270,14 @@
 		43301FAB1A52DCF1000D889B /* CCNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetwork.h; sourceTree = "<group>"; };
 		43301FB21A52DE70000D889B /* PlayerTaskServiceMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerTaskServiceMac.h; sourceTree = "<group>"; };
 		43301FB31A52DE71000D889B /* PlayerTaskServiceMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayerTaskServiceMac.mm; sourceTree = "<group>"; };
+		43301FE11A5E87A3000D889B /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
+		43301FE21A5E87A3000D889B /* ConsoleWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ConsoleWindow.nib; sourceTree = "<group>"; };
+		43301FE31A5E87A3000D889B /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "zh-Hans.lproj"; sourceTree = "<group>"; };
+		43301FEA1A5E87ED000D889B /* lang */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lang; path = ../Classes/lang; sourceTree = "<group>"; };
+		43301FFB1A5E965C000D889B /* RegisterWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RegisterWidget.cpp; path = ../../../../../../CocoStudioMono/Addins/ModelExtend/Addins.ModelExtendCPP/RegisterWidget.cpp; sourceTree = "<group>"; };
+		43301FFC1A5E965C000D889B /* RegisterWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterWidget.h; path = ../../../../../../CocoStudioMono/Addins/ModelExtend/Addins.ModelExtendCPP/RegisterWidget.h; sourceTree = "<group>"; };
 		434FAFDE1A52D676004D7AA1 /* cocos2d_libs_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs_studio.xcodeproj; path = ../../../../../build/cocos2d_libs_studio.xcodeproj; sourceTree = "<group>"; };
 		434FAFE71A52D683004D7AA1 /* cocos2d_lua_bindings_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_lua_bindings_studio.xcodeproj; path = "../../../../../cocos/scripting/lua-bindings/proj.ios_mac/cocos2d_lua_bindings_studio.xcodeproj"; sourceTree = "<group>"; };
-		43E117D71A4346E8009F1F47 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
-		43E117D81A4346E8009F1F47 /* ConsoleWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ConsoleWindow.nib; sourceTree = "<group>"; };
-		43E117D91A4346E8009F1F47 /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "zh-Hans.lproj"; sourceTree = "<group>"; };
 		5023810717EBBCAC00990C9B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		5023810817EBBCAC00990C9B /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
 		5023810917EBBCAC00990C9B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -335,7 +357,6 @@
 		9FE3D2DF1A35A9860049191B /* FileServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileServer.h; sourceTree = "<group>"; };
 		9FE3D3191A3698790049191B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9FE3D31A1A3698870049191B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/MainMenu.xib"; sourceTree = "<group>"; };
-		9FE3D32F1A3707A80049191B /* lang */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lang; path = ../Classes/lang; sourceTree = "<group>"; };
 		9FE3D3371A38153A0049191B /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Device.h; path = ../Classes/Device.h; sourceTree = "<group>"; };
 		9FE3D3381A38154F0049191B /* Device-mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "Device-mac.mm"; path = "../../Classes/Device-mac.mm"; sourceTree = "<group>"; };
 		9FE3D33E1A3817B80049191B /* OpenUDIDMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDIDMac.h; sourceTree = "<group>"; };
@@ -515,6 +536,15 @@
 			);
 			name = network;
 			path = ../../Classes/network;
+			sourceTree = "<group>";
+		};
+		43301FF41A5E8FA3000D889B /* addin */ = {
+			isa = PBXGroup;
+			children = (
+				43301FFB1A5E965C000D889B /* RegisterWidget.cpp */,
+				43301FFC1A5E965C000D889B /* RegisterWidget.h */,
+			);
+			name = addin;
 			sourceTree = "<group>";
 		};
 		434FAFDF1A52D676004D7AA1 /* Products */ = {
@@ -733,6 +763,7 @@
 		F293BB7C15EB830F00256477 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				43301FF41A5E8FA3000D889B /* addin */,
 				9FE3D2D01A32E9490049191B /* service */,
 				9FDD03DF1A30335B001FAF89 /* ProjectConfig */,
 				15427CE2198F237300DC375D /* lua_module_register.h */,
@@ -755,10 +786,10 @@
 		F293BC4615EB859D00256477 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				43E117D71A4346E8009F1F47 /* Base.lproj */,
-				43E117D81A4346E8009F1F47 /* ConsoleWindow.nib */,
-				43E117D91A4346E8009F1F47 /* zh-Hans.lproj */,
-				9FE3D32F1A3707A80049191B /* lang */,
+				43301FEA1A5E87ED000D889B /* lang */,
+				43301FE11A5E87A3000D889B /* Base.lproj */,
+				43301FE21A5E87A3000D889B /* ConsoleWindow.nib */,
+				43301FE31A5E87A3000D889B /* zh-Hans.lproj */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -774,6 +805,7 @@
 				5023813117EBBCE400990C9B /* Sources */,
 				5023813617EBBCE400990C9B /* Frameworks */,
 				5023814617EBBCE400990C9B /* Resources */,
+				43301FF11A5E8E6A000D889B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -882,12 +914,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FDD04111A30339B001FAF89 /* ConsoleWindow.xib in Resources */,
-				43E117DD1A4346E8009F1F47 /* ConsoleWindow.nib in Resources */,
-				43E117DF1A4346E8009F1F47 /* zh-Hans.lproj in Resources */,
+				43301FE71A5E87A3000D889B /* ConsoleWindow.nib in Resources */,
+				43301FE91A5E87A3000D889B /* zh-Hans.lproj in Resources */,
 				5023817617EBBE3400990C9B /* Icon.icns in Resources */,
+				43301FE51A5E87A3000D889B /* Base.lproj in Resources */,
 				43301F9B1A52DCE4000D889B /* CMakeLists.txt in Resources */,
-				43E117DB1A4346E8009F1F47 /* Base.lproj in Resources */,
-				9FE3D3301A3707A80049191B /* lang in Resources */,
+				43301FEC1A5E87ED000D889B /* lang in Resources */,
 				9FDD04301A31AFD3001FAF89 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -898,6 +930,7 @@
 			files = (
 				15A8A4491834C64F00142BE0 /* Icon-114.png in Resources */,
 				5023811D17EBBCAC00990C9B /* Icon-120.png in Resources */,
+				43301FE41A5E87A3000D889B /* Base.lproj in Resources */,
 				5091733B17ECE17A00D62437 /* Icon-100.png in Resources */,
 				5023811B17EBBCAC00990C9B /* Default@2x.png in Resources */,
 				5091733617ECE17A00D62437 /* Icon-29.png in Resources */,
@@ -906,17 +939,17 @@
 				5023811F17EBBCAC00990C9B /* Icon-152.png in Resources */,
 				5023812017EBBCAC00990C9B /* Icon-57.png in Resources */,
 				521A8E7019F0C3D200D177D7 /* Default-667h@2x.png in Resources */,
-				43E117DA1A4346E8009F1F47 /* Base.lproj in Resources */,
-				43E117DC1A4346E8009F1F47 /* ConsoleWindow.nib in Resources */,
 				5023812217EBBCAC00990C9B /* Icon-76.png in Resources */,
 				5091733A17ECE17A00D62437 /* Icon-80.png in Resources */,
 				5091733717ECE17A00D62437 /* Icon-40.png in Resources */,
 				5023811E17EBBCAC00990C9B /* Icon-144.png in Resources */,
+				43301FE81A5E87A3000D889B /* zh-Hans.lproj in Resources */,
 				43301F9A1A52DCE4000D889B /* CMakeLists.txt in Resources */,
-				43E117DE1A4346E8009F1F47 /* zh-Hans.lproj in Resources */,
+				43301FEB1A5E87ED000D889B /* lang in Resources */,
 				5023811A17EBBCAC00990C9B /* Default.png in Resources */,
 				5091733817ECE17A00D62437 /* Icon-50.png in Resources */,
 				5023812117EBBCAC00990C9B /* Icon-72.png in Resources */,
+				43301FE61A5E87A3000D889B /* ConsoleWindow.nib in Resources */,
 				521A8E7119F0C3D200D177D7 /* Default-736h@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -964,6 +997,7 @@
 				9FDD03FE1A303379001FAF89 /* PlayerServiceProtocol.cpp in Sources */,
 				15AA9649199B6D4600725633 /* lua_debugger.c in Sources */,
 				3EB515651952865D006966AA /* repeated_field.cc in Sources */,
+				43301FFE1A5E965C000D889B /* RegisterWidget.cpp in Sources */,
 				9FDD04011A303379001FAF89 /* PlayerUtils.cpp in Sources */,
 				3EB5156B1952865D006966AA /* once.cc in Sources */,
 				9FDD03E41A30335B001FAF89 /* ProjectConfig.cpp in Sources */,
@@ -1024,6 +1058,7 @@
 				3EB5152C19528284006966AA /* Protos.pb.cc in Sources */,
 				3EB515661952865D006966AA /* atomicops_internals_x86_msvc.cc in Sources */,
 				43301FB41A52DE71000D889B /* PlayerTaskServiceMac.mm in Sources */,
+				43301FFD1A5E965C000D889B /* RegisterWidget.cpp in Sources */,
 				3EB515641952865D006966AA /* repeated_field.cc in Sources */,
 				43301FA01A52DCE4000D889B /* tolua_map.c in Sources */,
 				C00FD4941938512100C6382D /* PlayDisable_png.cpp in Sources */,
@@ -1082,14 +1117,10 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Classes/protobuf-lite";
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_LDFLAGS = (
-					"-image_base",
-					100000000,
-					"-pagezero_size",
-					10000,
-				);
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/ @loader_path/";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../runtime/mac/simulator.app/Contents/MacOS\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "";
 				SDKROOT = macosx10.9;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) \"$(SRCROOT)/../../../../../cocos/platform/mac\" \"$(SRCROOT)/../../../../../external/glfw3/include/mac\" $(SRCROOT)/../Classes \"$(SRCROOT)/mac\"";
 			};
@@ -1113,15 +1144,11 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Classes/protobuf-lite";
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/ @loader_path/";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../runtime/mac/simulator.app/Contents/MacOS\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-image_base",
-					100000000,
-					"-pagezero_size",
-					10000,
-				);
+				OTHER_LDFLAGS = "";
 				SDKROOT = macosx10.9;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) \"$(SRCROOT)/../../../../../cocos/platform/mac\" \"$(SRCROOT)/../../../../../external/glfw3/include/mac\" $(SRCROOT)/../Classes \"$(SRCROOT)/mac\"";
 			};
