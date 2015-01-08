@@ -137,6 +137,7 @@ public:
     /** add ActionIndexes*/
     virtual void addIndexes(const ActionIndexes& indexes);
     virtual void removeIndexes(std::string name);
+    virtual bool IsIndexesExists(const std::string& name);
 
     /** Set ActionTimeline's frame event callback function */
     void setFrameEventCallFunc(std::function<void(Frame *)> listener);

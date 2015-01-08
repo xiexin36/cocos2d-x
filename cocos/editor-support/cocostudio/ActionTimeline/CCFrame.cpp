@@ -473,8 +473,7 @@ InnerActionFrame::InnerActionFrame()
 
 void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
 {
-    auto action = _node->getActionByTag(_node->getTag());
-    auto actiontimeline = static_cast<ActionTimeline*>(action);
+    auto actiontimeline = _timeline->getActionTimeline();
     if (InnerActionType::SingleFrame == _innerActionType)
     {
         actiontimeline->gotoFrameAndPause(_startFrameIndex);
