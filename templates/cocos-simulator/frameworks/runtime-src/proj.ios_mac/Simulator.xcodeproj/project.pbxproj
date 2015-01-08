@@ -1120,7 +1120,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/ @loader_path/";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../runtime/mac/simulator.app/Contents/MacOS\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-image_base",
+					100000000,
+					"-pagezero_size",
+					10000,
+				);
 				SDKROOT = macosx10.9;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) \"$(SRCROOT)/../../../../../cocos/platform/mac\" \"$(SRCROOT)/../../../../../external/glfw3/include/mac\" $(SRCROOT)/../Classes \"$(SRCROOT)/mac\"";
 			};
@@ -1148,7 +1153,12 @@
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../runtime/mac/simulator.app/Contents/MacOS\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-image_base",
+					100000000,
+					"-pagezero_size",
+					10000,
+				);
 				SDKROOT = macosx10.9;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) \"$(SRCROOT)/../../../../../cocos/platform/mac\" \"$(SRCROOT)/../../../../../external/glfw3/include/mac\" $(SRCROOT)/../Classes \"$(SRCROOT)/mac\"";
 			};
