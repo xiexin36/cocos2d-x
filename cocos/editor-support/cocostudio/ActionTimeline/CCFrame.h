@@ -267,9 +267,13 @@ public:
     inline void setStartFrameIndex(int frameIndex) { _startFrameIndex = frameIndex; }
     inline int  getStartFrameIndex() const { return _startFrameIndex; }
 
+    inline void setEndFrameIndex(int frameIndex) { _endFrameIndex = frameIndex; }
+    inline int  getEndFrameIndex() const { return _endFrameIndex; }
 protected:
     InnerActionType _innerActionType;
+    // when type is SingleFrame, use _startFrameIndex only
     int _startFrameIndex;
+    int _endFrameIndex;
 };
 
 

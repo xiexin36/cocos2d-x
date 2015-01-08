@@ -438,6 +438,18 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFlatBuffersFile(cons
     float speed = nodeAction->speed();
     action->setTimeSpeed(speed);
     
+    auto animationlist = csparsebinary->animationList();
+    int animationcount = animationlist->size();
+    for (int i = 0; i < animationcount; i++)
+    {
+        auto animationdata = animationlist->Get(i);
+        AnimationInfo info;
+        info.name = animationdata->name()->c_str();
+        info.startIndex = animationdata->startIndex();
+        info.endIndex = animationdata->endIndex();
+        action->addAnimationInfo(info);
+    }
+
     auto timelines = nodeAction->timeLines();
     int timelineLength = timelines->size();
     for (int i = 0; i < timelineLength; i++)
@@ -755,6 +767,18 @@ ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(con
     float speed = nodeAction->speed();
     action->setTimeSpeed(speed);
     
+    auto animationlist = csparsebinary->animationList();
+    int animationcount = animationlist->size();
+    for (int i = 0; i < animationcount; i++)
+    {
+        auto animationdata = animationlist->Get(i);
+        AnimationInfo info;
+        info.name = animationdata->name()->c_str();
+        info.startIndex = animationdata->startIndex();
+        info.endIndex = animationdata->endIndex();
+        action->addAnimationInfo(info);
+    }
+
     auto timeLines = nodeAction->timeLines();
     int timelineLength = timeLines->size();
     for (int i = 0; i < timelineLength; i++)

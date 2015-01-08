@@ -31,6 +31,13 @@ THE SOFTWARE.
 
 NS_TIMELINE_BEGIN
 
+struct AnimationInfo
+{
+    std::string name;
+    int startIndex;
+    int endIndex;
+};
+
 class CC_STUDIO_DLL ActionTimelineData : public cocos2d::Ref
 {
 public:
@@ -55,6 +62,8 @@ public:
 
     ActionTimeline();
     virtual ~ActionTimeline();
+
+    virtual void play(std::string animationName, bool loop);
 
     virtual bool init();
 
@@ -124,6 +133,11 @@ public:
     virtual void removeTimeline(Timeline* timeline);
 
     virtual const cocos2d::Vector<Timeline*>& getTimelines() const { return _timelineList; }
+    
+    /** add ActionIndexes*/
+    virtual void addAnimationInfo(const AnimationInfo& animationInfo);
+    virtual void removeAnimationInfo(std::string animationName);
+    virtual bool IsAnimationInfoExists(const std::string& animationName);
 
     /** Set ActionTimeline's frame event callback function */
     void setFrameEventCallFunc(std::function<void(Frame *)> listener);
@@ -168,6 +182,7 @@ protected:
 
     std::function<void(Frame*)> _frameEventListener;
     std::function<void()> _lastFrameListener;
+    std::map<std::string, AnimationInfo> _animationInfos;
 };
 
 NS_TIMELINE_END
