@@ -7,6 +7,7 @@
 #include "lua_module_register.h"
 
 #include "cocostudio/CocoStudio.h"
+#include "ui/UIHelper.h"
 //#include "GafFeatures.h"
 
 #if ((CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC))
@@ -254,6 +255,7 @@ void StartupCall::onPreviewCocosCSD(const std::string &path)
     
     auto node = CSLoader::getInstance()->createNodeWithFlatBuffersForSimulator(filepath.c_str());
 	cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filepath.c_str());
+    
 	if (action)
 	{
 		node->runAction(action);
@@ -262,6 +264,9 @@ void StartupCall::onPreviewCocosCSD(const std::string &path)
 
     if (node)
     {
+        Size frameSize = Director::getInstance()->getVisibleSize();
+        node->setContentSize(frameSize);
+        ui::Helper::doLayout(node);
         if (Director::getInstance()->getRunningScene())
         {
             auto scene = Scene::create();
@@ -292,6 +297,9 @@ void StartupCall::onPreviewCocosCSB(const std::string &path)
     auto node = CSLoader::getInstance()->createNode(filepath);
     if (node)
     {
+        Size frameSize = Director::getInstance()->getVisibleSize();
+        node->setContentSize(frameSize);
+        ui::Helper::doLayout(node);
         if (Director::getInstance()->getRunningScene())
         {
             auto scene = Scene::create();
