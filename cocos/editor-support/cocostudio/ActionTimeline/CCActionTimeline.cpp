@@ -91,6 +91,18 @@ bool ActionTimeline::init()
     return true;
 }
 
+void ActionTimeline::play(std::string name, bool loop)
+{
+    if (_indexes.find(name) == _indexes.end())
+    {
+        CCLOG("Can't find action indexes for %s", name.c_str());
+        return;
+    }
+
+    ActionIndexes& index = _indexes[name];
+    gotoFrameAndPlay(index.startIndex, index.endIndex, loop);
+}
+
 void ActionTimeline::gotoFrameAndPlay(int startIndex)
 {
     gotoFrameAndPlay(startIndex, true);
@@ -266,6 +278,30 @@ void ActionTimeline::removeTimeline(Timeline* timeline)
     }
 }
 
+
+void ActionTimeline::addIndexes(const ActionIndexes& indexes)
+{
+    if (_indexes.find(indexes.name) != _indexes.end())
+    {
+        CCLOG("ActionIndexes (%s) already exists.", indexes.name.c_str());
+        return;
+    }
+
+    _indexes[indexes.name] = indexes;
+}
+
+void ActionTimeline::removeIndexes(std::string name)
+{
+    if (_indexes.find(name) == _indexes.end())
+    {
+        CCLOG("ActionIndexes (%s) not exists.", name.c_str());
+        return;
+    }
+
+    _indexes.erase(name);
+}
+
+
 void ActionTimeline::setFrameEventCallFunc(std::function<void(Frame *)> listener)
 {
     _frameEventListener = listener;
@@ -314,5 +350,4 @@ void ActionTimeline::stepToFrame(int frameIndex)
         _timelineList.at(i)->stepToFrame(frameIndex);
     }
 }
-
 NS_TIMELINE_END

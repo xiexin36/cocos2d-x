@@ -834,28 +834,15 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
 
-            Node* root = createNodeWithFlatBuffersFile(filePath);
-            reader->setPropsWithFlatBuffers(root, options->data());
-
-            bool isloop = projectNodeOptions->isLoop();
-            bool isautoplay = projectNodeOptions->isAutoPlay();
+            node = createNodeWithFlatBuffersFile(filePath);
+            reader->setPropsWithFlatBuffers(node, options->data());
 
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
             if (action)
             {
-                root->runAction(action);
-                if (isautoplay)
-                {
-                    action->gotoFrameAndPlay(0, isloop);
-                }
-                else
-                {
-                    action->gotoFrameAndPause(0);
-                }
+               node->runAction(action);
             }
-
-            node = ActionTimelineNode::create(root, action);
-            node->setName(root->getName());
+            
         }
     }
     else if (classname == "SimpleAudio")
@@ -1186,21 +1173,10 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
 
-            bool isloop = projectNodeOptions->isLoop();
-            bool isautoplay = projectNodeOptions->isAutoPlay();
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
             if (action)
             {
                 node->runAction(action);
-                action->gotoFrameAndPlay(0);
-                if (isautoplay)
-                {
-                    action->gotoFrameAndPlay(0, isloop);
-                }
-                else
-                {
-                    action->gotoFrameAndPause(0);
-                }
             }
         }
     }

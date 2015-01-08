@@ -466,11 +466,27 @@ InnerActionFrame* InnerActionFrame::create()
 InnerActionFrame::InnerActionFrame()
     : _innerActionType(LoopAction)
     , _startFrameIndex(0)
+    , _endFrameIndex(0)
 {
+
 }
 
 void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
 {
+    auto action = _node->getActionByTag(_node->getTag());
+    auto actiontimeline = static_cast<ActionTimeline*>(action);
+    if (InnerActionType::SingleFrame == _innerActionType)
+    {
+        actiontimeline->gotoFrameAndPause(_startFrameIndex);
+    }
+    else if (InnerActionType::NoLoopAction == _innerActionType)
+    {
+        actiontimeline->gotoFrameAndPlay(_startFrameIndex, _endFrameIndex, false);
+    }
+    else if (InnerActionType::LoopAction == _innerActionType)
+    {
+        actiontimeline->gotoFrameAndPlay(_startFrameIndex, _endFrameIndex, true);
+    }
 }
 
 
@@ -479,7 +495,7 @@ Frame* InnerActionFrame::clone()
     InnerActionFrame* frame = InnerActionFrame::create();
     frame->setInnerActionType(_innerActionType);
     frame->setStartFrameIndex(_startFrameIndex);
-
+    frame->setEndFrameIndex(_endFrameIndex);
     frame->cloneProperty(this);
 
     return frame;
