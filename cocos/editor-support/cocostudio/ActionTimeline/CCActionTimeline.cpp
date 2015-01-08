@@ -95,7 +95,7 @@ void ActionTimeline::play(std::string name, bool loop)
 {
     if (_animationInfos.find(name) == _animationInfos.end())
     {
-        CCLOG("Can't find action indexes for %s", name.c_str());
+        CCLOG("Can't find animation info for %s", name.c_str());
         return;
     }
 
@@ -279,31 +279,31 @@ void ActionTimeline::removeTimeline(Timeline* timeline)
 }
 
 
-void ActionTimeline::addAnimationInfo(const AnimationInfo& indexes)
+void ActionTimeline::addAnimationInfo(const AnimationInfo& animationInfo)
 {
-    if (_animationInfos.find(indexes.name) != _animationInfos.end())
+    if (_animationInfos.find(animationInfo.name) != _animationInfos.end())
     {
-        CCLOG("ActionIndexes (%s) already exists.", indexes.name.c_str());
+        CCLOG("Animation (%s) already exists.", animationInfo.name.c_str());
         return;
     }
 
-    _animationInfos[indexes.name] = indexes;
+    _animationInfos[animationInfo.name] = animationInfo;
 }
 
-void ActionTimeline::removeAnimationInfo(std::string name)
+void ActionTimeline::removeAnimationInfo(std::string animationName)
 {
-    if (_animationInfos.find(name) == _animationInfos.end())
+    if (_animationInfos.find(animationName) == _animationInfos.end())
     {
-        CCLOG("ActionIndexes (%s) not exists.", name.c_str());
+        CCLOG("AnimationInfo (%s) not exists.", animationName.c_str());
         return;
     }
 
-    _animationInfos.erase(name);
+    _animationInfos.erase(animationName);
 }
 
-bool ActionTimeline::IsAnimationInfoExists(const std::string& name)
+bool ActionTimeline::IsAnimationInfoExists(const std::string& animationName)
 {
-    return _animationInfos.find(name) != _animationInfos.end();
+    return _animationInfos.find(animationName) != _animationInfos.end();
 }
 
 
