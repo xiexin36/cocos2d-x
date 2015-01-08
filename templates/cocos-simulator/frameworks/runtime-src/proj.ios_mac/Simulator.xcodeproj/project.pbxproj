@@ -69,6 +69,8 @@
 		43301FEC1A5E87ED000D889B /* lang in Resources */ = {isa = PBXBuildFile; fileRef = 43301FEA1A5E87ED000D889B /* lang */; };
 		43301FF21A5E8E76000D889B /* libcocos2d Mac.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 434FAFE41A52D677004D7AA1 /* libcocos2d Mac.dylib */; };
 		43301FF31A5E8E76000D889B /* libluacocos2d Mac.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 434FAFEE1A52D684004D7AA1 /* libluacocos2d Mac.dylib */; };
+		43301FFD1A5E965C000D889B /* RegisterWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43301FFB1A5E965C000D889B /* RegisterWidget.cpp */; };
+		43301FFE1A5E965C000D889B /* RegisterWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43301FFB1A5E965C000D889B /* RegisterWidget.cpp */; };
 		5023811817EBBCAC00990C9B /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5023810817EBBCAC00990C9B /* AppController.mm */; };
 		5023811917EBBCAC00990C9B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5023810917EBBCAC00990C9B /* Default-568h@2x.png */; };
 		5023811A17EBBCAC00990C9B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5023810A17EBBCAC00990C9B /* Default.png */; };
@@ -272,6 +274,8 @@
 		43301FE21A5E87A3000D889B /* ConsoleWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ConsoleWindow.nib; sourceTree = "<group>"; };
 		43301FE31A5E87A3000D889B /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "zh-Hans.lproj"; sourceTree = "<group>"; };
 		43301FEA1A5E87ED000D889B /* lang */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lang; path = ../Classes/lang; sourceTree = "<group>"; };
+		43301FFB1A5E965C000D889B /* RegisterWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RegisterWidget.cpp; path = ../../../../../../CocoStudioMono/Addins/ModelExtend/Addins.ModelExtendCPP/RegisterWidget.cpp; sourceTree = "<group>"; };
+		43301FFC1A5E965C000D889B /* RegisterWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterWidget.h; path = ../../../../../../CocoStudioMono/Addins/ModelExtend/Addins.ModelExtendCPP/RegisterWidget.h; sourceTree = "<group>"; };
 		434FAFDE1A52D676004D7AA1 /* cocos2d_libs_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs_studio.xcodeproj; path = ../../../../../build/cocos2d_libs_studio.xcodeproj; sourceTree = "<group>"; };
 		434FAFE71A52D683004D7AA1 /* cocos2d_lua_bindings_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_lua_bindings_studio.xcodeproj; path = "../../../../../cocos/scripting/lua-bindings/proj.ios_mac/cocos2d_lua_bindings_studio.xcodeproj"; sourceTree = "<group>"; };
 		5023810717EBBCAC00990C9B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -534,6 +538,15 @@
 			path = ../../Classes/network;
 			sourceTree = "<group>";
 		};
+		43301FF41A5E8FA3000D889B /* addin */ = {
+			isa = PBXGroup;
+			children = (
+				43301FFB1A5E965C000D889B /* RegisterWidget.cpp */,
+				43301FFC1A5E965C000D889B /* RegisterWidget.h */,
+			);
+			name = addin;
+			sourceTree = "<group>";
+		};
 		434FAFDF1A52D676004D7AA1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -750,6 +763,7 @@
 		F293BB7C15EB830F00256477 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				43301FF41A5E8FA3000D889B /* addin */,
 				9FE3D2D01A32E9490049191B /* service */,
 				9FDD03DF1A30335B001FAF89 /* ProjectConfig */,
 				15427CE2198F237300DC375D /* lua_module_register.h */,
@@ -983,6 +997,7 @@
 				9FDD03FE1A303379001FAF89 /* PlayerServiceProtocol.cpp in Sources */,
 				15AA9649199B6D4600725633 /* lua_debugger.c in Sources */,
 				3EB515651952865D006966AA /* repeated_field.cc in Sources */,
+				43301FFE1A5E965C000D889B /* RegisterWidget.cpp in Sources */,
 				9FDD04011A303379001FAF89 /* PlayerUtils.cpp in Sources */,
 				3EB5156B1952865D006966AA /* once.cc in Sources */,
 				9FDD03E41A30335B001FAF89 /* ProjectConfig.cpp in Sources */,
@@ -1043,6 +1058,7 @@
 				3EB5152C19528284006966AA /* Protos.pb.cc in Sources */,
 				3EB515661952865D006966AA /* atomicops_internals_x86_msvc.cc in Sources */,
 				43301FB41A52DE71000D889B /* PlayerTaskServiceMac.mm in Sources */,
+				43301FFD1A5E965C000D889B /* RegisterWidget.cpp in Sources */,
 				3EB515641952865D006966AA /* repeated_field.cc in Sources */,
 				43301FA01A52DCE4000D889B /* tolua_map.c in Sources */,
 				C00FD4941938512100C6382D /* PlayDisable_png.cpp in Sources */,
