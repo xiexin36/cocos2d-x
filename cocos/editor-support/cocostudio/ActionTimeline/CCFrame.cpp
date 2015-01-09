@@ -477,7 +477,6 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
 {
     int start = _startFrameIndex;
     int end = _endFrameIndex;
-    //auto actiontimeline = _timeline->getActionTimeline();
     auto actiontimeline = static_cast<ActionTimeline*>(_node->getActionByTag(_node->getTag()));
     if (InnerActionType::SingleFrame == _innerActionType)
     {
@@ -495,6 +494,10 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
             AnimationInfo info = actiontimeline->getAnimationInfo(_animationName);
             start = info.startIndex;
             end = info.endIndex;
+        }
+        else
+        {
+            CCLOG("Animation %s not exists!", _animationName.c_str());
         }
     }
     
