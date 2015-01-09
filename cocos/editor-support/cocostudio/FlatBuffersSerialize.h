@@ -76,6 +76,7 @@ namespace flatbuffers
     struct EventFrame;
     struct IntFrame;
     struct BoolFrame;
+    struct InnerActionFrame;
 }
 
 namespace tinyxml2
@@ -118,6 +119,7 @@ public:
     flatbuffers::Offset<flatbuffers::EventFrame> createEventFrame(const tinyxml2::XMLElement* objectData);
     flatbuffers::Offset<flatbuffers::IntFrame> createIntFrame(const tinyxml2::XMLElement* objectData);
     flatbuffers::Offset<flatbuffers::BoolFrame> createBoolFrame(const tinyxml2::XMLElement* objectData);
+    flatbuffers::Offset<flatbuffers::InnerActionFrame> createInnerActionFrame(const tinyxml2::XMLElement* objectData);
 
     //Animation Info
     flatbuffers::Offset<flatbuffers::AnimationInfo> createAnimationInfo(const tinyxml2::XMLElement* objectData);

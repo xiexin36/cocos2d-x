@@ -1173,7 +1173,7 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
 
-            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
+            cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
             if (action)
             {
                 node->runAction(action);

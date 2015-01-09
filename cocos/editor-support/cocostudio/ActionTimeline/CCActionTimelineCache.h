@@ -45,6 +45,7 @@ namespace flatbuffers
     struct EventFrame;
     struct IntFrame;
     struct BoolFrame;
+    struct InnerActionFrame;
 }
 
 NS_TIMELINE_BEGIN
@@ -112,6 +113,7 @@ protected:
     Frame* loadEventFrameWithFlatBuffers        (const flatbuffers::EventFrame* flatbuffers);
     Frame* loadAlphaFrameWithFlatBuffers        (const flatbuffers::IntFrame* flatbuffers);
     Frame* loadZOrderFrameWithFlatBuffers       (const flatbuffers::IntFrame* flatbuffers);
+    Frame* loadInnerActionFrameWithFlatBuffers  (const flatbuffers::InnerActionFrame* flatbuffers);
 
 protected:
 

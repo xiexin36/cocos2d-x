@@ -77,6 +77,7 @@ static const char* Property_FileData        = "FileData";
 static const char* Property_FrameEvent      = "FrameEvent";
 static const char* Property_Alpha           = "Alpha";
 static const char* Property_ZOrder          = "ZOrder";
+static const char* Property_ActionValue     = "ActionValue";
 
 static FlatBuffersSerialize* _instanceFlatBuffersSerialize = nullptr;
     
@@ -714,6 +715,19 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, // EventFrame
                                 intFrame);
         }
+        else if (property == Property_ActionValue)
+        {
+            auto innerActionFrame = createInnerActionFrame(frameElement);
+            frame = CreateFrame(*_builder,
+                                0, // PointFrame
+                                0, // ScaleFrame
+                                0, // ColorFrame
+                                0, // TextureFrame
+                                0, // EventFrame
+                                0, // IntFrame
+                                0, // BoolFrame
+                                innerActionFrame);
+        }
         
         frames.push_back(frame);
                 
@@ -1020,7 +1034,7 @@ Offset<flatbuffers::BoolFrame> FlatBuffersSerialize::createBoolFrame(const tinyx
         std::string name = attribute->Name();
         std::string attrivalue = attribute->Value();
         
-        if (name == "Value") // to be gonna modify
+        if (name == "Value")
         {
             value = (attrivalue == "True") ? true : false;
         }
@@ -1041,6 +1055,63 @@ Offset<flatbuffers::BoolFrame> FlatBuffersSerialize::createBoolFrame(const tinyx
                           tween,
                           value);
 }
+    
+    Offset<flatbuffers::InnerActionFrame> FlatBuffersSerialize::createInnerActionFrame(const tinyxml2::XMLElement *objectData)
+    {
+        int frameIndex = 0;
+        bool tween = true;
+        int innerActionType = 0;
+        std::string currentAniamtionName = "";
+        int singleFrameIndex = 0;
+        
+        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        while (attribute)
+        {
+            std::string name = attribute->Name();
+            std::string attrivalue = attribute->Value();
+            
+            if (name == "InnerActionType")
+            {
+                if (attrivalue == "LoopAction")
+                {
+                    innerActionType = 0;
+                }
+                else if (attrivalue == "NoLoopAction")
+                {
+                    innerActionType = 1;
+                }
+                else if (attrivalue == "SingleFrame")
+                {
+                    innerActionType = 2;
+                }
+            }
+            else if (name == "CurrentAniamtionName")
+            {
+                currentAniamtionName = attrivalue;
+            }
+            else if (name == "SingleFrameIndex")
+            {
+                singleFrameIndex = atoi(attrivalue.c_str());
+            }
+            else if (name == "FrameIndex")
+            {
+                frameIndex = atoi(attrivalue.c_str());
+            }
+            else if (name == "Tween")
+            {
+                tween = (attrivalue == "True") ? true : false;
+            }
+            
+            attribute = attribute->Next();
+        }
+        
+        return CreateInnerActionFrame(*_builder,
+                                      frameIndex,
+                                      tween,
+                                      innerActionType,
+                                      _builder->CreateString(currentAniamtionName),
+                                      singleFrameIndex);
+    }
 
 /* create flat buffers with XML */
 FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulator(const std::string &xmlFileName)

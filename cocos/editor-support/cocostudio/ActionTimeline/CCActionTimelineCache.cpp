@@ -56,6 +56,7 @@ static const char* Property_FileData        = "FileData";
 static const char* Property_FrameEvent      = "FrameEvent";
 static const char* Property_Alpha           = "Alpha";
 static const char* Property_ZOrder          = "ZOrder";
+static const char* Property_ActionValue          = "ActionValue";
 
 static const char* ACTION           = "action";
 static const char* DURATION         = "duration";
@@ -537,6 +538,11 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
                 auto intFrame = frameFlatbuf->intFrame();
                 frame = loadZOrderFrameWithFlatBuffers(intFrame);
             }
+            else if (property == Property_ActionValue)
+            {
+                auto innerActionFrame = frameFlatbuf->innerActionFrame();
+                frame = loadInnerActionFrameWithFlatBuffers(innerActionFrame);
+            }
             
             if (!frame)
             {
@@ -744,6 +750,31 @@ Frame* ActionTimelineCache::loadZOrderFrameWithFlatBuffers(const flatbuffers::In
     
     bool tween = flatbuffers->tween();
     frame->setTween(tween);
+    
+    return frame;
+}
+    
+Frame* ActionTimelineCache::loadInnerActionFrameWithFlatBuffers(const flatbuffers::InnerActionFrame *flatbuffers)
+{
+    InnerActionFrame* frame = InnerActionFrame::create();
+    
+    InnerActionType innerActionType = (InnerActionType)flatbuffers->innerActionType();
+    
+    std::string currentAnimationFrame = flatbuffers->currentAniamtionName()->c_str();
+    
+    int singleFrameIndex = flatbuffers->singleFrameIndex();
+    
+    int frameIndex = flatbuffers->frameIndex();
+    frame->setFrameIndex(frameIndex);
+    
+    bool tween = flatbuffers->tween();
+    frame->setTween(tween);
+    
+    frame->setInnerActionType(innerActionType);
+    frame->setSingleFrameIndex(singleFrameIndex);
+    
+    frame->setEnterWithName(true);
+    frame->setAnimationName(currentAnimationFrame);
     
     return frame;
 }

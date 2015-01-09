@@ -27,6 +27,8 @@ THE SOFTWARE.
 #include "CCActionTimeline.h"
 #include "2d/CCSpriteFrameCache.h"
 #include "2d/CCSpriteFrame.h"
+#include <exception>
+#include <iostream>
 
 USING_NS_CC;
 
@@ -473,21 +475,70 @@ InnerActionFrame::InnerActionFrame()
 
 void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
 {
-    auto actiontimeline = _timeline->getActionTimeline();
+    int start = _startFrameIndex;
+    int end = _endFrameIndex;
+    //auto actiontimeline = _timeline->getActionTimeline();
+    auto actiontimeline = static_cast<ActionTimeline*>(_node->getActionByTag(_node->getTag()));
     if (InnerActionType::SingleFrame == _innerActionType)
     {
-        actiontimeline->gotoFrameAndPause(_startFrameIndex);
+        actiontimeline->gotoFrameAndPause(_singleFrameIndex);
+        return;
     }
-    else if (InnerActionType::NoLoopAction == _innerActionType)
+    
+    if (_enterWithName)
     {
-        actiontimeline->gotoFrameAndPlay(_startFrameIndex, _endFrameIndex, false);
+        start = 0;
+        end = actiontimeline->getDuration();
+        
+        if(actiontimeline->IsAnimationInfoExists(_animationName))
+        {
+            AnimationInfo info = actiontimeline->getAnimationInfo(_animationName);
+            start = info.startIndex;
+            end = info.endIndex;
+        }
+    }
+    
+    if (InnerActionType::NoLoopAction == _innerActionType)
+    {
+        actiontimeline->gotoFrameAndPlay(start, end, false);
     }
     else if (InnerActionType::LoopAction == _innerActionType)
     {
-        actiontimeline->gotoFrameAndPlay(_startFrameIndex, _endFrameIndex, true);
+        actiontimeline->gotoFrameAndPlay(start, end, true);
     }
 }
 
+void InnerActionFrame::setStartFrameIndex(int frameIndex) throw()
+{
+    if(_enterWithName)
+    {
+        CCLOG(" cannot set start when enter frame with name. setEnterWithName false firstly!");
+        throw std::exception();
+    }
+    _startFrameIndex = frameIndex;
+}
+
+
+void InnerActionFrame::setEndFrameIndex(int frameIndex) throw()
+{
+    if(_enterWithName)
+    {
+         CCLOG(" cannot set end when enter frame with name. setEnterWithName false firstly!");
+        throw std::exception();
+    }
+    _endFrameIndex = frameIndex;
+}
+
+void InnerActionFrame::setAnimationName(const std::string& animationName) throw()
+{
+    if(!_enterWithName)
+    {
+         CCLOG(" cannot set aniamtioname when enter frame with index. setEnterWithName true firstly!");
+        throw std::exception();
+    }
+    _animationName = animationName;
+   
+}
 
 Frame* InnerActionFrame::clone()
 {
