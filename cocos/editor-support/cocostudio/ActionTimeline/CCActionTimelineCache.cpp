@@ -769,12 +769,19 @@ Frame* ActionTimelineCache::loadInnerActionFrameWithFlatBuffers(const flatbuffer
     
     bool tween = flatbuffers->tween();
     frame->setTween(tween);
-    
-    frame->setInnerActionType(innerActionType);
-    frame->setSingleFrameIndex(singleFrameIndex);
-    
-    frame->setEnterWithName(true);
-    frame->setAnimationName(currentAnimationFrame);
+    if ("-- ALL --" == currentAnimationFrame)
+    {
+        frame->setInnerActionType(InnerActionType::SingleFrame);
+        frame->setSingleFrameIndex(0);
+    }
+    else
+    {
+        frame->setInnerActionType(innerActionType);
+        frame->setSingleFrameIndex(singleFrameIndex);
+
+        frame->setEnterWithName(true);
+        frame->setAnimationName(currentAnimationFrame);
+    }
     
     return frame;
 }

@@ -486,9 +486,6 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     
     if (_enterWithName)
     {
-        start = 0;
-        end = actiontimeline->getDuration();
-        
         if(actiontimeline->IsAnimationInfoExists(_animationName))
         {
             AnimationInfo info = actiontimeline->getAnimationInfo(_animationName);
