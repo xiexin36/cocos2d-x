@@ -263,17 +263,27 @@ public:
 
     inline void setInnerActionType(InnerActionType type) { _innerActionType = type; }
     inline InnerActionType getInnerActionType() const { return _innerActionType; }
-
-    inline void setStartFrameIndex(int frameIndex) { _startFrameIndex = frameIndex; }
+    
+    inline void setEnterWithName(bool isEnterWithName) { _enterWithName = isEnterWithName;}
+    
+    void setStartFrameIndex(int frameIndex)  throw();
     inline int  getStartFrameIndex() const { return _startFrameIndex; }
 
-    inline void setEndFrameIndex(int frameIndex) { _endFrameIndex = frameIndex; }
+    void setEndFrameIndex(int frameIndex)  throw();
     inline int  getEndFrameIndex() const { return _endFrameIndex; }
+    
+    void setAnimationName(const std::string& animationNamed)  throw();
+    
+    inline void setSingleFrameIndex(int frameIndex) { _singleFrameIndex = frameIndex;}
+    inline int  getSingleFrameIndex() const { return _singleFrameIndex;}
+
 protected:
     InnerActionType _innerActionType;
-    // when type is SingleFrame, use _startFrameIndex only
     int _startFrameIndex;
     int _endFrameIndex;
+    int _singleFrameIndex;
+    std::string _animationName;
+    bool _enterWithName;
 };
 
 
