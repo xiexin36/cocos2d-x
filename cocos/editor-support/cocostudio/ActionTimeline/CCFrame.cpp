@@ -486,12 +486,10 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     
     if (_enterWithName)
     {
-        if (_animationName == "-- ALL --")
-        {
-            start = 0;
-            end = actiontimeline->getDuration();
-        }
-        else if(actiontimeline->IsAnimationInfoExists(_animationName))
+        start = 0;
+        end = actiontimeline->getDuration();
+        
+        if(actiontimeline->IsAnimationInfoExists(_animationName))
         {
             AnimationInfo info = actiontimeline->getAnimationInfo(_animationName);
             start = info.startIndex;
@@ -549,8 +547,16 @@ Frame* InnerActionFrame::clone()
 {
     InnerActionFrame* frame = InnerActionFrame::create();
     frame->setInnerActionType(_innerActionType);
-    frame->setStartFrameIndex(_startFrameIndex);
-    frame->setEndFrameIndex(_endFrameIndex);
+    if (_enterWithName)
+    {
+        frame->setEnterWithName(true);
+        frame->setAnimationName(_animationName);
+    }
+    else
+    {
+        frame->setStartFrameIndex(_startFrameIndex);
+        frame->setEndFrameIndex(_endFrameIndex);
+    }
     frame->cloneProperty(this);
 
     return frame;
