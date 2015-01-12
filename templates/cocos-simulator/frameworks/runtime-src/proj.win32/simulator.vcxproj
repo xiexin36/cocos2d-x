@@ -194,8 +194,8 @@ xcopy /Y /Q "$(OutDir)..\libSpine.dll" "$(OutDir)"</Command>
       </Message>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
-xcopy /Y /Q "$(ProjectDir)..\..\..\..\..\external\win32-specific\vc\*.*" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
     <PostBuildEvent>
       <Command>
