@@ -483,13 +483,15 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
         actiontimeline->gotoFrameAndPause(_singleFrameIndex);
         return;
     }
-    
+
     if (_enterWithName)
     {
-        start = 0;
-        end = actiontimeline->getDuration();
-        
-        if(actiontimeline->IsAnimationInfoExists(_animationName))
+        if (_animationName == "-- ALL --")
+        {
+            start = 0;
+            end = actiontimeline->getDuration();
+        }
+        else if (actiontimeline->IsAnimationInfoExists(_animationName))
         {
             AnimationInfo info = actiontimeline->getAnimationInfo(_animationName);
             start = info.startIndex;
