@@ -715,13 +715,34 @@ bool FontFNT::CheckBMFontResource(const std::string& fntFilePath)
 	if (!newConf)
 		return false;
 
-	// add the texture
 	std::string atlasName = newConf->getAtlasName();
-	if (!atlasName.empty())
+	if (atlasName.empty())
 	{
-		return true;
+		return false;
 	}
-	return false;
+
+	if (FileUtils::getInstance()->isAbsolutePath(atlasName))
+	{
+		if (!FileUtils::getInstance()->isFileExist(atlasName))
+		{
+			return false;
+		}
+	}
+	else
+	{
+		std::string dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("/"));
+		if (dirpath == fntFilePath)
+		{
+			dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("\\"));
+		}
+		dirpath += "/";
+		atlasName = dirpath + atlasName;
+		if (!FileUtils::getInstance()->isFileExist(atlasName))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 FontFNT::FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset /* = Vec2::ZERO */)
