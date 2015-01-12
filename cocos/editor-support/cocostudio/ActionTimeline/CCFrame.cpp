@@ -466,9 +466,12 @@ InnerActionFrame* InnerActionFrame::create()
 }
 
 InnerActionFrame::InnerActionFrame()
-    : _innerActionType(LoopAction)
+    : _innerActionType(InnerActionType::SingleFrame)
     , _startFrameIndex(0)
     , _endFrameIndex(0)
+    , _singleFrameIndex(0)
+    , _enterWithName(false)
+    , _animationName("")
 {
 
 }
