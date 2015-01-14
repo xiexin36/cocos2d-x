@@ -507,7 +507,15 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
             CCLOG("Animation %s not exists!", _animationName.c_str());
         }
     }
-    
+
+
+    int duration = _timeline->getActionTimeline()->getDuration();
+    int odddiff = duration - _frameIndex - end + start;
+    if (odddiff < 0)
+    {
+        end += odddiff;
+    }
+
     if (InnerActionType::NoLoopAction == _innerActionType)
     {
         actiontimeline->gotoFrameAndPlay(start, end, false);
