@@ -32,6 +32,12 @@
     <Filter Include="runtime\protobuf-lite\stubs">
       <UniqueIdentifier>{a3f5b7b6-4464-441c-9fed-1381ae411fb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Addin">
+      <UniqueIdentifier>{b2ad7af3-a5ed-4f41-8921-3724d0346fc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tolua">
+      <UniqueIdentifier>{62519936-bd4e-4ff6-a849-bf94f6e9b373}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\network\CCHTTPRequest.h">
@@ -223,6 +229,15 @@
     <ClInclude Include="..\lib\protobuf-lite\google\protobuf\stubs\type_traits.h">
       <Filter>runtime\protobuf-lite\stubs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\CocoStudioMono\Addins\ModelExtend\Addins.ModelExtendCPP\RegisterWidget.h">
+      <Filter>Addin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\external\lua\tolua\tolua_event.h">
+      <Filter>tolua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\external\lua\tolua\tolua++.h">
+      <Filter>tolua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\network\CCHTTPRequest.cpp">
@@ -367,6 +382,24 @@
     </ClCompile>
     <ClCompile Include="..\lib\protobuf-lite\google\protobuf\stubs\stringprintf.cc">
       <Filter>runtime\protobuf-lite\stubs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\CocoStudioMono\Addins\ModelExtend\Addins.ModelExtendCPP\RegisterWidget.cpp">
+      <Filter>Addin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\lua\tolua\tolua_event.c">
+      <Filter>tolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\lua\tolua\tolua_is.c">
+      <Filter>tolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\lua\tolua\tolua_map.c">
+      <Filter>tolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\lua\tolua\tolua_push.c">
+      <Filter>tolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\external\lua\tolua\tolua_to.c">
+      <Filter>tolua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

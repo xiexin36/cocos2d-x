@@ -374,12 +374,12 @@ bool Console::listenOnTCP(int port)
             if (res->ai_family == AF_INET)
             {
                 struct sockaddr_in *sin = (struct sockaddr_in*) res->ai_addr;
-                //inet_pton(res->ai_family, _bindAddress.c_str(), (void*)&sin->sin_addr);
+                inet_pton(res->ai_family, _bindAddress.c_str(), (void*)&sin->sin_addr);
             }
             else if (res->ai_family == AF_INET6)
             {
                 struct sockaddr_in6 *sin = (struct sockaddr_in6*) res->ai_addr;
-                //inet_pton(res->ai_family, _bindAddress.c_str(), (void*)&sin->sin6_addr);
+                inet_pton(res->ai_family, _bindAddress.c_str(), (void*)&sin->sin6_addr);
             }
         }
 
@@ -402,7 +402,7 @@ bool Console::listenOnTCP(int port)
 
     listen(listenfd, 50);
 
-   /* if (res->ai_family == AF_INET) {
+    if (res->ai_family == AF_INET) {
         char buf[INET_ADDRSTRLEN] = "";
         struct sockaddr_in *sin = (struct sockaddr_in*) res->ai_addr;
         if( inet_ntop(res->ai_family, &sin->sin_addr, buf, sizeof(buf)) != nullptr )
@@ -416,7 +416,7 @@ bool Console::listenOnTCP(int port)
             cocos2d::log("Console: listening on  %s : %d", buf, ntohs(sin->sin6_port));
         else
             perror("inet_ntop");
-    }*/
+    }
 
 
     freeaddrinfo(ressave);

@@ -317,7 +317,7 @@ int SimulatorWin::run()
     const bool isResize = _project.isResizeWindow();
     std::stringstream title;
     title << "Cocos Simulator - " << ConfigParser::getInstance()->getInitViewName();
-    auto glview = GLViewImpl::createWithRect(title.str(), frameRect, frameScale);
+    auto glview = GLViewImpl::createWithRectWithglfwInit(title.str(), frameRect, frameScale);
     _hwnd = glview->getWin32Window();
     player::PlayerWin::createWithHwnd(_hwnd);
     DragAcceptFiles(_hwnd, TRUE);
