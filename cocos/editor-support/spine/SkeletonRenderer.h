@@ -32,9 +32,8 @@
 #define SPINE_SKELETONRENDERER_H_
 
 #include <spine/spine.h>
-#include <spine/SpineExport.h>
 #include "cocos2d.h"
-
+#include "SpineExport.h"
 
 namespace spine {
 

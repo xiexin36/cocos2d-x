@@ -256,7 +256,7 @@ class CC_STUDIO_DLL InnerActionFrame : public Frame
 {
 public:
     static const std::string AnimationAllName;
-
+    
     static InnerActionFrame* create();
     InnerActionFrame();
 

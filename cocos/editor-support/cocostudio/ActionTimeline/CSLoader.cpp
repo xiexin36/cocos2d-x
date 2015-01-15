@@ -181,7 +181,7 @@ CSLoader::CSLoader()
 , _jsonPath("")
 , _monoCocos2dxVersion("")
 , _rootNode(nullptr)
-, _csdVersion("2.0.8.0")
+, _csBuildID("2.1.0.0")
 {
     CREATE_CLASS_NODE_READER_INFO(NodeReader);
     CREATE_CLASS_NODE_READER_INFO(SingleNodeReader);
@@ -285,6 +285,7 @@ ActionTimeline* CSLoader::createTimeline(const std::string &filename)
     return nullptr;
 }
 
+/*
 ActionTimelineNode* CSLoader::createActionTimelineNode(const std::string& filename)
 {
     Node* root = createNode(filename);
@@ -308,6 +309,7 @@ ActionTimelineNode* CSLoader::createActionTimelineNode(const std::string& filena
     
     return node;
 }
+ */
 
 
 
@@ -784,19 +786,22 @@ Node* CSLoader::nodeWithFlatBuffersFile(const std::string &fileName)
     
     auto csparsebinary = GetCSParseBinary(buf.getBytes());
     
+    
     auto csBuildId = csparsebinary->version();
     if (csBuildId)
     {
-        CCASSERT(strcmp(_csdVersion.c_str(), csBuildId->c_str()) == 0,
-            String::createWithFormat("%s%s%s%s%s%s%s%s",
-            "The build id of your CocosStudio exported file(",
+        CCASSERT(strcmp(_csBuildID.c_str(), csBuildId->c_str()) == 0,
+            String::createWithFormat("%s%s%s%s%s%s%s%s%s%s",
+            "The reader build id of your Cocos exported file(",
             csBuildId->c_str(),
-            ") and the build id of your cocos reader(",
-            _csdVersion.c_str(),
+            ") and the reader build id in your Cocos2d-x(",
+            _csBuildID.c_str(),
             ") are not match.\n",
-            "Please get the correct cocos reader from ",
-            "https://github.com/chukong/cocos-reader",
-            " and replace the reader in your Cocos2d-x")->getCString());
+            "Please get the correct reader(build id ",
+            csBuildId->c_str(), 
+            ")from ",
+            "http://www.cocos2d-x.org/filedown/cocos-reader",
+            " and replace it in your Cocos2d-x")->getCString());
     }
 
     // decode plist
@@ -807,9 +812,6 @@ Node* CSLoader::nodeWithFlatBuffersFile(const std::string &fileName)
     {
         SpriteFrameCache::getInstance()->addSpriteFramesWithFile(textures->Get(i)->c_str());        
     }
-    
-    auto v = csparsebinary->version();
-    if (v) _csdVersion = v->c_str();
        
     Node* node = nodeWithFlatBuffers(csparsebinary->nodeTree());
     
@@ -833,14 +835,14 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         CCLOG("filePath = %s", filePath.c_str());
         if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
-
+            
             node = createNodeWithFlatBuffersFile(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
-
+            
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
             if (action)
             {
-               node->runAction(action);
+                node->runAction(action);
             }
             
         }
@@ -1136,9 +1138,6 @@ Node* CSLoader::createNodeWithFlatBuffersForSimulator(const std::string& filenam
     
     auto nodeTree = csparsebinary->nodeTree();
 
-    auto v = csparsebinary->version();
-    if (v) _csdVersion = v->c_str();
-
     Node* node = nodeWithFlatBuffersForSimulator(nodeTree);
     
     _rootNode = nullptr;
@@ -1168,7 +1167,7 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         {
             node = createNodeWithFlatBuffersForSimulator(filePath);
             reader->setPropsWithFlatBuffers(node, options->data());
-
+            
             cocostudio::timeline::ActionTimeline* action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
             if (action)
             {
