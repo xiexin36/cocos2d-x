@@ -32,16 +32,14 @@
 #define SPINE_SKELETONRENDERER_H_
 
 #include <spine/spine.h>
-#include <spine/SpineExport.h>
 #include "cocos2d.h"
-
 
 namespace spine {
 
 class PolygonBatch;
 
 /** Draws a skeleton. */
-class CC_SPINE_DLL SkeletonRenderer: public cocos2d::Node, public cocos2d::BlendProtocol {
+class SkeletonRenderer: public cocos2d::Node, public cocos2d::BlendProtocol {
 public:
 	static SkeletonRenderer* createWithData (spSkeletonData* skeletonData, bool ownsSkeletonData = false);
 	static SkeletonRenderer* createWithFile (const std::string& skeletonDataFile, spAtlas* atlas, float scale = 1);

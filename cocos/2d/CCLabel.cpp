@@ -23,6 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+#include "2d/CCCamera.h"
 #include "2d/CCLabel.h"
 #include "2d/CCFontAtlasCache.h"
 #include "2d/CCSprite.h"
@@ -583,6 +584,7 @@ void Label::alignText()
 {
     if (_fontAtlas == nullptr || _currentUTF16String.empty())
     {
+        setContentSize(Size::ZERO);
         return;
     }
 
@@ -591,12 +593,12 @@ void Label::alignText()
         batchNode->getTextureAtlas()->removeAllQuads();
     }
     _fontAtlas->prepareLetterDefinitions(_currentUTF16String);
-    auto textures = _fontAtlas->getTextures();
+    auto& textures = _fontAtlas->getTextures();
     if (textures.size() > _batchNodes.size())
     {
         for (auto index = _batchNodes.size(); index < textures.size(); ++index)
         {
-            auto batchNode = SpriteBatchNode::createWithTexture(textures[index]);
+            auto batchNode = SpriteBatchNode::createWithTexture(textures.at(index));
             batchNode->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
             batchNode->setPosition(Vec2::ZERO);
             Node::addChild(batchNode,0,Node::INVALID_TAG);
@@ -629,9 +631,9 @@ void Label::alignText()
                 uvRect.origin.x    = _lettersInfo[tag].def.U;
                 uvRect.origin.y    = _lettersInfo[tag].def.V;
 
-                letterSprite->setTexture(textures[_lettersInfo[tag].def.textureID]);
+                letterSprite->setTexture(textures.at(_lettersInfo[tag].def.textureID));
                 letterSprite->setTextureRect(uvRect);
-            }          
+            }
         }
     }
 
@@ -891,12 +893,25 @@ void Label::drawShadowWithoutBlur()
 void Label::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
     // Don't do calculate the culling if the transform was not updated
+#if CC_USE_CULLING
     bool transformUpdated = flags & FLAGS_TRANSFORM_DIRTY;
     _insideBounds = transformUpdated ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
 
-    if(_insideBounds) {
-        _customCommand.init(_globalZOrder);
-        _customCommand.func = CC_CALLBACK_0(Label::onDraw, this, transform, transformUpdated);
+    if(_insideBounds)
+#endif
+    {
+        if (flags & FLAGS_RENDER_AS_3D)
+        {
+            float depth = Camera::getVisitingCamera()->getDepthInView(transform);
+            _customCommand.init(depth);
+            _customCommand.func = CC_CALLBACK_0(Label::onDraw, this, transform, transformUpdated);
+        }
+        else
+        {
+            _customCommand.init(_globalZOrder);
+            _customCommand.func = CC_CALLBACK_0(Label::onDraw, this, transform, transformUpdated);
+        }
+
         renderer->addCommand(&_customCommand);
     }
 }

@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 #include <algorithm>
 
+#include "2d/CCCamera.h"
 #include "2d/CCSpriteFrame.h"
 #include "2d/CCParticleBatchNode.h"
 #include "renderer/CCTextureAtlas.h"
@@ -372,8 +373,17 @@ void ParticleSystemQuad::draw(Renderer *renderer, const Mat4 &transform, uint32_
     //quad command
     if(_particleIdx > 0)
     {
-        _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, _quads, _particleIdx, transform);
-        renderer->addCommand(&_quadCommand);
+        if (flags & FLAGS_RENDER_AS_3D)
+        {
+            float depth = Camera::getVisitingCamera()->getDepthInView(transform);
+            _quadCommand.init(depth, _texture->getName(), getGLProgramState(), _blendFunc, _quads, _particleIdx, transform);
+            renderer->addCommand(&_quadCommand);
+        }
+        else
+        {
+            _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, _quads, _particleIdx, transform);
+            renderer->addCommand(&_quadCommand);
+        }
     }
 }
 
@@ -513,8 +523,12 @@ void ParticleSystemQuad::setupVBO()
 
 void ParticleSystemQuad::listenRendererRecreated(EventCustom* event)
 {
+    //when comes to foreground in android, _buffersVBO and _VAOname is a wild handle
+    //before recreating, we need to reset them to 0
+    memset(_buffersVBO, 0, sizeof(_buffersVBO));
     if (Configuration::getInstance()->supportsShareableVAO())
     {
+        _VAOname = 0;
         setupVBOandVAO();
     }
     else

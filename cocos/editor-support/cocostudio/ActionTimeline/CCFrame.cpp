@@ -468,27 +468,27 @@ InnerActionFrame* InnerActionFrame::create()
 }
 
 InnerActionFrame::InnerActionFrame()
-    : _innerActionType(InnerActionType::SingleFrame)
-    , _startFrameIndex(0)
-    , _endFrameIndex(0)
-    , _singleFrameIndex(0)
-    , _enterWithName(false)
-    , _animationName("")
+: _innerActionType(InnerActionType::SingleFrame)
+, _startFrameIndex(0)
+, _endFrameIndex(0)
+, _singleFrameIndex(0)
+, _enterWithName(false)
+, _animationName("")
 {
 
 }
 
 void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
 {
-    int innerStart = _startFrameIndex;
-    int innerEnd = _endFrameIndex;
     auto innerActiontimeline = static_cast<ActionTimeline*>(_node->getActionByTag(_node->getTag()));
     if (InnerActionType::SingleFrame == _innerActionType)
     {
         innerActiontimeline->gotoFrameAndPause(_singleFrameIndex);
         return;
     }
-
+    
+    int innerStart = _startFrameIndex;
+    int innerEnd = _endFrameIndex;
     if (_enterWithName)
     {
         if (_animationName == AnimationAllName)
@@ -496,7 +496,7 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
             innerStart = 0;
             innerEnd = innerActiontimeline->getDuration();
         }
-        else if (innerActiontimeline->IsAnimationInfoExists(_animationName))
+        else if(innerActiontimeline->IsAnimationInfoExists(_animationName))
         {
             AnimationInfo info = innerActiontimeline->getAnimationInfo(_animationName);
             innerStart = info.startIndex;
@@ -507,15 +507,14 @@ void InnerActionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
             CCLOG("Animation %s not exists!", _animationName.c_str());
         }
     }
-
-
+    
     int duration = _timeline->getActionTimeline()->getDuration();
     int odddiff = duration - _frameIndex - innerEnd + innerStart;
     if (odddiff < 0)
     {
-        innerEnd += odddiff;
+       innerEnd += odddiff;
     }
-
+    
     if (InnerActionType::NoLoopAction == _innerActionType)
     {
         innerActiontimeline->gotoFrameAndPlay(innerStart, innerEnd, false);
@@ -563,7 +562,7 @@ Frame* InnerActionFrame::clone()
     InnerActionFrame* frame = InnerActionFrame::create();
     frame->setInnerActionType(_innerActionType);
     frame->setSingleFrameIndex(_singleFrameIndex);
-    if (_enterWithName)
+    if(_enterWithName)
     {
         frame->setEnterWithName(true);
         frame->setAnimationName(_animationName);

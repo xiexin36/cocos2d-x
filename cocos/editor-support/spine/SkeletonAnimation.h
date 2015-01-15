@@ -34,7 +34,6 @@
 #include <spine/spine.h>
 #include <spine/SkeletonRenderer.h>
 #include "cocos2d.h"
-#include <spine/SpineExport.h>
 
 namespace spine {
 
@@ -45,7 +44,7 @@ typedef std::function<void(int trackIndex, spEvent* event)> EventListener;
 
 /** Draws an animated skeleton, providing an AnimationState for applying one or more animations and queuing animations to be
   * played later. */
-class CC_SPINE_DLL SkeletonAnimation: public SkeletonRenderer {
+class SkeletonAnimation: public SkeletonRenderer {
 public:
 	static SkeletonAnimation* createWithData (spSkeletonData* skeletonData);
 	static SkeletonAnimation* createWithFile (const std::string& skeletonDataFile, spAtlas* atlas, float scale = 1);
