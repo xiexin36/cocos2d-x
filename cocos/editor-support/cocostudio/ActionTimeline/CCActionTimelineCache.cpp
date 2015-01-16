@@ -56,7 +56,7 @@ static const char* Property_FileData        = "FileData";
 static const char* Property_FrameEvent      = "FrameEvent";
 static const char* Property_Alpha           = "Alpha";
 static const char* Property_ZOrder          = "ZOrder";
-static const char* Property_ActionValue          = "ActionValue";
+static const char* Property_ActionValue     = "ActionValue";
 
 static const char* ACTION           = "action";
 static const char* DURATION         = "duration";

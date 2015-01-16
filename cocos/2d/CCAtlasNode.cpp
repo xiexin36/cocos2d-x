@@ -25,6 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
+#include "2d/CCCamera.h"
 #include "CCAtlasNode.h"
 #include "renderer/CCTextureAtlas.h"
 #include "base/CCDirector.h"
@@ -59,21 +60,21 @@ AtlasNode::~AtlasNode()
 
 AtlasNode * AtlasNode::create(const std::string& tile, int tileWidth, int tileHeight, int itemsToRender)
 {
-	AtlasNode * ret = new (std::nothrow) AtlasNode();
-	if (ret->initWithTileFile(tile, tileWidth, tileHeight, itemsToRender))
-	{
-		ret->autorelease();
-		return ret;
-	}
-	CC_SAFE_DELETE(ret);
-	return nullptr;
+    AtlasNode * ret = new (std::nothrow) AtlasNode();
+    if (ret->initWithTileFile(tile, tileWidth, tileHeight, itemsToRender))
+    {
+        ret->autorelease();
+        return ret;
+    }
+    CC_SAFE_DELETE(ret);
+    return nullptr;
 }
 
 bool AtlasNode::initWithTileFile(const std::string& tile, int tileWidth, int tileHeight, int itemsToRender)
 {
     CCASSERT(tile.size() > 0, "file size should not be empty");
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(tile);
-	return initWithTexture(texture, tileWidth, tileHeight, itemsToRender);
+    return initWithTexture(texture, tileWidth, tileHeight, itemsToRender);
 }
 
 bool AtlasNode::initWithTexture(Texture2D* texture, int tileWidth, int tileHeight, int itemsToRender)
@@ -132,15 +133,32 @@ void AtlasNode::updateAtlasValues()
 // AtlasNode - draw
 void AtlasNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 {
-    _quadCommand.init(
-              _globalZOrder,
-              _textureAtlas->getTexture()->getName(),
-              getGLProgramState(),
-              _blendFunc,
-              _textureAtlas->getQuads(),
-              _quadsToDraw,
-              transform);
-
+    //Render as 3D object
+    if (flags & FLAGS_RENDER_AS_3D)
+    {
+        float depth = Camera::getVisitingCamera()->getDepthInView(transform);
+        _quadCommand.init(
+                          depth,
+                          _textureAtlas->getTexture()->getName(),
+                          getGLProgramState(),
+                          _blendFunc,
+                          _textureAtlas->getQuads(),
+                          _quadsToDraw,
+                          transform);
+        _quadCommand.set3D(true);
+    }
+    else
+    {
+        _quadCommand.init(
+                          _globalZOrder,
+                          _textureAtlas->getTexture()->getName(),
+                          getGLProgramState(),
+                          _blendFunc,
+                          _textureAtlas->getQuads(),
+                          _quadsToDraw,
+                          transform);
+    }
+    
     renderer->addCommand(&_quadCommand);
 
 }

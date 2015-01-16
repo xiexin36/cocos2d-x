@@ -34,7 +34,7 @@
 #include <spine/Animation.h>
 #include <spine/AnimationStateData.h>
 #include <spine/Event.h>
-#include <spine/SpineExport.h>
+#include "SpineExport.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -96,7 +96,7 @@ spTrackEntry* spAnimationState_addAnimationByName (spAnimationState* self, int t
 spTrackEntry* spAnimationState_addAnimation (spAnimationState* self, int trackIndex, spAnimation* animation, int/*bool*/loop,
 		float delay);
 
-CC_SPINE_DLL spTrackEntry* spAnimationState_getCurrent(spAnimationState* self, int trackIndex);
+CC_SPINE_DLL spTrackEntry* spAnimationState_getCurrent (spAnimationState* self, int trackIndex);
 
 #ifdef SPINE_SHORT_NAMES
 typedef spEventType EventType;

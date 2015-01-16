@@ -34,7 +34,7 @@ extern const char* cocos2dVersion();
 Configuration* Configuration::s_sharedConfiguration = nullptr;
 
 Configuration::Configuration()
-: _maxTextureSize(GL_MAX_TEXTURE_SIZE)
+: _maxTextureSize(0) 
 , _maxModelviewStackDepth(0)
 , _supportsPVRTC(false)
 , _supportsETC1(false)
@@ -45,7 +45,7 @@ Configuration::Configuration()
 , _supportsDiscardFramebuffer(false)
 , _supportsShareableVAO(false)
 , _maxSamplesAllowed(0)
-, _maxTextureUnits(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+, _maxTextureUnits(0)
 , _glExtensions(nullptr)
 , _maxDirLightInShader(1)
 , _maxPointLightInShader(1)

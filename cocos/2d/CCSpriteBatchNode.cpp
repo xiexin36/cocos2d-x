@@ -26,6 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
+#include "2d/CCCamera.h"
 #include "2d/CCSpriteBatchNode.h"
 #include "2d/CCSprite.h"
 #include "base/CCDirector.h"
@@ -366,15 +367,38 @@ void SpriteBatchNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t f
         return;
     }
 
-    for(const auto &child: _children)
+    for (const auto &child : _children)
+    {
+#if CC_USE_PHYSICS
+        auto physicsBody = child->getPhysicsBody();
+        if (physicsBody)
+        {
+            child->updateTransformFromPhysics(transform, flags);
+        }
+#endif
         child->updateTransform();
+    }
 
-    _batchCommand.init(
+    //Render as 3D object
+    if (flags & FLAGS_RENDER_AS_3D)
+    {
+        float depth = Camera::getVisitingCamera()->getDepthInView(transform);
+        _batchCommand.init(
+                           depth,
+                           getGLProgram(),
+                           _blendFunc,
+                           _textureAtlas,
+                           transform);
+    }
+    else
+    {
+        _batchCommand.init(
                        _globalZOrder,
                        getGLProgram(),
                        _blendFunc,
                        _textureAtlas,
                        transform);
+    }
     renderer->addCommand(&_batchCommand);
 }
 
@@ -644,22 +668,22 @@ void SpriteBatchNode::updateQuadFromSprite(Sprite *sprite, ssize_t index)
     CCASSERT(sprite != nullptr, "Argument must be non-nil");
     CCASSERT(dynamic_cast<Sprite*>(sprite) != nullptr, "CCSpriteBatchNode only supports Sprites as children");
     
-	// make needed room
-	while (index >= _textureAtlas->getCapacity() || _textureAtlas->getCapacity() == _textureAtlas->getTotalQuads())
+    // make needed room
+    while (index >= _textureAtlas->getCapacity() || _textureAtlas->getCapacity() == _textureAtlas->getTotalQuads())
     {
-		this->increaseAtlasCapacity();
+        this->increaseAtlasCapacity();
     }
     
-	//
-	// update the quad directly. Don't add the sprite to the scene graph
-	//
-	sprite->setBatchNode(this);
+    //
+    // update the quad directly. Don't add the sprite to the scene graph
+    //
+    sprite->setBatchNode(this);
     sprite->setAtlasIndex(index);
     
-	sprite->setDirty(true);
-	
-	// UpdateTransform updates the textureAtlas quad
-	sprite->updateTransform();
+    sprite->setDirty(true);
+    
+    // UpdateTransform updates the textureAtlas quad
+    sprite->updateTransform();
 }
 
 SpriteBatchNode * SpriteBatchNode::addSpriteWithoutQuad(Sprite*child, int z, int aTag)
