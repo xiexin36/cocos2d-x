@@ -147,7 +147,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     // xml read
     if (!FileUtils::getInstance()->isFileExist(inFullpath))
     {
-        return ".csd file doesn not exists ";
+        return ".csd file does not exists ";
     }
     
     ssize_t size;
