@@ -256,6 +256,7 @@ void ImageView::imageTextureScaleChangedWithSize()
         if (_scale9Enabled)
         {
             _imageRenderer->setPreferredSize(_contentSize);
+            _imageRenderer->setScale(1.0f);
         }
         else
         {
