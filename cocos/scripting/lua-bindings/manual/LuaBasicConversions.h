@@ -241,29 +241,29 @@ CC_LUA_DLL extern bool luaval_to_std_vector_ushort(lua_State* L, int lo, std::ve
 CC_LUA_DLL extern bool luaval_to_quaternion(lua_State* L,int lo,cocos2d::Quaternion* outValue, const char* funcName = "");
 
 // from native
-extern void vec2_to_luaval(lua_State* L,const cocos2d::Vec2& vec2);
-extern void vec3_to_luaval(lua_State* L,const cocos2d::Vec3& vec3);
-extern void vec4_to_luaval(lua_State* L,const cocos2d::Vec4& vec4);
-extern void vec2_array_to_luaval(lua_State* L,const cocos2d::Vec2* points, int count);
-extern void size_to_luaval(lua_State* L,const Size& sz);
-extern void rect_to_luaval(lua_State* L,const Rect& rt);
-extern void color3b_to_luaval(lua_State* L,const Color3B& cc);
-extern void color4b_to_luaval(lua_State* L,const Color4B& cc);
-extern void color4f_to_luaval(lua_State* L,const Color4F& cc);
+CC_LUA_DLL extern void vec2_to_luaval(lua_State* L,const cocos2d::Vec2& vec2);
+CC_LUA_DLL extern void vec3_to_luaval(lua_State* L,const cocos2d::Vec3& vec3);
+CC_LUA_DLL extern void vec4_to_luaval(lua_State* L,const cocos2d::Vec4& vec4);
+CC_LUA_DLL extern void vec2_array_to_luaval(lua_State* L,const cocos2d::Vec2* points, int count);
+CC_LUA_DLL extern void size_to_luaval(lua_State* L,const Size& sz);
+CC_LUA_DLL extern void rect_to_luaval(lua_State* L,const Rect& rt);
+CC_LUA_DLL extern void color3b_to_luaval(lua_State* L,const Color3B& cc);
+CC_LUA_DLL extern void color4b_to_luaval(lua_State* L,const Color4B& cc);
+CC_LUA_DLL extern void color4f_to_luaval(lua_State* L,const Color4F& cc);
 #if CC_USE_PHYSICS
-extern void physics_material_to_luaval(lua_State* L,const PhysicsMaterial& pm);
-extern void physics_raycastinfo_to_luaval(lua_State* L, const PhysicsRayCastInfo& info);
-extern void physics_contactdata_to_luaval(lua_State* L, const PhysicsContactData* data);
+CC_LUA_DLL extern void physics_material_to_luaval(lua_State* L,const PhysicsMaterial& pm);
+CC_LUA_DLL extern void physics_raycastinfo_to_luaval(lua_State* L, const PhysicsRayCastInfo& info);
+CC_LUA_DLL extern void physics_contactdata_to_luaval(lua_State* L, const PhysicsContactData* data);
 #endif //#if CC_USE_PHYSICS
-extern void affinetransform_to_luaval(lua_State* L,const AffineTransform& inValue);
-extern void fontdefinition_to_luaval(lua_State* L,const FontDefinition& inValue);
-extern void array_to_luaval(lua_State* L, __Array* inValue);
-extern void dictionary_to_luaval(lua_State* L, __Dictionary* dict);
-extern void mat4_to_luaval(lua_State* L, const cocos2d::Mat4& mat);
-extern void blendfunc_to_luaval(lua_State* L, const cocos2d::BlendFunc& func);
-extern void ttfconfig_to_luaval(lua_State* L, const cocos2d::TTFConfig& config);
-extern void uniform_to_luaval(lua_State* L, const cocos2d::Uniform& uniform);
-extern void vertexattrib_to_luaval(lua_State* L, const cocos2d::VertexAttrib& verAttrib);
+CC_LUA_DLL extern void affinetransform_to_luaval(lua_State* L,const AffineTransform& inValue);
+CC_LUA_DLL extern void fontdefinition_to_luaval(lua_State* L,const FontDefinition& inValue);
+CC_LUA_DLL extern void array_to_luaval(lua_State* L, __Array* inValue);
+CC_LUA_DLL extern void dictionary_to_luaval(lua_State* L, __Dictionary* dict);
+CC_LUA_DLL extern void mat4_to_luaval(lua_State* L, const cocos2d::Mat4& mat);
+CC_LUA_DLL extern void blendfunc_to_luaval(lua_State* L, const cocos2d::BlendFunc& func);
+CC_LUA_DLL extern void ttfconfig_to_luaval(lua_State* L, const cocos2d::TTFConfig& config);
+CC_LUA_DLL extern void uniform_to_luaval(lua_State* L, const cocos2d::Uniform& uniform);
+CC_LUA_DLL extern void vertexattrib_to_luaval(lua_State* L, const cocos2d::VertexAttrib& verAttrib);
 
 static inline void point_to_luaval(lua_State* L,const cocos2d::Vec2& pt)
 {
@@ -335,10 +335,10 @@ void ccmap_string_key_to_luaval(lua_State* L, const cocos2d::Map<std::string, T>
     }
 }
 
-void ccvalue_to_luaval(lua_State* L,const cocos2d::Value& inValue);
-void ccvaluemap_to_luaval(lua_State* L,const cocos2d::ValueMap& inValue);
-void ccvaluemapintkey_to_luaval(lua_State* L, const cocos2d::ValueMapIntKey& inValue);
-void ccvaluevector_to_luaval(lua_State* L, const cocos2d::ValueVector& inValue);
+CC_LUA_DLL void ccvalue_to_luaval(lua_State* L,const cocos2d::Value& inValue);
+CC_LUA_DLL void ccvaluemap_to_luaval(lua_State* L,const cocos2d::ValueMap& inValue);
+CC_LUA_DLL void ccvaluemapintkey_to_luaval(lua_State* L, const cocos2d::ValueMapIntKey& inValue);
+CC_LUA_DLL void ccvaluevector_to_luaval(lua_State* L, const cocos2d::ValueVector& inValue);
 
 /**
  Because all override functions wouldn't be bound,so we must use `typeid` to get the real class name
@@ -387,11 +387,11 @@ void object_to_luaval(lua_State* L,const char* type, T* ret)
     }
 }
 
-void mesh_vertex_attrib_to_luaval(lua_State* L, const cocos2d::MeshVertexAttrib& inValue);
-void ccvector_std_string_to_luaval(lua_State* L, const std::vector<std::string>& inValue);
-void ccvector_int_to_luaval(lua_State* L, const std::vector<int>& inValue);
-void ccvector_float_to_luaval(lua_State* L, const std::vector<float>& inValue);
-void ccvector_ushort_to_luaval(lua_State* L, const std::vector<unsigned short>& inValue);
-void quaternion_to_luaval(lua_State* L,const cocos2d::Quaternion& inValue);
+CC_LUA_DLL void mesh_vertex_attrib_to_luaval(lua_State* L, const cocos2d::MeshVertexAttrib& inValue);
+CC_LUA_DLL void ccvector_std_string_to_luaval(lua_State* L, const std::vector<std::string>& inValue);
+CC_LUA_DLL void ccvector_int_to_luaval(lua_State* L, const std::vector<int>& inValue);
+CC_LUA_DLL void ccvector_float_to_luaval(lua_State* L, const std::vector<float>& inValue);
+CC_LUA_DLL void ccvector_ushort_to_luaval(lua_State* L, const std::vector<unsigned short>& inValue);
+CC_LUA_DLL void quaternion_to_luaval(lua_State* L,const cocos2d::Quaternion& inValue);
 
 #endif //__COCOS2DX_SCRIPTING_LUA_COCOS2DXSUPPORT_LUABAISCCONVERSIONS_H__
