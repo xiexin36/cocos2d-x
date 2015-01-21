@@ -152,6 +152,10 @@ CameraRotationTest::CameraRotationTest()
     l1->setScale(3);
     bill1->addChild(l1);
 
+    auto p1 = CCParticleSystemQuad::create("Particles/SmallSun.plist");
+    p1->setPosition(30,80);
+    bill1->addChild(p1);
+    
     bill2 = BillBoard::create("Images/Icon.png");
     bill2->setPosition3D(Vec3(s.width/2 - 50, s.height/2 - 10, 10));
     bill2->setScale(0.6f);
@@ -163,6 +167,10 @@ CameraRotationTest::CameraRotationTest()
     l2->setColor(Color3B::WHITE);
     l2->setScale(3);
     bill2->addChild(l2);
+    
+    auto p2 = CCParticleSystemQuad::create("Particles/SmallSun.plist");
+    p2->setPosition(30,80);
+    bill2->addChild(p2);
 
     //3D models
     auto model = Sprite3D::create("Sprite3DTest/boss1.obj");
@@ -1120,7 +1128,7 @@ void CameraArcBallDemo::onEnter()
     {
         _camera=Camera::createPerspective(60, (GLfloat)s.width/s.height, 1, 1000);
         _camera->setCameraFlag(CameraFlag::USER1);
-        _camera->setPosition3D(Vec3(0, 100, 50));
+        _camera->setPosition3D(Vec3(0, 10, 50));
         _camera->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
         _camera->retain();
         _layer3D->addChild(_camera);
@@ -1244,7 +1252,7 @@ float CameraArcBallDemo::projectToSphere( float r, float x, float y )
 void CameraArcBallDemo::updateCameraTransform()
 {
     Mat4 trans, rot, center;
-    Mat4::createTranslation(Vec3(0.0f, 0.0f, _distanceZ), &trans);
+    Mat4::createTranslation(Vec3(0.0f, 10.0f, _distanceZ), &trans);
     Mat4::createRotation(_rotationQuat, &rot);
     Mat4::createTranslation(_center, &center);
     Mat4 result = center * rot * trans;

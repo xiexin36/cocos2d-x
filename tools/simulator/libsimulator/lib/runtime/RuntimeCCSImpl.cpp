@@ -54,9 +54,10 @@ void RuntimeCCSImpl::loadCSDProject(const std::string& file)
     
     if (node)
     {
-		Size frameSize = Director::getInstance()->getVisibleSize();
-		node->setContentSize(frameSize);
-		ui::Helper::doLayout(node);
+        Size frameSize = Director::getInstance()->getVisibleSize();
+        node->setContentSize(frameSize);
+        ui::Helper::doLayout(node);
+
         if (Director::getInstance()->getRunningScene())
         {
             auto scene = Scene::create();
@@ -82,9 +83,10 @@ void RuntimeCCSImpl::loadCSBProject(const std::string& file)
     auto node = CSLoader::getInstance()->createNode(file);
     if (node)
     {
-		Size frameSize = Director::getInstance()->getVisibleSize();
-		node->setContentSize(frameSize);
-		ui::Helper::doLayout(node);
+        Size frameSize = Director::getInstance()->getVisibleSize();
+        node->setContentSize(frameSize);
+        ui::Helper::doLayout(node);
+
         if (Director::getInstance()->getRunningScene())
         {
             auto scene = Scene::create();
