@@ -403,43 +403,40 @@ Texture2D* TextureCache::addImage(Image *image, const std::string &key)
     return texture;
 }
 
-bool TextureCache::reloadTexture(const std::string& fileName)
+Texture2D* TextureCache::reloadTexture(const std::string& fileName)
 {
-    Texture2D * texture = nullptr;
-    Image * image = nullptr;
+	Texture2D * texture = nullptr;
 
-    std::string fullpath = FileUtils::getInstance()->fullPathForFilename(fileName);
-    if (fullpath.size() == 0)
-    {
-        return false;
-    }
+	std::string fullpath = FileUtils::getInstance()->fullPathForFilename(fileName);
+	if (fullpath.size() == 0)
+	{
+		return nullptr;
+	}
 
-    auto it = _textures.find(fullpath);
-    if (it != _textures.end()) {
-        texture = it->second;
-    }
+	auto it = _textures.find(fullpath);
+	if (it != _textures.end()) {
+		_textures.erase(it);
+	}
 
-    bool ret = false;
-    if (! texture) {
-        texture = this->addImage(fullpath);
-        ret = (texture != nullptr);
-    }
-    else
-    {
-        do {
-            image = new (std::nothrow) Image();
-            CC_BREAK_IF(nullptr == image);
+	bool ret = false;
+	if (!texture) {
+		texture = this->addImage(fullpath);
+		ret = (texture != nullptr);
+	}
+	else
+	{
+		do {
+			Image* image = new Image();
+			CC_BREAK_IF(nullptr == image);
 
-            bool bRet = image->initWithImageFile(fullpath);
-            CC_BREAK_IF(!bRet);
-            
-            ret = texture->initWithImage(image);
-        } while (0);
-    }
-    
-    CC_SAFE_RELEASE(image);
+			bool bRet = image->initWithImageFile(fullpath);
+			CC_BREAK_IF(!bRet);
 
-    return ret;
+			ret = texture->initWithImage(image);
+		} while (0);
+	}
+
+	return texture;
 }
 
 // TextureCache - Remove
