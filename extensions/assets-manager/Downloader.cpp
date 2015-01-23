@@ -52,7 +52,7 @@ size_t bufferWriteFunc(void *ptr, size_t size, size_t nmemb, void *userdata)
     Downloader::StreamData *streamBuffer = (Downloader::StreamData *)userdata;
     size_t written = size * nmemb;
     // Avoid pointer overflow
-    if (streamBuffer->offset + written <= streamBuffer->total)
+	if (streamBuffer->offset + written <= static_cast<size_t>(streamBuffer->total))
     {
         memcpy(streamBuffer->buffer + streamBuffer->offset, ptr, written);
         streamBuffer->offset += written;
@@ -632,7 +632,7 @@ void Downloader::groupBatchDownload(const DownloadUnits &units)
             curl_multi_fdset(multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
             rc = select(maxfd + 1, &fdread, &fdwrite, &fdexcep, &select_tv);
 #else          
-            //rc = curl_multi_wait(multi_handle,nullptr, 0, MAX_WAIT_MSECS, &maxfd);
+            rc = curl_multi_wait(multi_handle,nullptr, 0, MAX_WAIT_MSECS, &maxfd);
 #endif            
             
             switch(rc)

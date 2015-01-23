@@ -403,19 +403,20 @@ Texture2D* TextureCache::addImage(Image *image, const std::string &key)
     return texture;
 }
 
-Texture2D* TextureCache::reloadTexture(const std::string& fileName)
+bool TextureCache::reloadTexture(const std::string& fileName)
 {
     Texture2D * texture = nullptr;
+    Image * image = nullptr;
 
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(fileName);
     if (fullpath.size() == 0)
     {
-        return nullptr;
+        return false;
     }
 
     auto it = _textures.find(fullpath);
     if (it != _textures.end()) {
-		_textures.erase(it);
+        texture = it->second;
     }
 
     bool ret = false;
@@ -426,7 +427,7 @@ Texture2D* TextureCache::reloadTexture(const std::string& fileName)
     else
     {
         do {
-            Image* image = new Image();
+            image = new (std::nothrow) Image();
             CC_BREAK_IF(nullptr == image);
 
             bool bRet = image->initWithImageFile(fullpath);
@@ -435,8 +436,10 @@ Texture2D* TextureCache::reloadTexture(const std::string& fileName)
             ret = texture->initWithImage(image);
         } while (0);
     }
+    
+    CC_SAFE_RELEASE(image);
 
-    return texture;
+    return ret;
 }
 
 // TextureCache - Remove
