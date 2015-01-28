@@ -254,8 +254,10 @@ void TMXMapInfo::startElement(void *ctx, const char *name, const char **atts)
     {
         // If this is an external tileset then start parsing that
         std::string externalTilesetFilename = attributeDict["source"].asString();
+
         if (externalTilesetFilename != "")
         {
+            _externalTilesetFilename = externalTilesetFilename;
             // Tileset file will be relative to the map file. So we need to convert it to an absolute path
             if (_TMXFileName.find_last_of("/") != string::npos)
             {
