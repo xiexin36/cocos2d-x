@@ -837,8 +837,8 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         cocostudio::timeline::ActionTimeline* action = nullptr;
         if (filePath != "" && FileUtils::getInstance()->isFileExist(filePath))
         {
-            node = createNodeWithFlatBuffersForSimulator(filePath);
-            action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersForSimulator(filePath);
+            node = createNodeWithFlatBuffersFile(filePath);
+            action = cocostudio::timeline::ActionTimelineCache::getInstance()->createActionWithFlatBuffersFile(filePath);
         }
         else
         {
