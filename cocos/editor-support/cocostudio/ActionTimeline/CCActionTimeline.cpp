@@ -182,6 +182,10 @@ ActionTimeline* ActionTimeline::clone() const
         }
     }
 
+    for (auto info : _animationInfos)
+    {
+        newAction->addAnimationInfo(info.second);
+    }
     return newAction;
 }
 
