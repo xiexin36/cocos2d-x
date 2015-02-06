@@ -69,6 +69,7 @@ namespace cocostudio
         auto nodeOptions = *(Offset<WidgetOptions>*)(&temp);
         
         std::string filename = "";
+        float innerspeed = 1.0f;
 
         // FileData
         const tinyxml2::XMLElement* child = objectData->FirstChildElement();
@@ -91,9 +92,12 @@ namespace cocostudio
                         std::string convert = value.substr(0, pos).append(".csb");
                         filename = convert;
                     }
-                    
                     attribute = attribute->Next();
                 }
+            }
+            else if (name == "InnerActionSpeed")
+            {
+                innerspeed = atof(child->Value());
             }
             
             child = child->NextSiblingElement();
@@ -101,7 +105,8 @@ namespace cocostudio
         
         auto options = CreateProjectNodeOptions(*builder,
                                                 nodeOptions,
-                                                builder->CreateString(filename));
+                                                builder->CreateString(filename),
+                                                innerspeed);
         
         return *(Offset<Table>*)(&options);
     }

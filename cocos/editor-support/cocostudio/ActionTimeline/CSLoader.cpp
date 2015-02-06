@@ -847,6 +847,7 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         reader->setPropsWithFlatBuffers(node, options->data()); 
         if (action)
         {
+            action->setTimeSpeed(projectNodeOptions->innerActionSpeed());
             node->runAction(action);
             action->gotoFrameAndPause(0);
         }
@@ -1180,6 +1181,7 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         reader->setPropsWithFlatBuffers(node, options->data()); 
         if (action)
         {
+            action->setTimeSpeed(projectNodeOptions->innerActionSpeed());
             node->runAction(action);
             action->gotoFrameAndPause(0);
         }
