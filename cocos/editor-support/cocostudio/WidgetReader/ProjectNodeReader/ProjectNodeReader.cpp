@@ -71,6 +71,21 @@ namespace cocostudio
         std::string filename = "";
         float innerspeed = 1.0f;
 
+        const tinyxml2::XMLAttribute* objattri = objectData->FirstAttribute();
+        // inneraction speed
+        while (objattri)
+        {
+            std::string name = objattri->Name();
+            std::string value = objattri->Value();
+            if (name == "InnerActionSpeed")
+            {
+                innerspeed = atof(objattri->Value());
+                break;
+            }
+            objattri = objattri->Next();
+        }
+           
+
         // FileData
         const tinyxml2::XMLElement* child = objectData->FirstChildElement();
         while (child)
@@ -95,11 +110,6 @@ namespace cocostudio
                     attribute = attribute->Next();
                 }
             }
-            else if (name == "InnerActionSpeed")
-            {
-                innerspeed = atof(child->Value());
-            }
-            
             child = child->NextSiblingElement();
         }
         
