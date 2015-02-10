@@ -140,7 +140,8 @@ void FlatBuffersSerialize::deleteFlatBufferBuilder()
 }
 
 std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::string &xmlFileName,
-                                                                  const std::string &flatbuffersFileName)
+                                                                  const std::string &flatbuffersFileName,
+                                                                  const std::string &csBuildID)
 {
     
     std::string inFullpath = FileUtils::getInstance()->fullPathForFilename(xmlFileName).c_str();
@@ -150,6 +151,8 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     {
         return ".csd file doesn not exists ";
     }
+    
+    _csdVersion = csBuildID;
     
     std::string content = FileUtils::getInstance()->getStringFromFile(inFullpath);
     
@@ -168,6 +171,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
     while (element)
     {
 //        CCLOG("entity name = %s", element->Name());
+        /*
         if (strcmp("PropertyGroup", element->Name()) == 0)
         {
             const tinyxml2::XMLAttribute* attribute = element->FirstAttribute();
@@ -176,6 +180,7 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
             if (attribute)
                 _csdVersion = attribute->Value();
         }
+         */
 
         if (strcmp("Content", element->Name()) == 0)
         {
