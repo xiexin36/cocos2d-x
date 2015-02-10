@@ -103,7 +103,8 @@ public:
     
     /* serialize flat buffers with XML */
     std::string serializeFlatBuffersWithXMLFile(const std::string& xmlFileName,
-                                                const std::string& flatbuffersFileName);
+                                                const std::string& flatbuffersFileName,
+                                                const std::string& csBuildID);
     
     // NodeTree
     flatbuffers::Offset<flatbuffers::NodeTree> createNodeTree(const tinyxml2::XMLElement* objectData,
