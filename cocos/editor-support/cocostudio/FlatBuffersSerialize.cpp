@@ -175,6 +175,9 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
                 attribute = attribute->Next();
             if (attribute)
                 _csdVersion = attribute->Value();
+            
+            // temp
+            _csdVersion = "2.1.0.0";
         }
 
         if (strcmp("Content", element->Name()) == 0)
@@ -1154,7 +1157,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
             while (attribute && strcmp("Version", attribute->Name()) != 0)
                 attribute = attribute->Next();
             if (attribute)
-                _csdVersion = attribute->Value();
+                _csdVersion = attribute->Value();                        
         }
         
         if (strcmp("Content", element->Name()) == 0)
