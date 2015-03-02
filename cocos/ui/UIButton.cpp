@@ -861,7 +861,7 @@ void Button::resetNormalRender()
     _normalTextureLoaded = false;
     _normalTextureAdaptDirty = false;
 
-    _buttonNormalRenderer->updateWithSprite(NULL, Rect::ZERO, false, Rect::ZERO);
+    _buttonNormalRenderer->resetRender();
 }
 void Button::resetPressedRender()
 {
@@ -873,7 +873,7 @@ void Button::resetPressedRender()
     _pressedTextureLoaded = false;
     _pressedTextureAdaptDirty = false;
 
-    _buttonClickedRenderer->updateWithSprite(NULL, Rect::ZERO, false, Rect::ZERO);
+    _buttonClickedRenderer->resetRender();
 }
 
 void Button::resetDisabledRender()
@@ -886,7 +886,7 @@ void Button::resetDisabledRender()
     _disabledTextureLoaded = false;
     _disabledTextureAdaptDirty = false;
 
-    _buttonDisableRenderer->updateWithSprite(NULL, Rect::ZERO, false, Rect::ZERO);
+    _buttonDisableRenderer->resetRender();
 }
 }
 
