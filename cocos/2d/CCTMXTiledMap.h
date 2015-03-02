@@ -197,7 +197,7 @@ CC_CONSTRUCTOR_ACCESS:
     bool initWithXML(const std::string& tmxString, const std::string& resourcePath);
 
 protected:
-    TMXLayer * parseLayer(TMXLayerInfo *layerInfo, TMXMapInfo *mapInfo);
+    virtual TMXLayer * parseLayer(TMXLayerInfo *layerInfo, TMXMapInfo *mapInfo);
     TMXTilesetInfo * tilesetForLayer(TMXLayerInfo *layerInfo, TMXMapInfo *mapInfo);
     void buildWithMapInfo(TMXMapInfo* mapInfo);
 
