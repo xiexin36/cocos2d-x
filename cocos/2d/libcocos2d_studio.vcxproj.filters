@@ -259,6 +259,18 @@
     <Filter Include="extension\Particle3D\ParticleUniverse\ParticleRenders">
       <UniqueIdentifier>{2df756e3-b3b7-44e4-866f-210369dbd20a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\Node3DReader">
+      <UniqueIdentifier>{028bfe29-e74d-4c78-a1dd-8d66b8f7daa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\Particle3DReader">
+      <UniqueIdentifier>{06f8e3b3-5343-4343-af42-8e504525759c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\Sprite3DReader">
+      <UniqueIdentifier>{0da8452f-8c20-4a1c-8c9a-72e4cc8bf423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\UserCameraReader">
+      <UniqueIdentifier>{5b96ce2d-7325-4687-9e1b-ed2a8140ab5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
@@ -1618,6 +1630,18 @@
     </ClCompile>
     <ClCompile Include="..\..\extensions\Particle3D\ParticleUniverse\ParticleAffectors\CCPUParticle3DVortexAffectorTranslator.cpp">
       <Filter>extension\Particle3D\ParticleUniverse\ParticleAffectors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\Node3DReader\Node3DReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\Node3DReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\Particle3DReader\Particle3DReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\Particle3DReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\Sprite3DReader\Sprite3DReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\Sprite3DReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\UserCameraReader\UserCameraReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\UserCameraReader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3161,6 +3185,21 @@
     </ClInclude>
     <ClInclude Include="..\..\extensions\Particle3D\ParticleUniverse\ParticleAffectors\CCPUParticle3DVortexAffectorTranslator.h">
       <Filter>extension\Particle3D\ParticleUniverse\ParticleAffectors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\Node3DReader\Node3DReader.h">
+      <Filter>cocostudio\reader\WidgetReader\Node3DReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\Particle3DReader\Particle3DReader.h">
+      <Filter>cocostudio\reader\WidgetReader\Particle3DReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\Sprite3DReader\Sprite3DReader.h">
+      <Filter>cocostudio\reader\WidgetReader\Sprite3DReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\UserCameraReader\UserCameraReader.h">
+      <Filter>cocostudio\reader\WidgetReader\UserCameraReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\CSParse3DBinary_generated.h">
+      <Filter>cocostudio\json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

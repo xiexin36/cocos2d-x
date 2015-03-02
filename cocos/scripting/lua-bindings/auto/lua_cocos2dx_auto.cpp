@@ -1,6 +1,7 @@
 #include "lua_cocos2dx_auto.hpp"
 #include "cocos2d.h"
 #include "CCProtectedNode.h"
+#include "CCAsyncTaskPool.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 

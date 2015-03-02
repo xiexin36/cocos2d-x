@@ -162,14 +162,14 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
     }
     
     _barRendererTextureSize = _barRenderer->getContentSize();
-
-    auto innerSprite = _barRenderer->getSprite();
+    
     switch (_direction)
     {
         case Direction::LEFT:
             _barRenderer->setAnchorPoint(Vec2(0.0f,0.5f));
             if (!_scale9Enabled)
             {
+                auto innerSprite = _barRenderer->getSprite();
                 if (nullptr != innerSprite)
                 {
                     innerSprite->setFlippedX(false);
@@ -180,6 +180,7 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
             _barRenderer->setAnchorPoint(Vec2(1.0f,0.5f));
             if (!_scale9Enabled)
             {
+                auto innerSprite = _barRenderer->getSprite();
                 if (nullptr != innerSprite)
                 {
                     innerSprite->setFlippedX(true);
@@ -187,30 +188,13 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
             }
             break;
     }
-
-    do
-    {
-        if (_percent == 100.0f)
-            break;
-
-        if (_scale9Enabled)
-        {
-            setScale9Scale();
-        }
-        else
-        {
-            float res = _percent / 100.0f;
-            Rect rect = innerSprite->getTextureRect();
-            rect.size.width = _barRendererTextureSize.width * res;
-            innerSprite->setTextureRect(rect, innerSprite->isTextureRectRotated(), rect.size);
-        }
-    } while (0);
-
     _barRenderer->setCapInsets(_capInsets);
     this->updateChildrenDisplayedRGBA();
 
     barRendererScaleChangedWithSize();
     updateContentSizeWithTextureSize(_barRendererTextureSize);
+    
+    this->updateProgressBar();
     _barRendererAdaptDirty = true;
 }
 
@@ -234,7 +218,7 @@ void LoadingBar::setScale9Enabled(bool enabled)
         ignoreContentAdaptWithSize(_prevIgnoreSize);
     }
     setCapInsets(_capInsets);
-    setPercent(_percent);
+    this->updateProgressBar();
     _barRendererAdaptDirty = true;
 }
 
@@ -273,18 +257,24 @@ void LoadingBar::setPercent(float percent)
         return;
     }
      _percent = percent;
+    
     if (_totalLength <= 0)
     {
         return;
     }
-    float res = _percent / 100.0f;
     
+    this->updateProgressBar();
+}
+    
+void LoadingBar::updateProgressBar()
+{
     if (_scale9Enabled)
     {
         setScale9Scale();
     }
     else
     {
+        float res = _percent / 100.0f;
         Sprite* spriteRenderer = _barRenderer->getSprite();
         Rect rect = spriteRenderer->getTextureRect();
         rect.size.width = _barRendererTextureSize.width * res;
@@ -352,7 +342,7 @@ void LoadingBar::barRendererScaleChangedWithSize()
         _totalLength = _contentSize.width;
         if (_scale9Enabled)
         {
-            setScale9Scale();
+            this->setScale9Scale();
             _barRenderer->setScale(1.0f);
         }
         else
