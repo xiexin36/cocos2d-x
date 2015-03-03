@@ -204,6 +204,10 @@ public:
      * @since v3.3
      */
     float getZoomScale()const;
+
+    void resetNormalRender();
+    void resetPressedRender();
+    void resetDisabledRender();
     
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

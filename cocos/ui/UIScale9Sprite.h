@@ -376,6 +376,8 @@ namespace ui {
         virtual float getScaleY() const override;
         virtual float getScale() const override;
         using Node::getScaleZ;
+
+        void resetRender();
     protected:
         void updateCapInset();
         void updatePositions();

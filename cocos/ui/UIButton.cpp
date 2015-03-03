@@ -850,6 +850,44 @@ Size Button::getNormalTextureSize() const
 {
     return _normalTextureSize;
 }
+
+void Button::resetNormalRender()
+{
+    _normalFileName = "";
+    _normalTexType = TextureResType::LOCAL;
+
+    _normalTextureSize = Size(0, 0);
+
+    _normalTextureLoaded = false;
+    _normalTextureAdaptDirty = false;
+
+    _buttonNormalRenderer->resetRender();
+}
+void Button::resetPressedRender()
+{
+    _clickedFileName = "";
+    _pressedTexType = TextureResType::LOCAL;
+
+    _pressedTextureSize = Size(0, 0);
+
+    _pressedTextureLoaded = false;
+    _pressedTextureAdaptDirty = false;
+
+    _buttonClickedRenderer->resetRender();
+}
+
+void Button::resetDisabledRender()
+{
+    _disabledFileName = "";
+    _disabledTexType = TextureResType::LOCAL;
+
+    _disabledTextureSize = Size(0,0);
+
+    _disabledTextureLoaded = false;
+    _disabledTextureAdaptDirty = false;
+
+    _buttonDisableRenderer->resetRender();
+}
 }
 
 NS_CC_END
