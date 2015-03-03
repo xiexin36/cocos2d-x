@@ -1334,6 +1334,15 @@ namespace ui {
         CCASSERT(this->getScaleX() == this->getScaleY(), "Scale9Sprite#scale. ScaleX != ScaleY. Don't know which one to return");
         return this->getScaleX();
     }
+
+    void Scale9Sprite::resetRender()
+    {
+        // Release old sprites
+        this->cleanupSlicedSprites();
+        _protectedChildren.clear();
+
+        CC_SAFE_RELEASE_NULL(this->_scale9Image);
+    }
     
     void Scale9Sprite::setCameraMask(unsigned short mask, bool applyChildren)
     {
