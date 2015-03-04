@@ -31,7 +31,7 @@
 
 NS_CC_BEGIN
 
-class PUParticle3DMaterial : public Ref
+class CC_DLL PUParticle3DMaterial : public Ref
 {
 public:
 
@@ -54,7 +54,7 @@ public:
     GLuint wrapMode;
 };
 
-class PUParticle3DMaterialCache
+class CC_DLL PUParticle3DMaterialCache
 {
 public:
 
