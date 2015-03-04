@@ -335,7 +335,7 @@ bool Sprite3D::initFrom(const NodeDatas& nodeDatas, const MeshDatas& meshdatas, 
 }
 Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,const MaterialDatas& matrialdatas)
 {
-    auto sprite = new (std::nothrow) Sprite3D();
+    auto sprite = createSprite3DNode_Impl();
     if (sprite)
     {
         sprite->setName(nodedata->id);
@@ -776,7 +776,7 @@ const BlendFunc& Sprite3D::getBlendFunc() const
     return _blend;
 }
 
-const AABB& Sprite3D::getAABB() const
+const AABB& Sprite3D::getAABB(bool world) const
 {
     Mat4 nodeToWorldTransform(getNodeToWorldTransform());
     
@@ -794,7 +794,9 @@ const AABB& Sprite3D::getAABB() const
                 _aabb.merge(it->getAABB());
         }
         
-        _aabb.transform(transform);
+		if (world)
+			_aabb.transform(transform);
+
         _nodeToWorldTransform = nodeToWorldTransform;
     }
     
@@ -918,6 +920,11 @@ Sprite3DCache::Sprite3DCache()
 Sprite3DCache::~Sprite3DCache()
 {
     removeAllSprite3DData();
+}
+
+Sprite3D* Sprite3D::createSprite3DNode_Impl()
+{
+	return new (std::nothrow) Sprite3D();
 }
 
 NS_CC_END

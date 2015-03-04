@@ -124,7 +124,7 @@ public:
      * because bone can drive the vertices, we just use the origin vertices
      * to calculate the AABB.
      */
-    const AABB& getAABB() const;
+    const AABB& getAABB(bool world = true) const;
     
     /**
      * Returns 2d bounding-box
@@ -147,6 +147,8 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~Sprite3D();
     
     bool init();
+
+	virtual Sprite3D* createSprite3DNode_Impl();
     
     bool initWithFile(const std::string &path);
     

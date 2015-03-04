@@ -155,7 +155,7 @@ public:
 
 CC_CONSTRUCTOR_ACCESS:
     Camera();
-    ~Camera();
+    virtual ~Camera();
     
     void setScene(Scene* scene);
     
