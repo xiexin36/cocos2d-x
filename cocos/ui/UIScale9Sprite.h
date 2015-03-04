@@ -376,7 +376,7 @@ namespace ui {
         virtual float getScaleY() const override;
         virtual float getScale() const override;
         using Node::getScaleZ;
-
+        virtual void setCameraMask(unsigned short mask, bool applyChildren = true) override;
         void resetRender();
     protected:
         void updateCapInset();

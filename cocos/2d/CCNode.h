@@ -1122,7 +1122,7 @@ public:
      *
      * @return An Action pointer
      */
-    Action* runAction(Action* action);
+    virtual Action* runAction(Action* action);
 
     /**
      * Stops and removes all actions from the running action list .
@@ -1543,7 +1543,7 @@ public:
     
     void updateTransformFromPhysics(const Mat4& parentTransform, uint32_t parentFlags);
 
-    virtual void updatePhysicsBodyTransform(Scene* scene, const Mat4& parentTransform, uint32_t parentFlags, float parentScaleX, float parentScaleY);
+    virtual void updatePhysicsBodyTransform(const Mat4& parentTransform, uint32_t parentFlags, float parentScaleX, float parentScaleY);
 #endif
     
     // overrides
@@ -1575,7 +1575,7 @@ public:
     
     /** get & set camera mask, the node is visible by the camera whose camera flag & node's camera mask is true */
     unsigned short getCameraMask() const { return _cameraMask; }
-    void setCameraMask(unsigned short mask, bool applyChildren = true);
+    virtual void setCameraMask(unsigned short mask, bool applyChildren = true);
 
 CC_CONSTRUCTOR_ACCESS:
     // Nodes should be created using create();

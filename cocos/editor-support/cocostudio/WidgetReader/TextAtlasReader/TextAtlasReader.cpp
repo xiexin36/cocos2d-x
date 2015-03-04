@@ -268,6 +268,7 @@ namespace cocostudio
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
         
         labelAtlas->ignoreContentAdaptWithSize(true);
+        
     }
     
     Node* TextAtlasReader::createNodeWithFlatBuffers(const flatbuffers::Table *textAtlasOptions)
