@@ -35,7 +35,7 @@ extern "C" {
 
 NS_CC_BEGIN
 
-class CC_LUA_DLL LuaStack : public Ref
+class LuaStack : public Ref
 {
 public:
     static LuaStack *create(void);

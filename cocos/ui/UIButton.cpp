@@ -449,15 +449,9 @@ void Button::onPressStateChangedToPressed()
             _buttonNormalRenderer->setScale(_pressedTextureScaleXInSize + _zoomScale, _pressedTextureScaleYInSize + _zoomScale);
             
             _titleRenderer->stopAllActions();
+            
             Action *zoomTitleAction = ScaleTo::create(ZOOM_ACTION_TIME_STEP, 1.0f + _zoomScale, 1.0f + _zoomScale);
-            if (_unifySize)
-            {
-                _titleRenderer->runAction(zoomTitleAction);
-            }
-            else
-            {
-                _titleRenderer->runAction(zoomTitleAction->clone());
-            }
+            _titleRenderer->runAction(zoomTitleAction);
         }
     }
     else
@@ -849,6 +843,44 @@ Size Button::getNormalSize() const
 Size Button::getNormalTextureSize() const
 {
     return _normalTextureSize;
+}
+
+void Button::resetNormalRender()
+{
+    _normalFileName = "";
+    _normalTexType = TextureResType::LOCAL;
+
+    _normalTextureSize = Size(0, 0);
+
+    _normalTextureLoaded = false;
+    _normalTextureAdaptDirty = false;
+
+    _buttonNormalRenderer->resetRender();
+}
+void Button::resetPressedRender()
+{
+    _clickedFileName = "";
+    _pressedTexType = TextureResType::LOCAL;
+
+    _pressedTextureSize = Size(0, 0);
+
+    _pressedTextureLoaded = false;
+    _pressedTextureAdaptDirty = false;
+
+    _buttonClickedRenderer->resetRender();
+}
+
+void Button::resetDisabledRender()
+{
+    _disabledFileName = "";
+    _disabledTexType = TextureResType::LOCAL;
+
+    _disabledTextureSize = Size(0,0);
+
+    _disabledTextureLoaded = false;
+    _disabledTextureAdaptDirty = false;
+
+    _buttonDisableRenderer->resetRender();
 }
 }
 
