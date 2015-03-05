@@ -143,6 +143,8 @@ public:
     static const char* SHADER_3D_POSITION_NORMAL;
     static const char* SHADER_3D_POSITION_NORMAL_TEXTURE;
     static const char* SHADER_3D_SKINPOSITION_NORMAL_TEXTURE;
+    static const char* SHADER_3D_PARTICLE_TEXTURE;
+    static const char* SHADER_3D_PARTICLE_COLOR;
     
     // uniform names
     static const char* UNIFORM_NAME_AMBIENT_COLOR;
@@ -320,6 +322,9 @@ public:
     
     inline const GLuint getProgram() const { return _program; }
 
+	GLuint getVertShader() const { return _vertShader; }
+	GLuint getFragShader() const { return _fragShader; }
+
     // DEPRECATED
     CC_DEPRECATED_ATTRIBUTE bool initWithVertexShaderByteArray(const GLchar* vertexByteArray, const GLchar* fragByteArray)
     { return initWithByteArrays(vertexByteArray, fragByteArray); }
@@ -361,7 +366,7 @@ protected:
 
     std::unordered_map<std::string, Uniform> _userUniforms;
     std::unordered_map<std::string, VertexAttrib> _vertexAttribs;
-    std::unordered_map<GLint, GLvoid*> _hashForUniforms;
+    std::unordered_map<GLint, std::pair<GLvoid*, unsigned int>> _hashForUniforms;
     //cached director pointer for calling
     Director* _director;
 };

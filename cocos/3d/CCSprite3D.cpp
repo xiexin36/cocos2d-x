@@ -335,7 +335,7 @@ bool Sprite3D::initFrom(const NodeDatas& nodeDatas, const MeshDatas& meshdatas, 
 }
 Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,const MaterialDatas& matrialdatas)
 {
-    auto sprite = new (std::nothrow) Sprite3D();
+    auto sprite = createSprite3DNode_Impl();
     if (sprite)
     {
         sprite->setName(nodedata->id);
@@ -578,10 +578,13 @@ AttachNode* Sprite3D::getAttachNode(const std::string& boneName)
     if (_skeleton)
     {
         auto bone = _skeleton->getBoneByName(boneName);
-        auto attachNode = AttachNode::create(bone);
-        addChild(attachNode);
-        _attachments[boneName] = attachNode;
-        return attachNode;
+        if (bone)
+        {
+            auto attachNode = AttachNode::create(bone);
+            addChild(attachNode);
+            _attachments[boneName] = attachNode;
+            return attachNode;
+        }
     }
     
     return nullptr;
@@ -741,6 +744,10 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
         }
         //support tint and fade
         meshCommand.setDisplayColor(Vec4(color.r, color.g, color.b, color.a));
+        if (_forceDepthWrite)
+        {
+            meshCommand.setDepthWriteEnabled(true);
+        }
         meshCommand.setTransparent(isTransparent);
         renderer->addCommand(&meshCommand);
     }
@@ -776,7 +783,7 @@ const BlendFunc& Sprite3D::getBlendFunc() const
     return _blend;
 }
 
-const AABB& Sprite3D::getAABB() const
+const AABB& Sprite3D::getAABB(bool world) const
 {
     Mat4 nodeToWorldTransform(getNodeToWorldTransform());
     
@@ -794,11 +801,19 @@ const AABB& Sprite3D::getAABB() const
                 _aabb.merge(it->getAABB());
         }
         
-        _aabb.transform(transform);
+		if (world)
+			_aabb.transform(transform);
+
         _nodeToWorldTransform = nodeToWorldTransform;
     }
     
     return _aabb;
+}
+
+Action* Sprite3D::runAction(Action *action)
+{
+    setForceDepthWrite(true);
+    return Node::runAction(action);
 }
 
 Rect Sprite3D::getBoundingBox() const
@@ -918,6 +933,11 @@ Sprite3DCache::Sprite3DCache()
 Sprite3DCache::~Sprite3DCache()
 {
     removeAllSprite3DData();
+}
+
+Sprite3D* Sprite3D::createSprite3DNode_Impl()
+{
+	return new (std::nothrow) Sprite3D();
 }
 
 NS_CC_END

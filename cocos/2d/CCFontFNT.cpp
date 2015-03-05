@@ -148,11 +148,11 @@ public:
 private:
     std::set<unsigned int>* parseConfigFile(const std::string& controlFile);
     std::set<unsigned int>* parseBinaryConfigFile(unsigned char* pData, unsigned long size, const std::string& controlFile);
-    void parseCharacterDefinition(std::string line, BMFontDef *characterDefinition);
-    void parseInfoArguments(std::string line);
-    bool parseCommonArguments(std::string line);
-    bool parseImageFileName(std::string line, const std::string& fntFile);
-    void parseKerningEntry(std::string line);
+    void parseCharacterDefinition(const char* line, BMFontDef *characterDefinition);
+    void parseInfoArguments(const char* line);
+    bool parseCommonArguments(const char* line);
+    bool parseImageFileName(const char* line, const std::string& fntFile);
+    void parseKerningEntry(const char* line);
     void purgeKerningDictionary();
     void purgeFontDefDictionary();
 };
@@ -206,7 +206,7 @@ bool BMFontConfiguration::initWithFNTfile(const std::string& FNTfile)
     _fontDefDictionary = nullptr;
     
     _characterSet = this->parseConfigFile(FNTfile);
-    
+
     if (! _characterSet)
     {
         return false;
@@ -282,37 +282,40 @@ std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& 
         return ret;
     }
 
-    std::string contents((const char*)data.getBytes(), data.getSize());
-    
-    std::set<unsigned int> *validCharsString = new std::set<unsigned int>();
-
-    if (contents.empty())
+    auto contents = (const char*)data.getBytes();
+    if (contents[0] == 0)
     {
         CCLOG("cocos2d: Error parsing FNTfile %s", controlFile.c_str());
         return nullptr;
     }
 
-    // parse spacing / padding
-    std::string line;
-    std::string strLeft(contents);
-    while (strLeft.length() > 0)
+    std::set<unsigned int> *validCharsString = new std::set<unsigned int>();
+    
+    auto contentsLen = data.getSize();
+    char line[512];
+    
+    auto next = strchr(contents, '\n');
+    auto base = contents;
+    int lineLength = 0;
+    int parseCount = 0;
+    while (next)
     {
-        size_t pos = strLeft.find('\n');
+        lineLength = next - base;
+        memcpy(line, contents + parseCount, lineLength);
+        line[lineLength] = 0;
 
-        if (pos != std::string::npos)
+        parseCount += lineLength + 1;
+        if (parseCount < contentsLen)
         {
-            // the data is more than a line.get one line
-            line = strLeft.substr(0, pos);
-            strLeft = strLeft.substr(pos + 1);
-        }
+            base = next + 1;
+            next = strchr(base, '\n');
+        } 
         else
         {
-            // get the left data
-            line = strLeft;
-            strLeft.erase();
+            next = nullptr;
         }
 
-        if(line.substr(0,strlen("info face")) == "info face") 
+        if (memcmp(line, "info face", 9) == 0)
         {
             // FIXME: info parsing is incomplete
             // Not needed for the Hiero editors, but needed for the AngelCode editor
@@ -320,7 +323,7 @@ std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& 
             this->parseInfoArguments(line);
         }
         // Check to see if the start of the line is something we are interested in
-        else if(line.substr(0,strlen("common lineHeight")) == "common lineHeight")
+        else if (memcmp(line, "common lineHeight", 17) == 0)
         {
 			if (!this->parseCommonArguments(line))
             {
@@ -328,18 +331,18 @@ std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& 
             }
             
         }
-        else if(line.substr(0,strlen("page id")) == "page id")
+        else if (memcmp(line, "page id", 7) == 0)
         {
 			if (!this->parseImageFileName(line, controlFile))
 			{
 				return nullptr;
 			}
         }
-        else if(line.substr(0,strlen("chars c")) == "chars c")
+        else if (memcmp(line, "chars c", 7) == 0)
         {
             // Ignore this line
         }
-        else if(line.substr(0,strlen("char")) == "char")
+        else if (memcmp(line, "char", 4) == 0)
         {
             // Parse the current line and create a new CharDef
             tFontDefHashElement* element = (tFontDefHashElement*)malloc( sizeof(*element) );
@@ -354,7 +357,7 @@ std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& 
 //        {
 //            this->parseKerningCapacity(line);
 //        }
-        else if(line.substr(0,strlen("kerning first")) == "kerning first")
+        else if (memcmp(line, "kerning first", 13) == 0)
         {
             this->parseKerningEntry(line);
         }
@@ -521,7 +524,7 @@ std::set<unsigned int>* BMFontConfiguration::parseBinaryConfigFile(unsigned char
     return validCharsString;
 }
 
-bool BMFontConfiguration::parseImageFileName(std::string line, const std::string& fntFile)
+bool BMFontConfiguration::parseImageFileName(const char* line, const std::string& fntFile)
 {
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
@@ -529,23 +532,22 @@ bool BMFontConfiguration::parseImageFileName(std::string line, const std::string
     //////////////////////////////////////////////////////////////////////////
 
     // page ID. Sanity check
-    auto index = line.find('=')+1;
-    auto index2 = line.find(' ', index);
-    std::string value = line.substr(index, index2-index);
-	if (atoi(value.c_str()) != 0)
+    int pageId;
+    sscanf(line, "page id=%d", &pageId);
+	if (pageId == 0)
 	{
+		CCLOG("LabelBMFont file could not be found");
 		return false;
 	}
+    
     // file 
-    index = line.find('"')+1;
-    index2 = line.find('"', index);
-    value = line.substr(index, index2-index);
-
-    _atlasName = FileUtils::getInstance()->fullPathFromRelativeFile(value.c_str(), fntFile);
+    char fileName[255];
+    sscanf(strchr(line,'"') + 1, "%[^\"]", fileName);
+    _atlasName = FileUtils::getInstance()->fullPathFromRelativeFile(fileName, fntFile);
 	return true;
 }
 
-void BMFontConfiguration::parseInfoArguments(std::string line)
+void BMFontConfiguration::parseInfoArguments(const char* line)
 {
     //////////////////////////////////////////////////////////////////////////
     // possible lines to parse:
@@ -554,54 +556,55 @@ void BMFontConfiguration::parseInfoArguments(std::string line)
     //////////////////////////////////////////////////////////////////////////
 
     // padding
-    auto index = line.find("padding=");
-    auto index2 = line.find(' ', index);
-    std::string value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "padding=%d,%d,%d,%d", &_padding.top, &_padding.right, &_padding.bottom, &_padding.left);
-    CCLOG("cocos2d: padding: %d,%d,%d,%d", _padding.left, _padding.top, _padding.right, _padding.bottom);
+    sscanf(strstr(line,"padding=") + 8, "%d,%d,%d,%d", &_padding.top, &_padding.right, &_padding.bottom, &_padding.left);
+    //CCLOG("cocos2d: padding: %d,%d,%d,%d", _padding.left, _padding.top, _padding.right, _padding.bottom);
 }
 
-bool BMFontConfiguration::parseCommonArguments(std::string line)
+bool BMFontConfiguration::parseCommonArguments(const char* line)
 {
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
     // common lineHeight=104 base=26 scaleW=1024 scaleH=512 pages=1 packed=0
     //////////////////////////////////////////////////////////////////////////
-
+  
     // Height
-    auto index = line.find("lineHeight=");
-    auto index2 = line.find(' ', index);
-    std::string value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "lineHeight=%d", &_commonHeight);
+    auto tmp = strstr(line, "lineHeight=") + 11;
+    sscanf(tmp, "%d", &_commonHeight);
     // scaleW. sanity check
-    index = line.find("scaleW=") + strlen("scaleW=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-	if (atoi(value.c_str()) > Configuration::getInstance()->getMaxTextureSize())
-    {
+    int value;
+    tmp = strstr(tmp, "scaleW=") + 7;
+    sscanf(tmp, "%d", &value);
+
+    int maxTextureSize = Configuration::getInstance()->getMaxTextureSize();
+	if (value <= maxTextureSize)
+	{
+		CCLOG("CCLabelBMFont: page can't be larger than supported");
 		return false;
-    }
+	}
+
     // scaleH. sanity check
-    index = line.find("scaleH=") + strlen("scaleH=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-	if (atoi(value.c_str()) > Configuration::getInstance()->getMaxTextureSize())
+    tmp = strstr(tmp, "scaleH=") + 7;
+    sscanf(tmp, "%d", &value);
+	if (value <= maxTextureSize)
 	{
+		CCLOG("CCLabelBMFont: page can't be larger than supported");
 		return false;
 	}
+
     // pages. sanity check
-    index = line.find("pages=") + strlen("pages=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-	if (atoi(value.c_str()) != 1)
+    tmp = strstr(tmp, "pages=") + 6;
+    sscanf(tmp, "%d", &value);
+	if (value == 1)
 	{
+		CCLOG("CCBitfontAtlas: only supports 1 page");
 		return false;
 	}
+
 	return true;
     // packed (ignore) What does this mean ??
 }
 
-void BMFontConfiguration::parseCharacterDefinition(std::string line, BMFontDef *characterDefinition)
+void BMFontConfiguration::parseCharacterDefinition(const char* line, BMFontDef *characterDefinition)
 {    
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
@@ -609,75 +612,48 @@ void BMFontConfiguration::parseCharacterDefinition(std::string line, BMFontDef *
     //////////////////////////////////////////////////////////////////////////
 
     // Character ID
-    auto index = line.find("id=");
-    auto index2 = line.find(' ', index);
-    std::string value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "id=%u", &characterDefinition->charID);
+    auto tmp = strstr(line, "id=") + 3;
+    sscanf(tmp, "%u", &characterDefinition->charID);
 
     // Character x
-    index = line.find("x=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "x=%f", &characterDefinition->rect.origin.x);
+    tmp = strstr(tmp, "x=") + 2;
+    sscanf(tmp, "%f", &characterDefinition->rect.origin.x);
     // Character y
-    index = line.find("y=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "y=%f", &characterDefinition->rect.origin.y);
+    tmp = strstr(tmp, "y=") + 2;
+    sscanf(tmp, "%f", &characterDefinition->rect.origin.y);
     // Character width
-    index = line.find("width=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "width=%f", &characterDefinition->rect.size.width);
+    tmp = strstr(tmp, "width=") + 6;
+    sscanf(tmp, "%f", &characterDefinition->rect.size.width);
     // Character height
-    index = line.find("height=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "height=%f", &characterDefinition->rect.size.height);
+    tmp = strstr(tmp, "height=") + 7;
+    sscanf(tmp, "%f", &characterDefinition->rect.size.height);
     // Character xoffset
-    index = line.find("xoffset=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "xoffset=%hd", &characterDefinition->xOffset);
+    tmp = strstr(tmp, "xoffset=") + 8;
+    sscanf(tmp, "%hd", &characterDefinition->xOffset);
     // Character yoffset
-    index = line.find("yoffset=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "yoffset=%hd", &characterDefinition->yOffset);
+    tmp = strstr(tmp, "yoffset=") + 8;
+    sscanf(tmp, "%hd", &characterDefinition->yOffset);
     // Character xadvance
-    index = line.find("xadvance=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "xadvance=%hd", &characterDefinition->xAdvance);
+    tmp = strstr(tmp, "xadvance=") + 9;
+    sscanf(tmp, "%hd", &characterDefinition->xAdvance);
 }
 
-void BMFontConfiguration::parseKerningEntry(std::string line)
+void BMFontConfiguration::parseKerningEntry(const char* line)
 {        
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
     // kerning first=121  second=44  amount=-7
     //////////////////////////////////////////////////////////////////////////
 
-    // first
-    int first;
-    auto index = line.find("first=");
-    auto index2 = line.find(' ', index);
-    std::string value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "first=%d", &first);
+    int first, second, amount;
+    auto tmp = strstr(line, "first=") + 6;
+    sscanf(tmp, "%d", &first);
 
-    // second
-    int second;
-    index = line.find("second=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "second=%d", &second);
+    tmp = strstr(tmp, "second=") + 7;
+    sscanf(tmp, "%d", &second);
 
-    // amount
-    int amount;
-    index = line.find("amount=");
-    index2 = line.find(' ', index);
-    value = line.substr(index, index2-index);
-    sscanf(value.c_str(), "amount=%d", &amount);
+    tmp = strstr(tmp, "amount=") + 7;
+    sscanf(tmp, "%d", &amount);
 
     tKerningHashElement *element = (tKerningHashElement *)calloc( sizeof( *element ), 1 );
     element->amount = amount;

@@ -181,8 +181,8 @@ ActionTimeline* ActionTimeline::clone() const
             newAction->addTimeline(newTimeline);
         }
     }
-
-    for (auto info : _animationInfos)
+    
+    for( auto info : _animationInfos)
     {
         newAction->addAnimationInfo(info.second);
     }

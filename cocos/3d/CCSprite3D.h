@@ -124,7 +124,23 @@ public:
      * because bone can drive the vertices, we just use the origin vertices
      * to calculate the AABB.
      */
-    const AABB& getAABB() const;
+    const AABB& getAABB(bool world = true) const;
+    
+    /**
+     * Executes an action, and returns the action that is executed. For Sprite3D special logic are needed to take care of Fading.
+     *
+     * This node becomes the action's target. Refer to Action::getTarget()
+     * @warning Actions don't retain their target.
+     *
+     * @return An Action pointer
+     */
+    virtual Action* runAction(Action* action) override;
+    
+    /**
+     * Force to write to depth buffer, this is useful if you want to achieve effects like fading.
+     */
+    void setForceDepthWrite(bool value) { _forceDepthWrite = value; }
+    bool isForceDepthWrite() const { return _forceDepthWrite;};
     
     /**
      * Returns 2d bounding-box
@@ -140,6 +156,9 @@ public:
     /** light mask getter & setter, light works only when _lightmask & light's flag is true, default value of _lightmask is 0xffff */
     void setLightMask(unsigned int mask) { _lightMask = mask; }
     unsigned int getLightMask() const { return _lightMask; }
+    
+    /**draw*/
+    virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 
 CC_CONSTRUCTOR_ACCESS:
     
@@ -147,6 +166,8 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~Sprite3D();
     
     bool init();
+
+	virtual Sprite3D* createSprite3DNode_Impl();
     
     bool initWithFile(const std::string &path);
     
@@ -163,9 +184,6 @@ CC_CONSTRUCTOR_ACCESS:
      * Note: all its children will rendered as 3D objects
      */
     virtual void visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags) override;
-    
-    /**draw*/
-    virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     
     /**generate default GLProgramState*/
     void genGLProgramState(bool useLight = false);
@@ -200,6 +218,7 @@ protected:
     bool                         _aabbDirty;
     unsigned int                 _lightMask;
     bool                         _shaderUsingLight; // is current shader using light ?
+    bool                         _forceDepthWrite; // Always write to depth buffer
     
     struct AsyncLoadParam
     {

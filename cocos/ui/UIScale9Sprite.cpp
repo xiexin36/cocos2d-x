@@ -193,11 +193,22 @@ namespace ui {
         this->cleanupSlicedSprites();
         _protectedChildren.clear();
         
-        if(this->_scale9Image != sprite)
+        if(nullptr != sprite)
         {
-            CC_SAFE_RELEASE(this->_scale9Image);
-            _scale9Image = sprite;
-            CC_SAFE_RETAIN(_scale9Image);
+            if (nullptr == sprite->getSpriteFrame())
+            {
+                return false;
+            }
+            
+            if (nullptr == _scale9Image)
+            {
+                _scale9Image = sprite;
+                _scale9Image->retain();
+            }
+            else
+            {
+                _scale9Image->setSpriteFrame(sprite->getSpriteFrame());
+            }
         }
         
         if (!_scale9Image)
@@ -1322,6 +1333,28 @@ namespace ui {
     {
         CCASSERT(this->getScaleX() == this->getScaleY(), "Scale9Sprite#scale. ScaleX != ScaleY. Don't know which one to return");
         return this->getScaleX();
+    }
+
+    void Scale9Sprite::resetRender()
+    {
+        // Release old sprites
+        this->cleanupSlicedSprites();
+        _protectedChildren.clear();
+
+        CC_SAFE_RELEASE_NULL(this->_scale9Image);
+    }
+    
+    void Scale9Sprite::setCameraMask(unsigned short mask, bool applyChildren)
+    {
+        Node::setCameraMask(mask, applyChildren);
+        
+        if(_scale9Image)
+            _scale9Image->setCameraMask(mask,applyChildren);
+        
+        for(auto& iter: _protectedChildren)
+        {
+            iter->setCameraMask(mask);
+        }
     }
     
 }}
