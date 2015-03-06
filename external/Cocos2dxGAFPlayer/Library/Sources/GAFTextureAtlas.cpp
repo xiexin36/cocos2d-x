@@ -194,3 +194,8 @@ uint32_t GAFTextureAtlas::getMemoryConsumptionStat() const
 {
     return m_memoryConsumption;
 }
+
+GAFTextureAtlas::AtlasInfos_t GAFTextureAtlas::getAtlasInfos() const
+{
+    return m_atlasInfos;
+}

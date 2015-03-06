@@ -43,6 +43,8 @@ public:
     void                    pushAtlasInfo(const AtlasInfo& ai);
     void                    pushElement(unsigned int idx, GAFTextureAtlasElement* el);
 
+    // add by gero
+    AtlasInfos_t            getAtlasInfos() const;
     void                    loadImages(const std::string& dir, GAFTextureLoadDelegate* delegate, cocos2d::ZipFile* bundle = nullptr);
 
     inline bool     loaded() const
