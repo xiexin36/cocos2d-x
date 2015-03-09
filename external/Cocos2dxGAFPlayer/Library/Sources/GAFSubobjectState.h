@@ -2,6 +2,8 @@
 
 #include "GAFCollections.h"
 
+NS_GAF_BEGIN
+
 enum GAFColorTransformIndex
 {
     GAFCTI_R,
@@ -53,7 +55,7 @@ public:
 
     inline bool isVisible() const
     {
-        return _colorMults[GAFCTI_A] != 0;
+        return (_colorMults[GAFCTI_A] > std::numeric_limits<float>::epsilon()) || (_colorOffsets[GAFCTI_A] > std::numeric_limits<float>::epsilon());
     }
 
     void                ctxMakeIdentity();
@@ -67,3 +69,4 @@ public:
 
 }; // GAFSubobjectState
 
+NS_GAF_END

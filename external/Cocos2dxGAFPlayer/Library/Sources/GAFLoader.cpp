@@ -5,6 +5,7 @@
 #include "GAFHeader.h"
 #include "GAFStream.h"
 #include "GAFFile.h"
+#include "GAFTimeline.h"
 
 #include "PrimitiveDeserializer.h"
 
@@ -17,6 +18,9 @@
 #include "TagDefineStage.h"
 #include "TagDefineAnimationFrames2.h"
 #include "TagDefineTimeline.h"
+#include "TagDefineTextField.h"
+
+NS_GAF_BEGIN
 
 void GAFLoader::_readHeaderEnd(GAFHeader& header)
 {
@@ -60,6 +64,7 @@ void GAFLoader::_registerTagLoadersV4()
     m_tagLoaders[Tags::TagDefineAnimationObjects2] = new TagDefineAnimationObjects();
     m_tagLoaders[Tags::TagDefineAnimationMasks2] = new TagDefineAnimationMasks();
     m_tagLoaders[Tags::TagDefineAtlas2] = new TagDefineAtlas();
+    m_tagLoaders[Tags::TagDefineTextFields] = new TagDefineTextField();
     m_tagLoaders[Tags::TagDefineTimeline] = new TagDefineTimeline(this);
 }
 
@@ -83,7 +88,7 @@ GAFLoader::~GAFLoader()
     }
 }
 
-void GAFLoader::loadTags(GAFStream* in, GAFAsset* context)
+void GAFLoader::loadTags(GAFStream* in, GAFAsset* asset, GAFTimeline* timeline)
 {
     bool tagEndRead = false;
 
@@ -95,7 +100,7 @@ void GAFLoader::loadTags(GAFStream* in, GAFAsset* context)
 
         if (it != m_tagLoaders.end())
         {
-            it->second->read(in, context);
+            it->second->read(in, asset, timeline);
         }
         else
         {
@@ -141,6 +146,7 @@ void GAFLoader::_processLoad(GAFFile* file, GAFAsset* context)
 
     GAFHeader& header = m_stream->getInput()->getHeader();
 
+	GAFTimeline *timeline = nullptr;
     if (header.getMajorVersion() == 4)
     {
         _readHeaderEndV4(header);
@@ -150,13 +156,17 @@ void GAFLoader::_processLoad(GAFFile* file, GAFAsset* context)
     {
         _readHeaderEnd(header);
         _registerTagLoadersV3();
+
+		timeline = new GAFTimeline(nullptr, 0, header.frameSize, header.pivot, header.framesCount);
+		context->pushTimeline(0, timeline);
+        context->setRootTimeline((uint32_t)0);
     }
 
     _registerTagLoadersCommon();
 
     context->setHeader(header);
 
-    loadTags(m_stream, context);
+    loadTags(m_stream, context, timeline);
 
     delete m_stream;
 }
@@ -198,3 +208,5 @@ void GAFLoader::registerTagLoader(unsigned int idx, DefinitionTagBase* tagptr)
 {
     m_tagLoaders[static_cast<Tags::Enum>(idx)] = tagptr;
 }
+
+NS_GAF_END
