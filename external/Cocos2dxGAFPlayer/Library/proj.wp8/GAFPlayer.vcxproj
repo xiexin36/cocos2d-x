@@ -51,6 +51,18 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\Library.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="..\Library.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\Library.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="..\Library.props" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <GenerateManifest>false</GenerateManifest>
@@ -61,7 +73,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)../../../../cocos;$(ProjectDir)../../../../cocos/math;$(ProjectDir)../../../winrt-specific/angle/include;$(ProjectDir)../../../../cocos/platform/winrt;$(ProjectDir)../;$(ProjectDir)../Sources;$(ProjectDir)../../../wp8-specific/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CCX_ROOT)/cocos;$(CCX_ROOT)/cocos/math;$(CCX_ROOT)/external/winrt-specific/angle/include;$(CCX_ROOT)/cocos/platform/winrt;$(CCX_ROOT)/external/wp8-specific/zlib/include;$(CCX_ROOT_2)/cocos;$(CCX_ROOT_2)/cocos/math;$(CCX_ROOT_2)/external/winrt-specific/angle/include;$(CCX_ROOT_2)/cocos/platform/winrt;$(CCX_ROOT_2)/external/wp8-specific/zlib/include;$(GAF_SOURCES_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
@@ -76,14 +88,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WP8;NOMINMAX;_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WP8;NOMINMAX;_LIB;NDEBUG;CC_ENABLE_CHIPMUNK_INTEGRATION=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)../../../../cocos;$(ProjectDir)../../../../cocos/math;$(ProjectDir)../../../winrt-specific/angle/include;$(ProjectDir)../../../../cocos/platform/winrt;$(ProjectDir)../;$(ProjectDir)../Sources;$(ProjectDir)../../../wp8-specific/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CCX_ROOT)/cocos;$(CCX_ROOT)/cocos/math;$(CCX_ROOT)/external/winrt-specific/angle/include;$(CCX_ROOT)/cocos/platform/winrt;$(CCX_ROOT)/external/wp8-specific/zlib/include;$(CCX_ROOT_2)/cocos;$(CCX_ROOT_2)/cocos/math;$(CCX_ROOT_2)/external/winrt-specific/angle/include;$(CCX_ROOT_2)/cocos/platform/winrt;$(CCX_ROOT_2)/external/wp8-specific/zlib/include;$(GAF_SOURCES_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <CompileAsWinRT>true</CompileAsWinRT>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAs>Default</CompileAs>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <AdditionalOptions>/Zm200</AdditionalOptions>
     </ClCompile>
@@ -104,7 +116,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)../../../../cocos;$(ProjectDir)../../../../cocos/math;$(ProjectDir)../../../winrt-specific/angle/include;$(ProjectDir)../../../../cocos/platform/winrt;$(ProjectDir)../;$(ProjectDir)../Sources;$(ProjectDir)../../../wp8-specific/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CCX_ROOT)/cocos;$(CCX_ROOT)/cocos/math;$(CCX_ROOT)/external/winrt-specific/angle/include;$(CCX_ROOT)/cocos/platform/winrt;$(CCX_ROOT)/external/wp8-specific/zlib/include;$(CCX_ROOT_2)/cocos;$(CCX_ROOT_2)/cocos/math;$(CCX_ROOT_2)/external/winrt-specific/angle/include;$(CCX_ROOT_2)/cocos/platform/winrt;$(CCX_ROOT_2)/external/wp8-specific/zlib/include;$(GAF_SOURCES_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm200;/clr</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -118,7 +130,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>$(WindowsSDK_MetadataPath);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)../../../../cocos;$(ProjectDir)../../../../cocos/math;$(ProjectDir)../../../winrt-specific/angle/include;$(ProjectDir)../../../../cocos/platform/winrt;$(ProjectDir)../;$(ProjectDir)../Sources;$(ProjectDir)../../../wp8-specific/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CCX_ROOT)/cocos;$(CCX_ROOT)/cocos/math;$(CCX_ROOT)/external/winrt-specific/angle/include;$(CCX_ROOT)/cocos/platform/winrt;$(CCX_ROOT)/external/wp8-specific/zlib/include;$(CCX_ROOT_2)/cocos;$(CCX_ROOT_2)/cocos/math;$(CCX_ROOT_2)/external/winrt-specific/angle/include;$(CCX_ROOT_2)/cocos/platform/winrt;$(CCX_ROOT_2)/external/wp8-specific/zlib/include;$(GAF_SOURCES_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -132,13 +144,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\GAFPrecompiled.h" />
     <ClInclude Include="..\Sources\DefinitionTagBase.h" />
-    <ClInclude Include="..\Sources\GAFAnimatedObject.h" />
-    <ClInclude Include="..\Sources\GAFAnimation.h" />
+    <ClInclude Include="..\Sources\GAF.h" />
     <ClInclude Include="..\Sources\GAFAnimationFrame.h" />
     <ClInclude Include="..\Sources\GAFAnimationSequence.h" />
     <ClInclude Include="..\Sources\GAFAsset.h" />
+    <ClInclude Include="..\Sources\GAFAssetTextureManager.h" />
     <ClInclude Include="..\Sources\GAFCachedTexture.h" />
     <ClInclude Include="..\Sources\GAFCollections.h" />
     <ClInclude Include="..\Sources\GAFDelegates.h" />
@@ -147,15 +158,21 @@
     <ClInclude Include="..\Sources\GAFFilterManager.h" />
     <ClInclude Include="..\Sources\GAFHeader.h" />
     <ClInclude Include="..\Sources\GAFLoader.h" />
+    <ClInclude Include="..\Sources\GAFMask.h" />
+    <ClInclude Include="..\Sources\GAFMovieClip.h" />
+    <ClInclude Include="..\Sources\GAFObject.h" />
+    <ClInclude Include="..\Sources\GAFPrecompiled.h" />
     <ClInclude Include="..\Sources\GAFQuadCommand.h" />
     <ClInclude Include="..\Sources\GAFShaderManager.h" />
     <ClInclude Include="..\Sources\GAFSprite.h" />
-    <ClInclude Include="..\Sources\GAFSpriteWithAlpha.h" />
-    <ClInclude Include="..\Sources\GAFStencilMaskSprite.h" />
     <ClInclude Include="..\Sources\GAFStream.h" />
     <ClInclude Include="..\Sources\GAFSubobjectState.h" />
+    <ClInclude Include="..\Sources\GAFTextData.h" />
+    <ClInclude Include="..\Sources\GAFTextField.h" />
     <ClInclude Include="..\Sources\GAFTextureAtlas.h" />
     <ClInclude Include="..\Sources\GAFTextureAtlasElement.h" />
+    <ClInclude Include="..\Sources\GAFTimeline.h" />
+    <ClInclude Include="..\Sources\GAFTimelineAction.h" />
     <ClInclude Include="..\Sources\PrimitiveDeserializer.h" />
     <ClInclude Include="..\Sources\TagDefineAnimationFrames.h" />
     <ClInclude Include="..\Sources\TagDefineAnimationFrames2.h" />
@@ -166,31 +183,36 @@
     <ClInclude Include="..\Sources\TagDefines.h" />
     <ClInclude Include="..\Sources\TagDefineSequences.h" />
     <ClInclude Include="..\Sources\TagDefineStage.h" />
+    <ClInclude Include="..\Sources\TagDefineTextField.h" />
     <ClInclude Include="..\Sources\TagDefineTimeline.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\GAFPrecompiled.cpp" />
-    <ClCompile Include="..\Sources\GAFAnimatedObject.cpp" />
-    <ClCompile Include="..\Sources\GAFAnimation.cpp" />
     <ClCompile Include="..\Sources\GAFAnimationFrame.cpp" />
     <ClCompile Include="..\Sources\GAFAnimationSequence.cpp" />
     <ClCompile Include="..\Sources\GAFAsset.cpp" />
+    <ClCompile Include="..\Sources\GAFAssetTextureManager.cpp" />
     <ClCompile Include="..\Sources\GAFCachedTexture.cpp" />
     <ClCompile Include="..\Sources\GAFFile.cpp" />
     <ClCompile Include="..\Sources\GAFFilterData.cpp" />
     <ClCompile Include="..\Sources\GAFFilterManager.cpp" />
     <ClCompile Include="..\Sources\GAFLoader.cpp" />
+    <ClCompile Include="..\Sources\GAFMask.cpp" />
+    <ClCompile Include="..\Sources\GAFMovieClip.cpp" />
+    <ClCompile Include="..\Sources\GAFObject.cpp" />
+    <ClCompile Include="..\Sources\GAFPrecompiled.cpp" />
     <ClCompile Include="..\Sources\GAFQuadCommand.cpp" />
     <ClCompile Include="..\Sources\GAFShaderManager.cpp" />
     <ClCompile Include="..\Sources\GAFSprite.cpp" />
-    <ClCompile Include="..\Sources\GAFSpriteWithAlpha.cpp" />
-    <ClCompile Include="..\Sources\GAFStencilMaskSprite.cpp" />
     <ClCompile Include="..\Sources\GAFStream.cpp" />
     <ClCompile Include="..\Sources\GAFSubobjectState.cpp" />
+    <ClCompile Include="..\Sources\GAFTextData.cpp" />
+    <ClCompile Include="..\Sources\GAFTextField.cpp" />
     <ClCompile Include="..\Sources\GAFTextureAtlas.cpp" />
     <ClCompile Include="..\Sources\GAFTextureAtlasElement.cpp" />
+    <ClCompile Include="..\Sources\GAFTimeline.cpp" />
+    <ClCompile Include="..\Sources\GAFTimelineAction.cpp" />
     <ClCompile Include="..\Sources\PrimitiveDeserializer.cpp" />
     <ClCompile Include="..\Sources\TagDefineAnimationFrames.cpp" />
     <ClCompile Include="..\Sources\TagDefineAnimationFrames2.cpp" />
@@ -200,6 +222,7 @@
     <ClCompile Include="..\Sources\TagDefineNamedParts.cpp" />
     <ClCompile Include="..\Sources\TagDefineSequences.cpp" />
     <ClCompile Include="..\Sources\TagDefineStage.cpp" />
+    <ClCompile Include="..\Sources\TagDefineTextField.cpp" />
     <ClCompile Include="..\Sources\TagDefineTimeline.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
