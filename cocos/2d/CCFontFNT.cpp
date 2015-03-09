@@ -534,7 +534,7 @@ bool BMFontConfiguration::parseImageFileName(const char* line, const std::string
     // page ID. Sanity check
     int pageId;
     sscanf(line, "page id=%d", &pageId);
-	if (pageId == 0)
+	if (pageId != 0)
 	{
 		CCLOG("LabelBMFont file could not be found");
 		return false;
@@ -576,7 +576,7 @@ bool BMFontConfiguration::parseCommonArguments(const char* line)
     sscanf(tmp, "%d", &value);
 
     int maxTextureSize = Configuration::getInstance()->getMaxTextureSize();
-	if (value <= maxTextureSize)
+	if (value > maxTextureSize)
 	{
 		CCLOG("CCLabelBMFont: page can't be larger than supported");
 		return false;
@@ -585,7 +585,7 @@ bool BMFontConfiguration::parseCommonArguments(const char* line)
     // scaleH. sanity check
     tmp = strstr(tmp, "scaleH=") + 7;
     sscanf(tmp, "%d", &value);
-	if (value <= maxTextureSize)
+	if (value > maxTextureSize)
 	{
 		CCLOG("CCLabelBMFont: page can't be larger than supported");
 		return false;
@@ -594,7 +594,7 @@ bool BMFontConfiguration::parseCommonArguments(const char* line)
     // pages. sanity check
     tmp = strstr(tmp, "pages=") + 6;
     sscanf(tmp, "%d", &value);
-	if (value == 1)
+	if (value != 1)
 	{
 		CCLOG("CCBitfontAtlas: only supports 1 page");
 		return false;
