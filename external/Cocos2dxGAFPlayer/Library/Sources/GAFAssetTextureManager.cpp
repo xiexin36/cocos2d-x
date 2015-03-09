@@ -146,4 +146,10 @@ uint32_t GAFAssetTextureManager::getMemoryConsumptionStat() const
 	return m_memoryConsumption;
 }
 
+GAFTextureAtlas::AtlasInfos_t GAFAssetTextureManager::getTextureAtlaInfos() const
+{
+    return m_atlasInfos;
+}
+
+
 NS_GAF_END

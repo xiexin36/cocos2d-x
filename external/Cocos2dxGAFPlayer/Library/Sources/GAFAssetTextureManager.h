@@ -15,6 +15,8 @@ public:
 	cocos2d::Texture2D*		getTextureById(uint32_t id);
 	uint32_t				getMemoryConsumptionStat() const;
 
+    // add by gero
+    GAFTextureAtlas::AtlasInfos_t getTextureAtlaInfos() const;
 private:
 	typedef std::map<size_t, cocos2d::Image*> ImagesMap_t;
 	typedef std::map<size_t, cocos2d::Texture2D*> TexturesMap_t;
