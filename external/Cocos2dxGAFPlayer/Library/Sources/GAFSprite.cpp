@@ -1,7 +1,8 @@
 #include "GAFPrecompiled.h"
 #include "GAFSprite.h"
+#include "GAFCollections.h"
 
-#include "TransformUtils.h"
+#include "math/TransformUtils.h"
 #include "../external/xxhash/xxhash.h"
 
 USING_NS_CC;
@@ -12,14 +13,23 @@ USING_NS_CC;
 #define RENDER_IN_SUBPIXEL(__A__) ( (int)(__A__))
 #endif
 
+NS_GAF_BEGIN
+
 GAFSprite::GAFSprite()
 :
+objectIdRef(IDNONE),
 m_useSeparateBlendFunc(false),
 m_isLocator(false),
 m_blendEquation(-1),
-m_atlasScale(1.0f)
+m_atlasScale(1.0f),
+m_externalTransform(AffineTransform::IDENTITY)
 {
-
+#if COCOS2D_VERSION < 0x00030300
+    _batchNode = nullptr; // this will fix a bug in cocos2dx 3.2 tag
+#endif
+    setFlippedX(false); // Fix non-inited vars in cocos
+    setFlippedY(false);
+    _rectRotated = false;
 }
 
 bool GAFSprite::initWithSpriteFrame(cocos2d::SpriteFrame *spriteFrame)
@@ -61,11 +71,12 @@ void GAFSprite::setTexture(cocos2d::Texture2D *texture)
     }
 }
 
-void GAFSprite::setExternaTransform(const cocos2d::AffineTransform& transform)
+void GAFSprite::setExternalTransform(const cocos2d::AffineTransform& transform)
 {
     if (!cocos2d::AffineTransformEqualToTransform(getExternalTransform(), transform))
     {
         m_externalTransform = transform;
+        _transformUpdated = true;
         _transformDirty = true;
         _inverseDirty = true;
     }
@@ -84,13 +95,12 @@ const cocos2d::Mat4& GAFSprite::getNodeToParentTransform() const
         {
             cocos2d::AffineTransform transform = cocos2d::AffineTransformScale(getExternalTransform(), m_atlasScale, m_atlasScale);
             cocos2d::CGAffineToGL(cocos2d::AffineTransformTranslate(transform, -_anchorPointInPoints.x, -_anchorPointInPoints.y), _transform.m);
-            _transformDirty = false;
         }
         else
         {
             cocos2d::CGAffineToGL(cocos2d::AffineTransformTranslate(getExternalTransform(), -_anchorPointInPoints.x, -_anchorPointInPoints.y), _transform.m);
-            _transformDirty = false;
         }
+        _transformDirty = false;
     }
 
     return _transform;
@@ -117,14 +127,21 @@ cocos2d::AffineTransform GAFSprite::getNodeToParentAffineTransform() const
 
 #if COCOS2D_VERSION < 0x00030200
 void GAFSprite::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, bool transformUpdated)
+{
+    (void)transformUpdated;
 #else
 void GAFSprite::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
-#endif
 {
+    (void)flags;
+#endif
     if (m_isLocator)
     {
         return;
     }
+
+    _insideBounds = (flags & FLAGS_TRANSFORM_DIRTY) ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
+    if (!_insideBounds)
+        return;
 
     uint32_t id = setUniforms();
 
@@ -160,8 +177,11 @@ void GAFSprite::setAtlasScale(float scale)
 
 uint32_t GAFSprite::setUniforms()
 {
-    //uint32_t materialID = QuadCommand::MATERIAL_ID_DO_NOT_BATCH;
+#if COCOS2D_VERSION < 0x00030300
+    uint32_t materialID = QuadCommand::MATERIAL_ID_DO_NOT_BATCH;
+#else
     uint32_t materialID = Renderer::MATERIAL_ID_DO_NOT_BATCH;
+#endif
     if (_glProgramState->getUniformCount() == 0)
     {
         int glProgram = (int)getGLProgram()->getProgram();
@@ -228,7 +248,9 @@ void GAFSprite::customDraw(cocos2d::Mat4& transform)
 
     CHECK_GL_ERROR_DEBUG();
 
-    USING_NS_CC;
+    //USING_NS_CC;
     //CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
     //CC_INCREMENT_GL_DRAWS(1);
 }
+
+NS_GAF_END

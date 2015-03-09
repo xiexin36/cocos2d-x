@@ -3,9 +3,13 @@
 
 #include "GAFStream.h"
 #include "GAFAsset.h"
+#include "GAFTimeline.h"
 
-void TagDefineSequences::read(GAFStream* in, GAFAsset* ctx)
+NS_GAF_BEGIN
+
+void TagDefineSequences::read(GAFStream* in, GAFAsset* asset, GAFTimeline* timeline)
 {
+    (void)asset;
     unsigned int count = in->readU32();
 
     for (unsigned int i = 0; i < count; ++i)
@@ -15,6 +19,8 @@ void TagDefineSequences::read(GAFStream* in, GAFAsset* ctx)
         int start = in->readU16() - 1;
         int end = in->readU16(); // It is not actually the last frame, but the frame after the last, like an STL iterator
 
-        ctx->pushAnimationSequence(id, start, end);
+        timeline->pushAnimationSequence(id, start, end);
     }
 }
+
+NS_GAF_END

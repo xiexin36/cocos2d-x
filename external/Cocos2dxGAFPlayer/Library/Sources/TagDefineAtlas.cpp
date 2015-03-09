@@ -5,13 +5,17 @@
 #include "GAFHeader.h"
 #include "GAFStream.h"
 #include "GAFAsset.h"
+#include "GAFTimeline.h"
 
 #include "GAFTextureAtlas.h"
 #include "GAFTextureAtlasElement.h"
 #include "PrimitiveDeserializer.h"
 
-void TagDefineAtlas::read(GAFStream* in, GAFAsset* ctx)
+NS_GAF_BEGIN
+
+void TagDefineAtlas::read(GAFStream* in, GAFAsset* asset, GAFTimeline* timeline)
 {
+    (void)asset;
     GAFTextureAtlas* txAtlas = new GAFTextureAtlas();
 
     txAtlas->setScale(in->readFloat());
@@ -70,6 +74,8 @@ void TagDefineAtlas::read(GAFStream* in, GAFAsset* ctx)
 
         if (in->getInput()->getHeader().getMajorVersion() >= 4)
         {
+            element->scale *= txAtlas->getScale();
+            
             char hasScale9Grid = in->readUByte();
 
             if (hasScale9Grid)
@@ -80,5 +86,7 @@ void TagDefineAtlas::read(GAFStream* in, GAFAsset* ctx)
         }
     }
 
-    ctx->pushTextureAtlas(txAtlas);
+    timeline->pushTextureAtlas(txAtlas);
 }
+
+NS_GAF_END

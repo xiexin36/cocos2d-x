@@ -1,51 +1,53 @@
 #include "GAFPrecompiled.h"
 #include "GAFFilterData.h"
 
-#include "GAFSpriteWithAlpha.h"
+#include "GAFMovieClip.h"
 #include "GAFFilterManager.h"
 
+NS_GAF_BEGIN
+
 GAFBlurFilterData::GAFBlurFilterData():
-GAFFilterData(GFT_Blur)
+GAFFilterData(GAFFilterType::GFT_Blur)
 {
 
 }
 
-void GAFBlurFilterData::apply(GAFSpriteWithAlpha* subObject)
+void GAFBlurFilterData::apply(GAFMovieClip* subObject)
 {
     subObject->setBlurFilterData(this);
 }
 
 GAFColorColorMatrixFilterData::GAFColorColorMatrixFilterData():
-GAFFilterData(GFT_ColorMatrix)
+GAFFilterData(GAFFilterType::GFT_ColorMatrix)
 {
 
 }
 
-void GAFColorColorMatrixFilterData::apply(GAFSpriteWithAlpha* subObject)
+void GAFColorColorMatrixFilterData::apply(GAFMovieClip* subObject)
 {
     subObject->setColorMarixFilterData(this);
 }
 
 GAFGlowFilterData::GAFGlowFilterData():
-GAFFilterData(GFT_Glow)
+GAFFilterData(GAFFilterType::GFT_Glow)
 {
 
 }
 
-void GAFGlowFilterData::apply(GAFSpriteWithAlpha* subObject)
+void GAFGlowFilterData::apply(GAFMovieClip* subObject)
 {
     subObject->setGlowFilterData(this);
 }
 
 GAFDropShadowFilterData::GAFDropShadowFilterData():
-GAFFilterData(GFT_DropShadow)
+GAFFilterData(GAFFilterType::GFT_DropShadow)
 {
 
 }
 
 const int kShadowObjectTag = 0xFAD0;
 
-void GAFDropShadowFilterData::apply(GAFSpriteWithAlpha* subObject)
+void GAFDropShadowFilterData::apply(GAFMovieClip* subObject)
 {
     cocos2d::Texture2D* texture = subObject->getInitialTexture();
     const cocos2d::Rect& texRect = subObject->getInitialTextureRect();
@@ -63,7 +65,7 @@ void GAFDropShadowFilterData::apply(GAFSpriteWithAlpha* subObject)
     subObject->addChild(shadowSprite, -1);
 }
 
-void GAFDropShadowFilterData::reset(GAFSpriteWithAlpha* subObject)
+void GAFDropShadowFilterData::reset(GAFMovieClip* subObject)
 {
     cocos2d::Node* prevShadowObject = subObject->getChildByTag(kShadowObjectTag);
 
@@ -72,3 +74,5 @@ void GAFDropShadowFilterData::reset(GAFSpriteWithAlpha* subObject)
         subObject->removeChild(prevShadowObject, true);
     }
 }
+
+NS_GAF_END

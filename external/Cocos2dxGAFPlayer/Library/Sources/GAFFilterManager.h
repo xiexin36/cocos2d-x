@@ -2,6 +2,8 @@
 #include "GAFCollections.h"
 #include "GAFCachedTexture.h"
 
+NS_GAF_BEGIN
+
 class GAFSprite;
 class GAFBlurFilterData;
 class GAFGlowFilterData;
@@ -20,6 +22,8 @@ public:
     cocos2d::Texture2D* applyFilter(cocos2d::Sprite*, GAFFilterData*);
 
     void update(float dt);
+
+    static void setCacheSize(size_t newSize);
     
 private:
     GAFFilterManager() {}
@@ -42,3 +46,5 @@ private:
     
     static size_t s_maxCacheSize;
 };
+
+NS_GAF_END

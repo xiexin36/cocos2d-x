@@ -2,6 +2,8 @@
 
 #include "DefinitionTagBase.h"
 
+NS_GAF_BEGIN
+
 class GAFSubobjectState;
 
 class TagDefineAnimationFrames : public DefinitionTagBase
@@ -12,12 +14,12 @@ private:
     
     GAFSubobjectState* extractState(GAFStream* in);
 
-    void _translateColor(cocos2d::Color4F& out, const cocos2d::Color4B& in);
-
 public:
     
     ~TagDefineAnimationFrames();
     
-    virtual void read(GAFStream*, GAFAsset*);
+    virtual void read(GAFStream*, GAFAsset*, GAFTimeline*);
 
 };
+
+NS_GAF_END
