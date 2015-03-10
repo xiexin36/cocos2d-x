@@ -4,10 +4,14 @@
 #include "GAFStream.h"
 #include "GAFAsset.h"
 #include "GAFHeader.h"
+#include "GAFTimeline.h"
 #include "PrimitiveDeserializer.h"
 
-void TagDefineStage::read(GAFStream* in, GAFAsset* ctx)
+NS_GAF_BEGIN
+
+void TagDefineStage::read(GAFStream* in, GAFAsset* asset, GAFTimeline* timeline)
 {
+    (void)timeline;
     cocos2d::Color4B color;
     
     unsigned int fps = in->readU8();  // Scene FPS
@@ -15,8 +19,10 @@ void TagDefineStage::read(GAFStream* in, GAFAsset* ctx)
     unsigned int width = in->readU16();  // Scene width
     unsigned int height = in->readU16();  // Scene height
     
-    ctx->setSceneFps(fps);
-    ctx->setSceneColor(color);
-    ctx->setSceneWidth(width);
-    ctx->setSceneHeight(height);
+	asset->setSceneFps(fps);
+	asset->setSceneColor(color);
+	asset->setSceneWidth(width);
+	asset->setSceneHeight(height);
 }
+
+NS_GAF_END

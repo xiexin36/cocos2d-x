@@ -7,6 +7,8 @@
 #include "renderer/CCTextureCache.h"
 #endif
 
+NS_GAF_BEGIN
+
 #if COCOS2D_VERSION <= 0x00030101
 #define ENABLE_GAF_MANUAL_PREMULTIPLY 1
 #else
@@ -31,12 +33,12 @@ GAFTextureAtlas::~GAFTextureAtlas()
     GAF_RELEASE_MAP(GAFTextureAtlas::Elements_t, m_elements);
 }
 
-static bool compareAtlasesById(const GAFTextureAtlas::AtlasInfo& ai1, const GAFTextureAtlas::AtlasInfo& ai2)
+bool GAFTextureAtlas::compareAtlasesById(const AtlasInfo& ai1, const AtlasInfo& ai2)
 {
     return ai1.id < ai2.id;
 }
 
-void GAFTextureAtlas::loadImages(const std::string& dir, GAFTextureLoadDelegate* delegate, cocos2d::ZipFile* bundle)
+void GAFTextureAtlas::loadImages(const std::string& dir, GAFTextureLoadDelegate_t dlg, cocos2d::ZipFile* bundle)
 {
     std::stable_sort(m_atlasInfos.begin(), m_atlasInfos.end(), compareAtlasesById);
 
@@ -60,7 +62,7 @@ void GAFTextureAtlas::loadImages(const std::string& dir, GAFTextureLoadDelegate*
                     source = aiSource.source;
                 }
 
-                if (aiSource.csf == GAFAsset::desiredCsf())
+                if (aiSource.csf == cocos2d::CCDirector::getInstance()->getContentScaleFactor())
                 {
                     source = aiSource.source;
                     break;
@@ -70,9 +72,9 @@ void GAFTextureAtlas::loadImages(const std::string& dir, GAFTextureLoadDelegate*
             cocos2d::Image* image = new cocos2d::Image();
             std::string path = cocos2d::FileUtils::getInstance()->fullPathFromRelativeFile(source.c_str(), dir.c_str());
 
-            if (delegate)
+            if (dlg)
             {
-                delegate->onTexturePreLoad(path);
+                path = dlg(path);
             }
 
             if (!bundle)
@@ -145,8 +147,8 @@ cocos2d::__Array * GAFTextureAtlas::textures()
 {
     if (!m_textures)
     {
-        m_textures = cocos2d::__Array::createWithCapacity(m_images->count());
-        for (int i = 0; i < m_images->count(); ++i)
+        m_textures = cocos2d::__Array::createWithCapacity(m_atlasInfos.size());
+        for (size_t i = 0; i < m_atlasInfos.size(); ++i)
         {
             cocos2d::Texture2D * texture = new cocos2d::Texture2D();
             cocos2d::Image * image = (cocos2d::Image*)m_images->getObjectAtIndex(i);
@@ -190,7 +192,14 @@ const GAFTextureAtlas::Elements_t& GAFTextureAtlas::getElements() const
     return m_elements;
 }
 
+const GAFTextureAtlas::AtlasInfos_t& GAFTextureAtlas::getAtlasInfos() const
+{
+	return m_atlasInfos;
+}
+
 uint32_t GAFTextureAtlas::getMemoryConsumptionStat() const
 {
     return m_memoryConsumption;
 }
+
+NS_GAF_END

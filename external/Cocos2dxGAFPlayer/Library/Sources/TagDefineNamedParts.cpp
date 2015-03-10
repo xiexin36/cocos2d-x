@@ -3,9 +3,13 @@
 
 #include "GAFAsset.h"
 #include "GAFStream.h"
+#include "GAFTimeline.h"
 
-void TagDefineNamedParts::read(GAFStream* in, GAFAsset* ctx)
+NS_GAF_BEGIN
+
+void TagDefineNamedParts::read(GAFStream* in, GAFAsset* asset, GAFTimeline* timeline)
 {
+    (void)asset;
     unsigned int count = in->readU32();
 
     for (unsigned int i = 0; i < count; ++i)
@@ -14,6 +18,8 @@ void TagDefineNamedParts::read(GAFStream* in, GAFAsset* ctx)
         std::string name;
         in->readString(&name);
 
-        ctx->pushNamedPart(objectIdRef, name);
+        timeline->pushNamedPart(objectIdRef, name);
     }
 }
+
+NS_GAF_END

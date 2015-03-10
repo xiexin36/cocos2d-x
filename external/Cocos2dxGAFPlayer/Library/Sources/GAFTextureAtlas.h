@@ -1,8 +1,10 @@
 #pragma once
 
+#include "GAFDelegates.h"
+
+NS_GAF_BEGIN
 
 class GAFTextureAtlasElement;
-class GAFTextureLoadDelegate;
 
 class GAFTextureAtlas
 {
@@ -21,6 +23,8 @@ public:
         Sources_t m_sources;
         unsigned int id;
     };
+
+	static bool compareAtlasesById(const AtlasInfo& ai1, const AtlasInfo& ai2);
 
     typedef std::vector<AtlasInfo> AtlasInfos_t;
     typedef std::map<unsigned int, GAFTextureAtlasElement*> Elements_t;
@@ -43,7 +47,7 @@ public:
     void                    pushAtlasInfo(const AtlasInfo& ai);
     void                    pushElement(unsigned int idx, GAFTextureAtlasElement* el);
 
-    void                    loadImages(const std::string& dir, GAFTextureLoadDelegate* delegate, cocos2d::ZipFile* bundle = nullptr);
+    void                    loadImages(const std::string& dir, GAFTextureLoadDelegate_t delegate, cocos2d::ZipFile* bundle = nullptr);
 
     inline bool     loaded() const
     {
@@ -60,6 +64,7 @@ public:
     cocos2d::__Array     * textures();
 
     const Elements_t& getElements() const;
+	const AtlasInfos_t& getAtlasInfos() const;
     
     //! All CCImages will be freed at the first call of textures()
     //! So there is only VRAM occupation
@@ -68,3 +73,4 @@ public:
     uint32_t     getMemoryConsumptionStat() const;
 };
 
+NS_GAF_END

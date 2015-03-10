@@ -2,7 +2,7 @@
 
 #include "GAFQuadCommand.h"
 
-class GAFStencilMaskSprite;
+NS_GAF_BEGIN
 
 typedef struct _gafBlendFuncSeparate
 {
@@ -30,7 +30,7 @@ public:
     bool initWithTexture(cocos2d::Texture2D *pTexture, const cocos2d::Rect& rect, bool rotated);
 
     void setTexture(cocos2d::Texture2D *texture);
-    void setExternaTransform(const cocos2d::AffineTransform& transform);
+    void setExternalTransform(const cocos2d::AffineTransform& transform);
     const cocos2d::AffineTransform& getExternalTransform() const;
 
     virtual const cocos2d::Mat4& getNodeToParentTransform() const override;
@@ -47,6 +47,8 @@ public:
     {
         m_isLocator = locator;
     }
+
+    inline float getAtlasScale() const { return m_atlasScale; }
     
 protected:
 
@@ -76,13 +78,11 @@ protected:
 
     /* Members */
 public:
-    unsigned int objectIdRef;
-
+    uint32_t objectIdRef;
 protected:
-    cocos2d::
-        AffineTransform     m_externalTransform;
-    cocos2d::CustomCommand  m_customCommand;
-    GAFQuadCommand          m_quadCommand;
+    cocos2d::AffineTransform    m_externalTransform;
+    cocos2d::CustomCommand      m_customCommand;
+    GAFQuadCommand              m_quadCommand;
 private:
 
     /**
@@ -99,3 +99,5 @@ private:
     bool                    m_useSeparateBlendFunc;
     GLint                   m_blendEquation;
 };
+
+NS_GAF_END
