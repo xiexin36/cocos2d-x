@@ -602,12 +602,12 @@ namespace cocostudio
         {
             button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
         }
-        else
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
-            button->addChild(label);
-        }
+        //else
+        //{
+        //    auto label = Label::create();
+        //    label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
+        //    button->addChild(label);
+        //}
         
         bool pressedFileExist = false;
         std::string pressedErrorFilePath = "";
