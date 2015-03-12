@@ -681,7 +681,10 @@ Node* CSLoader::loadWidget(const rapidjson::Value& json)
         
         WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
         
-        widgetPropertiesReader->setPropsForAllWidgetFromJsonDictionary(reader, widget, json);
+		if (reader  && widget)
+		{
+			widgetPropertiesReader->setPropsForAllWidgetFromJsonDictionary(reader, widget, json);
+		}
     }
     else if (isCustomWidget(classname))
     {
@@ -881,7 +884,10 @@ Node* CSLoader::nodeWithFlatBuffers(const flatbuffers::NodeTree *nodetree)
         readername.append("Reader");
         
         NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
-        node = reader->createNodeWithFlatBuffers(options->data());
+		if (reader)
+		{
+			node = reader->createNodeWithFlatBuffers(options->data());
+		}
         
         Widget* widget = dynamic_cast<Widget*>(node);
         if (widget)
@@ -1210,7 +1216,10 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         readername.append("Reader");
         
         NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
-        node = reader->createNodeWithFlatBuffers(options->data());
+		if (reader != nullptr)
+		{
+			node = reader->createNodeWithFlatBuffers(options->data());
+		}
         
         Widget* widget = dynamic_cast<Widget*>(node);
         if (widget)

@@ -452,10 +452,19 @@ Node* NodeReader::loadWidget(const rapidjson::Value& json)
     std::string readerName = classname;
     readerName.append("Reader");
     
-    Widget*               widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
-    widget->retain();
+    Widget* widget = dynamic_cast<Widget*>(ObjectFactory::getInstance()->createObject(classname));
+	if (widget)
+	{
+		widget->retain();
+		return nullptr;
+	}
 
     WidgetReaderProtocol* reader = dynamic_cast<WidgetReaderProtocol*>(ObjectFactory::getInstance()->createObject(readerName));
+
+	if (reader == nullptr)
+	{
+		return nullptr;
+	}
 
     WidgetPropertiesReader0300* guiReader = new (std::nothrow) WidgetPropertiesReader0300();
     guiReader->setPropsForAllWidgetFromJsonDictionary(reader, widget, json);
