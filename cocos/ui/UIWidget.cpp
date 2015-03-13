@@ -285,7 +285,8 @@ void Widget::setContentSize(const cocos2d::Size &contentSize)
     }
     else if (_ignoreSize)
     {
-        _contentSize = getVirtualRendererSize();
+        //_contentSize = getVirtualRendererSize();
+        ProtectedNode::setContentSize(getVirtualRendererSize());
     }
     if (!_usingLayoutComponent && _running)
     {
