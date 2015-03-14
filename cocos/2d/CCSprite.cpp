@@ -159,6 +159,9 @@ bool Sprite::initWithFile(const std::string& filename)
 {
     CCASSERT(filename.size()>0, "Invalid filename for sprite");
 
+    _fileName = filename;
+    _fileType = 0;
+
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
     {
@@ -177,6 +180,9 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 {
     CCASSERT(filename.size()>0, "Invalid filename");
 
+    _fileName = filename;
+    _fileType = 0;
+
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
     {
@@ -192,6 +198,9 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 {
     CCASSERT(spriteFrameName.size() > 0, "Invalid spriteFrameName");
+
+    _fileName = spriteFrameName;
+    _fileType = 1;
 
     SpriteFrame *frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     return initWithSpriteFrame(frame);
@@ -266,6 +275,8 @@ Sprite::Sprite(void)
 , _texture(nullptr)
 , _spriteFrame(nullptr)
 , _insideBounds(true)
+, _fileName("")
+, _fileType(0)
 {
 #if CC_SPRITE_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
@@ -1063,4 +1074,11 @@ std::string Sprite::getDescription() const
     return StringUtils::format("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id );
 }
 
+ResouceData Sprite::csGetRenderFile()
+{
+    ResouceData rData;
+    rData.type = (int)_fileType;
+    rData.file = _fileName;
+    return rData;
+}
 NS_CC_END

@@ -297,7 +297,14 @@ void ImageView::copySpecialProperties(Widget *widget)
         setCapInsets(imageView->_capInsets);
     }
 }
-
+//For Editor
+ResouceData ImageView::csGetRenderFile()
+{
+    ResouceData rData;
+    rData.type = (int)_imageTexType;
+    rData.file = _textureFile;
+    return rData;
+}
 }
 
 NS_CC_END

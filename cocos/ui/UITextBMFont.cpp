@@ -186,6 +186,14 @@ void TextBMFont::copySpecialProperties(Widget *widget)
     }
 }
 
+ResouceData TextBMFont::csGetRenderFile()
+{
+    ResouceData rData;
+    rData.type = 0;
+    rData.file = _fntFileName;
+    return rData;
+}
+
 }
 
 NS_CC_END

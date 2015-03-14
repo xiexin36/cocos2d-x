@@ -35,6 +35,7 @@
 #include "base/CCScriptSupport.h"
 #include "math/CCAffineTransform.h"
 #include "math/CCMath.h"
+#include "CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -99,7 +100,7 @@ class EventListener;
 
  */
 
-class CC_DLL Node : public Ref
+class CC_DLL Node : public Ref, NodeExtension
 {
 public:
     /// Default tag used for all the nodes

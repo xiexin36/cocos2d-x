@@ -1936,6 +1936,14 @@ Widget* Layout::findNextFocusedWidget(FocusDirection direction, Widget* current)
         return current;
     }
 }
+
+ResouceData Layout::csGetRenderFile()
+{
+    ResouceData rData;
+    rData.type = (int)_bgImageTexType;
+    rData.file = _backGroundImageFileName;
+    return rData;
+}
     
 }
 NS_CC_END

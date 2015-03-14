@@ -403,6 +403,14 @@ void LoadingBar::copySpecialProperties(Widget *widget)
     }
 }
 
+ResouceData LoadingBar::csGetRenderFile()
+{
+    ResouceData rData;
+    rData.type = (int)_renderBarTexType;
+    rData.file = _textureFile;
+    return rData;
+}
+
 }
 
 NS_CC_END

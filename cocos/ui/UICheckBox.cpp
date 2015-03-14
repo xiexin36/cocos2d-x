@@ -668,7 +668,41 @@ void CheckBox::copySpecialProperties(Widget *widget)
         _backgroundTextureScaleY = checkBox->_backgroundTextureScaleY;
     }
 }
-
+ResouceData CheckBox::csGetBackNormalFile()
+{
+    ResouceData rData;
+    rData.type = (int)_backGroundTexType;
+    rData.file = _backGroundFileName;
+    return rData;
+}
+ResouceData CheckBox::csGetBackPressedFile()
+{
+    ResouceData rData;
+    rData.type = (int)_backGroundSelectedTexType;
+    rData.file = _backGroundSelectedFileName;
+    return rData;
+}
+ResouceData CheckBox::csGetBackDisabledFile()
+{
+    ResouceData rData;
+    rData.type = (int)_backGroundDisabledTexType;
+    rData.file = _backGroundDisabledFileName;
+    return rData;
+}
+ResouceData CheckBox::csGetCrossNormalFile()
+{
+    ResouceData rData;
+    rData.type = (int)_frontCrossTexType;
+    rData.file = _frontCrossFileName;
+    return rData;
+}
+ResouceData CheckBox::csGetCrossDisabeldFile()
+{
+    ResouceData rData;
+    rData.type = (int)_frontCrossDisabledTexType;
+    rData.file = _frontCrossDisabledFileName;
+    return rData;
+}
 }
 
 NS_CC_END

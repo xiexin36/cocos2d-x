@@ -208,6 +208,11 @@ public:
     void resetNormalRender();
     void resetPressedRender();
     void resetDisabledRender();
+
+    //For Editor
+    ResouceData csGetNormalFile();
+    ResouceData csGetPressedFile();
+    ResouceData csGetDisabledFile();
     
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

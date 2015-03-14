@@ -189,6 +189,15 @@ void TextAtlas::copySpecialProperties(Widget *widget)
         setProperty(labelAtlas->_stringValue, labelAtlas->_charMapFileName, labelAtlas->_itemWidth, labelAtlas->_itemHeight, labelAtlas->_startCharMap);
     }
 }
+
+//For Editor
+ResouceData TextAtlas::csGetRenderFile()
+{
+    ResouceData rData;
+    rData.type = 0;
+    rData.file = _charMapFileName;
+    return rData;
+}
     
 }
 NS_CC_END

@@ -1643,6 +1643,9 @@
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\UserCameraReader\UserCameraReader.cpp">
       <Filter>cocostudio\reader\WidgetReader\UserCameraReader</Filter>
     </ClCompile>
+    <ClCompile Include="CocosStudioExtension.cpp">
+      <Filter>cocostudio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\physics\CCPhysicsBody.h">
@@ -3200,6 +3203,9 @@
     </ClInclude>
     <ClInclude Include="..\editor-support\cocostudio\CSParse3DBinary_generated.h">
       <Filter>cocostudio\json</Filter>
+    </ClInclude>
+    <ClInclude Include="CocosStudioExtension.h">
+      <Filter>cocostudio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

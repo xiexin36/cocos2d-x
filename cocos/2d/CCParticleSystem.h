@@ -405,6 +405,8 @@ CC_CONSTRUCTOR_ACCESS:
     //! Initializes a system with a fixed number of particles
     virtual bool initWithTotalParticles(int numberOfParticles);
 
+    //For Editor
+    ResouceData csGetRenderFile();
 protected:
     virtual void updateBlendFunc();
 

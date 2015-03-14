@@ -661,6 +661,43 @@ void Slider::copySpecialProperties(Widget *widget)
     }
 }
 
+//For Editor
+ResouceData Slider::csGetBackFile()
+{
+    ResouceData rData;
+    rData.type = (int)_barTexType;
+    rData.file = _textureFile;
+    return rData;
+}
+ResouceData Slider::csGetProgressBarFile()
+{
+    ResouceData rData;
+    rData.type = (int)_progressBarTexType;
+    rData.file = _progressBarTextureFile;
+    return rData;
+}
+ResouceData Slider::csGetBallNormalFile()
+{
+    ResouceData rData;
+    rData.type = (int)_ballNTexType;
+    rData.file = _slidBallNormalTextureFile;
+    return rData;
+}
+ResouceData Slider::csGetBallPressedFile()
+{
+    ResouceData rData;
+    rData.type = (int)_ballPTexType;
+    rData.file = _slidBallPressedTextureFile;
+    return rData;
+}
+ResouceData Slider::csGetBallDisabeldFile()
+{
+    ResouceData rData;
+    rData.type = (int)_ballDTexType;
+    rData.file = _slidBallDisabledTextureFile;
+    return rData;
+}
+
 }
 
 NS_CC_END
