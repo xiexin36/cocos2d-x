@@ -178,6 +178,9 @@ public:
     };
 
     virtual std::string getDescription() const override;
+
+    //For Editor
+    ResouceData getRenderFile();
     
 CC_CONSTRUCTOR_ACCESS:
     /**
@@ -214,6 +217,8 @@ protected:
     
     //! tile properties
     ValueMapIntKey _tileProperties;
+
+    std::string _tmxFile;
 
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(TMXTiledMap);

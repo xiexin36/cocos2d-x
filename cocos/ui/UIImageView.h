@@ -110,6 +110,9 @@ public:
 
     virtual Size getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
+
+    //For Editor
+    ResouceData getRenderFile();
     
 CC_CONSTRUCTOR_ACCESS:
     //initializes state of widget.

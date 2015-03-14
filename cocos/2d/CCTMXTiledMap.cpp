@@ -62,6 +62,8 @@ bool TMXTiledMap::initWithTMXFile(const std::string& tmxFile)
 {
     CCASSERT(tmxFile.size()>0, "TMXTiledMap: tmx file should not be empty");
     
+    _tmxFile = tmxFile;
+
     setContentSize(Size::ZERO);
 
     TMXMapInfo *mapInfo = TMXMapInfo::create(tmxFile);
@@ -78,6 +80,8 @@ bool TMXTiledMap::initWithTMXFile(const std::string& tmxFile)
 
 bool TMXTiledMap::initWithXML(const std::string& tmxString, const std::string& resourcePath)
 {
+    _tmxFile = tmxString;
+
     setContentSize(Size::ZERO);
 
     TMXMapInfo *mapInfo = TMXMapInfo::createWithXML(tmxString, resourcePath);
@@ -90,7 +94,8 @@ bool TMXTiledMap::initWithXML(const std::string& tmxString, const std::string& r
 
 TMXTiledMap::TMXTiledMap()
     :_mapSize(Size::ZERO)
-    ,_tileSize(Size::ZERO)        
+    ,_tileSize(Size::ZERO)
+    , _tmxFile("")
 {
 }
 
@@ -259,6 +264,14 @@ bool TMXTiledMap::getPropertiesForGID(int GID, Value** value)
 std::string TMXTiledMap::getDescription() const
 {
     return StringUtils::format("<TMXTiledMap | Tag = %d, Layers = %d", _tag, static_cast<int>(_children.size()));
+}
+
+ResouceData TMXTiledMap::getRenderFile()
+{
+    ResouceData rData;
+    rData.type = 0;
+    rData.file = _tmxFile;
+    return rData;
 }
 
 

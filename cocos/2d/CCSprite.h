@@ -517,6 +517,8 @@ CC_CONSTRUCTOR_ACCESS:
      */
     virtual bool initWithFile(const std::string& filename, const Rect& rect);
 
+    //For Editor
+    ResouceData getRenderFile();
 protected:
 
     void updateColor();
@@ -570,6 +572,9 @@ protected:
     bool _flippedY;                         /// Whether the sprite is flipped vertically or not
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
+
+    std::string _fileName;
+    int _fileType;
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(Sprite);
 };

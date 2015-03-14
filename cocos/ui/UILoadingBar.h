@@ -143,6 +143,9 @@ public:
      * Returns the "class name" of widget.
      */
     virtual std::string getDescription() const override;
+
+    //For Editor
+    ResouceData getRenderFile();
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

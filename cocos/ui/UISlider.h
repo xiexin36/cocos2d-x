@@ -224,6 +224,12 @@ public:
      */
     float getZoomScale()const;
 
+    //For Editor
+    ResouceData getBackFile();
+    ResouceData getProgressBarFile();
+    ResouceData getBallNormalFile();
+    ResouceData getBallPressedFile();
+    ResouceData getBallDisabeldFile();
     
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

@@ -104,6 +104,9 @@ public:
     virtual std::string getDescription() const override;
     
     virtual void adaptRenderers() override;
+
+    //For Editor
+    ResouceData getRenderFile();
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

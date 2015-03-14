@@ -1178,5 +1178,11 @@ void ParticleSystem::setScaleY(float newScaleY)
     Node::setScaleY(newScaleY);
 }
 
-
+ResouceData ParticleSystem::getRenderFile()
+{
+    ResouceData rData;
+    rData.type = 0;
+    rData.file = _plistFile;
+    return rData;
+}
 NS_CC_END

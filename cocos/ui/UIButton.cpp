@@ -882,6 +882,28 @@ void Button::resetDisabledRender()
 
     _buttonDisableRenderer->resetRender();
 }
+
+ResouceData Button::getNormalFile()
+{
+    ResouceData rData;
+    rData.type = (int)_normalTexType;
+    rData.file = _normalFileName;
+    return rData;
+}
+ResouceData Button::getPressedFile()
+{
+    ResouceData rData;
+    rData.type = (int)_pressedTexType;
+    rData.file = _clickedFileName;
+    return rData;
+}
+ResouceData Button::getDisabledFile()
+{
+    ResouceData rData;
+    rData.type = (int)_disabledTexType;
+    rData.file = _disabledFileName;
+    return rData;
+}
 }
 
 NS_CC_END

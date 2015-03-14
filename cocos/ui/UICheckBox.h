@@ -212,6 +212,13 @@ public:
      */
     float getZoomScale()const;
     
+    //For Editor
+    ResouceData getBackNormalFile();
+    ResouceData getBackPressedFile();
+    ResouceData getBackDisabledFile();
+    ResouceData getCrossNormalFile();
+    ResouceData getCrossDisabeldFile();
+
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
     virtual bool init(const std::string& backGround,
