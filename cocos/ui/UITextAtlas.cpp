@@ -191,7 +191,7 @@ void TextAtlas::copySpecialProperties(Widget *widget)
 }
 
 //For Editor
-ResouceData TextAtlas::getRenderFile()
+ResouceData TextAtlas::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = 0;

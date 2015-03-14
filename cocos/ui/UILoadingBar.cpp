@@ -403,7 +403,7 @@ void LoadingBar::copySpecialProperties(Widget *widget)
     }
 }
 
-ResouceData LoadingBar::getRenderFile()
+ResouceData LoadingBar::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_renderBarTexType;

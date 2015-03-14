@@ -298,7 +298,7 @@ void ImageView::copySpecialProperties(Widget *widget)
     }
 }
 //For Editor
-ResouceData ImageView::getRenderFile()
+ResouceData ImageView::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_imageTexType;
