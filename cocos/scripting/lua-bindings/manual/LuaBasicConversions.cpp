@@ -3020,3 +3020,22 @@ void quaternion_to_luaval(lua_State* L,const cocos2d::Quaternion& inValue)
     lua_pushnumber(L, (lua_Number) inValue.w);             /* L: table key value*/
     lua_rawset(L, -3);
 }
+
+
+bool luaval_to_Node(lua_State* L, int lo, const char* type, cocos2d::Node** ret)
+{
+    if(nullptr == L || lua_gettop(L) < lo)
+        return false;
+    
+    if (!luaval_is_usertype(L, lo, type, 0))
+        return false;
+    
+    *ret = static_cast<cocos2d::Node*>(tolua_tousertype(L, lo, 0));
+    
+    if (nullptr == ret)
+        LUA_PRECONDITION(ret, "Invalid Native Object");
+    
+    return true;
+}
+
+
