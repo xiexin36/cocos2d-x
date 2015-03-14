@@ -1937,7 +1937,7 @@ Widget* Layout::findNextFocusedWidget(FocusDirection direction, Widget* current)
     }
 }
 
-ResouceData Layout::getRenderFile()
+ResouceData Layout::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_bgImageTexType;

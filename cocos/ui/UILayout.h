@@ -319,7 +319,7 @@ public:
     std::function<int(FocusDirection, Widget*)> onPassFocusToChild;
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
 
 CC_CONSTRUCTOR_ACCESS:
     //override "init" method of widget.

@@ -213,11 +213,11 @@ public:
     float getZoomScale()const;
     
     //For Editor
-    ResouceData getBackNormalFile();
-    ResouceData getBackPressedFile();
-    ResouceData getBackDisabledFile();
-    ResouceData getCrossNormalFile();
-    ResouceData getCrossDisabeldFile();
+    ResouceData csGetBackNormalFile();
+    ResouceData csGetBackPressedFile();
+    ResouceData csGetBackDisabledFile();
+    ResouceData csGetCrossNormalFile();
+    ResouceData csGetCrossDisabeldFile();
 
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

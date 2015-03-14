@@ -106,7 +106,7 @@ public:
     virtual void adaptRenderers() override;
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

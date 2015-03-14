@@ -112,7 +112,7 @@ public:
     virtual Node* getVirtualRenderer() override;
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
     
 CC_CONSTRUCTOR_ACCESS:
     //initializes state of widget.

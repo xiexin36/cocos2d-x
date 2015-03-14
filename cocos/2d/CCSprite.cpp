@@ -1074,7 +1074,7 @@ std::string Sprite::getDescription() const
     return StringUtils::format("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id );
 }
 
-ResouceData Sprite::getRenderFile()
+ResouceData Sprite::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_fileType;

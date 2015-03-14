@@ -518,7 +518,7 @@ CC_CONSTRUCTOR_ACCESS:
     virtual bool initWithFile(const std::string& filename, const Rect& rect);
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
 protected:
 
     void updateColor();

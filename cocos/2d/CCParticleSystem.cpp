@@ -1178,7 +1178,7 @@ void ParticleSystem::setScaleY(float newScaleY)
     Node::setScaleY(newScaleY);
 }
 
-ResouceData ParticleSystem::getRenderFile()
+ResouceData ParticleSystem::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = 0;

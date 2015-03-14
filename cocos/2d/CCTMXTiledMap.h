@@ -180,7 +180,7 @@ public:
     virtual std::string getDescription() const override;
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
     
 CC_CONSTRUCTOR_ACCESS:
     /**

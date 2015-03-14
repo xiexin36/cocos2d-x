@@ -210,9 +210,9 @@ public:
     void resetDisabledRender();
 
     //For Editor
-    ResouceData getNormalFile();
-    ResouceData getPressedFile();
-    ResouceData getDisabledFile();
+    ResouceData csGetNormalFile();
+    ResouceData csGetPressedFile();
+    ResouceData csGetDisabledFile();
     
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;

@@ -89,7 +89,7 @@ public:
     virtual std::string getDescription() const override;
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

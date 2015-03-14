@@ -266,7 +266,7 @@ std::string TMXTiledMap::getDescription() const
     return StringUtils::format("<TMXTiledMap | Tag = %d, Layers = %d", _tag, static_cast<int>(_children.size()));
 }
 
-ResouceData TMXTiledMap::getRenderFile()
+ResouceData TMXTiledMap::csGetRenderFile()
 {
     ResouceData rData;
     rData.type = 0;

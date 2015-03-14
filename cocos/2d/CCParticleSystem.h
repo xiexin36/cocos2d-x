@@ -406,7 +406,7 @@ CC_CONSTRUCTOR_ACCESS:
     virtual bool initWithTotalParticles(int numberOfParticles);
 
     //For Editor
-    ResouceData getRenderFile();
+    ResouceData csGetRenderFile();
 protected:
     virtual void updateBlendFunc();
 
