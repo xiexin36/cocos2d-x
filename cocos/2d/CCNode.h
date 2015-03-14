@@ -103,7 +103,6 @@ class EventListener;
 class CC_DLL Node : public Ref, NodeExtension
 {
 public:
-    ResouceData m_data;
     /// Default tag used for all the nodes
     static const int INVALID_TAG = -1;
 
