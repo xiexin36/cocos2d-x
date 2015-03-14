@@ -2382,6 +2382,8 @@
 		ED9C6A9518599AD8000A5232 /* CCNodeGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED9C6A9218599AD8000A5232 /* CCNodeGrid.cpp */; };
 		ED9C6A9618599AD8000A5232 /* CCNodeGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = ED9C6A9318599AD8000A5232 /* CCNodeGrid.h */; };
 		ED9C6A9718599AD8000A5232 /* CCNodeGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = ED9C6A9318599AD8000A5232 /* CCNodeGrid.h */; };
+		F559D7B11AB4657B0063AEA8 /* CocosStudioExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F559D7AF1AB4657B0063AEA8 /* CocosStudioExtension.cpp */; };
+		F559D7B21AB4657B0063AEA8 /* CocosStudioExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F559D7B01AB4657B0063AEA8 /* CocosStudioExtension.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -3657,6 +3659,8 @@
 		DABC9FA819E7DFA900FA252C /* CCClippingRectangleNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCClippingRectangleNode.h; sourceTree = "<group>"; };
 		ED9C6A9218599AD8000A5232 /* CCNodeGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CCNodeGrid.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		ED9C6A9318599AD8000A5232 /* CCNodeGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNodeGrid.h; sourceTree = "<group>"; };
+		F559D7AF1AB4657B0063AEA8 /* CocosStudioExtension.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CocosStudioExtension.cpp; sourceTree = "<group>"; };
+		F559D7B01AB4657B0063AEA8 /* CocosStudioExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocosStudioExtension.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5587,6 +5591,8 @@
 		46A169A11807B037005B8026 /* 2d */ = {
 			isa = PBXGroup;
 			children = (
+				F559D7AF1AB4657B0063AEA8 /* CocosStudioExtension.cpp */,
+				F559D7B01AB4657B0063AEA8 /* CocosStudioExtension.h */,
 				3EACC99C19F5014D00EB3C5E /* CCCamera.cpp */,
 				3EACC99D19F5014D00EB3C5E /* CCCamera.h */,
 				3EACC99E19F5014D00EB3C5E /* CCLight.cpp */,
@@ -6341,6 +6347,7 @@
 				433347041AA4F69500052EE6 /* CCPUParticle3DLineEmitter.h in Headers */,
 				15AE18A019AAD33D00C27E9E /* CCNodeLoaderLibrary.h in Headers */,
 				1A01C6A618F58F7500EFE3A6 /* CCNotificationCenter.h in Headers */,
+				F559D7B21AB4657B0063AEA8 /* CocosStudioExtension.h in Headers */,
 				433346881AA4F69500052EE6 /* CCPUParticle3DParticleFollower.h in Headers */,
 				1A57020A180BCBDF0088DEC7 /* CCMotionStreak.h in Headers */,
 				1A570212180BCBF40088DEC7 /* CCProgressTimer.h in Headers */,
@@ -7557,6 +7564,7 @@
 				433347161AA4F69500052EE6 /* CCPUParticle3DPointEmitterTranslator.cpp in Sources */,
 				1A57011B180BC90D0088DEC7 /* CCGrabber.cpp in Sources */,
 				B29A7E3719EE1B7700872B35 /* AnimationStateData.c in Sources */,
+				F559D7B11AB4657B0063AEA8 /* CocosStudioExtension.cpp in Sources */,
 				15AE190D19AAD35000C27E9E /* CCDisplayManager.cpp in Sources */,
 				382383FA1A258FA7002C4610 /* idl_gen_go.cpp in Sources */,
 				382383FE1A258FA7002C4610 /* idl_parser.cpp in Sources */,
