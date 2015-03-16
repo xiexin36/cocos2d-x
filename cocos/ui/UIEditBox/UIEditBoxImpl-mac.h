@@ -42,6 +42,7 @@
     NSSecureTextField* secureTextField_;
     void* editBox_;
     BOOL editState_;
+    BOOL secure_;
     NSMutableDictionary* placeholderAttributes_;
 }
 
