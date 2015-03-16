@@ -6,7 +6,7 @@
 
 NS_CC_BEGIN
 
-struct ResouceData
+struct CC_DLL ResouceData
 {
     int         type;
     std::string file;
@@ -27,7 +27,7 @@ struct ResouceData
     }
 };
 
-class NodeExtension
+class CC_DLL NodeExtension
 {
 public:
     NodeExtension();
