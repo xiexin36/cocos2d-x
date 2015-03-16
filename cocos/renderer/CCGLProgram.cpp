@@ -573,7 +573,7 @@ bool GLProgram::link()
         //glDeleteShader(_fragShader);
     }
     
-    //_vertShader = _fragShader = 0;
+    //_vertShader = fragShader = 0;
     
 #if DEBUG || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     glGetProgramiv(_program, GL_LINK_STATUS, &status);

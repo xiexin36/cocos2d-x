@@ -322,9 +322,6 @@ public:
     
     inline const GLuint getProgram() const { return _program; }
 
-	GLuint getVertShader() const { return _vertShader; }
-	GLuint getFragShader() const { return _fragShader; }
-
     // DEPRECATED
     CC_DEPRECATED_ATTRIBUTE bool initWithVertexShaderByteArray(const GLchar* vertexByteArray, const GLchar* fragByteArray)
     { return initWithByteArrays(vertexByteArray, fragByteArray); }
@@ -332,6 +329,8 @@ public:
     { return initWithFilenames(vertexFilename, fragFilename); }
     CC_DEPRECATED_ATTRIBUTE void addAttribute(const std::string &attributeName, GLuint index) const { return bindAttribLocation(attributeName, index); }
 
+	GLuint getVertShader() const { return _vertShader; }
+	GLuint getFragShader() const { return _fragShader; }
 
 protected:
     bool updateUniformLocation(GLint location, const GLvoid* data, unsigned int bytes);

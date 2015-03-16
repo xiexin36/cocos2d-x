@@ -42,6 +42,7 @@
     NSSecureTextField* secureTextField_;
     void* editBox_;
     BOOL editState_;
+    BOOL secure_;
     NSMutableDictionary* placeholderAttributes_;
 }
 
@@ -50,6 +51,7 @@
 @property(nonatomic, retain) NSMutableDictionary* placeholderAttributes;
 @property(nonatomic, readonly, getter = isEditState) BOOL editState;
 @property(nonatomic, assign) void* editBox;
+@property(nonatomic, assign, getter = isSecure) BOOL secure;
 
 -(id) initWithFrame: (NSRect) frameRect editBox: (void*) editBox;
 -(void) doAnimationWhenKeyboardMoveWithDuration:(float)duration distance:(float)distance;

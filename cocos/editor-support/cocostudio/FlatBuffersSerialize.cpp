@@ -175,8 +175,8 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
                 attribute = attribute->Next();
             if (attribute)
                 _csdVersion = attribute->Value();
-
-			_csdVersion = "2.1.0.0";
+            
+            _csdVersion = "2.1.0.0";
         }
 
         if (strcmp("Content", element->Name()) == 0)
@@ -326,11 +326,10 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTree(const tinyxml2::XMLElement
         readername.append("Reader");
         
         NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
-		if (reader != nullptr)
-		{
-			options = CreateOptions(*_builder, reader->createOptionsWithFlatBuffers(objectData, _builder));
-		}
-        
+        if (reader != nullptr)
+        {
+            options = CreateOptions(*_builder, reader->createOptionsWithFlatBuffers(objectData, _builder));
+        }
     }
     
     
@@ -1160,7 +1159,7 @@ FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulato
             while (attribute && strcmp("Version", attribute->Name()) != 0)
                 attribute = attribute->Next();
             if (attribute)
-                _csdVersion = attribute->Value();                        
+                _csdVersion = attribute->Value();
         }
         
         if (strcmp("Content", element->Name()) == 0)
@@ -1271,10 +1270,10 @@ Offset<NodeTree> FlatBuffersSerialize::createNodeTreeForSimulator(const tinyxml2
         readername.append("Reader");
         
         NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
-		if (reader != nullptr)
-		{
-			options = CreateOptions(*_builder, reader->createOptionsWithFlatBuffers(objectData, _builder));
-		}
+        if (reader != nullptr)
+        {
+            options = CreateOptions(*_builder, reader->createOptionsWithFlatBuffers(objectData, _builder));
+        }
     }
     
     

@@ -79,12 +79,11 @@ namespace cocostudio
             std::string value = objattri->Value();
             if (name == "InnerActionSpeed")
             {
-                innerspeed = atof(objattri->Value());
-                break;
+                    innerspeed = atof(objattri->Value());
+                    break;
             }
             objattri = objattri->Next();
         }
-           
 
         // FileData
         const tinyxml2::XMLElement* child = objectData->FirstChildElement();
@@ -107,9 +106,11 @@ namespace cocostudio
                         std::string convert = value.substr(0, pos).append(".csb");
                         filename = convert;
                     }
+                    
                     attribute = attribute->Next();
                 }
             }
+            
             child = child->NextSiblingElement();
         }
         
