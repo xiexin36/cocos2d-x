@@ -27,7 +27,7 @@ struct ResouceData
     }
 };
 
-class NodeExtension
+class CC_DLL NodeExtension
 {
 public:
     NodeExtension();
