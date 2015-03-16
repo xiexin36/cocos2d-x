@@ -235,7 +235,7 @@ bool luaval_to_object(lua_State* L, int lo, const char* type, T** ret)
     return true;
 }
 
-CC_LUA_DLL extern bool luaval_to_Node(lua_State* L, int lo, const char* type, cocos2d::Node** ret);
+CC_LUA_DLL extern bool luaval_to_node(lua_State* L, int lo, const char* type, cocos2d::Node** node);
 
 CC_LUA_DLL extern bool luaval_to_mesh_vertex_attrib(lua_State* L, int lo, cocos2d::MeshVertexAttrib* ret, const char* funcName = "");
 CC_LUA_DLL extern bool luaval_to_std_vector_float(lua_State* L, int lo, std::vector<float>* ret, const char* funcName = "");
@@ -389,6 +389,7 @@ void object_to_luaval(lua_State* L,const char* type, T* ret)
     }
 }
 
+CC_LUA_DLL void node_to_luaval(lua_State* L, const char* type, cocos2d::Node* node);
 CC_LUA_DLL void mesh_vertex_attrib_to_luaval(lua_State* L, const cocos2d::MeshVertexAttrib& inValue);
 CC_LUA_DLL void ccvector_std_string_to_luaval(lua_State* L, const std::vector<std::string>& inValue);
 CC_LUA_DLL void ccvector_int_to_luaval(lua_State* L, const std::vector<int>& inValue);
