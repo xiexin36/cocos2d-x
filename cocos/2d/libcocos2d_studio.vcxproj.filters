@@ -1646,6 +1646,9 @@
     <ClCompile Include="CocosStudioExtension.cpp">
       <Filter>cocostudio</Filter>
     </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\CCObjectExtensionData.cpp">
+      <Filter>cocostudio\json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\physics\CCPhysicsBody.h">
@@ -3206,6 +3209,9 @@
     </ClInclude>
     <ClInclude Include="CocosStudioExtension.h">
       <Filter>cocostudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\CCObjectExtensionData.h">
+      <Filter>cocostudio\json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
