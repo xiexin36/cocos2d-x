@@ -94,7 +94,7 @@ void Sprite3D::createAsync(const std::string &modelPath, const std::function<voi
 
 void Sprite3D::createAsync(const std::string &modelPath, const std::string &texturePath, const std::function<void(Sprite3D*, void*)>& callback, void* callbackparam)
 {
-    Sprite3D *sprite = new (std::nothrow) Sprite3D();
+	Sprite3D *sprite = new (std::nothrow) Sprite3D();
     if (sprite->loadFromCache(modelPath))
     {
         sprite->autorelease();
@@ -335,7 +335,7 @@ bool Sprite3D::initFrom(const NodeDatas& nodeDatas, const MeshDatas& meshdatas, 
 }
 Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,const MaterialDatas& matrialdatas)
 {
-    auto sprite = new (std::nothrow) Sprite3D();
+	auto sprite = createSprite3DNode_Impl();
     if (sprite)
     {
         sprite->setName(nodedata->id);
