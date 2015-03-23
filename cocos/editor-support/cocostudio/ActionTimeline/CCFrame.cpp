@@ -38,6 +38,9 @@ NS_TIMELINE_BEGIN
 Frame::Frame()
     : _frameIndex(0)
     , _tween(true)
+    , _tweenType(TweenType::Linear)
+    , _easingParam(nullptr)
+    , _easingParamCount(0)
     , _enterWhenPassed(false)
     , _timeline(nullptr)
     , _node(nullptr)
@@ -46,6 +49,7 @@ Frame::Frame()
 
 Frame::~Frame()
 {
+    CC_SAFE_DELETE_ARRAY(_easingParam);
 }
 
 void Frame::emitEvent()
@@ -60,6 +64,47 @@ void Frame::cloneProperty(Frame* frame)
 {
     _frameIndex = frame->getFrameIndex();
     _tween = frame->isTween();
+
+    _tweenType = frame->getTweenType();
+    _easingParamCount = frame->_easingParamCount;
+    CC_SAFE_DELETE_ARRAY(_easingParam);
+    _easingParam = new float[_easingParamCount];
+    memcpy(_easingParam, frame->_easingParam, _easingParamCount * sizeof(float));
+}
+
+void Frame::apply(float percent)
+{
+    if (!_tween)
+        return;
+
+    float tweenpercent = percent;
+    if ( _tweenType != tweenfunc::TWEEN_EASING_MAX && _tweenType != tweenfunc::Linear)
+    {
+        tweenpercent = tweenPercent(tweenpercent);
+    }
+    onApply(tweenpercent);
+}
+
+float Frame::tweenPercent(float percent)
+{
+    return tweenfunc::tweenTo(percent, _tweenType, _easingParam);
+}
+
+void Frame::setEasingParams(float easingParams[], int paraCount)
+{
+    CC_SAFE_DELETE_ARRAY(_easingParam);
+    _easingParam = new float[_easingParamCount];
+    memcpy(_easingParam, easingParams, _easingParamCount * sizeof(float));
+}
+
+void Frame::getEasingParams(float* easingParams, int& paramCount)
+{
+    paramCount = _easingParamCount;
+    do 
+    {
+        *(easingParams++) = *(_easingParam + _easingParamCount - paramCount);
+    } while (paramCount--);
+    paramCount = _easingParamCount;
 }
 
 
@@ -178,9 +223,9 @@ void RotationFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void RotationFrame::apply(float percent)
+void RotationFrame::onApply(float percent)
 {
-    if (_tween && _betwennRotation != 0)
+    if (_betwennRotation != 0)
     {
         float rotation = _rotation + percent * _betwennRotation;
         _node->setRotation(rotation);
@@ -230,9 +275,9 @@ void SkewFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void SkewFrame::apply(float percent)
+void SkewFrame::onApply(float percent)
 {
-    if (_tween && (_betweenSkewX != 0 || _betweenSkewY != 0))
+    if (_betweenSkewX != 0 || _betweenSkewY != 0)
     {
         float skewx = _skewX + percent * _betweenSkewX;
         float skewy = _skewY + percent * _betweenSkewY;
@@ -285,9 +330,9 @@ void RotationSkewFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void RotationSkewFrame::apply(float percent)
+void RotationSkewFrame::onApply(float percent)
 {
-    if (_tween && (_betweenSkewX != 0 || _betweenSkewY != 0))
+    if (_betweenSkewX != 0 || _betweenSkewY != 0)
     {
         float skewx = _skewX + percent * _betweenSkewX;
         float skewy = _skewY + percent * _betweenSkewY;
@@ -338,9 +383,9 @@ void PositionFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void PositionFrame::apply(float percent)
+void PositionFrame::onApply(float percent)
 {
-    if (_tween && (_betweenX != 0 || _betweenY != 0))
+    if (_betweenX != 0 || _betweenY != 0)
     {
         Point p;
         p.x = _position.x + _betweenX * percent;
@@ -392,9 +437,9 @@ void ScaleFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void ScaleFrame::apply(float percent)
+void ScaleFrame::onApply(float percent)
 {
-    if (_tween && (_betweenScaleX != 0 || _betweenScaleY != 0))
+    if (_betweenScaleX != 0 || _betweenScaleY != 0)
     {
         float scaleX = _scaleX + _betweenScaleX * percent;
         float scaleY = _scaleY + _betweenScaleY * percent;
@@ -616,9 +661,9 @@ void ColorFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void ColorFrame::apply(float percent)
+void ColorFrame::onApply(float percent)
 {
-    if (_tween && (_betweenAlpha !=0 || _betweenRed != 0 || _betweenGreen != 0 || _betweenBlue != 0))
+    if (_betweenAlpha !=0 || _betweenRed != 0 || _betweenGreen != 0 || _betweenBlue != 0)
     {
         GLubyte alpha = _alpha + _betweenAlpha * percent;
 
@@ -671,13 +716,10 @@ void AlphaFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
     }
 }
 
-void AlphaFrame::apply(float percent)
+void AlphaFrame::onApply(float percent)
 {
-    if (_tween)
-    {
-        GLubyte alpha = _alpha + _betweenAlpha * percent;
-        _node->setOpacity(alpha);
-    }
+    GLubyte alpha = _alpha + _betweenAlpha * percent;
+    _node->setOpacity(alpha);
 }
 
 Frame* AlphaFrame::clone()
