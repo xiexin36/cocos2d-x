@@ -92,6 +92,7 @@ float Frame::tweenPercent(float percent)
 
 void Frame::setEasingParams(float easingParams[], int paraCount)
 {
+    _easingParamCount = paraCount;
     CC_SAFE_DELETE_ARRAY(_easingParam);
     _easingParam = new float[_easingParamCount];
     memcpy(_easingParam, easingParams, _easingParamCount * sizeof(float));
