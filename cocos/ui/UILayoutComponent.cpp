@@ -380,7 +380,7 @@ namespace ui {
             else
             {
                 _percentWidth = 0;
-                if (_usingPercentWidth)
+                if (_usingPercentWidth || (this->_horizontalEdge != HorizontalEdge::Center && this->_usingStretchWidth))
                     ownerSize.width = 0;
             }
 
@@ -389,7 +389,7 @@ namespace ui {
             else
             {
                 _percentHeight = 0;
-                if (_usingPercentHeight)
+                if (_usingPercentHeight || (this->_verticalEdge != VerticalEdge::Center && this->_usingStretchHeight))
                     ownerSize.height = 0;
             }
 
