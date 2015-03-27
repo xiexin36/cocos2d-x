@@ -1275,8 +1275,11 @@ Node* CSLoader::nodeWithFlatBuffersForSimulator(const flatbuffers::NodeTree *nod
         std::string readername = getGUIClassName(classname);
         readername.append("Reader");
         
-        NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));
-        node = reader->createNodeWithFlatBuffers(options->data());
+        NodeReaderProtocol* reader = dynamic_cast<NodeReaderProtocol*>(ObjectFactory::getInstance()->createObject(readername));        
+		if (reader)
+		{
+			node = reader->createNodeWithFlatBuffers(options->data());
+		}
         
         Widget* widget = dynamic_cast<Widget*>(node);
         if (widget)

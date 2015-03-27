@@ -479,6 +479,8 @@ void Button::onPressStateChangedToDisabled()
         {
             _buttonNormalRenderer->setState(Scale9Sprite::State::GRAY);
         }
+        _buttonNormalRenderer->setVisible(true);
+        _buttonDisableRenderer->setVisible(false);
     }
     else
     {
