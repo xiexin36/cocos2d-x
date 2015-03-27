@@ -101,10 +101,11 @@ void Frame::setEasingParams(float easingParams[], int paraCount)
 void Frame::getEasingParams(float* easingParams, int& paramCount)
 {
     paramCount = _easingParamCount;
-    do 
+    while (paramCount)
     {
         *(easingParams++) = *(_easingParam + _easingParamCount - paramCount);
-    } while (paramCount--);
+        paramCount--;
+    }
     paramCount = _easingParamCount;
 }
 
