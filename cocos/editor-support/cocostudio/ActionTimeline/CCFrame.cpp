@@ -68,8 +68,11 @@ void Frame::cloneProperty(Frame* frame)
     _tweenType = frame->getTweenType();
     _easingParamCount = frame->_easingParamCount;
     CC_SAFE_DELETE_ARRAY(_easingParam);
-    _easingParam = new float[_easingParamCount];
-    memcpy(_easingParam, frame->_easingParam, _easingParamCount * sizeof(float));
+    if (_easingParamCount > 0)
+    {
+        _easingParam = new float[_easingParamCount];
+        memcpy(_easingParam, frame->_easingParam, _easingParamCount * sizeof(float));
+    }
 }
 
 void Frame::apply(float percent)
@@ -93,9 +96,12 @@ float Frame::tweenPercent(float percent)
 void Frame::setEasingParams(float easingParams[], int paraCount)
 {
     _easingParamCount = paraCount;
-    CC_SAFE_DELETE_ARRAY(_easingParam);
-    _easingParam = new float[_easingParamCount];
-    memcpy(_easingParam, easingParams, _easingParamCount * sizeof(float));
+    CC_SAFE_DELETE_ARRAY(_easingParam); 
+    if (_easingParamCount > 0)
+    {
+        _easingParam = new float[_easingParamCount];
+        memcpy(_easingParam, easingParams, _easingParamCount * sizeof(float));
+    }
 }
 
 void Frame::getEasingParams(float* easingParams, int& paramCount)
