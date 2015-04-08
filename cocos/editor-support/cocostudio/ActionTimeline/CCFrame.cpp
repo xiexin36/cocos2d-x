@@ -39,17 +39,16 @@ Frame::Frame()
     : _frameIndex(0)
     , _tween(true)
     , _tweenType(TweenType::Linear)
-    , _easingParam(nullptr)
-    , _easingParamCount(0)
     , _enterWhenPassed(false)
     , _timeline(nullptr)
     , _node(nullptr)
 {
+    _easingParam.clear();
 }
 
 Frame::~Frame()
 {
-    CC_SAFE_DELETE_ARRAY(_easingParam);
+    _easingParam.clear();
 }
 
 void Frame::emitEvent()
@@ -66,13 +65,7 @@ void Frame::cloneProperty(Frame* frame)
     _tween = frame->isTween();
 
     _tweenType = frame->getTweenType();
-    _easingParamCount = frame->_easingParamCount;
-    CC_SAFE_DELETE_ARRAY(_easingParam);
-    if (_easingParamCount > 0)
-    {
-        _easingParam = new float[_easingParamCount];
-        memcpy(_easingParam, frame->_easingParam, _easingParamCount * sizeof(float));
-    }
+    setEasingParams(frame->getEasingParams());
 }
 
 void Frame::apply(float percent)
@@ -90,29 +83,17 @@ void Frame::apply(float percent)
 
 float Frame::tweenPercent(float percent)
 {
-    return tweenfunc::tweenTo(percent, _tweenType, _easingParam);
+    return tweenfunc::tweenTo(percent, _tweenType, _easingParam.data());
 }
 
-void Frame::setEasingParams(float easingParams[], int paraCount)
+void Frame::setEasingParams(const std::vector<float>& easingParams)
 {
-    _easingParamCount = paraCount;
-    CC_SAFE_DELETE_ARRAY(_easingParam); 
-    if (_easingParamCount > 0)
-    {
-        _easingParam = new float[_easingParamCount];
-        memcpy(_easingParam, easingParams, _easingParamCount * sizeof(float));
-    }
+    _easingParam.assign(easingParams.begin(), easingParams.end());
 }
 
-void Frame::getEasingParams(float* easingParams, int& paramCount)
+const std::vector<float>& Frame::getEasingParams() const
 {
-    paramCount = _easingParamCount;
-    while (paramCount)
-    {
-        *(easingParams++) = *(_easingParam + _easingParamCount - paramCount);
-        paramCount--;
-    }
-    paramCount = _easingParamCount;
+    return _easingParam;
 }
 
 

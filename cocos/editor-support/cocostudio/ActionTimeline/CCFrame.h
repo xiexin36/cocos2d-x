@@ -61,8 +61,8 @@ public:
     virtual TweenType getTweenType() const { return _tweenType; }
 
     // !to make easing with params, need setTweenType(TweenType::CUSTOM_EASING)
-    virtual void setEasingParams(float easingParams[], int paramCount);
-    virtual void getEasingParams(float* easingParams, int& paramCount);
+    virtual void setEasingParams(const std::vector<float>& easingParams);
+    virtual const std::vector<float>& getEasingParams() const;
 
     virtual bool isEnterWhenPassed() { return _enterWhenPassed; }
 
@@ -85,8 +85,7 @@ protected:
     unsigned int    _frameIndex;
     bool            _tween;
     TweenType       _tweenType;
-    float*          _easingParam;
-    int             _easingParamCount;
+    std::vector<float>   _easingParam;
     bool            _enterWhenPassed;
 
     Timeline* _timeline;
