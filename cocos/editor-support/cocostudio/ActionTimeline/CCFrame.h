@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include "CCTimelineMacro.h"
 #include "cocostudio/CocosStudioExport.h"
 
-using namespace cocos2d::tweenfunc;
+using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
@@ -57,8 +57,8 @@ public:
     virtual void setTween(bool tween) { _tween = tween; }
     virtual bool isTween() const { return _tween; }
 
-    virtual void setTweenType(const TweenType& tweenType) { _tweenType = tweenType; }
-    virtual TweenType getTweenType() const { return _tweenType; }
+    virtual void setTweenType(const tweenfunc::TweenType& tweenType) { _tweenType = tweenType; }
+    virtual tweenfunc::TweenType getTweenType() const { return _tweenType; }
 
     // !to make easing with params, need setTweenType(TweenType::CUSTOM_EASING)
     virtual void setEasingParams(const std::vector<float>& easingParams);
@@ -84,7 +84,7 @@ protected:
 
     unsigned int    _frameIndex;
     bool            _tween;
-    TweenType       _tweenType;
+    tweenfunc::TweenType       _tweenType;
     std::vector<float>   _easingParam;
     bool            _enterWhenPassed;
 
@@ -394,6 +394,22 @@ protected:
     int _zorder;
 };
 
+class CC_STUDIO_DLL BlendFuncFrame : public Frame
+{
+public:
+    static BlendFuncFrame* create();
+
+    BlendFuncFrame();
+
+    virtual void onEnter(Frame *nextFrame, int currentFrameIndex) override;
+    virtual Frame* clone() override;
+
+    inline BlendFunc getBlendFunc() const { return _blendFunc; }
+    inline void setBlendFunc(BlendFunc blendFunc) { _blendFunc = blendFunc; }
+
+protected:
+    BlendFunc  _blendFunc;
+};
 NS_TIMELINE_END
 
 

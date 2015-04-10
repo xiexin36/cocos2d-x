@@ -38,7 +38,7 @@ NS_TIMELINE_BEGIN
 Frame::Frame()
     : _frameIndex(0)
     , _tween(true)
-    , _tweenType(TweenType::Linear)
+    , _tweenType(tweenfunc::TweenType::Linear)
     , _enterWhenPassed(false)
     , _timeline(nullptr)
     , _node(nullptr)
@@ -806,6 +806,44 @@ Frame* ZOrderFrame::clone()
     ZOrderFrame* frame = ZOrderFrame::create();
     frame->setZOrder(_zorder);
 
+    frame->cloneProperty(this);
+
+    return frame;
+}
+
+// BlendFuncFrame
+BlendFuncFrame* BlendFuncFrame::create()
+{
+    BlendFuncFrame* frame = new (std::nothrow) BlendFuncFrame();
+    if (frame)
+    {
+        frame->autorelease();
+        return frame;
+    }
+    CC_SAFE_DELETE(frame);
+    return nullptr;
+}
+
+BlendFuncFrame::BlendFuncFrame()
+    : _blendFunc(BlendFunc::ALPHA_PREMULTIPLIED)
+{
+}
+
+void BlendFuncFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
+{
+    if (_node)
+    {
+        auto blendnode = dynamic_cast<BlendProtocol*>(_node);
+        if (blendnode)
+            blendnode->setBlendFunc(_blendFunc);
+    }
+}
+
+
+Frame* BlendFuncFrame::clone()
+{
+    BlendFuncFrame* frame = BlendFuncFrame::create();
+    frame->setBlendFunc(_blendFunc);
     frame->cloneProperty(this);
 
     return frame;
