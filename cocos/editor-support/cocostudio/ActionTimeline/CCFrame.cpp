@@ -170,7 +170,7 @@ void TextureFrame::onEnter(Frame *nextFrame, int currentFrameIndex)
         else
             _sprite->setTexture(_textureName);
 
-        if (_sprite->getBlendFunc() != BlendFunc::ALPHA_NON_PREMULTIPLIED)
+        if (_sprite->getBlendFunc() != blendfunc)
             _sprite->setBlendFunc(blendfunc);
     }
 }
