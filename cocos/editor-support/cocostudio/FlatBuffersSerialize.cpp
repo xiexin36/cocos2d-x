@@ -789,7 +789,8 @@ Offset<flatbuffers::PointFrame> FlatBuffersSerialize::createPointFrame(const tin
     return CreatePointFrame(*_builder,
                             frameIndex,
                             tween,
-                            &f_position);
+                            &f_position,
+                            createEasingData(objectData->FirstChildElement()));
 }
 
 Offset<flatbuffers::ScaleFrame> FlatBuffersSerialize::createScaleFrame(const tinyxml2::XMLElement *objectData)
@@ -829,7 +830,8 @@ Offset<flatbuffers::ScaleFrame> FlatBuffersSerialize::createScaleFrame(const tin
     return CreateScaleFrame(*_builder,
                             frameIndex,
                             tween,
-                            &f_scale);
+                            &f_scale,
+                            createEasingData(objectData->FirstChildElement()));
 }
 
 Offset<flatbuffers::ColorFrame> FlatBuffersSerialize::createColorFrame(const tinyxml2::XMLElement *objectData)
@@ -890,7 +892,8 @@ Offset<flatbuffers::ColorFrame> FlatBuffersSerialize::createColorFrame(const tin
     return CreateColorFrame(*_builder,
                             frameIndex,
                             tween,
-                            &f_color);
+                            &f_color,
+                            createEasingData(objectData->FirstChildElement()));
 }
 
 Offset<flatbuffers::TextureFrame> FlatBuffersSerialize::createTextureFrame(const tinyxml2::XMLElement *objectData)
@@ -963,7 +966,8 @@ Offset<flatbuffers::TextureFrame> FlatBuffersSerialize::createTextureFrame(const
                               CreateResourceData(*_builder,
                                                  _builder->CreateString(path),
                                                  _builder->CreateString(plistFile),
-                                                 resourceType));
+                                                 resourceType),
+                              createEasingData(objectData->FirstChildElement()));
 }
 
 Offset<flatbuffers::EventFrame> FlatBuffersSerialize::createEventFrame(const tinyxml2::XMLElement *objectData)
@@ -997,7 +1001,8 @@ Offset<flatbuffers::EventFrame> FlatBuffersSerialize::createEventFrame(const tin
     return CreateEventFrame(*_builder,
                             frameIndex,
                             tween,
-                            _builder->CreateString(value));
+                            _builder->CreateString(value),
+                            createEasingData(objectData->FirstChildElement()));
 }
 
 Offset<flatbuffers::IntFrame> FlatBuffersSerialize::createIntFrame(const tinyxml2::XMLElement *objectData)
@@ -1031,7 +1036,8 @@ Offset<flatbuffers::IntFrame> FlatBuffersSerialize::createIntFrame(const tinyxml
     return CreateIntFrame(*_builder,
                           frameIndex,
                           tween,
-                          value);
+                          value,
+                          createEasingData(objectData->FirstChildElement()));
 }
     
 Offset<flatbuffers::BoolFrame> FlatBuffersSerialize::createBoolFrame(const tinyxml2::XMLElement *objectData)
@@ -1063,9 +1069,10 @@ Offset<flatbuffers::BoolFrame> FlatBuffersSerialize::createBoolFrame(const tinyx
     }
     
     return CreateBoolFrame(*_builder,
-                          frameIndex,
-                          tween,
-                          value);
+                           frameIndex,
+                           tween,
+                           value,
+                           createEasingData(objectData->FirstChildElement()));
 }
     
     Offset<flatbuffers::InnerActionFrame> FlatBuffersSerialize::createInnerActionFrame(const tinyxml2::XMLElement *objectData)
@@ -1122,7 +1129,71 @@ Offset<flatbuffers::BoolFrame> FlatBuffersSerialize::createBoolFrame(const tinyx
                                       tween,
                                       innerActionType,
                                       _builder->CreateString(currentAniamtionName),
-                                      singleFrameIndex);
+                                      singleFrameIndex,
+                                      createEasingData(objectData->FirstChildElement()));
+    }
+    
+    flatbuffers::Offset<flatbuffers::EasingData> FlatBuffersSerialize::createEasingData(const tinyxml2::XMLElement *objectData)
+    {
+        if (!objectData)
+        {
+            return 0;
+        }
+        
+        int type = -1;
+        std::vector<flatbuffers::Position> points;
+        
+        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+        
+        while (attribute)
+        {
+            std::string name = attribute->Name();
+            std::string value = attribute->Value();
+            
+            if (name == "Type")
+            {
+                type = atoi(value.c_str());
+                break;
+            }
+            
+            attribute = attribute->Next();
+        }
+        
+        const tinyxml2::XMLElement* Points = objectData->FirstChildElement();
+        if (Points)
+        {
+            const tinyxml2::XMLElement* PointF = Points->FirstChildElement();
+            while (PointF)
+            {
+                Vec2 pointF = Vec2::ZERO;
+                
+                attribute = PointF->FirstAttribute();
+                
+                while (attribute)
+                {
+                    std::string name = attribute->Name();
+                    std::string value = attribute->Value();
+                    
+                    if (name == "X")
+                    {
+                        pointF.x = atof(value.c_str());
+                    }
+                    else if (name == "Y")
+                    {
+                        pointF.y = atof(value.c_str());
+                    }
+                    attribute = attribute->Next();
+                }
+                flatbuffers::Position f_PointF(pointF.x, pointF.y);
+                points.push_back(f_PointF);
+                
+                PointF = PointF->NextSiblingElement();
+            }
+        }
+        
+        return CreateEasingData(*_builder,
+                                type,
+                                _builder->CreateVectorOfStructs(points));
     }
 
 /* create flat buffers with XML */
