@@ -420,6 +420,11 @@ bool SpriteFrameCache::reloadTexture(const std::string& plist)
     if (it != _loadedFileNames->end()) {
 		_loadedFileNames->erase(it);
     }
+    else
+    {
+        //If one plist has't be loaded, we don't load it here.
+        return;
+    }
 
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(plist);
     ValueMap dict = FileUtils::getInstance()->getValueMapFromFile(fullPath);
