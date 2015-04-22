@@ -423,7 +423,7 @@ bool SpriteFrameCache::reloadTexture(const std::string& plist)
     else
     {
         //If one plist has't be loaded, we don't load it here.
-        return;
+        return false;
     }
 
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(plist);
