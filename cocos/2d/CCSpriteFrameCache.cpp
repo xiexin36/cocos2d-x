@@ -412,6 +412,17 @@ void SpriteFrameCache::addSpriteFrame(SpriteFrame* frame, const std::string& fra
     _spriteFrames.insert(frameName, frame);
 }
 
+bool SpriteFrameCache::isSpriteFramesWithFileLoaded(const std::string& plist)
+{
+	bool result = false;
+	if (_loadedFileNames->find(plist) != _loadedFileNames->end())
+	{
+		result = true;
+	}
+	
+		return result;
+}
+
 bool SpriteFrameCache::reloadTexture(const std::string& plist)
 {
 	CCASSERT(plist.size()>0, "plist filename should not be nullptr");
