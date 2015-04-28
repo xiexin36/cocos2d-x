@@ -182,7 +182,7 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
             TMXLayer *child = parseLayer(layerInfo, mapInfo);
 			//为编辑器修改，节省一次循环
 			//addChild(child, idx, idx);
-			addChild(child, 0, idx);
+            addChild(child, 0, idx);
             child->setOrderOfArrival(idx);
             child->setTag(TMXLayerTag);
             // update content size with the max size
