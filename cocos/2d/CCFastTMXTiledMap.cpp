@@ -182,6 +182,7 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
             idx++;
         }
     }
+
 }
 
 // public

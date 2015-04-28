@@ -96,7 +96,7 @@ TMXTiledMap::TMXTiledMap()
     :_mapSize(Size::ZERO)
     ,_tileSize(Size::ZERO)
     ,_tmxFile("")
-	,_tmxLayerNum(0)
+    ,_tmxLayerNum(0)
 {
 }
 
@@ -180,9 +180,11 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
         if (layerInfo->_visible)
         {
             TMXLayer *child = parseLayer(layerInfo, mapInfo);
-            addChild(child, 0, idx);
-			child->setOrderOfArrival(idx);
-			child->setTag(TMXLayerTag);
+			//为编辑器修改，节省一次循环
+			//addChild(child, idx, idx);
+			addChild(child, 0, idx);
+            child->setOrderOfArrival(idx);
+            child->setTag(TMXLayerTag);
             // update content size with the max size
             const Size& childSize = child->getContentSize();
             Size currentSize = this->getContentSize();
@@ -193,7 +195,7 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
             idx++;
         }
     }
-	_tmxLayerNum = idx;
+    _tmxLayerNum = idx;
 }
 
 
@@ -221,7 +223,7 @@ TMXLayer * TMXTiledMap::getLayer(const std::string& layerName) const
 
 int TMXTiledMap::getLayerNum()
 {
-	return _tmxLayerNum;
+    return _tmxLayerNum;
 }
 
 TMXObjectGroup * TMXTiledMap::getObjectGroup(const std::string& groupName) const

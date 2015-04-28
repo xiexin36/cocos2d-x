@@ -199,8 +199,8 @@ CC_CONSTRUCTOR_ACCESS:
     /** initializes a TMX Tiled Map with a TMX formatted XML string and a path to TMX resources */
     bool initWithXML(const std::string& tmxString, const std::string& resourcePath);
 
-	/** get number of Layer */
-	int  getLayerNum();
+    /** get number of Layer */
+    int  getLayerNum();
 
 protected:
     virtual TMXLayer * parseLayer(TMXLayerInfo *layerInfo, TMXMapInfo *mapInfo);
@@ -223,9 +223,9 @@ protected:
 
     std::string _tmxFile;
 
-	int _tmxLayerNum;
+    int _tmxLayerNum;
 
-	static const int TMXLayerTag = 32768;
+    static const int TMXLayerTag = 32768;
 
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(TMXTiledMap);
