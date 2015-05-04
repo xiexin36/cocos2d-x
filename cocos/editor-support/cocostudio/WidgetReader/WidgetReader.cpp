@@ -553,11 +553,7 @@ namespace cocostudio
         while (child)
         {
             std::string attriname = child->Name();
-            if (attriname == "Children")
-            {
-                break;
-            }
-            else if (attriname == "Position")
+            if (attriname == "Position")
             {
                 attribute = child->FirstAttribute();
                 
@@ -799,7 +795,7 @@ namespace cocostudio
         extensionData->setActionTag(actionTag);
         node->setUserObject(extensionData);
         
-        widget->setUserObject(timeline::ActionTimelineData::create(actionTag));
+        
         
         bool touchEnabled = options->touchEnabled() != 0;
         widget->setTouchEnabled(touchEnabled);

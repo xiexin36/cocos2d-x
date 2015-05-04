@@ -108,6 +108,16 @@ public:
      If the name already exists, then the contents of the old name will be replaced with the new one.
      */
     void addSpriteFrame(SpriteFrame *frame, const std::string& frameName);
+
+	/** Check if multiple Sprite Frames from a plist file have been loaded.
+	  * @js NA
+	  * @lua NA
+	  *
+	  * @param plist Plist file name.
+	  * @return True if the file is loaded.
+	 */
+	bool isSpriteFramesWithFileLoaded(const std::string& plist) const;
+
      /** Reload texture from the plist file
      * If the file image hasn't loaded before, load it.
      * Otherwise the texture will be reloaded from the plist file.

@@ -576,6 +576,12 @@ Frame* ActionTimelineCache::loadVisibleFrameWithFlatBuffers(const flatbuffers::B
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
     
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
+    
     return frame;
 }
     
@@ -592,6 +598,12 @@ Frame* ActionTimelineCache::loadPositionFrameWithFlatBuffers(const flatbuffers::
     
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
+    
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
     
     return frame;
 }
@@ -611,6 +623,12 @@ Frame* ActionTimelineCache::loadScaleFrameWithFlatBuffers(const flatbuffers::Sca
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
     
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
+    
     return frame;
 }
 
@@ -629,6 +647,12 @@ Frame* ActionTimelineCache::loadRotationSkewFrameWithFlatBuffers(const flatbuffe
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
     
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
+    
     return frame;
 }
 
@@ -645,6 +669,12 @@ Frame* ActionTimelineCache::loadColorFrameWithFlatBuffers(const flatbuffers::Col
     
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
+    
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
     
     return frame;
 }
@@ -703,6 +733,12 @@ Frame* ActionTimelineCache::loadTextureFrameWithFlatBuffers(const flatbuffers::T
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
     
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
+    
     return frame;
 }
     
@@ -722,6 +758,12 @@ Frame* ActionTimelineCache::loadEventFrameWithFlatBuffers(const flatbuffers::Eve
     
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
+    
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
     
     return frame;
 }
@@ -757,6 +799,12 @@ Frame* ActionTimelineCache::loadAlphaFrameWithFlatBuffers(const flatbuffers::Int
         bool tween = flatbuffers->tween() != 0;
         frame->setTween(tween);
         
+        auto easingData = flatbuffers->easingData();
+        if (easingData)
+        {
+            loadEasingDataWithFlatBuffers(frame, easingData);
+        }
+        
         return frame;
     }
     
@@ -773,6 +821,12 @@ Frame* ActionTimelineCache::loadZOrderFrameWithFlatBuffers(const flatbuffers::In
     
     bool tween = flatbuffers->tween() != 0;
     frame->setTween(tween);
+    
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
     
     return frame;
 }
@@ -799,7 +853,31 @@ Frame* ActionTimelineCache::loadInnerActionFrameWithFlatBuffers(const flatbuffer
     frame->setEnterWithName(true);
     frame->setAnimationName(currentAnimationFrame);
     
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
+    {
+        loadEasingDataWithFlatBuffers(frame, easingData);
+    }
+    
     return frame;
+}
+    
+void ActionTimelineCache::loadEasingDataWithFlatBuffers(cocostudio::timeline::Frame *frame,
+                                                        const flatbuffers::EasingData *flatbuffers)
+{
+    int type = flatbuffers->type();
+    frame->setTweenType((cocos2d::tweenfunc::TweenType)type);
+    auto points = flatbuffers->points();
+    if (points)
+    {
+        std::vector<float> easings;
+        for (auto it = points->begin(); it != points->end(); ++it)
+        {
+            easings.push_back(it->x());
+            easings.push_back(it->y());
+        }
+        frame->setEasingParams(easings);
+    }
 }
     
 ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(const std::string& fileName)

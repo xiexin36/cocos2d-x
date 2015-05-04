@@ -90,6 +90,9 @@ public:
 
     /**get mesh*/
     Mesh* getMesh() const { return _meshes.at(0); }
+
+    /**get meshes*/
+    Vector<Mesh*>& getMeshes() { return _meshes; }
     
     /** get mesh count */
     ssize_t getMeshCount() const { return _meshes.size(); }

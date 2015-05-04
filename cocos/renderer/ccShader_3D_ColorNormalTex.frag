@@ -98,7 +98,8 @@ void main(void)
 
         // Apply spot attenuation
         attenuation *= smoothstep(u_SpotLightSourceOuterAngleCos[i], u_SpotLightSourceInnerAngleCos[i], spotCurrentAngleCos);
-        combinedColor.xyz += computeLighting(normal, vertexToSpotLightDirection, u_SpotLightSourceColor[i], attenuation);
+        attenuation = clamp(attenuation, 0.0, 1.0);
+		combinedColor.xyz += computeLighting(normal, vertexToSpotLightDirection, u_SpotLightSourceColor[i], attenuation);
     }
 \n#endif\n
 

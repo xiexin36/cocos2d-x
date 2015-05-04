@@ -504,6 +504,18 @@ public:
 };
 
 /**
+* @brief Possible LabelEffect used by Label.
+*
+*/
+enum class LabelEffect {
+	NORMAL,
+	OUTLINE,
+	SHADOW,
+	GLOW,
+	ALL
+};
+
+/**
  @brief The device accelerometer reports values for each axis in units of g-force
  */
 class CC_DLL Acceleration
