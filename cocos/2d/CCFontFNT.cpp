@@ -150,8 +150,8 @@ private:
     std::set<unsigned int>* parseBinaryConfigFile(unsigned char* pData, unsigned long size, const std::string& controlFile);
     void parseCharacterDefinition(const char* line, BMFontDef *characterDefinition);
     void parseInfoArguments(const char* line);
-    bool parseCommonArguments(const char* line);
-    bool parseImageFileName(const char* line, const std::string& fntFile);
+    void parseCommonArguments(const char* line);
+    void parseImageFileName(const char* line, const std::string& fntFile);
     void parseKerningEntry(const char* line);
     void purgeKerningDictionary();
     void purgeFontDefDictionary();
@@ -271,11 +271,9 @@ void BMFontConfiguration::purgeFontDefDictionary()
 }
 
 std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& controlFile)
-{    
-    std::string fullpath = FileUtils::getInstance()->fullPathForFilename(controlFile);
-
-    Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
-    CCASSERT((!data.isNull() && data.getSize() > 0), "BMFontConfiguration::parseConfigFile | Open file error.");
+{
+    Data data = FileUtils::getInstance()->getDataFromFile(controlFile);
+    CCASSERT((!data.isNull()), "BMFontConfiguration::parseConfigFile | Open file error.");
 
     if (memcmp("BMF", data.getBytes(), 3) == 0) {
         std::set<unsigned int>* ret = parseBinaryConfigFile(data.getBytes(), data.getSize(), controlFile);
@@ -325,18 +323,11 @@ std::set<unsigned int>* BMFontConfiguration::parseConfigFile(const std::string& 
         // Check to see if the start of the line is something we are interested in
         else if (memcmp(line, "common lineHeight", 17) == 0)
         {
-			if (!this->parseCommonArguments(line))
-            {
-				return nullptr;
-            }
-            
+            this->parseCommonArguments(line);
         }
         else if (memcmp(line, "page id", 7) == 0)
         {
-			if (!this->parseImageFileName(line, controlFile))
-			{
-				return nullptr;
-			}
+            this->parseImageFileName(line, controlFile);
         }
         else if (memcmp(line, "chars c", 7) == 0)
         {
@@ -524,7 +515,7 @@ std::set<unsigned int>* BMFontConfiguration::parseBinaryConfigFile(unsigned char
     return validCharsString;
 }
 
-bool BMFontConfiguration::parseImageFileName(const char* line, const std::string& fntFile)
+void BMFontConfiguration::parseImageFileName(const char* line, const std::string& fntFile)
 {
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
@@ -534,17 +525,11 @@ bool BMFontConfiguration::parseImageFileName(const char* line, const std::string
     // page ID. Sanity check
     int pageId;
     sscanf(line, "page id=%d", &pageId);
-	if (pageId != 0)
-	{
-		CCLOG("LabelBMFont file could not be found");
-		return false;
-	}
-    
+    CCASSERT(pageId == 0, "LabelBMFont file could not be found");
     // file 
     char fileName[255];
     sscanf(strchr(line,'"') + 1, "%[^\"]", fileName);
     _atlasName = FileUtils::getInstance()->fullPathFromRelativeFile(fileName, fntFile);
-	return true;
 }
 
 void BMFontConfiguration::parseInfoArguments(const char* line)
@@ -560,7 +545,7 @@ void BMFontConfiguration::parseInfoArguments(const char* line)
     //CCLOG("cocos2d: padding: %d,%d,%d,%d", _padding.left, _padding.top, _padding.right, _padding.bottom);
 }
 
-bool BMFontConfiguration::parseCommonArguments(const char* line)
+void BMFontConfiguration::parseCommonArguments(const char* line)
 {
     //////////////////////////////////////////////////////////////////////////
     // line to parse:
@@ -576,31 +561,18 @@ bool BMFontConfiguration::parseCommonArguments(const char* line)
     sscanf(tmp, "%d", &value);
 
     int maxTextureSize = Configuration::getInstance()->getMaxTextureSize();
-	if (value > maxTextureSize)
-	{
-		CCLOG("CCLabelBMFont: page can't be larger than supported");
-		return false;
-	}
+    CCASSERT(value <= maxTextureSize, "CCLabelBMFont: page can't be larger than supported");
 
     // scaleH. sanity check
     tmp = strstr(tmp, "scaleH=") + 7;
     sscanf(tmp, "%d", &value);
-	if (value > maxTextureSize)
-	{
-		CCLOG("CCLabelBMFont: page can't be larger than supported");
-		return false;
-	}
+    CCASSERT(value <= maxTextureSize, "CCLabelBMFont: page can't be larger than supported");
 
     // pages. sanity check
     tmp = strstr(tmp, "pages=") + 6;
     sscanf(tmp, "%d", &value);
-	if (value != 1)
-	{
-		CCLOG("CCBitfontAtlas: only supports 1 page");
-		return false;
-	}
+    CCASSERT(value == 1, "CCBitfontAtlas: only supports 1 page");
 
-	return true;
     // packed (ignore) What does this mean ??
 }
 
@@ -684,41 +656,6 @@ FontFNT * FontFNT::create(const std::string& fntFilePath, const Vec2& imageOffse
     return tempFont;
 }
 
-bool FontFNT::CheckBMFontResource(const std::string& fntFilePath)
-{
-	BMFontConfiguration *newConf = BMFontConfiguration::create(fntFilePath);
-	if (!newConf)
-		return false;
-
-	std::string atlasName = newConf->getAtlasName();
-	if (atlasName.empty())
-	{
-		return false;
-	}
-
-	if (FileUtils::getInstance()->isAbsolutePath(atlasName))
-	{
-		if (!FileUtils::getInstance()->isFileExist(atlasName))
-		{
-			return false;
-		}
-	}
-	else
-	{
-		std::string dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("/"));
-		if (dirpath == fntFilePath)
-		{
-			dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("\\"));
-		}
-		dirpath += "/";
-		atlasName = dirpath + atlasName;
-		if (!FileUtils::getInstance()->isFileExist(atlasName))
-		{
-			return false;
-		}
-	}
-	return true;
-}
 FontFNT::FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset /* = Vec2::ZERO */)
 :_configuration(theContfig)
 ,_imageOffset(CC_POINT_PIXELS_TO_POINTS(imageOffset))
@@ -848,5 +785,41 @@ FontAtlas * FontFNT::createFontAtlas()
     return tempAtlas;
 }
 
+// For cocostudio
+bool FontFNT::CheckBMFontResource(const std::string& fntFilePath)
+{
+    BMFontConfiguration *newConf = BMFontConfiguration::create(fntFilePath);
+    if (!newConf)
+        return false;
+
+    std::string atlasName = newConf->getAtlasName();
+    if (atlasName.empty())
+    {
+        return false;
+    }
+
+    if (FileUtils::getInstance()->isAbsolutePath(atlasName))
+    {
+        if (!FileUtils::getInstance()->isFileExist(atlasName))
+        {
+            return false;
+        }
+    }
+    else
+    {
+        std::string dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("/"));
+        if (dirpath == fntFilePath)
+        {
+            dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("\\"));
+        }
+        dirpath += "/";
+        atlasName = dirpath + atlasName;
+        if (!FileUtils::getInstance()->isFileExist(atlasName))
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 NS_CC_END

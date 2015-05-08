@@ -104,7 +104,6 @@
     <ClInclude Include="..\spine-cocos2dx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SpineExport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Animation.c">

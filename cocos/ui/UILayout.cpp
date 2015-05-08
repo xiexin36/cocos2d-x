@@ -164,21 +164,21 @@ void Layout::addChild(Node * child, int localZOrder)
     Layout::addChild(child, localZOrder, child->getTag());
 }
 
-void Layout::addChild(Node *child, int zOrder, int tag)
+void Layout::addChild(Node *child, int localZOrder, int tag)
 {
     if (dynamic_cast<Widget*>(child)) {
         supplyTheLayoutParameterLackToChild(static_cast<Widget*>(child));
     }
-    Widget::addChild(child, zOrder, tag);
+    Widget::addChild(child, localZOrder, tag);
     _doLayoutDirty = true;
 }
     
-void Layout::addChild(Node* child, int zOrder, const std::string &name)
+void Layout::addChild(Node* child, int localZOrder, const std::string &name)
 {
     if (dynamic_cast<Widget*>(child)) {
         supplyTheLayoutParameterLackToChild(static_cast<Widget*>(child));
     }
-    Widget::addChild(child, zOrder, name);
+    Widget::addChild(child, localZOrder, name);
     _doLayoutDirty = true;
 }
     
@@ -502,11 +502,11 @@ void Layout::setStencilClippingSize(const Size &size)
     if (_clippingEnabled && _clippingType == ClippingType::STENCIL)
     {
         Vec2 rect[4];
-        rect[0] = Vec2::ZERO;
-        rect[1] = Vec2(_contentSize.width, 0);
-        rect[2] = Vec2(_contentSize.width, _contentSize.height);
-        rect[3] = Vec2(0, _contentSize.height);
-        Color4F green(0, 1, 0, 1);
+        // rect[0].setZero(); Zero default
+        rect[1].set(_contentSize.width, 0.0f);
+        rect[2].set(_contentSize.width, _contentSize.height);
+        rect[3].set(0.0f, _contentSize.height);
+        Color4F green(0.0f, 1.0f, 0.0f, 1.0f);
         _clippingStencil->clear();
         _clippingStencil->drawPolygon(rect, 4, green, 0, green);
     }

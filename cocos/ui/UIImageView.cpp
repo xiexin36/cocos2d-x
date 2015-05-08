@@ -164,15 +164,15 @@ void ImageView::setTextureRect(const Rect &rect)
     }
 }
     
-void ImageView::setScale9Enabled(bool able)
+void ImageView::setScale9Enabled(bool enable)
 {
-    if (_scale9Enabled == able)
+    if (_scale9Enabled == enable)
     {
         return;
     }
     
     
-    _scale9Enabled = able;
+    _scale9Enabled = enable;
     _imageRenderer->setScale9Enabled(_scale9Enabled);
     
     if (_scale9Enabled)

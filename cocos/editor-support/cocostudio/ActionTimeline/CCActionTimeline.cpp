@@ -193,36 +193,33 @@ ActionTimeline* ActionTimeline::clone() const
 
 void ActionTimeline::step(float delta)
 {
-
     if (!_playing || _timelineMap.size() == 0 || _duration == 0)
     {
         return;
     }
 
     _time += delta * _timeSpeed;
-    if (_time < _endFrame * _frameInternal)
+    
+    if(_time < _endFrame * _frameInternal)
     {
         _currentFrame = (int)(_time / _frameInternal);
         stepToFrame(_currentFrame);
     }
     else
     {
-        if (_lastFrameListener != nullptr)
+        if(_lastFrameListener != nullptr)
             _lastFrameListener();
-
+        
         _playing = _loop;
-        if (!_playing)
+        if(!_playing)
         {
             _time = _endFrame * _frameInternal;
             _currentFrame = (int)(_time / _frameInternal);
             stepToFrame(_currentFrame);
         }
         else
-        {
             gotoFrameAndPlay(_startFrame, _endFrame, _loop);
-        }
     }
-
 }
 
 typedef std::function<void(Node*)> tCallBack;
