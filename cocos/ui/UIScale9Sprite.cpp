@@ -138,11 +138,10 @@ namespace ui {
 
     bool Scale9Sprite::init(Sprite* sprite, const Rect& rect, bool rotated, const Vec2 &offset, const Size &originalSize, const Rect& capInsets)
     {
-        if(sprite)
-        {
+        //if(sprite)
+        //{
             this->updateWithSprite(sprite, rect, rotated, offset, originalSize, capInsets);
-        }
-
+        //}
         return true;
     }
 
@@ -260,6 +259,10 @@ namespace ui {
             {
                 _scale9Image->setSpriteFrame(sprite->getSpriteFrame());
             }
+        }
+        else
+        {
+            CC_SAFE_RELEASE_NULL(_scale9Image);
         }
 
         if (!_scale9Image)
