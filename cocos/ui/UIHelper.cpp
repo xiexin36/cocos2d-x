@@ -149,9 +149,9 @@ std::string Helper::getSubStringOfUTF8String(const std::string& str, std::string
     return str.substr(min,max);
 }
 
-void Helper::changeLayoutSystemActiveState(bool bActive)
+void Helper::changeLayoutSystemActiveState(bool active)
 {
-    _activeLayout = bActive;
+    _activeLayout = active;
 }
 void Helper::doLayout(cocos2d::Node *rootNode)
 {

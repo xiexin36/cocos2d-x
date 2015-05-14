@@ -35,11 +35,13 @@ namespace cocos2d
         ~Cocos2dRenderer();
         void Draw(GLsizei width, GLsizei height, float dpi, Windows::Graphics::Display::DisplayOrientations orientation);
         void QueuePointerEvent(PointerEventType type, Windows::UI::Core::PointerEventArgs^ args);
+		void QueueBackButtonEvent();
         void QueueKeyBoardEvent(Cocos2dKeyEvent type, Windows::UI::Core::KeyEventArgs^ e);
         void Pause();
         void Resume();
         void DeviceLost();
-        
+        bool AppShouldExit();
+
     private:
 
         int m_width;

@@ -32,9 +32,7 @@ extern "C" {
 }
 #endif
 
-#include "Lua-BingingsExport.h"
-
-CC_LUA_DLL TOLUA_API int register_all_cocos2dx_deprecated(lua_State* tolua_S);
-CC_LUA_DLL TOLUA_API int register_all_cocos2dx_manual_deprecated(lua_State* tolua_S);
+TOLUA_API int register_all_cocos2dx_deprecated(lua_State* tolua_S);
+TOLUA_API int register_all_cocos2dx_manual_deprecated(lua_State* tolua_S);
 
 #endif // #ifndef COCOS2DX_SCRIPT_LUA_COCOS2DX_SUPPORT_LUA_COCOS2DX_DEPRECATED_H

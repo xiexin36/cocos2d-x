@@ -67,12 +67,17 @@ namespace cocostudio
         CC_SAFE_DELETE(_instanceNode3DReader);
     }
     
+    void Node3DReader::destroyInstance()
+    {
+        CC_SAFE_DELETE(_instanceNode3DReader);
+    }
+    
     Vec3 Node3DReader::getVec3Attribute(const tinyxml2::XMLAttribute* attribute) const
     {
         if(!attribute)
             return Vec3::ZERO;
         
-        Vec3 ret(Vec3::ZERO);
+        Vec3 ret;
         std::string attriname;
         
         while (attribute)
@@ -312,9 +317,9 @@ namespace cocostudio
         auto temp = createOptionsWithFlatBuffersForNode(objectData, builder);
         auto nodeOptions = *(Offset<WidgetOptions>*)(&temp);
         
-        Vec3 position(Vec3::ZERO);
-        Vec3 rotation(Vec3::ZERO);
-        Vec3 scale(Vec3::ZERO);
+        Vec3 position;
+        Vec3 rotation;
+        Vec3 scale;
         int cameraMask = 0;
 
         std::string attriname;

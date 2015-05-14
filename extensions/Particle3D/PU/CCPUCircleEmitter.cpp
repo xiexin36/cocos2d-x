@@ -43,12 +43,12 @@ PUCircleEmitter::PUCircleEmitter(void) :
     _radius(DEFAULT_RADIUS),
     _circleAngle(DEFAULT_ANGLE),
     _originalCircleAngle(DEFAULT_ANGLE),
-    _step(DEFAULT_STEP),
+    _step(DEFAULT_STEP),    
+    _x(0.0f),
+    _z(0.0f),
     _random(DEFAULT_RANDOM),
     _orientation(),
-    _normal(DEFAULT_NORMAL),
-    _x(0.0f),
-    _z(0.0f)
+    _normal(DEFAULT_NORMAL)
 {
 }
 //-----------------------------------------------------------------------
@@ -173,7 +173,6 @@ void PUCircleEmitter::initParticleDirection(PUParticle3D* particle)
         {
             Mat4 rotMat;
             Mat4::createRotation(_orientation, &rotMat);
-            particle->direction = Vec3(_x, 0, _z);
             particle->direction = rotMat * Vec3(_x, 0, _z);
         }
     }

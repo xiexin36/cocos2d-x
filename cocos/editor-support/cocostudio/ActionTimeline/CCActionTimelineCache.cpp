@@ -350,12 +350,10 @@ Frame* ActionTimelineCache::loadColorFrame(const rapidjson::Value& json)
 {
     ColorFrame* frame = ColorFrame::create();
 
-    GLubyte alpha = (GLubyte)DICTOOL->getIntValue_json(json, ALPHA);
     GLubyte red   = (GLubyte)DICTOOL->getIntValue_json(json, RED);
     GLubyte green = (GLubyte)DICTOOL->getIntValue_json(json, GREEN);
     GLubyte blue  = (GLubyte)DICTOOL->getIntValue_json(json, BLUE);
 
-    frame->setAlpha(alpha);
     frame->setColor(Color3B(red, green, blue));
 
     return frame;
@@ -749,9 +747,7 @@ Frame* ActionTimelineCache::loadEventFrameWithFlatBuffers(const flatbuffers::Eve
     std::string event = flatbuffers->value()->c_str();
     
     if (event != "")
-        frame->setEvent(event);
-    
-    CCLOG("event = %s", event.c_str());
+        frame->setEvent(event);    
     
     int frameIndex = flatbuffers->frameIndex();
     frame->setFrameIndex(frameIndex);
@@ -785,28 +781,28 @@ Frame* ActionTimelineCache::loadAlphaFrameWithFlatBuffers(const flatbuffers::Int
     return frame;
 }
     
-    Frame* ActionTimelineCache::loadAnchorPointFrameWithFlatBuffers(const flatbuffers::ScaleFrame *flatbuffers)
+Frame* ActionTimelineCache::loadAnchorPointFrameWithFlatBuffers(const flatbuffers::ScaleFrame *flatbuffers)
+{
+    AnchorPointFrame* frame = AnchorPointFrame::create();
+    
+    auto f_scale = flatbuffers->scale();
+    Vec2 scale(f_scale->scaleX(), f_scale->scaleY());
+    frame->setAnchorPoint(scale);
+    
+    int frameIndex = flatbuffers->frameIndex();
+    frame->setFrameIndex(frameIndex);
+    
+    bool tween = flatbuffers->tween() != 0;
+    frame->setTween(tween);
+    
+    auto easingData = flatbuffers->easingData();
+    if (easingData)
     {
-        AnchorPointFrame* frame = AnchorPointFrame::create();
-        
-        auto f_scale = flatbuffers->scale();
-        Vec2 scale(f_scale->scaleX(), f_scale->scaleY());
-        frame->setAnchorPoint(scale);
-        
-        int frameIndex = flatbuffers->frameIndex();
-        frame->setFrameIndex(frameIndex);
-        
-        bool tween = flatbuffers->tween() != 0;
-        frame->setTween(tween);
-        
-        auto easingData = flatbuffers->easingData();
-        if (easingData)
-        {
-            loadEasingDataWithFlatBuffers(frame, easingData);
-        }
-        
-        return frame;
+        loadEasingDataWithFlatBuffers(frame, easingData);
     }
+    
+    return frame;
+}
     
 Frame* ActionTimelineCache::loadZOrderFrameWithFlatBuffers(const flatbuffers::IntFrame *flatbuffers)
 {

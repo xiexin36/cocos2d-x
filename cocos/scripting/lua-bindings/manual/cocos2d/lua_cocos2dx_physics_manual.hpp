@@ -13,9 +13,8 @@ extern "C" {
 
 #include "cocos2d.h"
 #include "LuaScriptHandlerMgr.h"
-#include "Lua-BingingsExport.h"
 
-CC_LUA_DLL int register_all_cocos2dx_physics_manual(lua_State* tolua_S);
+int register_all_cocos2dx_physics_manual(lua_State* tolua_S);
 
 #endif // CC_USE_PHYSICS
 

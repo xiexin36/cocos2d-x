@@ -45,8 +45,6 @@ public:
         _frequency(1.0f),
         _amplitude(1.0f),
         _persistence(1.0f),
-        _mappedPosition(Vec3::ZERO),
-        _mapScale(Vec3::ZERO),
         _worldSize(DEFAULT_WORLDSIZE)
     {
     };

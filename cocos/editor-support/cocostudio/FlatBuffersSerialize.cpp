@@ -111,7 +111,7 @@ FlatBuffersSerialize::FlatBuffersSerialize()
 
 FlatBuffersSerialize::~FlatBuffersSerialize()
 {
-    purge();
+    
 }
 
 FlatBuffersSerialize* FlatBuffersSerialize::getInstance()
@@ -123,8 +123,14 @@ FlatBuffersSerialize* FlatBuffersSerialize::getInstance()
     
     return _instanceFlatBuffersSerialize;
 }
-
+    
 void FlatBuffersSerialize::purge()
+{
+    CC_SAFE_DELETE(_instanceFlatBuffersSerialize);
+    
+}
+
+void FlatBuffersSerialize::destroyInstance()
 {
     CC_SAFE_DELETE(_instanceFlatBuffersSerialize);
 	
@@ -784,6 +790,8 @@ Offset<flatbuffers::PointFrame> FlatBuffersSerialize::createPointFrame(const tin
         attribute = attribute->Next();
     }
     
+    
+    
     Position f_position(position.x, position.y);
     
     return CreatePointFrame(*_builder,
@@ -1075,126 +1083,127 @@ Offset<flatbuffers::BoolFrame> FlatBuffersSerialize::createBoolFrame(const tinyx
                            createEasingData(objectData->FirstChildElement()));
 }
     
-    Offset<flatbuffers::InnerActionFrame> FlatBuffersSerialize::createInnerActionFrame(const tinyxml2::XMLElement *objectData)
+Offset<flatbuffers::InnerActionFrame> FlatBuffersSerialize::createInnerActionFrame(const tinyxml2::XMLElement *objectData)
+{
+    int frameIndex = 0;
+    bool tween = true;
+    int innerActionType = 0;
+    std::string currentAniamtionName = "";
+    int singleFrameIndex = 0;
+    
+    const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+    while (attribute)
     {
-        int frameIndex = 0;
-        bool tween = true;
-        int innerActionType = 0;
-        std::string currentAniamtionName = "";
-        int singleFrameIndex = 0;
+        std::string name = attribute->Name();
+        std::string attrivalue = attribute->Value();
         
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        while (attribute)
+        if (name == "InnerActionType")
         {
-            std::string name = attribute->Name();
-            std::string attrivalue = attribute->Value();
-            
-            if (name == "InnerActionType")
+            if (attrivalue == "LoopAction")
             {
-                if (attrivalue == "LoopAction")
-                {
-                    innerActionType = 0;
-                }
-                else if (attrivalue == "NoLoopAction")
-                {
-                    innerActionType = 1;
-                }
-                else if (attrivalue == "SingleFrame")
-                {
-                    innerActionType = 2;
-                }
+                innerActionType = 0;
             }
-            else if (name == "CurrentAniamtionName")
+            else if (attrivalue == "NoLoopAction")
             {
-                currentAniamtionName = attrivalue;
+                innerActionType = 1;
             }
-            else if (name == "SingleFrameIndex")
+            else if (attrivalue == "SingleFrame")
             {
-                singleFrameIndex = atoi(attrivalue.c_str());
+                innerActionType = 2;
             }
-            else if (name == "FrameIndex")
-            {
-                frameIndex = atoi(attrivalue.c_str());
-            }
-            else if (name == "Tween")
-            {
-                tween = (attrivalue == "True") ? true : false;
-            }
-            
-            attribute = attribute->Next();
+        }
+        else if (name == "CurrentAniamtionName")
+        {
+            currentAniamtionName = attrivalue;
+        }
+        else if (name == "SingleFrameIndex")
+        {
+            singleFrameIndex = atoi(attrivalue.c_str());
+        }
+        else if (name == "FrameIndex")
+        {
+            frameIndex = atoi(attrivalue.c_str());
+        }
+        else if (name == "Tween")
+        {
+            tween = (attrivalue == "True") ? true : false;
         }
         
-        return CreateInnerActionFrame(*_builder,
-                                      frameIndex,
-                                      tween,
-                                      innerActionType,
-                                      _builder->CreateString(currentAniamtionName),
-                                      singleFrameIndex,
-                                      createEasingData(objectData->FirstChildElement()));
+        attribute = attribute->Next();
     }
     
-    flatbuffers::Offset<flatbuffers::EasingData> FlatBuffersSerialize::createEasingData(const tinyxml2::XMLElement *objectData)
+    return CreateInnerActionFrame(*_builder,
+                                  frameIndex,
+                                  tween,
+                                  innerActionType,
+                                  _builder->CreateString(currentAniamtionName),
+                                  singleFrameIndex,
+                                  createEasingData(objectData->FirstChildElement()));
+}
+    
+flatbuffers::Offset<flatbuffers::EasingData> FlatBuffersSerialize::createEasingData(const tinyxml2::XMLElement *objectData)
+{
+    if (!objectData)
     {
-        if (!objectData)
-        {
-            return 0;
-        }
-        
-        int type = -1;
-        std::vector<flatbuffers::Position> points;
-        
-        const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
-        
-        while (attribute)
-        {
-            std::string name = attribute->Name();
-            std::string value = attribute->Value();
-            
-            if (name == "Type")
-            {
-                type = atoi(value.c_str());
-                break;
-            }
-            
-            attribute = attribute->Next();
-        }
-        
-        const tinyxml2::XMLElement* Points = objectData->FirstChildElement();
-        if (Points)
-        {
-            const tinyxml2::XMLElement* PointF = Points->FirstChildElement();
-            while (PointF)
-            {
-                Vec2 pointF = Vec2::ZERO;
-                
-                attribute = PointF->FirstAttribute();
-                
-                while (attribute)
-                {
-                    std::string name = attribute->Name();
-                    std::string value = attribute->Value();
-                    
-                    if (name == "X")
-                    {
-                        pointF.x = atof(value.c_str());
-                    }
-                    else if (name == "Y")
-                    {
-                        pointF.y = atof(value.c_str());
-                    }
-                    attribute = attribute->Next();
-                }
-                flatbuffers::Position f_PointF(pointF.x, pointF.y);
-                points.push_back(f_PointF);
-                
-                PointF = PointF->NextSiblingElement();
-            }
-        }
-        
-        return CreateEasingData(*_builder,
-                                type,
-                                _builder->CreateVectorOfStructs(points));
+        return 0;
     }
+    
+    int type = -1;
+    std::vector<flatbuffers::Position> points;
+    
+    const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
+    
+    while (attribute)
+    {
+        std::string name = attribute->Name();
+        std::string value = attribute->Value();
+        
+        if (name == "Type")
+        {
+            type = atoi(value.c_str());
+            break;
+        }
+        
+        attribute = attribute->Next();
+    }
+    
+    const tinyxml2::XMLElement* Points = objectData->FirstChildElement();
+    if (Points)
+    {
+        const tinyxml2::XMLElement* PointF = Points->FirstChildElement();
+        while (PointF)
+        {
+            Vec2 pointF;
+            
+            attribute = PointF->FirstAttribute();
+            
+            while (attribute)
+            {
+                std::string name = attribute->Name();
+                std::string value = attribute->Value();
+                
+                if (name == "X")
+                {
+                    pointF.x = atof(value.c_str());
+                }
+                else if (name == "Y")
+                {
+                    pointF.y = atof(value.c_str());
+                }
+                attribute = attribute->Next();
+            }
+            flatbuffers::Position f_PointF(pointF.x, pointF.y);
+            points.push_back(f_PointF);
+            
+            PointF = PointF->NextSiblingElement();
+        }
+    }
+    
+    return CreateEasingData(*_builder,
+                            type,
+                            _builder->CreateVectorOfStructs(points));
+}
+    
 
 /* create flat buffers with XML */
 FlatBufferBuilder* FlatBuffersSerialize::createFlatBuffersWithXMLFileForSimulator(const std::string &xmlFileName)
@@ -1430,7 +1439,22 @@ Offset<ProjectNodeOptions> FlatBuffersSerialize::createProjectNodeOptionsForSimu
     auto nodeOptions = *(Offset<WidgetOptions>*)(&temp);
 
     std::string filename = "";
-
+    float innerspeed = 1.0f;
+    
+    const tinyxml2::XMLAttribute* objattri = objectData->FirstAttribute();
+    // inneraction speed
+    while (objattri)
+    {
+        std::string name = objattri->Name();
+        std::string value = objattri->Value();
+        if (name == "InnerActionSpeed")
+        {
+            innerspeed = atof(objattri->Value());
+            break;
+        }
+        objattri = objattri->Next();
+    }
+    
     // FileData
     const tinyxml2::XMLElement* child = objectData->FirstChildElement();
     while (child)
@@ -1460,7 +1484,8 @@ Offset<ProjectNodeOptions> FlatBuffersSerialize::createProjectNodeOptionsForSimu
     
     return CreateProjectNodeOptions(*_builder,
                                     nodeOptions,
-                                    _builder->CreateString(filename));
+                                    _builder->CreateString(filename),
+                                    innerspeed);
 }
     
 }

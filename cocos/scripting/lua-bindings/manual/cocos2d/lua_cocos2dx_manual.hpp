@@ -34,7 +34,6 @@ extern "C" {
 
 #include "cocos2d.h"
 #include "LuaScriptHandlerMgr.h"
-#include "Lua-BingingsExport.h"
 
 NS_CC_BEGIN
 class LuaEventListenerCustom
@@ -52,13 +51,13 @@ NS_CC_END
 
 USING_NS_CC;
 
-CC_LUA_DLL TOLUA_API int register_all_cocos2dx_manual(lua_State* tolua_S);
+TOLUA_API int register_all_cocos2dx_manual(lua_State* tolua_S);
 
-CC_LUA_DLL TOLUA_API int register_cocos2dx_event_releated(lua_State* tolua_S);
+TOLUA_API int register_cocos2dx_event_releated(lua_State* tolua_S);
 
-CC_LUA_DLL TOLUA_API int register_all_cocos2dx_module_manual(lua_State* tolua_S);
+TOLUA_API int register_all_cocos2dx_module_manual(lua_State* tolua_S);
 
-CC_LUA_DLL TOLUA_API int register_all_cocos2dx_math_manual(lua_State* tolua_S);
+TOLUA_API int register_all_cocos2dx_math_manual(lua_State* tolua_S);
 
 struct LuaEventAccelerationData
 {
