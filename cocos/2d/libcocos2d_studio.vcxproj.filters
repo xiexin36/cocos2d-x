@@ -262,6 +262,9 @@
     <Filter Include="extension\Particle3D\PU">
       <UniqueIdentifier>{e2f9cde9-08bb-4d8b-b4f5-83b6af8f3d48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cocostudio\TimelineAction\Skeleton">
+      <UniqueIdentifier>{395744c5-d100-45f6-b9ab-ab61e8e3b53d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
@@ -1795,6 +1798,18 @@
     </ClCompile>
     <ClCompile Include="..\..\extensions\Particle3D\PU\CCPUVortexAffectorTranslator.cpp">
       <Filter>extension\Particle3D\PU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCBoneNode.cpp">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCBoneNodeChain.cpp">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCSkeletonNode.cpp">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCSkinNode.cpp">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3515,6 +3530,18 @@
     </ClInclude>
     <ClInclude Include="..\..\extensions\Particle3D\PU\CCPUVortexAffectorTranslator.h">
       <Filter>extension\Particle3D\PU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCBoneNode.h">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCBoneNodeChain.h">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCSkeletonNode.h">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCSkinNode.h">
+      <Filter>cocostudio\TimelineAction\Skeleton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
