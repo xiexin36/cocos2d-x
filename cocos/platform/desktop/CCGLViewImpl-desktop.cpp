@@ -284,10 +284,12 @@ GLViewImpl::GLViewImpl()
 
     GLFWEventHandler::setGLViewImpl(this);
 
+    // Modify for cocoStudio
     //glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
     //glfwInit();
 }
 
+// Modify for cocoStudio
 GLViewImpl::GLViewImpl(bool initglfw)
 	: _captured(false)
 	, _supportTouch(false)
@@ -333,6 +335,7 @@ GLViewImpl* GLViewImpl::create(const std::string& viewName)
     return nullptr;
 }
 
+// Modify for cocoStudio
 GLViewImpl* GLViewImpl::createWithglfwInit(const std::string& viewName)
 {
 	auto ret = new (std::nothrow) GLViewImpl(true);
@@ -344,6 +347,7 @@ GLViewImpl* GLViewImpl::createWithglfwInit(const std::string& viewName)
 	return nullptr;
 }
 
+// Modify for cocoStudio
 GLViewImpl* GLViewImpl::createWithRect(const std::string& viewName, Rect rect, float frameZoomFactor)
 {
     auto ret = new (std::nothrow) GLViewImpl;
@@ -355,6 +359,7 @@ GLViewImpl* GLViewImpl::createWithRect(const std::string& viewName, Rect rect, f
     return nullptr;
 }
 
+// Modify for cocoStudio
 GLViewImpl* GLViewImpl::createWithRectWithglfwInit(const std::string& viewName, Rect rect, float frameZoomFactor)
 {
 	auto ret = new (std::nothrow) GLViewImpl(true);
@@ -524,6 +529,17 @@ void GLViewImpl::enableRetina(bool enabled)
 void GLViewImpl::setIMEKeyboardState(bool /*bOpen*/)
 {
 
+}
+
+void GLViewImpl::setCursorVisible( bool isVisible )
+{
+    if( _mainWindow == NULL )
+        return;
+    
+    if( isVisible )
+        glfwSetInputMode(_mainWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    else
+        glfwSetInputMode(_mainWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void GLViewImpl::setFrameZoomFactor(float zoomFactor)

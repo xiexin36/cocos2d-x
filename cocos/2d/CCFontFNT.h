@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2013      Zynga Inc.
- Copyright (c) 2013-2014 Chukong Technologies Inc.
+ Copyright (c) 2013-2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -26,6 +26,8 @@
 #ifndef _CCFontFNT_h_
 #define _CCFontFNT_h_
 
+/// @cond DO_NOT_SHOW
+
 #include "CCFont.h"
 
 NS_CC_BEGIN
@@ -38,14 +40,16 @@ class CC_DLL FontFNT : public Font
 public:
     
     static FontFNT * create(const std::string& fntFilePath, const Vec2& imageOffset = Vec2::ZERO);
-	static bool CheckBMFontResource(const std::string& fntFilePath);
     /** Purges the cached data.
     Removes from memory the cached configurations and the atlas name dictionary.
     */
     static void purgeCachedData();
     virtual int* getHorizontalKerningForTextUTF16(const std::u16string& text, int &outNumLetters) const override;
     virtual FontAtlas *createFontAtlas() override;
-    
+
+    // For cocostudio
+    static bool CheckBMFontResource(const std::string& fntFilePath);
+
 protected:
     
     FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset = Vec2::ZERO);
@@ -63,6 +67,8 @@ private:
     Vec2                   _imageOffset;
     
 };
+
+/// @endcond
 
 NS_CC_END
 

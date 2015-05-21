@@ -148,10 +148,10 @@ void Slider::initRenderer()
 
 void Slider::loadBarTexture(const std::string& fileName, TextureResType texType)
 {
-    if (fileName.empty())
+    /*if (fileName.empty())
     {
         return;
-    }
+    }*/
     _textureFile = fileName;
     _barTexType = texType;
     switch (_barTexType)
@@ -174,10 +174,10 @@ void Slider::loadBarTexture(const std::string& fileName, TextureResType texType)
 
 void Slider::loadProgressBarTexture(const std::string& fileName, TextureResType texType)
 {
-    if (fileName.empty())
+    /*if (fileName.empty())
     {
         return;
-    }
+    }*/
     _progressBarTextureFile = fileName;
     _progressBarTexType = texType;
     switch (_progressBarTexType)
@@ -287,10 +287,10 @@ void Slider::loadSlidBallTextures(const std::string& normal,
 
 void Slider::loadSlidBallTextureNormal(const std::string& normal,TextureResType texType)
 {
-    if (normal.empty())
+    /*if (normal.empty())
     {
         return;
-    }
+    }*/
     _slidBallNormalTextureFile = normal;
     _ballNTexType = texType;
     switch (_ballNTexType)
@@ -309,10 +309,10 @@ void Slider::loadSlidBallTextureNormal(const std::string& normal,TextureResType 
 
 void Slider::loadSlidBallTexturePressed(const std::string& pressed,TextureResType texType)
 {
-    if (pressed.empty())
+    /*if (pressed.empty())
     {
         return;
-    }
+    }*/
     _slidBallPressedTextureFile = pressed;
     _ballPTexType = texType;
     switch (_ballPTexType)
@@ -331,10 +331,10 @@ void Slider::loadSlidBallTexturePressed(const std::string& pressed,TextureResTyp
 
     void Slider::loadSlidBallTextureDisabled(const std::string& disabled,TextureResType texType)
 {
-    if (disabled.empty())
+    /*if (disabled.empty())
     {
         return;
-    }
+    }*/
     _slidBallDisabledTextureFile = disabled;
     _ballDTexType = texType;
     switch (_ballDTexType)
