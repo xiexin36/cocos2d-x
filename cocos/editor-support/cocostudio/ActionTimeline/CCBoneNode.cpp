@@ -40,7 +40,7 @@ BoneNode::BoneNode()
     , _showRack(true)
     , _skinCascadeBlendFunc(true)
     , _skeletonDraw(nullptr)
-    , _rackColor(50, 50, 50, 200)
+    , _rackColor(.2f, .2f, .2f, .8f)
 {
     init();
 }
@@ -97,7 +97,7 @@ void BoneNode::addChildBone(BoneNode* bone)
     bone->resetSkeletonDrawNode(this->_skeletonDraw);
     signSkeletonDrawDirty();
    
-    _childrenBone.push_back(bone);
+    _boneChildren.push_back(bone);
 }
 
 void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
@@ -106,25 +106,25 @@ void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
     resetSkeletonDrawNode(nullptr);
     signSkeletonDrawDirty();
 
-    auto iterBone = std::find(_childrenBone.begin(), _childrenBone.end(), bone);
-    if (iterBone != _childrenBone.end())
-        _childrenBone.erase(iterBone);
+    auto iterBone = std::find(_boneChildren.begin(), _boneChildren.end(), bone);
+    if (iterBone != _boneChildren.end())
+        _boneChildren.erase(iterBone);
 }
 
 void BoneNode::clearChildBones(bool cleanup, bool recursive /*= false*/)
 {
     if (recursive)
     {
-        for (const auto &childbone : _childrenBone)
+        for (const auto &childbone : _boneChildren)
             childbone->clearChildBones(recursive, cleanup);
     }
-    for (const auto &childbone : _childrenBone)
+    for (const auto &childbone : _boneChildren)
     {
         Node::removeChild(childbone, cleanup);
         childbone->resetSkeletonDrawNode(nullptr);
     }
     signSkeletonDrawDirty();
-    _childrenBone.clear();
+    _boneChildren.clear();
 }
 
 std::vector<BoneNode*> BoneNode::getChildrenBones(bool recursive /*= false*/)
@@ -239,7 +239,6 @@ void BoneNode::setBoneRackColor(const cocos2d::Color4F &color)
 
 BoneNode::~BoneNode()
 {
-//    _rackShape->release();
 }
 
 void BoneNode::setContentSize(const cocos2d::Size &size)
@@ -282,11 +281,9 @@ void BoneNode::signSkeletonDrawDirty()
         _skeletonDraw->setVisible(false);
 }
 
-
-
 void BoneNode::updateVecticesColor()
 {
-    if (_squareColors[0] == _rackColor) // should judge 0 is ok
+    if (_squareColors[0] == _rackColor) // judge [0] is ok
     {
         return;
     }
@@ -318,7 +315,7 @@ void BoneNode::updateBoneRackDraw(bool recursive /*recursive*/)
         }
         if (recursive)
         {
-            for (const auto &childbone : _childrenBone)
+            for (const auto &childbone : _boneChildren)
             {
                 childbone->updateBoneRackDraw(true);
             }
@@ -332,27 +329,20 @@ void BoneNode::updateBoneRackDraw(bool recursive /*recursive*/)
 
 void BoneNode::drawBoneRack(const Mat4& transform, uint32_t flags)
 {
-    //Director* director = cocos2d::Director::getInstance();
-    //CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-    //director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-    //director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
+    Director* director = cocos2d::Director::getInstance();
+    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+    director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
 
-    //Vec2 skeletonDrawVs[4];
-    //for (int i = 0; i < 4; i++)
-    //{
-    //    skeletonDrawVs[i] = this->convertToWorldSpaceAR(_squareVertices[i]);
-    //}
-    //CHECK_GL_ERROR_DEBUG();
-    //glLineWidth(2);
-    //DrawPrimitives::setDrawColor4B(_rackColor.r * 255, _rackColor.g * 255, _rackColor.b * 255, _rackColor.a * 255);
-    //DrawPrimitives::drawCircle(skeletonDrawVs[0], s_boneWidth, 0, 50, false);
-    //CHECK_GL_ERROR_DEBUG();
-    //DrawPrimitives::drawSolidPoly(skeletonDrawVs, 4, _rackColor);
+    CHECK_GL_ERROR_DEBUG();
+    glLineWidth(1);
+    DrawPrimitives::setDrawColor4B(_rackColor.r * 255, _rackColor.g * 255, _rackColor.b * 255, _rackColor.a * 255);
+    DrawPrimitives::drawCircle(_squareVertices[0], s_boneWidth / 2, 0, 50, false);
+    DrawPrimitives::drawSolidPoly(_squareVertices, 4, _rackColor);
+    CHECK_GL_ERROR_DEBUG();
 
-    //CHECK_GL_ERROR_DEBUG();
-
-    ////end draw
-    //director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    //end draw
+    director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
 
 

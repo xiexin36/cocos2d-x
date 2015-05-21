@@ -56,8 +56,8 @@ public:
     */
     virtual std::vector<BoneNode*> getChildrenBones(bool recursive = false);  // need a BoneNodeChain
 
-    virtual const std::vector<BoneNode*>& getChildrenBones() const { return _childrenBone; }
-    virtual std::vector<BoneNode*>&  getChildrenBones() { return _childrenBone; }
+    virtual const std::vector<BoneNode*>& getChildrenBones() const { return _boneChildren; }
+    virtual std::vector<BoneNode*>&  getChildrenBones() { return _boneChildren; }
 
     virtual void removeFromParentBone(bool cleanup = false);
 
@@ -106,7 +106,7 @@ public:
     virtual const cocos2d::Color4F& getBoneRackColor() const { return _rackColor; }
 
     virtual void setBoneRackShow(bool isShowRack) { _showRack = isShowRack; }
-    virtual bool getBoneRackShow() const { return -_showRack; }
+    virtual bool isBoneRackShow() const { return -_showRack; }
 
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 
@@ -124,7 +124,7 @@ protected:
     virtual void signSkeletonDrawDirty();
     virtual void drawBoneRack(const cocos2d::Mat4 &transform, uint32_t flags);
 
-    std::vector<BoneNode*> _childrenBone;
+    std::vector<BoneNode*> _boneChildren;
     std::vector<SkinNode*> _boneSkins;
     // bone draw
     cocos2d::DrawNode* _skeletonDraw;

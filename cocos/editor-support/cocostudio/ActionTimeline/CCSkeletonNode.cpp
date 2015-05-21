@@ -62,7 +62,7 @@ void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transf
 {
     if (_skeletonDraw != nullptr)
     {
-        if (!_skeletonDraw->isVisible())
+        if ( this->isBoneRackShow() && !_skeletonDraw->isVisible())
         {
             _skeletonDraw->clear();
             this->updateBoneRackDraw(true);
@@ -71,9 +71,8 @@ void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transf
     }
     else
     {
-
+        BoneNode::draw(renderer, transform, flags);
     }
-    BoneNode::draw(renderer, transform, flags);
 }
 
 void SkeletonNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
