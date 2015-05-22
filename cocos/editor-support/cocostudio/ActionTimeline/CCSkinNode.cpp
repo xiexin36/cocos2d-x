@@ -27,5 +27,89 @@ using namespace cocos2d;
 
 
 NS_TIMELINE_BEGIN
+//
+//SpriteSkinNode::SpriteSkinNode()
+//{
+//
+//}
+//
+//SpriteSkinNode::SpriteSkinNode(cocos2d::Sprite* sprite)
+//{
+//    SpriteSkinNode(static_cast<SpriteSkinNode*>(sprite));
+//}
+//
+//SpriteSkinNode::~SpriteSkinNode()
+//{
+//
+//}
+//
+//const cocos2d::BlendFunc & SpriteSkinNode::getBlendFunc() const
+//{
+//    return cocos2d::Sprite::getBlendFunc();
+//}
+//
+//void SpriteSkinNode::setBlendFunc(const cocos2d::BlendFunc &blendFunc)
+//{
+//    cocos2d::Sprite::setBlendFunc(blendFunc);
+//}
+//
+//cocos2d::Texture2D* SpriteSkinNode::getTexture() const
+//{
+//    return cocos2d::Sprite::getTexture();
+//}
+//
+//void SpriteSkinNode::setTexture(cocos2d::Texture2D *texture)
+//{
+//    cocos2d::Sprite::setTexture(texture);
+//}
+//
+//SpriteSkinNode* SpriteSkinNode::create()
+//{
+//    return static_cast<SpriteSkinNode*>(Sprite::create());
+//}
+//
+//SpriteSkinNode* SpriteSkinNode::create(const std::string& filename)
+//{
+//    return static_cast<SpriteSkinNode*>(Sprite::create(filename));
+//}
+//
+
+
+//
+//ParticleSkinNode::ParticleSkinNode()
+//{
+//
+//}
+//
+//ParticleSkinNode::ParticleSkinNode(cocos2d::ParticleSystem* particle)
+//{
+//    ParticleSkinNode(static_cast<ParticleSkinNode*>(particle));
+//}
+//
+//
+//ParticleSkinNode::~ParticleSkinNode()
+//{
+//
+//}
+//
+//void ParticleSkinNode::setBlendFunc(const cocos2d::BlendFunc &blendFunc)
+//{
+//    cocos2d::ParticleSystem::setBlendFunc(blendFunc);
+//}
+//
+//const cocos2d::BlendFunc & ParticleSkinNode::getBlendFunc() const
+//{
+//    return cocos2d::ParticleSystem::getBlendFunc();
+//}
+//
+//Texture2D* ParticleSkinNode::getTexture() const
+//{
+//    return cocos2d::ParticleSystem::getTexture();
+//}
+//
+//void ParticleSkinNode::setTexture(cocos2d::Texture2D *texture)
+//{
+//    cocos2d::ParticleSystem::setTexture(texture);
+//}
 
 NS_TIMELINE_END

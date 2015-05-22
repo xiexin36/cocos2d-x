@@ -145,7 +145,9 @@ void BoneNode::addSkin(SkinNode* skin, bool hide /*= false*/)
     Node::addChild(skin);
     if (_skinCascadeBlendFunc)
     {
-        skin->setBlendFunc(_blendFunc);
+        auto blendnode = dynamic_cast<cocos2d::BlendProtocol*>(skin);
+        if (nullptr != blendnode)
+            blendnode->setBlendFunc(_blendFunc);
     }
     _boneSkins.push_back(skin);
 }
@@ -204,7 +206,9 @@ void BoneNode::setBlendFunc(const cocos2d::BlendFunc &blendFunc)
     {
         for (auto &skin : _boneSkins)
         {
-            skin->setBlendFunc(_blendFunc);
+            auto blendnode = dynamic_cast<cocos2d::BlendProtocol*>(skin);
+            if (nullptr != blendnode)
+                blendnode->setBlendFunc(_blendFunc);
         }
     }
 }
