@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CCSKINNODE_H__
 #define  __CCSKINNODE_H__
 
-#include "2d/CCSprite.h"
+#include "2d/CCNode.h"
 #include "base/CCProtocols.h"
 #include "CCFrame.h"
 #include "CCTimelineMacro.h"
@@ -34,17 +34,7 @@ THE SOFTWARE.
 
 NS_TIMELINE_BEGIN
 
-class CC_STUDIO_DLL SkinNode : public cocos2d::Sprite // public cocos2d::Node//, public cocos2d::TextureProtocol
-{
-public:
-    SkinNode();
-   
-protected:
-    virtual ~SkinNode();
-
-private:
-
-};
+typedef cocos2d::TextureProtocol SkinNode;
 
 NS_TIMELINE_END
 

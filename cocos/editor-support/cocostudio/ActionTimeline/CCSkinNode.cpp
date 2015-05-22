@@ -28,14 +28,4 @@ using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
-SkinNode::SkinNode()
-{
-
-}
-
-SkinNode::~SkinNode()
-{
-
-}
-
 NS_TIMELINE_END
