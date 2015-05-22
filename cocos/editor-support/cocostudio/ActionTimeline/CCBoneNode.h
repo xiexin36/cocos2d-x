@@ -106,7 +106,7 @@ public:
     virtual const cocos2d::Color4F& getBoneRackColor() const { return _rackColor; }
 
     virtual void setBoneRackShow(bool isShowRack) { _showRack = isShowRack; }
-    virtual bool isBoneRackShow() const { return -_showRack; }
+    virtual bool isBoneRackShow() const { return _showRack; }
 
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 
