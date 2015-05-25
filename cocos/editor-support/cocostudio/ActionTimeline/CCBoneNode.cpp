@@ -222,11 +222,19 @@ void BoneNode::setLength(float length)
 
 void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    if (_showRack &&  nullptr == _skeletonDraw)
+    if (!_showRack)
+        return;
+
+    if (  nullptr == _skeletonDraw)
     {
         _customCommand.init(_globalZOrder, transform, flags);
         _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
         renderer->addCommand(&_customCommand);
+    }
+    else
+    {
+        if (isSkeletonDrawDirty())
+            drawBoneRack();
     }
 }
 
@@ -275,10 +283,15 @@ void BoneNode::updateVertices()
     signSkeletonDrawDirty();
 }
 
-void BoneNode::signSkeletonDrawDirty()
+void BoneNode::signSkeletonDrawDirty(bool dirty)
 {
     if (nullptr != _skeletonDraw)
-        _skeletonDraw->setVisible(false);
+        _skeletonDraw->setVisible(!dirty);
+}
+
+bool BoneNode::isSkeletonDrawDirty()
+{
+    return nullptr != _skeletonDraw && !_skeletonDraw->isVisible();
 }
 
 void BoneNode::updateVecticesColor()
@@ -296,25 +309,6 @@ void BoneNode::updateVecticesColor()
         cvecti.a = _rackColor.a;
     }
     _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
-}
-
-void BoneNode::updateBoneRackDraw(bool recursive /*recursive*/)
-{
-    if (_skeletonDraw != nullptr)
-    {
-        drawBoneRack();
-        if (recursive)
-        {
-            for (const auto &childbone : _boneChildren)
-            {
-                childbone->updateBoneRackDraw(true);
-            }
-        }
-    }
-    else
-    {
-        CCLOG("this BoneNode can draw only be added to a SkeletonNode");
-    }
 }
 
 void BoneNode::onDraw(const Mat4& transform, uint32_t flags)

@@ -60,22 +60,16 @@ SkeletonNode::~SkeletonNode()
 {
 }
 
-void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
+void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
 {
-    if (_skeletonDraw != nullptr)
-    {
-        if ( this->isBoneRackShow() && !_skeletonDraw->isVisible())
-        {
-            _skeletonDraw->clear();
-            this->updateBoneRackDraw(true);
-            _skeletonDraw->setVisible(true);
-        }
-    }
-    else
-    {
-        BoneNode::draw(renderer, transform, flags);
-    }
+    if (isSkeletonDrawDirty())
+        _skeletonDraw->clear();
+
+    BoneNode::visit(renderer, parentTransform, parentFlags);
+
+    signSkeletonDrawDirty(false);
 }
+
 
 void SkeletonNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
 {
@@ -126,9 +120,6 @@ void SkeletonNode::updateVertices()
 
 void SkeletonNode::drawBoneRack()
 {
-    if (!isBoneRackShow())
-        return;
-
     const float offset = getLength() / 10.f;
     cocos2d::Vec2 v1(0, offset), v2(0, -offset), v3(offset, 0), v4(-offset, 0);
     if (nullptr == _skeletonDraw)

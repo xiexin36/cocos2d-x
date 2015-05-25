@@ -117,12 +117,12 @@ protected:
 
     virtual void updateVertices();
     virtual void updateVecticesColor();
-    virtual void updateBoneRackDraw(bool recursive = false);
     virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode);
-    virtual void signSkeletonDrawDirty();
+    virtual void signSkeletonDrawDirty(bool dirty = true);
+    virtual bool isSkeletonDrawDirty();
+    virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
     virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags); // for test
     virtual void drawBoneRack();  // draw rack on _skeletonDraw
-    virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 
 
     std::vector<BoneNode*> _boneChildren;
