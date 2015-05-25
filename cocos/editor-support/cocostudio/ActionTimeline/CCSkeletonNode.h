@@ -39,13 +39,18 @@ class CC_STUDIO_DLL SkeletonNode : public BoneNode
 {
 public:
     static SkeletonNode* create();
+
+    void setLength(float length) override;
 protected:
     SkeletonNode();
-    virtual bool init() override;
     virtual ~SkeletonNode();
+    virtual bool init() override;
 
+    virtual void setContentSize(const cocos2d::Size &size);
+    virtual void updateVertices() override;
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
-    virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode);
+    virtual void drawBoneRack() override;
+    virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode) override;
 
 private:
 

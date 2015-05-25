@@ -33,14 +33,14 @@ using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
-float BoneNode::s_boneWidth = 3.0f;
+float BoneNode::s_boneWidth = 10.0f;
 
 BoneNode::BoneNode()
-    : _length(30)
+    : _length(50)
     , _showRack(true)
     , _skinCascadeBlendFunc(true)
     , _skeletonDraw(nullptr)
-    , _rackColor(.2f, .2f, .2f, .8f)
+    , _rackColor(.1f, .1f, .1f, .8f)
 {
     init();
 }
@@ -222,15 +222,11 @@ void BoneNode::setLength(float length)
 
 void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    if (_showRack)
+    if (_showRack &&  nullptr == _skeletonDraw)
     {
-        if (nullptr == _skeletonDraw)  // draw it self
-        {
-            _customCommand.init(_globalZOrder, transform, flags);
-            _customCommand.func = CC_CALLBACK_0(BoneNode::drawBoneRack, this, transform, flags);
-            renderer->addCommand(&_customCommand);
-        }
-        // else draw on _skeletionDraw
+        _customCommand.init(_globalZOrder, transform, flags);
+        _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
+        renderer->addCommand(&_customCommand);
     }
 }
 
@@ -306,17 +302,7 @@ void BoneNode::updateBoneRackDraw(bool recursive /*recursive*/)
 {
     if (_skeletonDraw != nullptr)
     {
-        if (_showRack)
-        {
-            Vec2 skeletonDrawVs[4];
-            for (int i = 0; i < 4; i++)
-            {
-                skeletonDrawVs[i] = this->convertToWorldSpaceAR(_squareVertices[i]);
-                skeletonDrawVs[i] = _skeletonDraw->convertToNodeSpaceAR(skeletonDrawVs[i]); // _anchorPointInPoints is (0, 0)
-            }
-            _skeletonDraw->drawCircle(skeletonDrawVs[0], s_boneWidth , 0, 50, false, _rackColor);
-            _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 1, _rackColor);
-        }
+        drawBoneRack();
         if (recursive)
         {
             for (const auto &childbone : _boneChildren)
@@ -331,7 +317,7 @@ void BoneNode::updateBoneRackDraw(bool recursive /*recursive*/)
     }
 }
 
-void BoneNode::drawBoneRack(const Mat4& transform, uint32_t flags)
+void BoneNode::onDraw(const Mat4& transform, uint32_t flags)
 {
     Director* director = cocos2d::Director::getInstance();
     CCASSERT(nullptr != director, "Director is null when seting matrix stack");
@@ -348,6 +334,22 @@ void BoneNode::drawBoneRack(const Mat4& transform, uint32_t flags)
     //end draw
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
+
+void BoneNode::drawBoneRack()
+{
+    Vec2 skeletonDrawVs[4];
+    for (int i = 0; i < 4; i++)
+    {
+        skeletonDrawVs[i] = this->convertToWorldSpaceAR(_squareVertices[i]);
+        skeletonDrawVs[i] = _skeletonDraw->convertToNodeSpaceAR(skeletonDrawVs[i]); // _anchorPointInPoints is (0, 0)
+    }
+    const float radius = s_boneWidth / 2;
+    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
+    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 50, false, _rackColor);
+    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius + 1, 0, 50, false, _rackColor);
+    _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 2, _rackColor);
+}
+
 
 
 void BoneNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)

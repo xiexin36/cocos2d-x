@@ -108,8 +108,6 @@ public:
     virtual void setBoneRackShow(bool isShowRack) { _showRack = isShowRack; }
     virtual bool isBoneRackShow() const { return _showRack; }
 
-    virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
-
 protected:
     BoneNode();
     virtual ~BoneNode();
@@ -122,7 +120,10 @@ protected:
     virtual void updateBoneRackDraw(bool recursive = false);
     virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode);
     virtual void signSkeletonDrawDirty();
-    virtual void drawBoneRack(const cocos2d::Mat4 &transform, uint32_t flags);
+    virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags); // for test
+    virtual void drawBoneRack();  // draw rack on _skeletonDraw
+    virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
+
 
     std::vector<BoneNode*> _boneChildren;
     std::vector<SkinNode*> _boneSkins;

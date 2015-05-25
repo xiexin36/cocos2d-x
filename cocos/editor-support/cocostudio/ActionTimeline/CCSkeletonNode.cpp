@@ -44,6 +44,8 @@ bool SkeletonNode::init()
     bool ret = BoneNode::init();
     if (nullptr == _skeletonDraw)
     {
+        setContentSize(cocos2d::Size(20, 20));
+        setAnchorPoint(cocos2d::Vec2(.5f, .5f));
         _skeletonDraw = cocos2d::DrawNode::create();
         this->addChild(_skeletonDraw, INT_MAX);
     }
@@ -89,6 +91,58 @@ void SkeletonNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
         {
             _skeletonDraw = cocos2d::DrawNode::create();
             this->addChild(_skeletonDraw, INT_MAX);
+        }
+    }
+}
+
+void SkeletonNode::setLength(float length)
+{
+    setContentSize(cocos2d::Size(length, length));
+}
+
+void SkeletonNode::setContentSize(const cocos2d::Size &size)
+{
+    if (!size.equals(_contentSize))
+    {
+        _contentSize = size;
+    }
+    BoneNode::setLength(size.height);
+    updateVertices();
+}
+
+void SkeletonNode::updateVertices()
+{
+    const float radius = _contentSize.width * .5f;
+    if (radius != _squareVertices[1].x * 2)
+    {
+        _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
+    }
+
+    _squareVertices[0].x = _squareVertices[1].y = _squareVertices[2].x = _squareVertices[3].y = .0f;
+    _squareVertices[0].y = _squareVertices[3].x = - radius;
+    _squareVertices[1].x = _squareVertices[2].y = radius;
+    signSkeletonDrawDirty();
+}
+
+void SkeletonNode::drawBoneRack()
+{
+    if (!isBoneRackShow())
+        return;
+
+    const float offset = getLength() / 10.f;
+    cocos2d::Vec2 v1(0, offset), v2(0, -offset), v3(offset, 0), v4(-offset, 0);
+    if (nullptr == _skeletonDraw)
+    {
+        CCLOG(" SkeletonNode's _skeletonDraw can not be nullptr");
+    }
+    else
+    {
+        if (_skeletonDraw != nullptr)
+        {
+            _skeletonDraw->drawTriangle(v3, v4, _squareVertices[0], getBoneRackColor());
+            _skeletonDraw->drawTriangle(v1, v2, _squareVertices[1], getBoneRackColor());
+            _skeletonDraw->drawTriangle(v3, v4, _squareVertices[2], getBoneRackColor());
+            _skeletonDraw->drawTriangle(v1, v2, _squareVertices[3], getBoneRackColor());
         }
     }
 }
