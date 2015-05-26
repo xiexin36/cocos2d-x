@@ -47,6 +47,7 @@ bool SkeletonNode::init()
         setContentSize(cocos2d::Size(20, 20));
         setAnchorPoint(cocos2d::Vec2(.5f, .5f));
         _skeletonDraw = cocos2d::DrawNode::create();
+        signSkeletonDrawDirty();
         this->addChild(_skeletonDraw, INT_MAX);
     }
     return ret;
@@ -87,6 +88,7 @@ void SkeletonNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
             this->addChild(_skeletonDraw, INT_MAX);
         }
     }
+    signSkeletonDrawDirty();
 }
 
 void SkeletonNode::setLength(float length)
