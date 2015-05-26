@@ -44,8 +44,8 @@ bool SkeletonNode::init()
     bool ret = BoneNode::init();
     if (nullptr == _skeletonDraw)
     {
+        _anchorPoint = Vec2(.5f, .5f);
         setContentSize(cocos2d::Size(20, 20));
-        setAnchorPoint(cocos2d::Vec2(.5f, .5f));
         _skeletonDraw = cocos2d::DrawNode::create();
         signSkeletonDrawDirty();
         this->addChild(_skeletonDraw, INT_MAX);
