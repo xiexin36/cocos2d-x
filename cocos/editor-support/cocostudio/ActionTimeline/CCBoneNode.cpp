@@ -339,9 +339,9 @@ void BoneNode::drawBoneRack()
         skeletonDrawVs[i] = _skeletonDraw->convertToNodeSpaceAR(skeletonDrawVs[i]); // _anchorPointInPoints is (0, 0)
     }
     const float radius = s_boneWidth / 2;
-    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
-    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 50, false, _rackColor);
-    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius + 1, 0, 50, false, _rackColor);
+    //_skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
+    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 30, false, _rackColor);
+    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius + 1, 0, 30, false, _rackColor);
     _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 2, _rackColor);
 }
 
