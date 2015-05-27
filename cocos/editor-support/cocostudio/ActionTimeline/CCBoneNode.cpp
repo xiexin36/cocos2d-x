@@ -262,7 +262,7 @@ void BoneNode::setContentSize(const cocos2d::Size &size)
 
 bool BoneNode::init()
 {
-    _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
+    _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
     _anchorPoint = Vec2(.5, 0);
     setContentSize(cocos2d::Size(s_boneWidth * 2, _length));
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));

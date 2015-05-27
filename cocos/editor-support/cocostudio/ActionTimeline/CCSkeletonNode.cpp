@@ -22,7 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #include "CCSkeletonNode.h"
-
+#include "renderer/CCGLProgramState.h"
+#include "renderer/CCGLProgram.h"
 NS_TIMELINE_BEGIN
 
 
@@ -41,9 +42,11 @@ SkeletonNode* SkeletonNode::create()
 
 bool SkeletonNode::init()
 {
-    bool ret = BoneNode::init();
+    bool ret = LayerColor::init();
+    _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
     _anchorPoint = Vec2(.5f, .5f);
     setContentSize(cocos2d::Size(30, 30));
+    setGLProgramState(cocos2d::GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     if (nullptr == _skeletonDraw)
     {
         _skeletonDraw = cocos2d::DrawNode::create();
@@ -103,7 +106,6 @@ void SkeletonNode::setContentSize(const cocos2d::Size &size)
         _contentSize = size;
     }
     BoneNode::setLength(size.height);
-    updateVertices();
 }
 
 void SkeletonNode::updateVertices()
