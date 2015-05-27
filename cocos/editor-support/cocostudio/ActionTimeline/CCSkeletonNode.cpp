@@ -42,10 +42,10 @@ SkeletonNode* SkeletonNode::create()
 bool SkeletonNode::init()
 {
     bool ret = BoneNode::init();
+    _anchorPoint = Vec2(.5f, .5f);
+    setContentSize(cocos2d::Size(30, 30));
     if (nullptr == _skeletonDraw)
     {
-        _anchorPoint = Vec2(.5f, .5f);
-        setContentSize(cocos2d::Size(20, 20));
         _skeletonDraw = cocos2d::DrawNode::create();
         signSkeletonDrawDirty();
         this->addChild(_skeletonDraw, INT_MAX);
