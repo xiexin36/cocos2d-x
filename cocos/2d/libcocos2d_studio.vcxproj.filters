@@ -259,7 +259,7 @@
     <Filter Include="extension\Particle3D\PU">
       <UniqueIdentifier>{e2f9cde9-08bb-4d8b-b4f5-83b6af8f3d48}</UniqueIdentifier>
     </Filter>
-<Filter Include="external\poly2tri">
+    <Filter Include="external\poly2tri">
       <UniqueIdentifier>{6fee9363-02a2-4007-87d1-266a64bc08ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="external\poly2tri\common">
@@ -267,9 +267,14 @@
     </Filter>
     <Filter Include="external\poly2tri\sweep">
       <UniqueIdentifier>{24fe64b1-2829-4d5a-bbe6-581bea9d6628}</UniqueIdentifier>
-    </Filter> <Filter Include="cocostudio\TimelineAction\Skeleton">
+    </Filter>
+    <Filter Include="cocostudio\TimelineAction\Skeleton">
       <UniqueIdentifier>{395744c5-d100-45f6-b9ab-ab61e8e3b53d}</UniqueIdentifier>
-    </Filter>  </ItemGroup>
+    </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\BoneReader">
+      <UniqueIdentifier>{d82df64b-9e3a-4c83-bdec-66a1839ad494}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
       <Filter>physics</Filter>
@@ -1799,8 +1804,6 @@
     <ClCompile Include="..\..\extensions\Particle3D\PU\CCPUVortexAffectorTranslator.cpp">
       <Filter>extension\Particle3D\PU</Filter>
     </ClCompile>
-
-
     <ClCompile Include="MarchingSquare.cpp">
       <Filter>2d</Filter>
     </ClCompile>
@@ -1845,7 +1848,11 @@
     </ClCompile>
     <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCSkinNode.cpp">
       <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClCompile>  </ItemGroup>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\BoneReader\BoneReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\BoneReader</Filter>
+    </ClCompile>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\physics\CCPhysicsBody.h">
       <Filter>physics</Filter>
@@ -3611,7 +3618,14 @@
     </ClInclude>
     <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCSkinNode.h">
       <Filter>cocostudio\TimelineAction\Skeleton</Filter>
-    </ClInclude>  </ItemGroup>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\CSBoneBinary_generated.h">
+      <Filter>cocostudio\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\BoneReader\BoneReader.h">
+      <Filter>cocostudio\reader\WidgetReader\BoneReader</Filter>
+    </ClInclude>
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\math\Mat4.inl">
       <Filter>math</Filter>
