@@ -33,10 +33,9 @@ using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
-float BoneNode::s_boneWidth = 10.0f;
-
 BoneNode::BoneNode()
     : _length(50)
+    , _width(20)
     , _showRack(true)
     , _skinCascadeBlendFunc(true)
     , _skeletonDraw(nullptr)
@@ -216,7 +215,14 @@ void BoneNode::setBlendFunc(const cocos2d::BlendFunc &blendFunc)
 void BoneNode::setLength(float length)
 {
     _length = length;
-    _contentSize.height = length;
+    _contentSize.width = length;
+    updateVertices();
+}
+
+void BoneNode::setWidth(float width)
+{
+    _width = width;
+    _contentSize.height = width;
     updateVertices();
 }
 
@@ -256,15 +262,16 @@ void BoneNode::setContentSize(const cocos2d::Size &size)
     {
         _contentSize = size;
     }
-    _length = size.height;
+    _length = size.width;
+    _width  = size.height;
     updateVertices();
 }
 
 bool BoneNode::init()
 {
     _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
-    _anchorPoint = Vec2(.5, 0);
-    setContentSize(cocos2d::Size(s_boneWidth * 2, _length));
+    _anchorPoint = Vec2(0, .5f);
+    setContentSize(cocos2d::Size(_length, _width));
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     return true;
 }
@@ -276,10 +283,10 @@ void BoneNode::updateVertices()
         _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
     }
 
-    _squareVertices[1].x = s_boneWidth;
-    _squareVertices[1].y = _squareVertices[3].y = _length / 10.f;
-    _squareVertices[2].y = _length;
-    _squareVertices[3].x = -s_boneWidth;
+    _squareVertices[1].x = _squareVertices[3].x = _length / 10.f;
+    _squareVertices[3].y = _width / 2;
+    _squareVertices[1].y = -_squareVertices[3].y;
+    _squareVertices[2].x = _length;
 
     signSkeletonDrawDirty();
 }
@@ -322,7 +329,7 @@ void BoneNode::onDraw(const Mat4& transform, uint32_t flags)
     CHECK_GL_ERROR_DEBUG();
     glLineWidth(1);
     DrawPrimitives::setDrawColor4B(_rackColor.r * 255, _rackColor.g * 255, _rackColor.b * 255, _rackColor.a * 255);
-    DrawPrimitives::drawCircle(_squareVertices[0], s_boneWidth / 2, 0, 50, false);
+    DrawPrimitives::drawCircle(_squareVertices[0], _width / 4, 0, 30, false);
     DrawPrimitives::drawSolidPoly(_squareVertices, 4, _rackColor);
     CHECK_GL_ERROR_DEBUG();
 
@@ -338,10 +345,9 @@ void BoneNode::drawBoneRack()
         skeletonDrawVs[i] = this->convertToWorldSpaceAR(_squareVertices[i]);
         skeletonDrawVs[i] = _skeletonDraw->convertToNodeSpaceAR(skeletonDrawVs[i]); // _anchorPointInPoints is (0, 0)
     }
-    const float radius = s_boneWidth / 2;
+    const float radius = _width / 4;
     //_skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
     _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 30, false, _rackColor);
-    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius + 1, 0, 30, false, _rackColor);
     _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 2, _rackColor);
 }
 
@@ -352,5 +358,12 @@ void BoneNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
     _skeletonDraw = skeletonDrawNode;
     signSkeletonDrawDirty();
 }
+
+void BoneNode::setPosition(float x, float y)
+{
+    LayerColor::setPosition(x, y);
+    signSkeletonDrawDirty();
+}
+
 
 NS_TIMELINE_END

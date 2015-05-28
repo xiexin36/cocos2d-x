@@ -100,6 +100,8 @@ public:
     // bone operate
     virtual void setLength(float length);
     virtual float getLength() const { return _length; }
+    virtual void setWidth(float width);
+    virtual float getWidth() const { return _width; }
 
     // color
     virtual void setBoneRackColor(const cocos2d::Color4F &color);
@@ -108,6 +110,7 @@ public:
     virtual void setBoneRackShow(bool isShowRack) { _showRack = isShowRack; }
     virtual bool isBoneRackShow() const { return _showRack; }
 
+    virtual void setPosition(float x, float y) override;
 protected:
     BoneNode();
     virtual ~BoneNode();
@@ -131,14 +134,12 @@ protected:
     cocos2d::DrawNode* _skeletonDraw;
 private:
     float _length;
+    float _width;
 
     bool _showRack;
     bool _skinCascadeBlendFunc;
 
     cocos2d::Color4F _rackColor;
-
-    // static 
-    static float s_boneWidth;
 };
 
 NS_TIMELINE_END
