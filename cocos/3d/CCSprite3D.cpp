@@ -94,7 +94,7 @@ void Sprite3D::createAsync(const std::string &modelPath, const std::function<voi
 
 void Sprite3D::createAsync(const std::string &modelPath, const std::string &texturePath, const std::function<void(Sprite3D*, void*)>& callback, void* callbackparam)
 {
-    Sprite3D *sprite = new (std::nothrow) Sprite3D();
+	Sprite3D *sprite = new (std::nothrow) Sprite3D();
     if (sprite->loadFromCache(modelPath))
     {
         sprite->autorelease();
@@ -479,8 +479,8 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
         {
             if(it->bones.size() > 0 || singleSprite)
             {
-                if(singleSprite)
-                    root->setName(nodedata->id);
+                if (singleSprite && root)
+                    root->setName(nodedata->id); 
                 auto mesh = Mesh::create(nodedata->id, getMeshIndexData(it->subMeshId));
                 if(mesh)
                 {
@@ -732,14 +732,14 @@ void Sprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     if (scene)
     {
         const auto& lights = scene->getLights();
-        bool usingLight = false;
-        for (const auto light : lights) {
-            usingLight = ((unsigned int)light->getLightFlag() & _lightMask) > 0;
-            if (usingLight)
-                break;
-        }
-        if (usingLight != _shaderUsingLight)
-            genGLProgramState(usingLight);
+    bool usingLight = false;
+    for (const auto light : lights) {
+        usingLight = ((unsigned int)light->getLightFlag() & _lightMask) > 0;
+        if (usingLight)
+            break;
+    }
+    if (usingLight != _shaderUsingLight)
+        genGLProgramState(usingLight);
     }
     
     int i = 0;
@@ -870,7 +870,7 @@ const AABB& Sprite3D::getAABB(bool world) const
     _aabbDirty = true;
 
     Mat4 nodeToWorldTransform(getNodeToWorldTransform());
-
+    
     // If nodeToWorldTransform matrix isn't changed, we don't need to transform aabb.
     if (memcmp(_nodeToWorldTransform.m, nodeToWorldTransform.m, sizeof(Mat4)) == 0 && !_aabbDirty)
     {
@@ -884,13 +884,13 @@ const AABB& Sprite3D::getAABB(bool world) const
             if (it->isVisible())
                 _aabb.merge(it->getAABB());
         }
-
-        if (world)
-            _aabb.transform(transform);
+        
+		if (world)
+			_aabb.transform(transform);
 
         _nodeToWorldTransform = nodeToWorldTransform;
     }
-
+    
     return _aabb;
 }
 

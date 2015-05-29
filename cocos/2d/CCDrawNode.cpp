@@ -123,6 +123,8 @@ DrawNode::DrawNode()
 , _dirty(false)
 , _dirtyGLPoint(false)
 , _dirtyGLLine(false)
+, _lineWidth(1)
+, _lineSmoothEnable(false)
 {
     _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
 }
@@ -393,7 +395,19 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
         // texcood
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
-    glLineWidth(2);
+    if (this->_lineSmoothEnable)
+    {
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+    }
+    else
+    {
+        glDisable(GL_LINE_SMOOTH);
+    }
+
+    glLineWidth(this->_lineWidth);
     glDrawArrays(GL_LINES, 0, _bufferCountGLLine);
     
     if (Configuration::getInstance()->supportsShareableVAO())
@@ -931,6 +945,26 @@ const BlendFunc& DrawNode::getBlendFunc() const
 void DrawNode::setBlendFunc(const BlendFunc &blendFunc)
 {
     _blendFunc = blendFunc;
+}
+
+void DrawNode::csSetLineSmooth(bool enable)
+{
+    this->_lineSmoothEnable = enable;
+}
+
+bool DrawNode::csIsLineSmooth()
+{
+    return this->_lineSmoothEnable;
+}
+
+void DrawNode::csSetLineWidth(float width)
+{
+    this->_lineWidth = width;
+}
+
+float DrawNode::csGetLineWidth()
+{
+    return this->_lineWidth;
 }
 
 NS_CC_END
