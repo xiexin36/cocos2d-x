@@ -348,7 +348,7 @@ void BoneNode::drawBoneRack()
     const float radius = _width / 4;
     //_skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
     _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 30, false, _rackColor);
-    _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 2, _rackColor);
+    _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 0, _rackColor);
 }
 
 
