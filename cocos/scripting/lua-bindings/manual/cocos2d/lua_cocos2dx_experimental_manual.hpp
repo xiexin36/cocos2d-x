@@ -34,8 +34,6 @@ extern "C" {
 }
 #endif
 
-#include "Lua-BingingsExport.h"
-
-CC_LUA_DLL TOLUA_API int register_all_cocos2dx_experimental_manual(lua_State* L);
+TOLUA_API int register_all_cocos2dx_experimental_manual(lua_State* L);
 
 #endif //#ifndef COCOS_SCRIPTING_LUA_BINDINGS_LUA_COCOS2DX_EXPERIMENTAL_MANUAL_H

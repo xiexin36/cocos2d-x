@@ -30,9 +30,7 @@
 NS_CC_BEGIN
 
 Particle3D::Particle3D()
-: position(Vec3::ZERO)
-, color(Vec4::ONE)
-, lb_uv(Vec2::ZERO)
+: color(Vec4::ONE)
 , rt_uv(Vec2::ONE)
 , width(1.0f)
 , height(1.0f)
@@ -47,11 +45,11 @@ Particle3D::~Particle3D()
 }
 
 ParticleSystem3D::ParticleSystem3D()
-: _emitter(nullptr)
+: _state(State::STOP)
+, _emitter(nullptr)
 , _render(nullptr)
 , _aliveParticlesCnt(0)
 , _particleQuota(0)
-, _state(State::STOP)
 , _blend(BlendFunc::ALPHA_NON_PREMULTIPLIED)
 , _keepLocal(false)
 , _isEnabled(true)

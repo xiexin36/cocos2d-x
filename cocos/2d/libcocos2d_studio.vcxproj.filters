@@ -238,9 +238,6 @@
     <Filter Include="cocostudio\reader\WidgetReader\ArmatureNodeReader">
       <UniqueIdentifier>{1b821c9f-340b-43b7-9455-058cfbe4c796}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui\shaders">
-      <UniqueIdentifier>{2c03e02d-df3a-46b2-9a89-dfd1565bf830}</UniqueIdentifier>
-    </Filter>
     <Filter Include="base\allocator">
       <UniqueIdentifier>{464a05d6-0f47-4938-ab1f-90b75790d54e}</UniqueIdentifier>
     </Filter>
@@ -261,6 +258,15 @@
     </Filter>
     <Filter Include="extension\Particle3D\PU">
       <UniqueIdentifier>{e2f9cde9-08bb-4d8b-b4f5-83b6af8f3d48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\poly2tri">
+      <UniqueIdentifier>{6fee9363-02a2-4007-87d1-266a64bc08ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\poly2tri\common">
+      <UniqueIdentifier>{7848dbab-b866-471d-8a91-9c525d10f5b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\poly2tri\sweep">
+      <UniqueIdentifier>{24fe64b1-2829-4d5a-bbe6-581bea9d6628}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1231,7 +1237,6 @@
     <ClCompile Include="..\audio\win32\AudioPlayer.cpp">
       <Filter>audioengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCNodeReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CSLoader.cpp">
       <Filter>cocostudio\TimelineAction</Filter>
     </ClCompile>
@@ -1300,9 +1305,6 @@
     </ClCompile>
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\ArmatureNodeReader.cpp">
       <Filter>cocostudio\reader\WidgetReader\ArmatureNodeReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ui\shaders\UIShaders.cpp">
-      <Filter>ui\shaders</Filter>
     </ClCompile>
     <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCActionTimelineNode.cpp">
       <Filter>cocostudio\TimelineAction</Filter>
@@ -1795,6 +1797,39 @@
     </ClCompile>
     <ClCompile Include="..\..\extensions\Particle3D\PU\CCPUVortexAffectorTranslator.cpp">
       <Filter>extension\Particle3D\PU</Filter>
+    </ClCompile>
+    <ClCompile Include="MarchingSquare.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SpritePolygon.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SpritePolygonCache.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3d\CCSkybox.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3d\CCTerrain.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3d\CCTextureCube.cpp">
+      <Filter>3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\poly2tri\common\shapes.cc">
+      <Filter>external\poly2tri\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\poly2tri\sweep\advancing_front.cc">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\poly2tri\sweep\cdt.cc">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\poly2tri\sweep\sweep.cc">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\external\poly2tri\sweep\sweep_context.cc">
+      <Filter>external\poly2tri\sweep</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2936,7 +2971,6 @@
     <ClInclude Include="..\audio\win32\AudioPlayer.h">
       <Filter>audioengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCNodeReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CSLoader.h">
       <Filter>cocostudio\TimelineAction</Filter>
     </ClInclude>
@@ -2999,9 +3033,6 @@
     </ClInclude>
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\CSArmatureNode_generated.h">
       <Filter>cocostudio\reader\WidgetReader\ArmatureNodeReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ui\shaders\UIShaders.h">
-      <Filter>ui\shaders</Filter>
     </ClInclude>
     <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCActionTimelineNode.h">
       <Filter>cocostudio\TimelineAction</Filter>
@@ -3516,6 +3547,45 @@
     <ClInclude Include="..\..\extensions\Particle3D\PU\CCPUVortexAffectorTranslator.h">
       <Filter>extension\Particle3D\PU</Filter>
     </ClInclude>
+    <ClInclude Include="MarchingSquare.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePolygon.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePolygonCache.h">
+      <Filter>2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3d\CCSkybox.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3d\CCTerrain.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3d\CCTextureCube.h">
+      <Filter>3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\poly2tri.h">
+      <Filter>external\poly2tri</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\common\shapes.h">
+      <Filter>external\poly2tri\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\common\utils.h">
+      <Filter>external\poly2tri\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\sweep\sweep_context.h">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\sweep\advancing_front.h">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\sweep\cdt.h">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\poly2tri\sweep\sweep.h">
+      <Filter>external\poly2tri\sweep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\math\Mat4.inl">
@@ -3542,9 +3612,6 @@
     <None Include="cocos2d.def" />
     <None Include="..\3d\CCAnimationCurve.inl">
       <Filter>3d</Filter>
-    </None>
-    <None Include="..\ui\shaders\ccShader_grayscale.frag">
-      <Filter>ui\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

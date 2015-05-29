@@ -85,7 +85,6 @@ public:
     *
     * @param zoomX The zoom factor along the X-axis of the orthographic projection (the width of the ortho projection).
     * @param zoomY The zoom factor along the Y-axis of the orthographic projection (the height of the ortho projection).
-    * @param aspectRatio The aspect ratio of the orthographic projection.
     * @param nearPlane The near plane distance.
     * @param farPlane The far plane distance.
     */
@@ -176,14 +175,24 @@ public:
     //override
     virtual void onEnter() override;
     virtual void onExit() override;
-    
+
+    /**
+     * Get the visiting camera , the visiting camera shall be set on Scene::render
+     */
     static const Camera* getVisitingCamera() { return _visitingCamera; }
+
+    /**
+     * Get the default camera of the current running scene.
+     */
     static Camera* getDefaultCamera();
 
 CC_CONSTRUCTOR_ACCESS:
     Camera();
-    virtual ~Camera();
+    ~Camera();
     
+    /**
+     * Set the scene,this method shall not be invoke manually
+     */
     void setScene(Scene* scene);
     
     /**set additional matrix for the projection matrix, it multiplys mat to projection matrix when called, used by WP8*/

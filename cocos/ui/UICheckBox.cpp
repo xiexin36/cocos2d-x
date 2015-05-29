@@ -189,10 +189,10 @@ void CheckBox::loadTextures(const std::string& backGround,
 
 void CheckBox::loadTextureBackGround(const std::string& backGround,TextureResType texType)
 {
-    if (backGround.empty() || (_backGroundFileName == backGround && _backGroundTexType == texType))
+    /*if (backGround.empty() || (_backGroundFileName == backGround && _backGroundTexType == texType))
     {
         return;
-    }
+    }*/
     _backGroundFileName = backGround;
     _backGroundTexType = texType;
     switch (_backGroundTexType)
@@ -215,11 +215,11 @@ void CheckBox::loadTextureBackGround(const std::string& backGround,TextureResTyp
 
 void CheckBox::loadTextureBackGroundSelected(const std::string& backGroundSelected,TextureResType texType)
 {
-    if (backGroundSelected.empty() ||
+    /*if (backGroundSelected.empty() ||
         (_backGroundSelectedFileName == backGroundSelected && _backGroundSelectedTexType == texType))
     {
         return;
-    }
+    }*/
     
     _backGroundSelectedFileName = backGroundSelected;
     _backGroundSelectedTexType = texType;
@@ -242,10 +242,10 @@ void CheckBox::loadTextureBackGroundSelected(const std::string& backGroundSelect
 
 void CheckBox::loadTextureFrontCross(const std::string& cross,TextureResType texType)
 {
-    if (cross.empty() || (_frontCrossFileName == cross && _frontCrossTexType == texType))
+    /*if (cross.empty() || (_frontCrossFileName == cross && _frontCrossTexType == texType))
     {
         return;
-    }
+    }*/
     _frontCrossFileName = cross;
     _frontCrossTexType = texType;
     switch (_frontCrossTexType)
@@ -267,11 +267,11 @@ void CheckBox::loadTextureFrontCross(const std::string& cross,TextureResType tex
 
 void CheckBox::loadTextureBackGroundDisabled(const std::string& backGroundDisabled,TextureResType texType)
 {
-    if (backGroundDisabled.empty() ||
+    /*if (backGroundDisabled.empty() ||
         (_backGroundDisabledFileName == backGroundDisabled && _backGroundDisabledTexType == texType))
     {
         return;
-    }
+    }*/
     _backGroundDisabledFileName = backGroundDisabled;
     _backGroundDisabledTexType = texType;
     switch (_backGroundDisabledTexType)
@@ -293,11 +293,11 @@ void CheckBox::loadTextureBackGroundDisabled(const std::string& backGroundDisabl
 
 void CheckBox::loadTextureFrontCrossDisabled(const std::string& frontCrossDisabled,TextureResType texType)
 {
-    if (frontCrossDisabled.empty() ||
+    /*if (frontCrossDisabled.empty() ||
         (_frontCrossDisabledFileName == frontCrossDisabled && _frontCrossDisabledTexType == texType))
     {
         return;
-    }
+    }*/
     _frontCrossDisabledFileName = frontCrossDisabled;
     _frontCrossDisabledTexType = texType;
     switch (_frontCrossDisabledTexType)

@@ -34,7 +34,7 @@ extern const char* cocos2dVersion();
 Configuration* Configuration::s_sharedConfiguration = nullptr;
 
 Configuration::Configuration()
-: _maxTextureSize(GL_MAX_TEXTURE_SIZE)
+: _maxTextureSize(GL_MAX_TEXTURE_SIZE)  // For cocoStudio only
 , _maxModelviewStackDepth(0)
 , _supportsPVRTC(false)
 , _supportsETC1(false)
@@ -45,11 +45,12 @@ Configuration::Configuration()
 , _supportsDiscardFramebuffer(false)
 , _supportsShareableVAO(false)
 , _maxSamplesAllowed(0)
-, _maxTextureUnits(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+, _maxTextureUnits(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)  // For cocoStudio only
 , _glExtensions(nullptr)
 , _maxDirLightInShader(1)
 , _maxPointLightInShader(1)
 , _maxSpotLightInShader(1)
+, _animate3DQuality(Animate3DQuality::QUALITY_HIGH)
 {
 }
 
@@ -262,6 +263,11 @@ int Configuration::getMaxSupportSpotLightInShader() const
     return _maxSpotLightInShader;
 }
 
+Animate3DQuality Configuration::getAnimate3DQuality() const
+{
+    return _animate3DQuality;
+}
+
 //
 // generic getters for properties
 //
@@ -350,6 +356,12 @@ void Configuration::loadConfigFile(const std::string& filename)
         _maxSpotLightInShader = _valueDict[name].asInt();
     else
         _valueDict[name] = Value(_maxSpotLightInShader);
+    
+    name = "cocos2d.x.3d.animate_quality";
+    if (_valueDict.find(name) != _valueDict.end())
+        _animate3DQuality = (Animate3DQuality)_valueDict[name].asInt();
+    else
+        _valueDict[name] = Value((int)_animate3DQuality);
 }
 
 NS_CC_END

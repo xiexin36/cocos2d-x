@@ -2,7 +2,7 @@
 Copyright (c) 2009-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2014 Chukong Technologies Inc.
+Copyright (c) 2013-2015 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 #ifndef __CC_TM_XML_PARSER__
 #define __CC_TM_XML_PARSER__
+
+/// @cond DO_NOT_SHOW
 
 #include "math/CCGeometry.h"
 #include "platform/CCSAXParser.h"
@@ -278,6 +280,8 @@ public:
     inline void setCurrentString(const std::string& currentString){ _currentString = currentString; }
     inline const std::string& getTMXFileName() const { return _TMXFileName; }
     inline void setTMXFileName(const std::string& fileName){ _TMXFileName = fileName; }
+
+    // For cocostudio use
     inline const std::string& getExternalTilesetFileName(){ return _externalTilesetFilename; }
 protected:
     void internalInit(const std::string& tmxFileName, const std::string& resourcePath);
@@ -318,6 +322,7 @@ protected:
     int _currentFirstGID;
     bool _recordFirstGID;
 
+    // For cocostudio use
     std::string _externalTilesetFilename;
 };
 
@@ -326,5 +331,6 @@ protected:
 
 NS_CC_END
 
+/// @endcond
 #endif
 

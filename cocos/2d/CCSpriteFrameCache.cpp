@@ -358,10 +358,18 @@ void SpriteFrameCache::addSpriteFramesWithFile(const std::string& plist, const s
 void SpriteFrameCache::addSpriteFramesWithFile(const std::string& plist)
 {
     CCASSERT(plist.size()>0, "plist filename should not be nullptr");
+    
+    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(plist);
+    if (fullPath.size() == 0)
+    {
+        // return if plist file doesn't exist
+        CCLOG("cocos2d: SpriteFrameCache: can not find %s", plist.c_str());
+        return;
+    }
 
     if (_loadedFileNames->find(plist) == _loadedFileNames->end())
     {
-        std::string fullPath = FileUtils::getInstance()->fullPathForFilename(plist);
+        
         ValueMap dict = FileUtils::getInstance()->getValueMapFromFile(fullPath);
 
         string texturePath("");
@@ -407,20 +415,21 @@ void SpriteFrameCache::addSpriteFramesWithFile(const std::string& plist)
     }
 }
 
+bool SpriteFrameCache::isSpriteFramesWithFileLoaded(const std::string& plist) const
+{
+    bool result = false;
+
+    if (_loadedFileNames->find(plist) != _loadedFileNames->end())
+    {
+        result = true;
+    }
+
+    return result;
+}
+
 void SpriteFrameCache::addSpriteFrame(SpriteFrame* frame, const std::string& frameName)
 {
     _spriteFrames.insert(frameName, frame);
-}
-
-bool SpriteFrameCache::isSpriteFramesWithFileLoaded(const std::string& plist) const
-{
-	bool result = false;
-	if (_loadedFileNames->find(plist) != _loadedFileNames->end())
-	{
-		result = true;
-	}
-	
-		return result;
 }
 
 bool SpriteFrameCache::reloadTexture(const std::string& plist)
@@ -482,6 +491,7 @@ bool SpriteFrameCache::reloadTexture(const std::string& plist)
     }
 	return true;
 }
+
 void SpriteFrameCache::removeSpriteFrames()
 {
     _spriteFrames.clear();

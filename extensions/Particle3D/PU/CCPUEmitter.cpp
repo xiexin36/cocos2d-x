@@ -61,29 +61,28 @@ const float PUEmitter::DEFAULT_DEPTH = 0.0f;
 PUEmitter::PUEmitter()
 : //mEmitsType(DEFAULT_EMITS),
 //mEmitsName(StringUtil::BLANK),
-_remainder(0),
-_durationRemain(0),
-_repeatDelayRemain(0),
-_dynDurationSet(false),
-_dynRepeatDelaySet(false),
+_emitterScale(Vec3::ONE),
 _particleDirection(DEFAULT_DIRECTION),
 _originalParticleDirection(DEFAULT_DIRECTION),
 //mParticleOrientation(Quaternion::IDENTITY),
 //mParticleOrientationRangeStart(Quaternion::IDENTITY),
 //mParticleOrientationRangeEnd(Quaternion::IDENTITY),
 _particleOrientationRangeSet(false),
-_upVector(Vec3::ZERO),
 _dynParticleAllDimensionsSet(false),
 _dynParticleWidthSet(false),
 _dynParticleHeightSet(false),
 _dynParticleDepthSet(false),
+_remainder(0),
+_durationRemain(0),
+_dynDurationSet(false),
+_repeatDelayRemain(0),
+_dynRepeatDelaySet(false),
 _autoDirection(DEFAULT_AUTO_DIRECTION),
 _forceEmission(DEFAULT_FORCE_EMISSION),
 _originalForceEmission(false),
 _forceEmissionExecuted(false),
 _originalForceEmissionExecuted(false),
 //mName(StringUtil::BLANK),
-_emitterScale(Vec3::ONE),
 _particleColor(DEFAULT_COLOUR),
 _particleColorRangeStart(DEFAULT_START_COLOUR_RANGE),
 _particleColorRangeEnd(DEFAULT_END_COLOUR_RANGE),
@@ -335,7 +334,6 @@ bool PUEmitter::isEnabled( void ) const
 
 void PUEmitter::notifyStart()
 {
-    _latestPosition = getDerivedPosition(); // V1.3.1
     _forceEmission = _originalForceEmission;
     _forceEmissionExecuted = _originalForceEmissionExecuted;
     _remainder = 0;
@@ -389,6 +387,8 @@ void PUEmitter::prepare()
             }
         }
     }
+
+    _latestPosition = getDerivedPosition(); // V1.3.1
 }
 
 void PUEmitter::unPrepare()
@@ -889,6 +889,10 @@ void PUEmitter::copyAttributesTo( PUEmitter* emitter )
     emitter->setEmitterType(_emitterType);
     emitter->setEmitsName(_emitsName);
     emitter->setEmitsType(_emitsType);
+    emitter->_position = _position;
+    emitter->_isEnabled = _isEnabled;
+    emitter->_originEnabled = _originEnabled;
+    emitter->_originEnabledSet = _originEnabledSet;
     emitter->_particleDirection = _particleDirection;
     emitter->_originalParticleDirection = _originalParticleDirection;
     emitter->_particleOrientation = _particleOrientation;
