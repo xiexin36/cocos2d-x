@@ -110,7 +110,12 @@ public:
     virtual void setBoneRackShow(bool isShowRack) { _showRack = isShowRack; }
     virtual bool isBoneRackShow() const { return _showRack; }
 
+    // for cocostudio editor
     virtual void setPosition(float x, float y) override;
+    virtual void setRotation(float rotation) override;
+    virtual void setRotationSkewX(float rotationX) override;
+    virtual void setRotationSkewY(float rotationY) override;
+    virtual void setScale(float scaleX, float scaleY) override;
 protected:
     BoneNode();
     virtual ~BoneNode();

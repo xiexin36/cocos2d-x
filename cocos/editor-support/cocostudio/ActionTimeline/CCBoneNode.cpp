@@ -359,11 +359,35 @@ void BoneNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
     signSkeletonDrawDirty();
 }
 
+// for editor
 void BoneNode::setPosition(float x, float y)
 {
     LayerColor::setPosition(x, y);
     signSkeletonDrawDirty();
 }
 
+void BoneNode::setRotation(float rotation)
+{
+    LayerColor::setRotation(rotation);
+    signSkeletonDrawDirty();
+}
+
+void BoneNode::setRotationSkewX(float rotationX)
+{
+    LayerColor::setRotationSkewX(rotationX);
+    signSkeletonDrawDirty();
+}
+
+void BoneNode::setRotationSkewY(float rotationY)
+{
+    LayerColor::setRotationSkewY(rotationY);
+    signSkeletonDrawDirty();
+}
+
+void BoneNode::setScale(float scaleX, float scaleY)
+{
+    LayerColor::setScale(scaleX, scaleY);
+    signSkeletonDrawDirty();
+}
 
 NS_TIMELINE_END
