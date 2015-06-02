@@ -32,6 +32,7 @@ THE SOFTWARE.
 #include "cocostudio/CocosStudioExport.h"
 
 #include "CCSkinNode.h"
+class SkeletonNode;
 
 NS_TIMELINE_BEGIN
 
@@ -54,10 +55,10 @@ public:
     /*
     *@return a new vector 
     */
-    virtual std::vector<BoneNode*> getChildrenBones(bool recursive = false);  // need a BoneNodeChain
+    virtual std::vector<BoneNode*> getChildBones(bool recursive = false);  // need a BoneNodeChain
 
-    virtual const std::vector<BoneNode*>& getChildrenBones() const { return _boneChildren; }
-    virtual std::vector<BoneNode*>&  getChildrenBones() { return _boneChildren; }
+    virtual const std::vector<BoneNode*>& getChildBones() const { return _childBones; }
+    virtual std::vector<BoneNode*>&  getChildBones() { return _childBones; }
 
     virtual void removeFromParentBone(bool cleanup = false);
 
@@ -116,6 +117,7 @@ public:
     virtual void setRotationSkewX(float rotationX) override;
     virtual void setRotationSkewY(float rotationY) override;
     virtual void setScale(float scaleX, float scaleY) override;
+
 protected:
     BoneNode();
     virtual ~BoneNode();
@@ -133,7 +135,7 @@ protected:
     virtual void drawBoneRack();  // draw rack on _skeletonDraw
 
 
-    std::vector<BoneNode*> _boneChildren;
+    std::vector<BoneNode*> _childBones;
     std::vector<SkinNode*> _boneSkins;
     // bone draw
     cocos2d::DrawNode* _skeletonDraw;

@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include "2d/CCDrawingPrimitives.h"
 
 #include "CCBoneNode.h"
+#include "CCSkeletonNode.h"
 
 using namespace cocos2d;
 
@@ -96,7 +97,7 @@ void BoneNode::addChildBone(BoneNode* bone)
     bone->resetSkeletonDrawNode(this->_skeletonDraw);
     signSkeletonDrawDirty();
    
-    _boneChildren.push_back(bone);
+    _childBones.push_back(bone);
 }
 
 void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
@@ -105,30 +106,30 @@ void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
     resetSkeletonDrawNode(nullptr);
     signSkeletonDrawDirty();
 
-    auto iterBone = std::find(_boneChildren.begin(), _boneChildren.end(), bone);
-    if (iterBone != _boneChildren.end())
-        _boneChildren.erase(iterBone);
+    auto iterBone = std::find(_childBones.begin(), _childBones.end(), bone);
+    if (iterBone != _childBones.end())
+        _childBones.erase(iterBone);
 }
 
 void BoneNode::clearChildBones(bool cleanup, bool recursive /*= false*/)
 {
     if (recursive)
     {
-        for (const auto &childbone : _boneChildren)
+        for (const auto &childbone : _childBones)
             childbone->clearChildBones(recursive, cleanup);
     }
-    for (const auto &childbone : _boneChildren)
+    for (const auto &childbone : _childBones)
     {
         Node::removeChild(childbone, cleanup);
         childbone->resetSkeletonDrawNode(nullptr);
     }
     signSkeletonDrawDirty();
-    _boneChildren.clear();
+    _childBones.clear();
 }
 
-std::vector<BoneNode*> BoneNode::getChildrenBones(bool recursive /*= false*/)
+std::vector<BoneNode*> BoneNode::getChildBones(bool recursive /*= false*/)
 {
-    return std::vector < BoneNode*>();
+    return _childBones;
 }
 
 void BoneNode::removeFromParentBone(bool cleanup)
@@ -346,6 +347,7 @@ void BoneNode::drawBoneRack()
         skeletonDrawVs[i] = _skeletonDraw->convertToNodeSpaceAR(skeletonDrawVs[i]); // _anchorPointInPoints is (0, 0)
     }
     const float radius = _width / 4;
+    //_skeletonDraw->setBlendFunc(_blendFunc); //how to make it effect
     //_skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
     _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 30, false, _rackColor);
     _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 0, _rackColor);
