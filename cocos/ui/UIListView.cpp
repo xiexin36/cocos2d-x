@@ -92,8 +92,9 @@ void ListView::updateInnerContainerSize()
     {
         case Direction::VERTICAL:
         {
-            size_t length = _items.size();
+            int length = _items.size();
             float totalHeight = (length - 1) * _itemsMargin;
+
             for (auto& item : _items)
             {
                 totalHeight += item->getContentSize().height;
@@ -105,7 +106,7 @@ void ListView::updateInnerContainerSize()
         }
         case Direction::HORIZONTAL:
         {
-            size_t length = _items.size();
+            int length = _items.size();
             float totalWidth = (length - 1) * _itemsMargin;
             for (auto& item : _items)
             {
