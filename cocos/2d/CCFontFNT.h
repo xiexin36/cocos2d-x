@@ -39,6 +39,7 @@ public:
     
     static FontFNT * create(const std::string& fntFilePath, const Vec2& imageOffset = Vec2::ZERO);
 	static bool CheckBMFontResource(const std::string& fntFilePath);
+	static void reloadBMFontResource(const std::string& fntFilePath);
     /** Purges the cached data.
     Removes from memory the cached configurations and the atlas name dictionary.
     */
