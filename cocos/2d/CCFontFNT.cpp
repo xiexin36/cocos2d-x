@@ -738,6 +738,8 @@ void FontFNT::reloadBMFontResource(const std::string& fntFilePath)
     if (ret)
     {
         s_configurations->insert(fntFilePath, ret);
+        TextureCache::getInstance()->reloadTexture(ret->getAtlasName());
+
     }
 }
 
