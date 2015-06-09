@@ -30,7 +30,7 @@
 
 NS_CC_BEGIN
 
-unsigned char* getImageData(Image* img, Texture2D::PixelFormat&  ePixFmt)
+unsigned char* getImageData(Image* img,int dstWidth, int dstHeight, Texture2D::PixelFormat&  ePixFmt)
 {
     unsigned char*    pTmpData = img->getData();
     unsigned int*     inPixel32 = nullptr;
@@ -68,7 +68,7 @@ unsigned char* getImageData(Image* img, Texture2D::PixelFormat&  ePixFmt)
         {
             // Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRGGGGGGBBBBB"
             inPixel32 = (unsigned int*)img->getData();
-            pTmpData = new unsigned char[nWidth * nHeight * 2];
+            pTmpData = new unsigned char[dstWidth * dstHeight * 2];
             outPixel16 = (unsigned short*)pTmpData;
 
             for (unsigned int i = 0; i < uLen; ++i, ++inPixel32)
@@ -82,7 +82,7 @@ unsigned char* getImageData(Image* img, Texture2D::PixelFormat&  ePixFmt)
         else
         {
             // Convert "RRRRRRRRGGGGGGGGBBBBBBBB" to "RRRRRGGGGGGBBBBB"
-            pTmpData = new unsigned char[nWidth * nHeight * 2];
+            pTmpData = new unsigned char[dstWidth * dstHeight * 2];
             outPixel16 = (unsigned short*)pTmpData;
             inPixel8 = (unsigned char*)img->getData();
 
@@ -99,13 +99,12 @@ unsigned char* getImageData(Image* img, Texture2D::PixelFormat&  ePixFmt)
             }
         }
     }
-
-    if (bHasAlpha && ePixFmt == Texture2D::PixelFormat::RGB888)
+    else if (bHasAlpha && ePixFmt == Texture2D::PixelFormat::RGB888)
     {
         // Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRRRRGGGGGGGGBBBBBBBB"
         inPixel32 = (unsigned int*)img->getData();
 
-        pTmpData = new unsigned char[nWidth * nHeight * 3];
+        pTmpData = new unsigned char[dstWidth * dstHeight * 3];
         unsigned char* outPixel8 = pTmpData;
 
         for (unsigned int i = 0; i < uLen; ++i, ++inPixel32)
@@ -113,6 +112,33 @@ unsigned char* getImageData(Image* img, Texture2D::PixelFormat&  ePixFmt)
             *outPixel8++ = (*inPixel32 >> 0) & 0xFF; // R
             *outPixel8++ = (*inPixel32 >> 8) & 0xFF; // G
             *outPixel8++ = (*inPixel32 >> 16) & 0xFF; // B
+        }
+    }
+    else if (nWidth < dstWidth || nHeight < dstHeight)
+    {
+        // only RGBA8888 supported
+        int bytesPerComponent = uBPP / 8;
+        //int _dataLen = dstWidth * dstHeight * bytesPerComponent;
+        //unsigned char* _data = new unsigned char[_dataLen];
+        //memcpy(_data, pTmpData, nWidth*nHeight*bytesPerComponent);
+
+        //pTmpData = _data;
+
+        unsigned char* inPixel = img->getData();
+        pTmpData = new unsigned char[dstWidth * dstHeight * bytesPerComponent];
+        unsigned char* outPixel = pTmpData;
+
+        for (int h = 0; h < nHeight; h++)
+        {
+            *outPixel = pTmpData[0] + dstWidth*bytesPerComponent*h;
+            for (int w = 0; w < nWidth; w++)
+            {
+                *outPixel++ = *inPixel++;
+                //for (int i = 0; i < bytesPerComponent; i++)
+                //{
+                //    *outPixel++ = *inPixel++;
+                //}
+            }
         }
     }
 
@@ -189,6 +215,42 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
     images[4] = createImage(positive_z);
     images[5] = createImage(negative_z);
 
+    float widthMax = 0;
+    float heightMax = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        Image* img = images[i];
+        float imgWidth = img->getWidth();
+        float imgHeight = img->getHeight();
+        if (widthMax < imgWidth)
+            widthMax = imgWidth;
+        if (heightMax < imgHeight)
+            heightMax = imgHeight;
+    }
+
+    //for (int i = 0; i < 6; i++)
+    //{
+    //    Image* img = images[i];
+    //    float imgWidth = img->getWidth();
+    //    float imgHeight = img->getHeight();
+    //    if (imgWidth < widthMax || imgHeight < heightMax)
+    //    {
+    //        Texture2D::PixelFormat  ePixelFmt;
+    //        unsigned char*  pData = getImageData(img, ePixelFmt);
+    //        Image* newImg = new Image();
+
+    //        int bytesPerComponent = 4;
+    //        if (ePixelFmt == Texture2D::PixelFormat::RGB888)
+    //        {
+    //            bytesPerComponent = 2;
+    //        }
+    //        newImg->initWithRawData(pData, imgWidth*imgHeight*bytesPerComponent, widthMax, heightMax, 8);
+
+    //        images[i] = newImg;
+    //        CC_SAFE_RELEASE_NULL(img);
+    //    }
+    //}
+
     GLuint handle;
     glGenTextures(1, &handle);
 
@@ -197,16 +259,15 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
     for (int i = 0; i < 6; i++)
     {
         Image* img = images[i];
-
         Texture2D::PixelFormat  ePixelFmt;
-        unsigned char*          pData = getImageData(img, ePixelFmt);
+        unsigned char*          pData = getImageData(img,widthMax,heightMax,ePixelFmt);
         if (ePixelFmt == Texture2D::PixelFormat::RGBA8888 || ePixelFmt == Texture2D::PixelFormat::DEFAULT)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                          0,                  // level
                          GL_RGBA,            // internal format
-                         img->getWidth(),    // width
-                         img->getHeight(),   // height
+                         widthMax,    // width
+                         heightMax,   // height
                          0,                  // border
                          GL_RGBA,            // format
                          GL_UNSIGNED_BYTE,   // type
@@ -216,9 +277,9 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                          0,                  // level
-                         GL_RGB,             // internal format
-                         img->getWidth(),    // width
-                         img->getHeight(),   // height
+                         GL_RGBA,             // internal format
+                         widthMax,    // width
+                         heightMax,   // height
                          0,                  // border
                          GL_RGB,             // format
                          GL_UNSIGNED_BYTE,   // type
