@@ -40,6 +40,7 @@ class CC_DLL FontFNT : public Font
 public:
     
     static FontFNT * create(const std::string& fntFilePath, const Vec2& imageOffset = Vec2::ZERO);
+	static void reloadBMFontResource(const std::string& fntFilePath);
     /** Purges the cached data.
     Removes from memory the cached configurations and the atlas name dictionary.
     */

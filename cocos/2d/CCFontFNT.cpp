@@ -184,6 +184,8 @@ BMFontConfiguration* FNTConfigLoadFile(const std::string& fntFile)
     return ret;
 }
 
+
+
 //
 //BitmapFontConfiguration
 //
@@ -654,6 +656,28 @@ FontFNT * FontFNT::create(const std::string& fntFilePath, const Vec2& imageOffse
     }
     tempFont->autorelease();
     return tempFont;
+}
+
+
+void FontFNT::reloadBMFontResource(const std::string& fntFilePath)
+{
+    if (s_configurations == nullptr)
+    {
+        s_configurations = new (std::nothrow) Map<std::string, BMFontConfiguration*>();
+    }
+
+    BMFontConfiguration *ret = s_configurations->at(fntFilePath);
+    if (ret != nullptr)
+    {
+        s_configurations->erase(fntFilePath);
+    }
+    ret = BMFontConfiguration::create(fntFilePath.c_str());
+    if (ret)
+    {
+        s_configurations->insert(fntFilePath, ret);
+        TextureCache::getInstance()->reloadTexture(ret->getAtlasName());
+
+    }
 }
 
 FontFNT::FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset /* = Vec2::ZERO */)
