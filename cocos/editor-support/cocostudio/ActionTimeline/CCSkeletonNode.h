@@ -43,6 +43,8 @@ public:
     void setLength(float length) override;
 
     void setRackGlobalZorder(int gzoder);
+
+    void setAllBonesHide(bool hide);
 protected:
     SkeletonNode();
     virtual ~SkeletonNode();
@@ -55,7 +57,6 @@ protected:
     virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode) override;
 
 private:
-
 };
 
 NS_TIMELINE_END

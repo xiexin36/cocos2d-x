@@ -127,10 +127,10 @@ void BoneNode::clearChildBones(bool cleanup, bool recursive /*= false*/)
     _childBones.clear();
 }
 
-std::vector<BoneNode*> BoneNode::getChildBones(bool recursive /*= false*/)
-{
-    return _childBones;
-}
+//std::vector<BoneNode*> BoneNode::getChildBones(bool recursive /*= false*/)
+//{
+//    return _childBones;
+//}
 
 void BoneNode::removeFromParentBone(bool cleanup)
 {

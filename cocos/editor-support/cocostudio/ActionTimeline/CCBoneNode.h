@@ -55,7 +55,7 @@ public:
     /*
     *@return a new vector 
     */
-    virtual std::vector<BoneNode*> getChildBones(bool recursive = false);  // need a BoneNodeChain
+   // virtual std::vector<BoneNode*> getChildBones(bool recursive = false);  // need a BoneNodeChain
 
     virtual const std::vector<BoneNode*>& getChildBones() const { return _childBones; }
     virtual std::vector<BoneNode*>&  getChildBones() { return _childBones; }

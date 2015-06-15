@@ -103,6 +103,11 @@ void SkeletonNode::setRackGlobalZorder(int gzorder)
     _skeletonDraw->setGlobalZOrder(gzorder);
 }
 
+void SkeletonNode::setAllBonesHide(bool hide)
+{
+    _skeletonDraw->setVisible(false);
+}
+
 void SkeletonNode::setContentSize(const cocos2d::Size &size)
 {
     if (!size.equals(_contentSize))
