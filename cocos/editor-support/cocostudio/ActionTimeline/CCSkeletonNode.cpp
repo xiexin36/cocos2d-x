@@ -98,6 +98,11 @@ void SkeletonNode::setLength(float length)
     setContentSize(cocos2d::Size(length, length));
 }
 
+void SkeletonNode::setRackGlobalZorder(int gzorder)
+{
+    _skeletonDraw->setGlobalZOrder(gzorder);
+}
+
 void SkeletonNode::setContentSize(const cocos2d::Size &size)
 {
     if (!size.equals(_contentSize))

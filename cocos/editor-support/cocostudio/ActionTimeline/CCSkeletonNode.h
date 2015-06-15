@@ -41,6 +41,8 @@ public:
     static SkeletonNode* create();
 
     void setLength(float length) override;
+
+    void setRackGlobalZorder(int gzoder);
 protected:
     SkeletonNode();
     virtual ~SkeletonNode();
