@@ -43,8 +43,6 @@ public:
     void setLength(float length) override;
 
     void setRackGlobalZorder(int gzoder);
-
-    void setAllBonesHide(bool hide);
 protected:
     SkeletonNode();
     virtual ~SkeletonNode();

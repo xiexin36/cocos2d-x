@@ -67,7 +67,6 @@ void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& paren
 {
     if (isSkeletonDrawDirty())
         _skeletonDraw->clear();
-
     BoneNode::visit(renderer, parentTransform, parentFlags);
 
     signSkeletonDrawDirty(false);
@@ -101,11 +100,6 @@ void SkeletonNode::setLength(float length)
 void SkeletonNode::setRackGlobalZorder(int gzorder)
 {
     _skeletonDraw->setGlobalZOrder(gzorder);
-}
-
-void SkeletonNode::setAllBonesHide(bool hide)
-{
-    _skeletonDraw->setVisible(false);
 }
 
 void SkeletonNode::setContentSize(const cocos2d::Size &size)
