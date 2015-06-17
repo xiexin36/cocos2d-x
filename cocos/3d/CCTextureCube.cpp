@@ -1,26 +1,26 @@
 /****************************************************************************
- Copyright (c) 2015 Chukong Technologies Inc.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
+Copyright (c) 2015 Chukong Technologies Inc.
+
+http://www.cocos2d-x.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+****************************************************************************/
 
 #include "3d/CCTextureCube.h"
 #include "platform/CCImage.h"
@@ -30,7 +30,7 @@
 
 NS_CC_BEGIN
 
-unsigned char* getImageData(Image* img,int dstWidth, int dstHeight, Texture2D::PixelFormat&  ePixFmt)
+unsigned char* getImageData(Image* img, Texture2D::PixelFormat&  ePixFmt)
 {
     unsigned char*    pTmpData = img->getData();
     unsigned int*     inPixel32 = nullptr;
@@ -68,7 +68,7 @@ unsigned char* getImageData(Image* img,int dstWidth, int dstHeight, Texture2D::P
         {
             // Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRGGGGGGBBBBB"
             inPixel32 = (unsigned int*)img->getData();
-            pTmpData = new unsigned char[dstWidth * dstHeight * 2];
+            pTmpData = new unsigned char[nWidth * nHeight * 2];
             outPixel16 = (unsigned short*)pTmpData;
 
             for (unsigned int i = 0; i < uLen; ++i, ++inPixel32)
@@ -82,7 +82,7 @@ unsigned char* getImageData(Image* img,int dstWidth, int dstHeight, Texture2D::P
         else
         {
             // Convert "RRRRRRRRGGGGGGGGBBBBBBBB" to "RRRRRGGGGGGBBBBB"
-            pTmpData = new unsigned char[dstWidth * dstHeight * 2];
+            pTmpData = new unsigned char[nWidth * nHeight * 2];
             outPixel16 = (unsigned short*)pTmpData;
             inPixel8 = (unsigned char*)img->getData();
 
@@ -99,12 +99,13 @@ unsigned char* getImageData(Image* img,int dstWidth, int dstHeight, Texture2D::P
             }
         }
     }
-    else if (bHasAlpha && ePixFmt == Texture2D::PixelFormat::RGB888)
+
+    if (bHasAlpha && ePixFmt == Texture2D::PixelFormat::RGB888)
     {
         // Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRRRRGGGGGGGGBBBBBBBB"
         inPixel32 = (unsigned int*)img->getData();
 
-        pTmpData = new unsigned char[dstWidth * dstHeight * 3];
+        pTmpData = new unsigned char[nWidth * nHeight * 3];
         unsigned char* outPixel8 = pTmpData;
 
         for (unsigned int i = 0; i < uLen; ++i, ++inPixel32)
@@ -112,33 +113,6 @@ unsigned char* getImageData(Image* img,int dstWidth, int dstHeight, Texture2D::P
             *outPixel8++ = (*inPixel32 >> 0) & 0xFF; // R
             *outPixel8++ = (*inPixel32 >> 8) & 0xFF; // G
             *outPixel8++ = (*inPixel32 >> 16) & 0xFF; // B
-        }
-    }
-    else if (nWidth < dstWidth || nHeight < dstHeight)
-    {
-        // only RGBA8888 supported
-        int bytesPerComponent = uBPP / 8;
-        //int _dataLen = dstWidth * dstHeight * bytesPerComponent;
-        //unsigned char* _data = new unsigned char[_dataLen];
-        //memcpy(_data, pTmpData, nWidth*nHeight*bytesPerComponent);
-
-        //pTmpData = _data;
-
-        unsigned char* inPixel = img->getData();
-        pTmpData = new unsigned char[dstWidth * dstHeight * bytesPerComponent];
-        unsigned char* outPixel = pTmpData;
-
-        for (int h = 0; h < nHeight; h++)
-        {
-            *outPixel = pTmpData[0] + dstWidth*bytesPerComponent*h;
-            for (int w = 0; w < nWidth; w++)
-            {
-                *outPixel++ = *inPixel++;
-                //for (int i = 0; i < bytesPerComponent; i++)
-                //{
-                //    *outPixel++ = *inPixel++;
-                //}
-            }
         }
     }
 
@@ -166,8 +140,7 @@ Image* createImage(const std::string& path)
 
         bool bRet = image->initWithImageFile(fullpath);
         CC_BREAK_IF(!bRet);
-    }
-    while (0);
+    } while (0);
 
     return image;
 }
@@ -182,8 +155,8 @@ TextureCube::~TextureCube()
 }
 
 TextureCube* TextureCube::create(const std::string& positive_x, const std::string& negative_x,
-                                 const std::string& positive_y, const std::string& negative_y,
-                                 const std::string& positive_z, const std::string& negative_z)
+    const std::string& positive_y, const std::string& negative_y,
+    const std::string& positive_z, const std::string& negative_z)
 {
     auto ret = new (std::nothrow) TextureCube();
     if (ret && ret->init(positive_x, negative_x, positive_y, negative_y, positive_z, negative_z))
@@ -196,8 +169,8 @@ TextureCube* TextureCube::create(const std::string& positive_x, const std::strin
 }
 
 bool TextureCube::init(const std::string& positive_x, const std::string& negative_x,
-                       const std::string& positive_y, const std::string& negative_y,
-                       const std::string& positive_z, const std::string& negative_z)
+    const std::string& positive_y, const std::string& negative_y,
+    const std::string& positive_z, const std::string& negative_z)
 {
     _imgPath[0] = positive_x;
     _imgPath[1] = negative_x;
@@ -215,42 +188,6 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
     images[4] = createImage(positive_z);
     images[5] = createImage(negative_z);
 
-    float widthMax = 0;
-    float heightMax = 0;
-    for (int i = 0; i < 6; i++)
-    {
-        Image* img = images[i];
-        float imgWidth = img->getWidth();
-        float imgHeight = img->getHeight();
-        if (widthMax < imgWidth)
-            widthMax = imgWidth;
-        if (heightMax < imgHeight)
-            heightMax = imgHeight;
-    }
-
-    //for (int i = 0; i < 6; i++)
-    //{
-    //    Image* img = images[i];
-    //    float imgWidth = img->getWidth();
-    //    float imgHeight = img->getHeight();
-    //    if (imgWidth < widthMax || imgHeight < heightMax)
-    //    {
-    //        Texture2D::PixelFormat  ePixelFmt;
-    //        unsigned char*  pData = getImageData(img, ePixelFmt);
-    //        Image* newImg = new Image();
-
-    //        int bytesPerComponent = 4;
-    //        if (ePixelFmt == Texture2D::PixelFormat::RGB888)
-    //        {
-    //            bytesPerComponent = 2;
-    //        }
-    //        newImg->initWithRawData(pData, imgWidth*imgHeight*bytesPerComponent, widthMax, heightMax, 8);
-
-    //        images[i] = newImg;
-    //        CC_SAFE_RELEASE_NULL(img);
-    //    }
-    //}
-
     GLuint handle;
     glGenTextures(1, &handle);
 
@@ -259,31 +196,32 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
     for (int i = 0; i < 6; i++)
     {
         Image* img = images[i];
+
         Texture2D::PixelFormat  ePixelFmt;
-        unsigned char*          pData = getImageData(img,widthMax,heightMax,ePixelFmt);
+        unsigned char*          pData = getImageData(img, ePixelFmt);
         if (ePixelFmt == Texture2D::PixelFormat::RGBA8888 || ePixelFmt == Texture2D::PixelFormat::DEFAULT)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                         0,                  // level
-                         GL_RGBA,            // internal format
-                         widthMax,    // width
-                         heightMax,   // height
-                         0,                  // border
-                         GL_RGBA,            // format
-                         GL_UNSIGNED_BYTE,   // type
-                         pData);             // pixel data
+                0,                  // level
+                GL_RGBA,            // internal format
+                img->getWidth(),    // width
+                img->getHeight(),   // height
+                0,                  // border
+                GL_RGBA,            // format
+                GL_UNSIGNED_BYTE,   // type
+                pData);             // pixel data
         }
         else if (ePixelFmt == Texture2D::PixelFormat::RGB888)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                         0,                  // level
-                         GL_RGBA,             // internal format
-                         widthMax,    // width
-                         heightMax,   // height
-                         0,                  // border
-                         GL_RGB,             // format
-                         GL_UNSIGNED_BYTE,   // type
-                         pData);             // pixel data
+                0,                  // level
+                GL_RGB,             // internal format
+                img->getWidth(),    // width
+                img->getHeight(),   // height
+                0,                  // border
+                GL_RGB,             // format
+                GL_UNSIGNED_BYTE,   // type
+                pData);             // pixel data
         }
 
         if (pData != img->getData())
@@ -297,7 +235,7 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
 
     GL::bindTextureN(0, 0, GL_TEXTURE_CUBE_MAP);
 
-    for (auto img: images)
+    for (auto img : images)
     {
         CC_SAFE_RELEASE(img);
     }
