@@ -236,4 +236,20 @@ void Skybox::reload()
     initBuffers();
 }
 
+//override for Editor
+bool Skybox::isVisitableByVisitingCamera() const
+{
+    auto camera = Camera::getVisitingCamera();
+    if (_cameraMask == (unsigned short)CameraFlag::DEFAULT)
+    {
+        return true;
+    }
+    else if (camera->getCameraFlag() == CameraFlag::DEFAULT)
+    {
+        return false;
+    }
+
+    bool visibleByCamera = camera ? ((unsigned short)camera->getCameraFlag() & _cameraMask) != 0 : true;
+    return visibleByCamera;
+}
 NS_CC_END
