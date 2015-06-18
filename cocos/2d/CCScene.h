@@ -102,7 +102,8 @@ public:
      * @param renderer The renderer use to render the scene.
      * @js NA
      */
-    void render(Renderer* renderer);
+    //For Editor
+    virtual void render(Renderer* renderer);
     
     /** override function */
     virtual void removeAllChildren() override;

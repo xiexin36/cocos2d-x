@@ -1,26 +1,26 @@
 /****************************************************************************
- Copyright (c) 2015 Chukong Technologies Inc.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
+Copyright (c) 2015 Chukong Technologies Inc.
+
+http://www.cocos2d-x.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+****************************************************************************/
 
 #include "3d/CCTextureCube.h"
 #include "platform/CCImage.h"
@@ -140,8 +140,7 @@ Image* createImage(const std::string& path)
 
         bool bRet = image->initWithImageFile(fullpath);
         CC_BREAK_IF(!bRet);
-    }
-    while (0);
+    } while (0);
 
     return image;
 }
@@ -156,8 +155,8 @@ TextureCube::~TextureCube()
 }
 
 TextureCube* TextureCube::create(const std::string& positive_x, const std::string& negative_x,
-                                 const std::string& positive_y, const std::string& negative_y,
-                                 const std::string& positive_z, const std::string& negative_z)
+    const std::string& positive_y, const std::string& negative_y,
+    const std::string& positive_z, const std::string& negative_z)
 {
     auto ret = new (std::nothrow) TextureCube();
     if (ret && ret->init(positive_x, negative_x, positive_y, negative_y, positive_z, negative_z))
@@ -170,8 +169,8 @@ TextureCube* TextureCube::create(const std::string& positive_x, const std::strin
 }
 
 bool TextureCube::init(const std::string& positive_x, const std::string& negative_x,
-                       const std::string& positive_y, const std::string& negative_y,
-                       const std::string& positive_z, const std::string& negative_z)
+    const std::string& positive_y, const std::string& negative_y,
+    const std::string& positive_z, const std::string& negative_z)
 {
     _imgPath[0] = positive_x;
     _imgPath[1] = negative_x;
@@ -203,26 +202,26 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
         if (ePixelFmt == Texture2D::PixelFormat::RGBA8888 || ePixelFmt == Texture2D::PixelFormat::DEFAULT)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                         0,                  // level
-                         GL_RGBA,            // internal format
-                         img->getWidth(),    // width
-                         img->getHeight(),   // height
-                         0,                  // border
-                         GL_RGBA,            // format
-                         GL_UNSIGNED_BYTE,   // type
-                         pData);             // pixel data
+                0,                  // level
+                GL_RGBA,            // internal format
+                img->getWidth(),    // width
+                img->getHeight(),   // height
+                0,                  // border
+                GL_RGBA,            // format
+                GL_UNSIGNED_BYTE,   // type
+                pData);             // pixel data
         }
         else if (ePixelFmt == Texture2D::PixelFormat::RGB888)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                         0,                  // level
-                         GL_RGB,             // internal format
-                         img->getWidth(),    // width
-                         img->getHeight(),   // height
-                         0,                  // border
-                         GL_RGB,             // format
-                         GL_UNSIGNED_BYTE,   // type
-                         pData);             // pixel data
+                0,                  // level
+                GL_RGB,             // internal format
+                img->getWidth(),    // width
+                img->getHeight(),   // height
+                0,                  // border
+                GL_RGB,             // format
+                GL_UNSIGNED_BYTE,   // type
+                pData);             // pixel data
         }
 
         if (pData != img->getData())
@@ -236,7 +235,7 @@ bool TextureCube::init(const std::string& positive_x, const std::string& negativ
 
     GL::bindTextureN(0, 0, GL_TEXTURE_CUBE_MAP);
 
-    for (auto img: images)
+    for (auto img : images)
     {
         CC_SAFE_RELEASE(img);
     }

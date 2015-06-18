@@ -866,6 +866,9 @@ const AABB& Sprite3D::getAABB() const
 
 const AABB& Sprite3D::getAABB(bool world) const
 {
+    //For Editor
+    _aabbDirty = true;
+
     Mat4 nodeToWorldTransform(getNodeToWorldTransform());
     
     // If nodeToWorldTransform matrix isn't changed, we don't need to transform aabb.
