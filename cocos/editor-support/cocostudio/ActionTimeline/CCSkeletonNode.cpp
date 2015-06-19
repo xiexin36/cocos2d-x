@@ -22,7 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #include "CCSkeletonNode.h"
+
+#include "base/CCDirector.h"
+#include "renderer/CCRenderer.h"
+#include "renderer/ccGLStateCache.h"
 #include "renderer/CCGLProgram.h"
+
 NS_TIMELINE_BEGIN
 
 
@@ -41,21 +46,17 @@ SkeletonNode* SkeletonNode::create()
 
 bool SkeletonNode::init()
 {
-    bool ret = LayerColor::init();
-    _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
-    _anchorPoint = Vec2(.5f, .5f);
-    setContentSize(cocos2d::Size(30, 30));
-    setGLProgramState(cocos2d::GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
-    if (nullptr == _skeletonDraw)
-    {
-        _skeletonDraw = cocos2d::DrawNode::create();
-        signSkeletonDrawDirty();
-        this->addChild(_skeletonDraw, INT_MAX);
-    }
+    bool ret = BoneNode::init();
+    _anchorPoint = cocos2d::Vec2(.5f, .5f);
+    setContentSize(cocos2d::Size(20, 20));
+
+    _rootBoneNode = this;
     return ret;
 }
 
 SkeletonNode::SkeletonNode()
+    : BoneNode()
+    , _isAllRackShow(true)
 {
 }
 
@@ -63,86 +64,93 @@ SkeletonNode::~SkeletonNode()
 {
 }
 
-void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
+void SkeletonNode::updateVertices()
 {
-    if (isSkeletonDrawDirty())
-        _skeletonDraw->clear();
-    BoneNode::visit(renderer, parentTransform, parentFlags);
+    const float radius = _width * .5f;
+    const float radius_2 = radius * .25f;
+    if (radius != _squareVertices[0].x )
+    {
+        _squareVertices[0].x = _squareVertices[4].x = _squareVertices[7].x = _squareVertices[3].x = radius;
+        _squareVertices[5].y = _squareVertices[2].y = _squareVertices[1].y = _squareVertices[6].y = radius;
+        _squareVertices[6].x = _squareVertices[3].y = _width;
+        _squareVertices[1].x = _squareVertices[7].y = radius + radius_2;
+        _squareVertices[2].x = _squareVertices[4].y = radius - radius_2;
 
-    signSkeletonDrawDirty(false);
+        _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
+    }
 }
 
-
-void SkeletonNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
+void SkeletonNode::updateColor()
 {
-    CCASSERT(nullptr != _skeletonDraw, "Skeleton's _skeletonDraw canot be null");
-    if ( nullptr != skeletonDrawNode)
+    for (unsigned int i = 0; i < 8; i++)
     {
-        this->removeChild(_skeletonDraw);
-        _skeletonDraw = skeletonDrawNode;
+        _squareColors[i].r = _displayedColor.r / 255.0f;
+        _squareColors[i].g = _displayedColor.g / 255.0f;
+        _squareColors[i].b = _displayedColor.b / 255.0f;
+        _squareColors[i].a = _displayedOpacity / 255.0f;
     }
-    else // init a new draw node
+    _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
+}
+
+void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
+{
+    if (_isRackShow && _isAllRackShow)
     {
-        if (nullptr == _skeletonDraw)
+        _customCommand.init(_globalZOrder, transform, flags);
+        _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, transform, flags);
+        renderer->addCommand(&_customCommand);
+
+        for (int i = 0; i < 8; ++i)
         {
-            _skeletonDraw = cocos2d::DrawNode::create();
-            this->addChild(_skeletonDraw, INT_MAX);
+            Vec4 pos;
+            pos.x = _squareVertices[i].x; pos.y = _squareVertices[i].y; pos.z = _positionZ;
+            pos.w = 1;
+            _modelViewTransform.transformVector(&pos);
+            _noMVPVertices[i] = Vec3(pos.x, pos.y, pos.z) / pos.w;
         }
     }
-    signSkeletonDrawDirty();
+
+}
+
+void SkeletonNode::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
+{
+    getGLProgram()->use();
+    getGLProgram()->setUniformsForBuiltins(transform);
+
+    GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POSITION | GL::VERTEX_ATTRIB_FLAG_COLOR);
+
+    //
+    // Attributes
+    //
+#ifdef EMSCRIPTEN
+    setGLBufferData(_noMVPVertices, 8 * sizeof(Vec3), 0);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+    setGLBufferData(_squareColors, 8 * sizeof(Color4F), 1);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
+#else
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
+#endif // EMSCRIPTEN
+
+    cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+
+    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 8);
+}
+
+void SkeletonNode::setAllRackShow(bool showRack)
+{
+    _isAllRackShow = showRack;
 }
 
 void SkeletonNode::setLength(float length)
 {
-    setContentSize(cocos2d::Size(length, length));
-}
-
-void SkeletonNode::setRackGlobalZorder(int gzorder)
-{
-    _skeletonDraw->setGlobalZOrder(gzorder);
-}
-
-void SkeletonNode::setContentSize(const cocos2d::Size &size)
-{
-    if (!size.equals(_contentSize))
-    {
-        _contentSize = size;
-    }
-    BoneNode::setLength(size.height);
-}
-
-void SkeletonNode::updateVertices()
-{
-    const float radius = _contentSize.width * .5f;
-    if (radius != _squareVertices[1].x * 2)
-    {
-        _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
-    }
-
-    _squareVertices[0].x = _squareVertices[1].y = _squareVertices[2].x = _squareVertices[3].y = .0f;
-    _squareVertices[0].y = _squareVertices[3].x = - radius;
-    _squareVertices[1].x = _squareVertices[2].y = radius;
-    signSkeletonDrawDirty();
-}
-
-void SkeletonNode::drawBoneRack()
-{
-    const float offset = getLength() / 10.f;
-    cocos2d::Vec2 v1(0, offset), v2(0, -offset), v3(offset, 0), v4(-offset, 0);
-    if (nullptr == _skeletonDraw)
-    {
-        CCLOG(" SkeletonNode's _skeletonDraw can not be nullptr");
-    }
-    else
-    {
-        if (_skeletonDraw != nullptr)
-        {
-            _skeletonDraw->drawTriangle(v3, v4, _squareVertices[0], getBoneRackColor());
-            _skeletonDraw->drawTriangle(v1, v2, _squareVertices[1], getBoneRackColor());
-            _skeletonDraw->drawTriangle(v3, v4, _squareVertices[2], getBoneRackColor());
-            _skeletonDraw->drawTriangle(v1, v2, _squareVertices[3], getBoneRackColor());
-        }
-    }
+    _contentSize.height = length;
+    BoneNode::setLength(length);
 }
 
 NS_TIMELINE_END

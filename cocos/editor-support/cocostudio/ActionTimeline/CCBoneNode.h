@@ -32,33 +32,28 @@ THE SOFTWARE.
 #include "cocostudio/CocosStudioExport.h"
 
 #include "CCSkinNode.h"
-class SkeletonNode;
 
 NS_TIMELINE_BEGIN
+class SkeletonNode;
 
-class CC_STUDIO_DLL BoneNode : public cocos2d::LayerColor//, public cocos2d::BlendProtocol
+class CC_STUDIO_DLL BoneNode : public Node, public cocos2d::BlendProtocol
 {
 public:
     static BoneNode* create();
     static BoneNode* create(const int &length);
     static BoneNode* create(const int &length, const cocos2d::Color4F & color);
 
- // Skeleton bones
     virtual void addChildBone(BoneNode* bone);
 
     /*
-    * @param cleaup : True if all running actions and callbacks on the child node will be cleanup, false otherwise.
+    * @param cleaup : True if all running actions and callbacks 
+    *                 on the child node will be cleanup, false otherwise.
     */
     virtual void removeChildBone(BoneNode* bone, bool cleaup = false);
     virtual void clearChildBones(bool cleaup, bool recursive = false);
 
-    /*
-    *@return a new vector 
-    */
-   // virtual std::vector<BoneNode*> getChildBones(bool recursive = false);  // need a BoneNodeChain
-
-    virtual const std::vector<BoneNode*>& getChildBones() const { return _childBones; }
-    virtual std::vector<BoneNode*>&  getChildBones() { return _childBones; }
+    virtual const std::map<std::string, BoneNode*>& getChildBones() const { return _childBones; }
+    virtual std::map<std::string, BoneNode*>&  getChildBones() { return _childBones; }
 
     virtual void removeFromParentBone(bool cleanup = false);
 
@@ -69,55 +64,37 @@ public:
     virtual void addSkin(SkinNode* skin, bool hide = false);
     virtual void removeSkin(SkinNode* skin);
 
-//     virtual void insertSkin(int index, SkinNode* skin, bool hide = false);
-//     virtual void removeSkin(int index);
-// 
-//     virtual int getIndexOfSkin(SkinNode* skin);
-//     virtual SkinNode* getSkinAt(int index) const;
-    
-    virtual const std::vector<SkinNode*>& getSkins() const { return _boneSkins; }
-    virtual std::vector<SkinNode*>&  getSkins() { return _boneSkins; }
+    virtual const std::map<std::string, SkinNode*>& getSkins() const { return _boneSkins; }
+    virtual std::map<std::string, SkinNode*>&  getSkins() { return _boneSkins; }
 
     /*
-    * @param cleaup : True if all running actions and callbacks on the child node will be cleanup, false otherwise.
+    * @param cleaup : True if all running actions and callbacks on
+                      the child node will be cleanup, false otherwise.
     */
     virtual void clearSkins(bool cleanup);
 
 
     virtual void display(SkinNode* skin, bool hideOthers = false);
-//     virtual void Display(int index, bool hideOthers = false);
+    virtual void display(const std::string& skinName, bool hideOthers = false);
 
-    virtual std::vector<SkinNode*> getDisplaying() const;
+    virtual std::map<std::string, SkinNode*> getDisplaying() const;
 
-//blendfunc getter,setter
+    // blendFunc
     virtual void setBlendFunc(const cocos2d::BlendFunc &blendFunc) override;
+    virtual const BlendFunc & getBlendFunc() const override { return _blendFunc; }
 
-    // extend functions 
-
-    ////get <bonename, displayingSkinname> of bone tree
-    //std::map<std::string, std::string> GetTreeBoneSkinDisplayMap() const;
-    //void ChangeDisplays(std::map<std::string, std::string> boneSkinMap);
 
     // bone operate
     virtual void setLength(float length);
     virtual float getLength() const { return _length; }
+
+    // no need to change this at usual
     virtual void setWidth(float width);
     virtual float getWidth() const { return _width; }
 
-    // color
-    virtual void setBoneRackColor(const cocos2d::Color4F &color);
-    virtual const cocos2d::Color4F& getBoneRackColor() const { return _rackColor; }
-
-    virtual void setBoneRackShow(bool isShowRack) { _showRack = isShowRack; }
-    virtual bool isBoneRackShow() const { return _showRack; }
-
-    // for cocostudio editor
-    virtual void setPosition(float x, float y) override;
-    virtual void setRotation(float rotation) override;
-    virtual void setRotationSkewX(float rotationX) override;
-    virtual void setRotationSkewY(float rotationY) override;
-    virtual void setScale(float scaleX, float scaleY) override;
-
+    // is rack show
+    virtual void setRackShow(bool ishow);
+    virtual bool isRackShow() const { return _isRackShow; }
 protected:
     BoneNode();
     virtual ~BoneNode();
@@ -126,27 +103,27 @@ protected:
     virtual bool init() override;
 
     virtual void updateVertices();
-    virtual void updateVecticesColor();
-    virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode);
-    virtual void signSkeletonDrawDirty(bool dirty = true);
-    virtual bool isSkeletonDrawDirty();
+    virtual void updateColor() override;
+
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
     virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags); // for test
-    virtual void drawBoneRack();  // draw rack on _skeletonDraw
+protected:
+    CustomCommand _customCommand;
+    BlendFunc     _blendFunc;
 
+    float            _length;
+    float            _width;
+    bool             _isRackShow;
 
-    std::vector<BoneNode*> _childBones;
-    std::vector<SkinNode*> _boneSkins;
-    // bone draw
-    cocos2d::DrawNode* _skeletonDraw;
+    std::map<std::string, BoneNode*> _childBones;
+    std::map<std::string, SkinNode*> _boneSkins;
+    SkeletonNode*                    _rootBoneNode;
+
 private:
-    float _length;
-    float _width;
-
-    bool _showRack;
-    bool _skinCascadeBlendFunc;
-
-    cocos2d::Color4F _rackColor;
+    Vec2          _squareVertices[4];
+    Color4F       _squareColors[4];
+    Vec3          _noMVPVertices[4];
+    CC_DISALLOW_COPY_AND_ASSIGN(BoneNode);
 };
 
 NS_TIMELINE_END

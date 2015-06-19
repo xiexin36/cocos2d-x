@@ -24,8 +24,8 @@ THE SOFTWARE.
 
 #include "base/CCDirector.h"
 #include "renderer/CCRenderer.h"
+#include "renderer/ccGLStateCache.h"
 #include "renderer/CCGLProgram.h"
-#include "2d/CCDrawingPrimitives.h"
 
 #include "CCBoneNode.h"
 #include "CCSkeletonNode.h"
@@ -34,15 +34,14 @@ using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
+
 BoneNode::BoneNode()
-    : _length(50)
-    , _width(20)
-    , _showRack(true)
-    , _skinCascadeBlendFunc(true)
-    , _skeletonDraw(nullptr)
-    , _rackColor(.1f, .1f, .1f, .8f)
+: _length(50)
+, _width(20)
+, _isRackShow(true)
+, _rootBoneNode(nullptr)
+, _blendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED)
 {
-    init();
 }
 
 
@@ -80,7 +79,6 @@ BoneNode* BoneNode::create(const int &length, const cocos2d::Color4F & color)
     if (ret && ret->init())
     {
         ret->setLength(length);
-        ret->setBoneRackColor(color);
         ret->autorelease();
     }
     else
@@ -90,25 +88,18 @@ BoneNode* BoneNode::create(const int &length, const cocos2d::Color4F & color)
     return ret;
 }
 
-
 void BoneNode::addChildBone(BoneNode* bone)
 {
-    Node::addChild(bone); // assert has no parent
-    bone->resetSkeletonDrawNode(this->_skeletonDraw);
-    signSkeletonDrawDirty();
-   
-    _childBones.push_back(bone);
+    Node::addChild(bone);
+    _childBones.emplace(bone->getName(), bone);
+    bone->_rootBoneNode = _rootBoneNode;
 }
 
 void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
 {
     Node::removeChild(bone, cleaup);
-    resetSkeletonDrawNode(nullptr);
-    signSkeletonDrawDirty();
-
-    auto iterBone = std::find(_childBones.begin(), _childBones.end(), bone);
-    if (iterBone != _childBones.end())
-        _childBones.erase(iterBone);
+    _childBones.erase(bone->getName());
+    bone->_rootBoneNode = nullptr;
 }
 
 void BoneNode::clearChildBones(bool cleanup, bool recursive /*= false*/)
@@ -116,21 +107,15 @@ void BoneNode::clearChildBones(bool cleanup, bool recursive /*= false*/)
     if (recursive)
     {
         for (const auto &childbone : _childBones)
-            childbone->clearChildBones(recursive, cleanup);
+            childbone.second->clearChildBones(recursive, cleanup);
     }
     for (const auto &childbone : _childBones)
     {
-        Node::removeChild(childbone, cleanup);
-        childbone->resetSkeletonDrawNode(nullptr);
+        Node::removeChild(childbone.second, cleanup);
+        childbone.second->_rootBoneNode = nullptr;
     }
-    signSkeletonDrawDirty();
     _childBones.clear();
 }
-
-//std::vector<BoneNode*> BoneNode::getChildBones(bool recursive /*= false*/)
-//{
-//    return _childBones;
-//}
 
 void BoneNode::removeFromParentBone(bool cleanup)
 {
@@ -142,81 +127,87 @@ void BoneNode::removeFromParentBone(bool cleanup)
 
 void BoneNode::addSkin(SkinNode* skin, bool hide /*= false*/)
 {
-    Node::addChild(skin);
-    if (_skinCascadeBlendFunc)
+    std::string name = skin->getName();
+    if (_boneSkins.find(name) == _boneSkins.end())
     {
-        auto blendnode = dynamic_cast<cocos2d::BlendProtocol*>(skin);
-        if (nullptr != blendnode)
-            blendnode->setBlendFunc(_blendFunc);
+        Node::addChild(skin);
+        _boneSkins.emplace(name, skin);
     }
-    _boneSkins.push_back(skin);
+    else
+    {
+        CCLOGINFO("Skin named %s has been added to this bone", name);
+    }
 }
 
 void BoneNode::removeSkin(SkinNode* skin)
 {
     Node::removeChild(skin);
-    auto iterskin = std::find(_boneSkins.begin(), _boneSkins.end(), skin);
-    if (iterskin != _boneSkins.end())
-        _boneSkins.erase(iterskin);
+    _boneSkins.erase(skin->getName());
 }
 
 void BoneNode::clearSkins(bool cleanup)
 {
     for (const auto &skin : _boneSkins)
     {
-        Node::removeChild(skin, cleanup);
+        Node::removeChild(skin.second, cleanup);
     }
     _boneSkins.clear();
 }
 
 void BoneNode::display(SkinNode* skin, bool hideOthers /*= false*/)
 {
-    if (!skin->isVisible())
-        skin->setVisible(true);
+    display(skin->getName(), hideOthers);
+}
 
-    if (hideOthers)
+void BoneNode::display(const std::string& skinName, bool hideOthers /*= false*/)
+{
+    auto skinToDisp = _boneSkins.find(skinName);
+    if (_boneSkins.end() != skinToDisp)
     {
-        for (auto &boneskin : _boneSkins)
+        if (!skinToDisp->second->isVisible())
         {
-            if (skin != boneskin)
+            skinToDisp->second->setVisible(true);
+        }
+
+        if (hideOthers)
+        {
+            auto skinIter = _boneSkins.begin();
+            for (; skinIter != _boneSkins.end(); skinIter ++)
             {
-                boneskin->setVisible(false);
+                if (skinIter != skinToDisp)
+                    skinIter->second->setVisible(false);
             }
         }
     }
+    else
+    {
+        CCLOGINFO("No skin named %s in this BoneNode", skinName);
+    }
 }
 
-std::vector<SkinNode*> BoneNode::getDisplaying() const
+std::map<std::string, SkinNode*> BoneNode::getDisplaying() const
 {
-    std::vector<SkinNode*> displayingSkins;
-    for (auto &boneskin : _boneSkins)
+    std::map<std::string, SkinNode*> displayingSkins;
+    for (const auto &boneskin : _boneSkins)
     {
-        if (boneskin->isVisible())
+        if (boneskin.second->isVisible())
         {
-            displayingSkins.push_back(boneskin);
+            displayingSkins.emplace(boneskin);
         }
     }
     return displayingSkins;
 }
 
-void BoneNode::setBlendFunc(const cocos2d::BlendFunc &blendFunc)
+void BoneNode::setBlendFunc(const BlendFunc &blendFunc)
 {
     _blendFunc = blendFunc;
-    if (_skinCascadeBlendFunc)
-    {
-        for (auto &skin : _boneSkins)
-        {
-            auto blendnode = dynamic_cast<cocos2d::BlendProtocol*>(skin);
-            if (nullptr != blendnode)
-                blendnode->setBlendFunc(_blendFunc);
-        }
-    }
 }
 
 void BoneNode::setLength(float length)
 {
     _length = length;
     _contentSize.width = length;
+    _anchorPointInPoints.set(_contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y);
     updateVertices();
 }
 
@@ -224,53 +215,54 @@ void BoneNode::setWidth(float width)
 {
     _width = width;
     _contentSize.height = width;
+    _anchorPointInPoints.set(_contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y);
     updateVertices();
 }
 
 void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    if (!_showRack)
+    if (!_isRackShow)
         return;
-
-    if (  nullptr == _skeletonDraw)
+    
+    // render depends _rootBoneNode's global Zorder + this globalZorder
+    auto rackGlobalZorder = _globalZOrder;
+    if (nullptr != _rootBoneNode)
     {
-        _customCommand.init(_globalZOrder, transform, flags);
-        _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
-        renderer->addCommand(&_customCommand);
+        if (_rootBoneNode->getAllRackShow())
+            rackGlobalZorder += _rootBoneNode->getGlobalZOrder();
+        else
+            return;
     }
-    else
+
+    _customCommand.init(rackGlobalZorder, transform, flags);
+    _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
+    renderer->addCommand(&_customCommand);
+
+    for (int i = 0; i < 4; ++i)
     {
-        if (isSkeletonDrawDirty())
-            drawBoneRack();
+        Vec4 pos;
+        pos.x = _squareVertices[i].x; pos.y = _squareVertices[i].y; pos.z = _positionZ;
+        pos.w = 1;
+        _modelViewTransform.transformVector(&pos);
+        _noMVPVertices[i] = Vec3(pos.x, pos.y, pos.z) / pos.w;
     }
-}
-
-void BoneNode::setBoneRackColor(const cocos2d::Color4F &color)
-{
-    _rackColor = color;
-    updateVecticesColor();
-    signSkeletonDrawDirty();
-}
-
-BoneNode::~BoneNode()
-{
 }
 
 void BoneNode::setContentSize(const cocos2d::Size &size)
 {
-    // super
     if (!size.equals(_contentSize))
     {
         _contentSize = size;
+        _anchorPointInPoints.set(_contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y);
     }
-    _length = size.width;
-    _width  = size.height;
+    _length = _contentSize.width;
+    _width  = _contentSize.height;
     updateVertices();
 }
 
 bool BoneNode::init()
 {
-    _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
+    _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
     _anchorPoint = Vec2(0, .5f);
     setContentSize(cocos2d::Size(_length, _width));
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
@@ -279,117 +271,64 @@ bool BoneNode::init()
 
 void BoneNode::updateVertices()
 {
-    if (_length != _squareVertices[2].y)
+    if (_length != _squareVertices[2].x || _squareVertices[3].y != _width / 2)
     {
+        _squareVertices[0].x = _squareVertices[3].x = _length * .1f;
+        _squareVertices[1].y = _squareVertices[2].y = _width * .5f;
+        _squareVertices[3].y = _width;
+        _squareVertices[2].x = _length;
         _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
     }
-
-    _squareVertices[1].x = _squareVertices[3].x = _length / 10.f;
-    _squareVertices[3].y = _width / 2;
-    _squareVertices[1].y = -_squareVertices[3].y;
-    _squareVertices[2].x = _length;
-
-    signSkeletonDrawDirty();
 }
 
-void BoneNode::signSkeletonDrawDirty(bool dirty)
+void BoneNode::updateColor()
 {
-    if (nullptr != _skeletonDraw)
-        _skeletonDraw->setVisible(!dirty);
-}
-
-bool BoneNode::isSkeletonDrawDirty()
-{
-    return nullptr != _skeletonDraw && !_skeletonDraw->isVisible();
-}
-
-void BoneNode::updateVecticesColor()
-{
-    if (_squareColors[0] == _rackColor) // judge [0] is ok
+    for (unsigned int i = 0; i < 4; i++)
     {
-        return;
-    }
-
-    for (auto &cvecti : _squareColors)
-    {
-        cvecti.r = _rackColor.r;
-        cvecti.g = _rackColor.g;
-        cvecti.b = _rackColor.b;
-        cvecti.a = _rackColor.a;
+        _squareColors[i].r = _displayedColor.r / 255.0f;
+        _squareColors[i].g = _displayedColor.g / 255.0f;
+        _squareColors[i].b = _displayedColor.b / 255.0f;
+        _squareColors[i].a = _displayedOpacity / 255.0f;
     }
     _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
 }
 
 void BoneNode::onDraw(const Mat4& transform, uint32_t flags)
 {
-    Director* director = cocos2d::Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-    director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-    director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
+    getGLProgram()->use();
+    getGLProgram()->setUniformsForBuiltins(transform);
 
-    CHECK_GL_ERROR_DEBUG();
-    glLineWidth(1);
-    DrawPrimitives::setDrawColor4B(_rackColor.r * 255, _rackColor.g * 255, _rackColor.b * 255, _rackColor.a * 255);
-    DrawPrimitives::drawCircle(_squareVertices[0], _width / 4, 0, 30, false);
-    DrawPrimitives::drawSolidPoly(_squareVertices, 4, _rackColor);
-    CHECK_GL_ERROR_DEBUG();
+    GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POSITION | GL::VERTEX_ATTRIB_FLAG_COLOR);
 
-    //end draw
-    director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    //
+    // Attributes
+    //
+#ifdef EMSCRIPTEN
+    setGLBufferData(_noMVPVertices, 4 * sizeof(Vec3), 0);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+    setGLBufferData(_squareColors, 4 * sizeof(Color4F), 1);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
+#else
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
+#endif // EMSCRIPTEN
+
+    cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
 }
 
-void BoneNode::drawBoneRack()
+BoneNode::~BoneNode()
 {
-    Vec2 skeletonDrawVs[4];
-    for (int i = 0; i < 4; i++)
-    {
-        skeletonDrawVs[i] = this->convertToWorldSpaceAR(_squareVertices[i]);
-        skeletonDrawVs[i] = _skeletonDraw->convertToNodeSpaceAR(skeletonDrawVs[i]); // _anchorPointInPoints is (0, 0)
-    }
-    const float radius = _width / 4;
-    //_skeletonDraw->setBlendFunc(_blendFunc); //how to make it effect
-    //_skeletonDraw->drawCircle(skeletonDrawVs[0], radius - 1, 0, 50, false, _rackColor);
-    _skeletonDraw->drawCircle(skeletonDrawVs[0], radius, 0, 30, false, _rackColor);
-    _skeletonDraw->drawPolygon(skeletonDrawVs, 4, _rackColor, 0, _rackColor);
 }
 
-
-
-void BoneNode::resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode)
+void BoneNode::setRackShow(bool ishow)
 {
-    _skeletonDraw = skeletonDrawNode;
-    signSkeletonDrawDirty();
-}
-
-// for editor
-void BoneNode::setPosition(float x, float y)
-{
-    LayerColor::setPosition(x, y);
-    signSkeletonDrawDirty();
-}
-
-void BoneNode::setRotation(float rotation)
-{
-    LayerColor::setRotation(rotation);
-    signSkeletonDrawDirty();
-}
-
-void BoneNode::setRotationSkewX(float rotationX)
-{
-    LayerColor::setRotationSkewX(rotationX);
-    signSkeletonDrawDirty();
-}
-
-void BoneNode::setRotationSkewY(float rotationY)
-{
-    LayerColor::setRotationSkewY(rotationY);
-    signSkeletonDrawDirty();
-}
-
-void BoneNode::setScale(float scaleX, float scaleY)
-{
-    LayerColor::setScale(scaleX, scaleY);
-    signSkeletonDrawDirty();
+    _isRackShow = ishow;
 }
 
 NS_TIMELINE_END

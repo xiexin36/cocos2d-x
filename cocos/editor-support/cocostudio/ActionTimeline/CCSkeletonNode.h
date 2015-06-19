@@ -25,9 +25,7 @@ THE SOFTWARE.
 #ifndef __CCSKELETONNODE_H__
 #define  __CCSKELETONNODE_H__
 
-#include "2d/CCSprite.h"
-#include "base/CCProtocols.h"
-#include "CCFrame.h"
+#include "CCPlatformMacros.h"
 #include "CCTimelineMacro.h"
 #include "cocostudio/CocosStudioExport.h"
 
@@ -41,20 +39,30 @@ public:
     static SkeletonNode* create();
 
     void setLength(float length) override;
+    void setAllRackShow(bool showRack);
+    bool getAllRackShow() const { return _isAllRackShow; }
 
-    void setRackGlobalZorder(int gzoder);
 protected:
     SkeletonNode();
     virtual ~SkeletonNode();
     virtual bool init() override;
 
-    virtual void setContentSize(const cocos2d::Size &size);
     virtual void updateVertices() override;
-    virtual void visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags) override;
-    virtual void drawBoneRack() override;
-    virtual void resetSkeletonDrawNode(cocos2d::DrawNode* skeletonDrawNode) override;
+    virtual void updateColor() override;
+
+    virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
+    virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags) override;
+
+protected:
+    bool _isAllRackShow;
 
 private:
+
+    Vec2          _squareVertices[8];
+    Color4F       _squareColors[8];
+    Vec3          _noMVPVertices[8];
+
+    CC_DISALLOW_COPY_AND_ASSIGN(SkeletonNode);
 };
 
 NS_TIMELINE_END
