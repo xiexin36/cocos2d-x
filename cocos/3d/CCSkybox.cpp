@@ -240,11 +240,6 @@ void Skybox::reload()
 bool Skybox::isVisitableByVisitingCamera() const
 {
     auto camera = Camera::getVisitingCamera();
-    if (camera != this->getParent())
-    {
-        return false;
-    }
-    return true;
 
     if (_cameraMask == (unsigned short)CameraFlag::DEFAULT)
     {
@@ -254,6 +249,12 @@ bool Skybox::isVisitableByVisitingCamera() const
     {
         return false;
     }
+
+    if (camera != this->getParent())
+    {
+        return false;
+    }
+    return true;
 
     bool visibleByCamera = camera ? ((unsigned short)camera->getCameraFlag() & _cameraMask) != 0 : true;
     return visibleByCamera;

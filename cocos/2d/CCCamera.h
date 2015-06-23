@@ -186,6 +186,9 @@ public:
      */
     static Camera* getDefaultCamera();
 
+    float csGetNearPlane() const { return _nearPlane; }
+    float csGetFarPlane() const { return _farPlane; }
+
 CC_CONSTRUCTOR_ACCESS:
     Camera();
     ~Camera();
