@@ -34,6 +34,11 @@ using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
+bool nodePairComparisonLess(std::pair<std::string, Node*> p1, std::pair<std::string, Node*> p2)
+{
+    return nodeComparisonLess(p1.second, p2.second);
+}
+
 
 BoneNode::BoneNode()
 : _length(50)
@@ -88,33 +93,31 @@ BoneNode* BoneNode::create(const int &length, const cocos2d::Color4F & color)
     return ret;
 }
 
-void BoneNode::addChildBone(BoneNode* bone)
+void BoneNode::addChildBone(BoneNode* bone, int localZOrder, const std::string &name)
 {
-    Node::addChild(bone);
-    _childBones.emplace(bone->getName(), bone);
-    bone->_rootBoneNode = _rootBoneNode;
+    Node::addChild(bone, localZOrder, name);
+    _childBones.pushBack(bone);
+    if (bone->_rootBoneNode == nullptr && _rootBoneNode != nullptr)
+    {
+        bone->_rootBoneNode = _rootBoneNode;
+        auto subBones = getAllSubBones();
+        for (auto &subBone : subBones)
+        {
+            subBone->_rootBoneNode = _rootBoneNode;
+        }
+    }
 }
 
 void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
 {
     Node::removeChild(bone, cleaup);
-    _childBones.erase(bone->getName());
+    _childBones.eraseObject(bone);
     bone->_rootBoneNode = nullptr;
-}
-
-void BoneNode::clearChildBones(bool cleanup, bool recursive /*= false*/)
-{
-    if (recursive)
+    auto subBones = getAllSubBones();
+    for (auto &subBone : subBones)
     {
-        for (const auto &childbone : _childBones)
-            childbone.second->clearChildBones(recursive, cleanup);
+        subBone->_rootBoneNode = nullptr;
     }
-    for (const auto &childbone : _childBones)
-    {
-        Node::removeChild(childbone.second, cleanup);
-        childbone.second->_rootBoneNode = nullptr;
-    }
-    _childBones.clear();
 }
 
 void BoneNode::removeFromParentBone(bool cleanup)
@@ -127,72 +130,41 @@ void BoneNode::removeFromParentBone(bool cleanup)
 
 void BoneNode::addSkin(SkinNode* skin, bool hide /*= false*/)
 {
-    std::string name = skin->getName();
-    if (_boneSkins.find(name) == _boneSkins.end())
-    {
-        Node::addChild(skin);
-        _boneSkins.emplace(name, skin);
-    }
-    else
-    {
-        CCLOGINFO("Skin named %s has been added to this bone", name);
-    }
+    Node::addChild(skin);
+    _boneSkins.pushBack(skin);
 }
 
 void BoneNode::removeSkin(SkinNode* skin)
 {
     Node::removeChild(skin);
-    _boneSkins.erase(skin->getName());
-}
-
-void BoneNode::clearSkins(bool cleanup)
-{
-    for (const auto &skin : _boneSkins)
-    {
-        Node::removeChild(skin.second, cleanup);
-    }
-    _boneSkins.clear();
+    _boneSkins.eraseObject(skin);
 }
 
 void BoneNode::display(SkinNode* skin, bool hideOthers /*= false*/)
 {
-    display(skin->getName(), hideOthers);
-}
+    if (!skin->isVisible())
+        skin->setVisible(true);
 
-void BoneNode::display(const std::string& skinName, bool hideOthers /*= false*/)
-{
-    auto skinToDisp = _boneSkins.find(skinName);
-    if (_boneSkins.end() != skinToDisp)
+    if (hideOthers)
     {
-        if (!skinToDisp->second->isVisible())
+        for (auto boneskin : _boneSkins)
         {
-            skinToDisp->second->setVisible(true);
-        }
-
-        if (hideOthers)
-        {
-            auto skinIter = _boneSkins.begin();
-            for (; skinIter != _boneSkins.end(); skinIter ++)
+            if (boneskin != skin)
             {
-                if (skinIter != skinToDisp)
-                    skinIter->second->setVisible(false);
+                boneskin->setVisible(false);
             }
         }
     }
-    else
-    {
-        CCLOGINFO("No skin named %s in this BoneNode", skinName);
-    }
 }
 
-std::map<std::string, SkinNode*> BoneNode::getDisplaying() const
+cocos2d::Vector<SkinNode*> BoneNode::getDisplaying() const
 {
-    std::map<std::string, SkinNode*> displayingSkins;
+    cocos2d::Vector<SkinNode*> displayingSkins;
     for (const auto &boneskin : _boneSkins)
     {
-        if (boneskin.second->isVisible())
+        if (boneskin->isVisible())
         {
-            displayingSkins.emplace(boneskin);
+            displayingSkins.pushBack(boneskin);
         }
     }
     return displayingSkins;
@@ -223,20 +195,14 @@ void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
 {
     if (!_isRackShow)
         return;
-    
-    // render depends _rootBoneNode's global Zorder + this globalZorder
-    auto rackGlobalZorder = _globalZOrder;
-    if (nullptr != _rootBoneNode)
-    {
-        if (_rootBoneNode->getAllRackShow())
-            rackGlobalZorder += _rootBoneNode->getGlobalZOrder();
-        else
-            return;
-    }
-
-    _customCommand.init(rackGlobalZorder, transform, flags);
-    _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
-    renderer->addCommand(&_customCommand);
+// 
+//     auto rootSkeleton = static_cast<SkeletonNode*>(_rootBoneNode);
+//     if (nullptr == rootSkeleton) // batch bones to SkeletonNode
+//     {
+        _customCommand.init(_globalZOrder, transform, flags);
+        _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
+        renderer->addCommand(&_customCommand);
+//    }
 
     for (int i = 0; i < 4; ++i)
     {
@@ -262,7 +228,6 @@ void BoneNode::setContentSize(const cocos2d::Size &size)
 
 bool BoneNode::init()
 {
-    _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
     _anchorPoint = Vec2(0, .5f);
     setContentSize(cocos2d::Size(_length, _width));
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
@@ -329,6 +294,161 @@ BoneNode::~BoneNode()
 void BoneNode::setRackShow(bool ishow)
 {
     _isRackShow = ishow;
+}
+
+cocos2d::Rect BoneNode::getBoundingBox() const
+{
+    float minx, miny, maxx, maxy = 0;
+
+    bool first = true;
+
+    Rect boundingBox = Rect(0, 0, 0, 0);
+
+    for (const auto& skin : _boneSkins)
+    {
+        Rect r = skin->getBoundingBox();
+        if (r.equals(Rect::ZERO))
+            continue;
+
+        if (first)
+        {
+            minx = r.getMinX();
+            miny = r.getMinY();
+            maxx = r.getMaxX();
+            maxy = r.getMaxY();
+
+            first = false;
+        }
+        else
+        {
+            minx = r.getMinX() < boundingBox.getMinX() ? r.getMinX() : boundingBox.getMinX();
+            miny = r.getMinY() < boundingBox.getMinY() ? r.getMinY() : boundingBox.getMinY();
+            maxx = r.getMaxX() > boundingBox.getMaxX() ? r.getMaxX() : boundingBox.getMaxX();
+            maxy = r.getMaxY() > boundingBox.getMaxY() ? r.getMaxY() : boundingBox.getMaxY();
+        }
+        boundingBox.setRect(minx, miny, maxx - minx, maxy - miny);
+    }
+
+    return RectApplyTransform(boundingBox, getNodeToParentTransform());
+}
+
+cocos2d::Vector<BoneNode*> BoneNode::getAllSubBones() const
+{
+    cocos2d::Vector<BoneNode*> allBones;
+    std::stack<BoneNode*> boneStack; // for avoid recursive
+    for (const auto& bone : _childBones)
+    {
+        boneStack.push(bone);
+    }
+
+    while (boneStack.size() > 0)
+    {
+        auto top = boneStack.top();
+        allBones.pushBack(top);
+        boneStack.pop();
+        auto topchildren = top->getChildBones();
+        if (topchildren.size() > 0)
+        {
+            for (const auto& childbone : topchildren)
+            {
+                boneStack.push(childbone);
+            }
+        }
+    }
+    return allBones;
+}
+
+cocos2d::Vector<SkinNode*> BoneNode::getAllSubSkins() const
+{
+    auto allbones = getAllSubBones();
+    cocos2d::Vector<SkinNode*> allskins;
+    for (const auto& bone : allbones)
+    {
+        for (const auto& skin : bone->getSkins())
+        {
+            allskins.pushBack(skin);
+        }
+    }
+    return allskins;
+}
+
+void BoneNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
+{
+    // quick return if not visible. children won't be drawn.
+    if (!_visible)
+    {
+        return;
+    }
+
+    uint32_t flags = processParentFlags(parentTransform, parentFlags);
+
+    // IMPORTANT:
+    // To ease the migration to v3.0, we still support the Mat4 stack,
+    // but it is deprecated and your code should not rely on it
+    _director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    _director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
+
+
+    int i = 0;
+
+    if (!_children.empty())
+    {
+        sortAllChildren();
+        // draw children zOrder < 0
+        for (; i < _children.size(); i++)
+        {
+            auto node = _children.at(i);
+
+            if (node && node->getLocalZOrder() < 0)
+                node->visit(renderer, _modelViewTransform, flags);
+            else
+                break;
+        }
+
+        for (auto it = _children.cbegin() + i; it != _children.cend(); ++it)
+            (*it)->visit(renderer, _modelViewTransform, flags);
+
+    }
+    // self draw
+    //if (this->_rootBoneNode == nullptr)
+    //    this->draw(renderer, _modelViewTransform, flags);
+
+    _director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+}
+
+void BoneNode::addChild(Node* child, int localZOrder, const std::string &name)
+{
+    auto bone = static_cast<BoneNode*>(child);
+    if (nullptr != bone)
+    {
+        addChildBone(bone, localZOrder, name);
+    }
+    else
+    {
+        auto skin = static_cast<SkinNode*>(child);
+        if (nullptr != skin)
+        {
+            addSkin(skin);
+        }
+    }
+}
+
+void BoneNode::removeChild(Node* child, bool cleanup /* = true */)
+{
+    Node::removeChild(child, cleanup);
+    auto bone = static_cast<BoneNode*>(child);
+    if (nullptr != bone)
+    {
+        removeChildBone(bone);
+    }
+    else
+    {
+        auto skin = static_cast<SkinNode*>(child);
+        if (nullptr != skin)
+        {
+            removeSkin(skin);
+        }
+    }
 }
 
 NS_TIMELINE_END

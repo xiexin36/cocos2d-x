@@ -27,9 +27,14 @@ THE SOFTWARE.
 
 #include "CCPlatformMacros.h"
 #include "CCTimelineMacro.h"
+#include "renderer/CCGroupCommand.h"
 #include "cocostudio/CocosStudioExport.h"
 
 #include "CCBoneNode.h"
+
+namespace cocos2d {
+    class GroupCommand;
+}
 
 NS_TIMELINE_BEGIN
 
@@ -39,9 +44,12 @@ public:
     static SkeletonNode* create();
 
     void setLength(float length) override;
-    void setAllRackShow(bool showRack);
-    bool getAllRackShow() const { return _isAllRackShow; }
+    void setContentSize(const cocos2d::Size &size) override;
 
+    void setAllRackShow(bool showRack);
+    bool isAllRackShow() const { return _isAllRackShow; }
+
+    cocos2d::Rect getBoundingBox() const override;
 protected:
     SkeletonNode();
     virtual ~SkeletonNode();
@@ -50,6 +58,7 @@ protected:
     virtual void updateVertices() override;
     virtual void updateColor() override;
 
+    virtual void visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags) override;
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
     virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags) override;
 
@@ -57,6 +66,7 @@ protected:
     bool _isAllRackShow;
 
 private:
+    cocos2d::GroupCommand  _groupCommand;
 
     Vec2          _squareVertices[8];
     Color4F       _squareColors[8];

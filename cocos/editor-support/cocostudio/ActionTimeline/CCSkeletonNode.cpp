@@ -25,8 +25,10 @@ THE SOFTWARE.
 
 #include "base/CCDirector.h"
 #include "renderer/CCRenderer.h"
+#include "renderer/CCGroupCommand.h"
 #include "renderer/ccGLStateCache.h"
 #include "renderer/CCGLProgram.h"
+#include <stack>
 
 NS_TIMELINE_BEGIN
 
@@ -46,12 +48,37 @@ SkeletonNode* SkeletonNode::create()
 
 bool SkeletonNode::init()
 {
-    bool ret = BoneNode::init();
-    _anchorPoint = cocos2d::Vec2(.5f, .5f);
+    _anchorPoint = Vec2(.5f, .5f);
     setContentSize(cocos2d::Size(20, 20));
-
+    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     _rootBoneNode = this;
-    return ret;
+    return true;
+}
+
+
+cocos2d::Rect SkeletonNode::getBoundingBox() const
+{
+    auto allbones = getAllSubBones();
+
+    float minx, miny, maxx, maxy = 0;
+
+
+    Rect boundingBox = BoneNode::getBoundingBox();
+
+    for (const auto& bone : allbones)
+    {
+        Rect r = bone->getBoundingBox();
+        if (r.equals(Rect::ZERO))
+            continue;
+
+        minx = r.getMinX() < boundingBox.getMinX() ? r.getMinX() : boundingBox.getMinX();
+        miny = r.getMinY() < boundingBox.getMinY() ? r.getMinY() : boundingBox.getMinY();
+        maxx = r.getMaxX() > boundingBox.getMaxX() ? r.getMaxX() : boundingBox.getMaxX();
+        maxy = r.getMaxY() > boundingBox.getMaxY() ? r.getMaxY() : boundingBox.getMaxY();
+    }
+    boundingBox.setRect(minx, miny, maxx - minx, maxy - miny);
+
+    return RectApplyTransform(boundingBox, getNodeToParentTransform());
 }
 
 SkeletonNode::SkeletonNode()
@@ -92,24 +119,49 @@ void SkeletonNode::updateColor()
     _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
 }
 
+
+void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
+{
+    BoneNode::visit(renderer, parentTransform, parentFlags);
+    this->draw(renderer, parentTransform, parentFlags);
+}
+
+
 void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    if (_isRackShow && _isAllRackShow)
+    if (_isAllRackShow)
     {
-        _customCommand.init(_globalZOrder, transform, flags);
-        _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, transform, flags);
-        renderer->addCommand(&_customCommand);
+//         Renderer* renderer = Director::getInstance()->getRenderer();
+//         _groupCommand.init(_globalZOrder);
+//         renderer->addCommand(&_groupCommand);
+// 
+//         renderer->pushGroup(_groupCommand.getRenderQueueID());
 
-        for (int i = 0; i < 8; ++i)
+        if (_isRackShow)
         {
-            Vec4 pos;
-            pos.x = _squareVertices[i].x; pos.y = _squareVertices[i].y; pos.z = _positionZ;
-            pos.w = 1;
-            _modelViewTransform.transformVector(&pos);
-            _noMVPVertices[i] = Vec3(pos.x, pos.y, pos.z) / pos.w;
+            _customCommand.init(_globalZOrder, transform, flags);
+            _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, transform, flags);
+            renderer->addCommand(&_customCommand);
+
+            for (int i = 0; i < 8; ++i)
+            {
+                Vec4 pos;
+                pos.x = _squareVertices[i].x; pos.y = _squareVertices[i].y; pos.z = _positionZ;
+                pos.w = 1;
+                _modelViewTransform.transformVector(&pos);
+                _noMVPVertices[i] = Vec3(pos.x, pos.y, pos.z) / pos.w;
+            }
+        }
+
+        auto transp = this->getWorldToNodeTransform();
+        auto allbones = getAllSubBones();
+        for (auto &subbone : allbones)
+        {
+            //auto ptran = subbone.second->getParent()->getNodeToWorldTransform();
+            //ptran.multiply(transp);
+            subbone->draw(renderer, transform, flags);
         }
     }
-
 }
 
 void SkeletonNode::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
@@ -149,8 +201,22 @@ void SkeletonNode::setAllRackShow(bool showRack)
 
 void SkeletonNode::setLength(float length)
 {
-    _contentSize.height = length;
-    BoneNode::setLength(length);
+    _width = _length = length;
+    _contentSize.width = _contentSize.height = length;
+    _anchorPointInPoints.set(_contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y);
+    updateVertices();
+}
+
+void SkeletonNode::setContentSize(const cocos2d::Size &size)
+{
+    _length = size.width;
+    _width = size.height;
+    if (!size.equals(_contentSize))
+    {
+        _contentSize = size;
+        _anchorPointInPoints.set(_contentSize.width * _anchorPoint.x, _contentSize.height * _anchorPoint.y);
+    }
+    updateVertices();
 }
 
 NS_TIMELINE_END
