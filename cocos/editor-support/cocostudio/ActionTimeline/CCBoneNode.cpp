@@ -95,7 +95,6 @@ BoneNode* BoneNode::create(const int &length, const cocos2d::Color4F & color)
 
 void BoneNode::addChildBone(BoneNode* bone, int localZOrder, const std::string &name)
 {
-    Node::addChild(bone, localZOrder, name);
     _childBones.pushBack(bone);
     if (bone->_rootBoneNode == nullptr && _rootBoneNode != nullptr)
     {
@@ -110,7 +109,6 @@ void BoneNode::addChildBone(BoneNode* bone, int localZOrder, const std::string &
 
 void BoneNode::removeChildBone(BoneNode* bone, bool cleaup /*= false*/)
 {
-    Node::removeChild(bone, cleaup);
     _childBones.eraseObject(bone);
     bone->_rootBoneNode = nullptr;
     auto subBones = getAllSubBones();
@@ -130,13 +128,11 @@ void BoneNode::removeFromParentBone(bool cleanup)
 
 void BoneNode::addSkin(SkinNode* skin, bool hide /*= false*/)
 {
-    Node::addChild(skin);
     _boneSkins.pushBack(skin);
 }
 
 void BoneNode::removeSkin(SkinNode* skin)
 {
-    Node::removeChild(skin);
     _boneSkins.eraseObject(skin);
 }
 
@@ -418,14 +414,15 @@ void BoneNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t p
 
 void BoneNode::addChild(Node* child, int localZOrder, const std::string &name)
 {
-    auto bone = static_cast<BoneNode*>(child);
+    Node::addChild(child, localZOrder, name);
+    BoneNode* bone = dynamic_cast<BoneNode*>(child);
     if (nullptr != bone)
     {
         addChildBone(bone, localZOrder, name);
     }
     else
     {
-        auto skin = static_cast<SkinNode*>(child);
+        SkinNode* skin = dynamic_cast<SkinNode*>(child);
         if (nullptr != skin)
         {
             addSkin(skin);
@@ -436,14 +433,14 @@ void BoneNode::addChild(Node* child, int localZOrder, const std::string &name)
 void BoneNode::removeChild(Node* child, bool cleanup /* = true */)
 {
     Node::removeChild(child, cleanup);
-    auto bone = static_cast<BoneNode*>(child);
+    BoneNode* bone = dynamic_cast<BoneNode*>(child);
     if (nullptr != bone)
     {
         removeChildBone(bone);
     }
     else
     {
-        auto skin = static_cast<SkinNode*>(child);
+        SkinNode* skin = dynamic_cast<SkinNode*>(child);
         if (nullptr != skin)
         {
             removeSkin(skin);
