@@ -123,7 +123,10 @@ void SkeletonNode::updateColor()
 void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
 {
     BoneNode::visit(renderer, parentTransform, parentFlags);
-    this->draw(renderer, parentTransform, parentFlags);
+    if (this->_visible)
+    {
+        this->draw(renderer, parentTransform, parentFlags);
+    }
 }
 
 
@@ -131,12 +134,6 @@ void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transf
 {
     if (_isAllRackShow)
     {
-//         Renderer* renderer = Director::getInstance()->getRenderer();
-//         _groupCommand.init(_globalZOrder);
-//         renderer->addCommand(&_groupCommand);
-// 
-//         renderer->pushGroup(_groupCommand.getRenderQueueID());
-
         if (_isRackShow)
         {
             _customCommand.init(_globalZOrder, transform, flags);
@@ -153,13 +150,13 @@ void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transf
             }
         }
 
-        auto transp = this->getWorldToNodeTransform();
+        //auto transp = this->getWorldToNodeTransform();
         auto allbones = getAllSubBones();
         for (auto &subbone : allbones)
         {
-            //auto ptran = subbone.second->getParent()->getNodeToWorldTransform();
+            //auto ptran = subbone->getParent()->getNodeToWorldTransform();
             //ptran.multiply(transp);
-            subbone->draw(renderer, transform, flags);
+            subbone->draw(renderer, transform/*ptran*/, flags);
         }
     }
 }
