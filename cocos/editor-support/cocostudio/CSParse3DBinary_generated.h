@@ -93,6 +93,87 @@ MANUALLY_ALIGNED_STRUCT(4) Vector3 {
 };
 STRUCT_END(Vector3, 12);
 
+struct GameNode3DOption : private flatbuffers::Table {
+    const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(4); }
+    uint8_t skyBoxEnabled() const { return GetField<uint8_t>(6, 0); }
+    const ResourceData *leftFileData() const { return GetPointer<const ResourceData *>(8); }
+    const ResourceData *rightFileData() const { return GetPointer<const ResourceData *>(10); }
+    const ResourceData *upFileData() const { return GetPointer<const ResourceData *>(12); }
+    const ResourceData *downFileData() const { return GetPointer<const ResourceData *>(14); }
+    const ResourceData *forwardFileData() const { return GetPointer<const ResourceData *>(16); }
+    const ResourceData *backFileData() const { return GetPointer<const ResourceData *>(18); }
+    const flatbuffers::String *frameEvent() const { return GetPointer<const flatbuffers::String *>(20); }
+    const flatbuffers::String *customProperty() const { return GetPointer<const flatbuffers::String *>(22); }
+    bool Verify(flatbuffers::Verifier &verifier) const {
+        return VerifyTableStart(verifier) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* nodeOptions */) &&
+            verifier.Verify(name()) &&
+            VerifyField<uint8_t>(verifier, 6 /* skyBoxEnabled */) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 8 /* leftFileData */) &&
+            verifier.VerifyTable(leftFileData()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 10 /* rightFileData */) &&
+            verifier.VerifyTable(rightFileData()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 12 /* upFileData */) &&
+            verifier.VerifyTable(upFileData()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 14 /* downFileData */) &&
+            verifier.VerifyTable(downFileData()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 16 /* forwardFileData */) &&
+            verifier.VerifyTable(forwardFileData()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 18 /* backFileData */) &&
+            verifier.VerifyTable(backFileData()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 20 /* frameEvent */) &&
+            verifier.Verify(frameEvent()) &&
+            VerifyField<flatbuffers::uoffset_t>(verifier, 22 /* customProperty */) &&
+            verifier.Verify(customProperty()) &&
+            verifier.EndTable();
+    }
+};
+
+struct GameNode3DOptionBuilder {
+    flatbuffers::FlatBufferBuilder &fbb_;
+    flatbuffers::uoffset_t start_;
+    void add_name(flatbuffers::Offset<flatbuffers::String> name) { fbb_.AddOffset(4, name); }
+    void add_skyboxEnabled(uint8_t skyBoxEnabled) { fbb_.AddElement<uint8_t>(6, skyBoxEnabled, 0); }
+    void add_leftFileData(flatbuffers::Offset<ResourceData> leftFileData) { fbb_.AddOffset(8, leftFileData); }
+    void add_rightFileData(flatbuffers::Offset<ResourceData> rightFileData) { fbb_.AddOffset(10, rightFileData); }
+    void add_upFileData(flatbuffers::Offset<ResourceData> upFileData) { fbb_.AddOffset(12, upFileData); }
+    void add_downFileData(flatbuffers::Offset<ResourceData> downFileData) { fbb_.AddOffset(14, downFileData); }
+    void add_forwardFileData(flatbuffers::Offset<ResourceData> forwardFileData) { fbb_.AddOffset(16, forwardFileData); }
+    void add_backFileData(flatbuffers::Offset<ResourceData> backFileData) { fbb_.AddOffset(18, backFileData); }
+    void add_frameEvent(flatbuffers::Offset<flatbuffers::String> frameEvent) { fbb_.AddOffset(20, frameEvent); }
+    void add_customProperty(flatbuffers::Offset<flatbuffers::String> customProperty) { fbb_.AddOffset(22, customProperty); }
+    GameNode3DOptionBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+    flatbuffers::Offset<GameNode3DOption> Finish() {
+        auto o = flatbuffers::Offset<GameNode3DOption>(fbb_.EndTable(start_, 5));
+        return o;
+    }
+};
+
+inline flatbuffers::Offset<GameNode3DOption> CreateGameNode3DOption(flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    uint8_t skyBoxEnabled = 0,
+    flatbuffers::Offset<ResourceData> leftFileData = 0,
+    flatbuffers::Offset<ResourceData> rightFileData = 0,
+    flatbuffers::Offset<ResourceData> upFileData = 0,
+    flatbuffers::Offset<ResourceData> downFileData = 0,
+    flatbuffers::Offset<ResourceData> forwardFileData = 0,
+    flatbuffers::Offset<ResourceData> backFileData = 0,
+    flatbuffers::Offset<flatbuffers::String> frameEvent = 0,
+    flatbuffers::Offset<flatbuffers::String> customProperty = 0) {
+    GameNode3DOptionBuilder builder_(_fbb);
+    builder_.add_customProperty(customProperty);
+    builder_.add_frameEvent(frameEvent);
+    builder_.add_backFileData(backFileData);
+    builder_.add_forwardFileData(forwardFileData);
+    builder_.add_downFileData(downFileData);
+    builder_.add_upFileData(upFileData);
+    builder_.add_rightFileData(rightFileData);
+    builder_.add_leftFileData(leftFileData);
+    builder_.add_skyboxEnabled(skyBoxEnabled);
+    builder_.add_name(name);
+    return builder_.Finish();
+}
+
 struct Node3DOption : private flatbuffers::Table {
   const flatbuffers::WidgetOptions *nodeOptions() const { return GetPointer<const flatbuffers::WidgetOptions *>(4); }
   const Vector3 *position3D() const { return GetStruct<const Vector3 *>(6); }

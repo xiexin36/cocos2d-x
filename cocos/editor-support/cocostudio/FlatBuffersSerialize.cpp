@@ -195,6 +195,22 @@ std::string FlatBuffersSerialize::serializeFlatBuffersWithXMLFile(const std::str
                 serializeEnabled = true;
                 rootType = "NodeObjectData";
             }
+            while (attribute)
+            {
+                std::string attriname = attribute->Name();
+                std::string value = attribute->Value();
+
+                if (attriname == "ctype")
+                {
+                    if (value == "GameNode3DObjectData")
+                    {
+                        rootType = "GameNode3DObjectData";
+                    }
+                    break;
+                }
+
+                attribute = attribute->Next();
+            }
             //
             
             //

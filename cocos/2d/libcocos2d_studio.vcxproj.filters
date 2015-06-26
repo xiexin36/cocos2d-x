@@ -268,6 +268,9 @@
     <Filter Include="external\poly2tri\sweep">
       <UniqueIdentifier>{24fe64b1-2829-4d5a-bbe6-581bea9d6628}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\GameNode3DReader">
+      <UniqueIdentifier>{81742e62-4be4-46ff-8526-9b31e42d9f31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
@@ -1830,6 +1833,9 @@
     </ClCompile>
     <ClCompile Include="..\..\external\poly2tri\sweep\sweep_context.cc">
       <Filter>external\poly2tri\sweep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\GameNode3DReader\GameNode3DReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\GameNode3DReader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3585,6 +3591,9 @@
     </ClInclude>
     <ClInclude Include="..\..\external\poly2tri\sweep\sweep.h">
       <Filter>external\poly2tri\sweep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\GameNode3DReader\GameNode3DReader.h">
+      <Filter>cocostudio\reader\WidgetReader\GameNode3DReader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
