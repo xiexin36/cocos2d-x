@@ -390,7 +390,21 @@ namespace cocostudio
         auto options = (GameNode3DOption*)node3DOptions;
         
         std::string name = options->name()->c_str();
+        node->setName(name);
+
         bool skyBoxEnabled = options->skyBoxEnabled() != 0;
+        if (skyBoxEnabled)
+        {
+            auto leftFileData = options->leftFileData()->path()->c_str();
+            auto rightFileData = options->rightFileData()->path()->c_str();
+            auto upFileData = options->upFileData()->path()->c_str();
+            auto downFileData = options->downFileData()->path()->c_str();
+            auto forwardFileData = options->forwardFileData()->path()->c_str();
+            auto backFileData = options->backFileData()->path()->c_str();
+
+            Skybox* childBox = Skybox::create(leftFileData,rightFileData,upFileData,downFileData,forwardFileData,backFileData);
+            node->addChild(childBox);
+        }
 
         std::string customProperty = options->customProperty()->c_str();
         ObjectExtensionData* extensionData = ObjectExtensionData::create();
