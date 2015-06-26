@@ -152,17 +152,17 @@ void Skybox::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 
 void Skybox::onDraw(const Mat4& transform, uint32_t flags)
 {
-    Mat4 trans(transform);
-    const cocos2d::Vec3 pos(Camera::getVisitingCamera()->getPosition3D());
-    trans.m[12] = pos.x;
-    trans.m[13] = pos.y;
-    trans.m[14] = pos.z;
+    auto camera = Camera::getVisitingCamera();
+
+    Mat4 cameraModelMat = camera->getNodeToWorldTransform();
 
     auto state = getGLProgramState();
-    state->apply(trans);
+    state->apply(transform);
 
     Vec4 color(_displayedColor.r / 255.f, _displayedColor.g / 255.f, _displayedColor.b / 255.f, 1.f);
     state->setUniformVec4("u_color", color);
+    cameraModelMat.m[12] = cameraModelMat.m[13] = cameraModelMat.m[14] = 0;
+    state->setUniformMat4("u_cameraRot", cameraModelMat);
 
     GLboolean depthFlag = glIsEnabled(GL_DEPTH_TEST);
     GLint depthFunc;
