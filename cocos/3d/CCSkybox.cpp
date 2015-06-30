@@ -242,24 +242,24 @@ bool Skybox::isVisitableByVisitingCamera() const
 {
     auto camera = Camera::getVisitingCamera();
 
-    if (_cameraMask == (unsigned short)CameraFlag::DEFAULT)
-    {
-        if (camera->getCameraFlag() == CameraFlag::FRONT)
-        {
-            return false;
-        }
-        return true;
-    }
-    else if (camera->getCameraFlag() == CameraFlag::DEFAULT)
-    {
-        return false;
-    }
+    //if (_cameraMask == (unsigned short)CameraFlag::DEFAULT)
+    //{
+    //    if (camera->getCameraFlag() == CameraFlag::FRONT)
+    //    {
+    //        return false;
+    //    }
+    //    return true;
+    //}
+    //else if (camera->getCameraFlag() == CameraFlag::DEFAULT)
+    //{
+    //    return false;
+    //}
 
-    if (camera != this->getParent())
-    {
-        return false;
-    }
-    return true;
+    //if (camera != this->getParent())
+    //{
+    //    return false;
+    //}
+    //return true;
 
     bool visibleByCamera = camera ? ((unsigned short)camera->getCameraFlag() & _cameraMask) != 0 : true;
     return visibleByCamera;
