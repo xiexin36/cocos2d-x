@@ -144,7 +144,7 @@ struct GameNode3DOptionBuilder {
     void add_customProperty(flatbuffers::Offset<flatbuffers::String> customProperty) { fbb_.AddOffset(22, customProperty); }
     GameNode3DOptionBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
     flatbuffers::Offset<GameNode3DOption> Finish() {
-        auto o = flatbuffers::Offset<GameNode3DOption>(fbb_.EndTable(start_, 5));
+        auto o = flatbuffers::Offset<GameNode3DOption>(fbb_.EndTable(start_, 10));
         return o;
     }
 };
@@ -354,7 +354,7 @@ struct UserCameraOptionsBuilder {
   UserCameraOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   UserCameraOptionsBuilder &operator=(const UserCameraOptionsBuilder &);
   flatbuffers::Offset<UserCameraOptions> Finish() {
-    auto o = flatbuffers::Offset<UserCameraOptions>(fbb_.EndTable(start_, 5));
+    auto o = flatbuffers::Offset<UserCameraOptions>(fbb_.EndTable(start_, 12));
     return o;
   }
 };

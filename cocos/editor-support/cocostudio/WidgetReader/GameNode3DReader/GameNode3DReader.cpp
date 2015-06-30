@@ -136,6 +136,8 @@ namespace cocostudio
         const tinyxml2::XMLElement* child = objectData->FirstChildElement();
         while (child)
         {
+            std::string name = child->Name();
+
             if (name == "LeftImage")
             {
                 std::string texture = "";
