@@ -405,6 +405,8 @@ namespace cocostudio
             auto backFileData = options->backFileData()->path()->c_str();
 
             Skybox* childBox = Skybox::create(leftFileData,rightFileData,upFileData,downFileData,forwardFileData,backFileData);
+            unsigned short cameraFlag = 1 << 10;
+            childBox->setCameraMask(cameraFlag, false);
             node->addChild(childBox);
         }
 

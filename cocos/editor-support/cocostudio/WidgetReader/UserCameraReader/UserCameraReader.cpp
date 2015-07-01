@@ -122,10 +122,17 @@ namespace cocostudio
             }
             else if(attriname == "UserCameraFlagMode")
             {
-                if(value == "DEFAULT")  cameraFlag = 1;
-                else if(value == "USER1") cameraFlag = 1 << 1;
-                else if(value == "USER2") cameraFlag = 1 << 2;
-                else if(value == "USER3") cameraFlag = 1 << 3;
+                if (cameraFlag == 0)
+                {
+                    if (value == "DEFAULT")  cameraFlag = 1;
+                    else if (value == "USER1") cameraFlag = 1 << 1;
+                    else if (value == "USER2") cameraFlag = 1 << 2;
+                    else if (value == "USER3") cameraFlag = 1 << 3;
+                }
+            }
+            else if (attriname == "UserCameraFlagMode")
+            {
+                cameraFlag = atoi(value.c_str());
             }
             else if (attriname == "SkyBoxEnabled")
             {
@@ -443,6 +450,7 @@ namespace cocostudio
             auto backFileData = options->backFileData()->path()->c_str();
 
             Skybox* childBox = Skybox::create(leftFileData, rightFileData, upFileData, downFileData, forwardFileData, backFileData);
+            childBox->setCameraMask(cameraFlag);
             node->addChild(childBox);
         }
 
