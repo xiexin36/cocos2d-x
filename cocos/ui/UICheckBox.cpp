@@ -353,6 +353,7 @@ void CheckBox::onPressStateChangedToNormal()
     if (_isSelected)
     {
         _frontCrossRenderer->setVisible(true);
+        _frontCrossRendererAdaptDirty = true;
     }
 }
 
