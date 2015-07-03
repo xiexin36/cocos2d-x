@@ -374,7 +374,7 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
     glProgram->use();
     glProgram->setUniformsForBuiltins(transform);
 
-    glDisable(GL_BLEND);
+    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
     if (_dirtyGLLine)
     {
@@ -418,7 +418,6 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
     if (this->_lineSmoothEnable == false)
         glEnable(GL_MULTISAMPLE);
 
-    glEnable(GL_BLEND);
     CHECK_GL_ERROR_DEBUG();
 }
 
@@ -427,6 +426,8 @@ void DrawNode::onDrawGLPoint(const Mat4 &transform, uint32_t flags)
     auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_COLOR_TEXASPOINTSIZE);
     glProgram->use();
     glProgram->setUniformsForBuiltins(transform);
+
+    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
     if (_dirtyGLPoint)
     {
