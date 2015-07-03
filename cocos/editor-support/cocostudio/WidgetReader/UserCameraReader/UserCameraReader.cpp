@@ -130,7 +130,7 @@ namespace cocostudio
                     else if (value == "USER3") cameraFlag = 1 << 3;
                 }
             }
-            else if (attriname == "UserCameraFlagMode")
+            else if (attriname == "CameraFlagData")
             {
                 cameraFlag = atoi(value.c_str());
             }

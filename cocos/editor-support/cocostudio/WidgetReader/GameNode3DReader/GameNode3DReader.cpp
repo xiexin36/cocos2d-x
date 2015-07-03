@@ -77,6 +77,7 @@ namespace cocostudio
         flatbuffers::FlatBufferBuilder *builder)
     {
         std::string name = "";
+        int skyBoxMask = 1;
         bool skyBoxEnabled = false;
 
         std::string leftPath = "";
@@ -120,6 +121,10 @@ namespace cocostudio
             else if (attriname == "SkyBoxEnabled")
             {
                 skyBoxEnabled = (value == "True") ? true : false;
+            }
+            else if (attriname == "skyBoxMask")
+            {
+                skyBoxMask = atoi(value.c_str());
             }
             else if (attriname == "UserData")
             {
@@ -354,6 +359,7 @@ namespace cocostudio
 
         auto options = CreateGameNode3DOption(*builder,
             builder->CreateString(name),
+            skyBoxMask,
             skyBoxEnabled,
             CreateResourceData(*builder,
                                 builder->CreateString(leftPath),
