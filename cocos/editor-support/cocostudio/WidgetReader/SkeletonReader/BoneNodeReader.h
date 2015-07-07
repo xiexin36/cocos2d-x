@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014 cocos2d-x.org
+Copyright (c) 2015 cocos2d-x.org
 
 http://www.cocos2d-x.org
 
@@ -22,10 +22,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "CCSkinNode.h"
-using namespace cocos2d;
+#ifndef __BONENODEREADER_H_
+#define __BONENODEREADER_H_
 
+#include "cocos2d.h"
+#include "cocostudio/WidgetReader/NodeReaderProtocol.h"
+#include "cocostudio/WidgetReader/NodeReaderDefine.h"
 
-NS_TIMELINE_BEGIN
+class BoneNodeReader : public cocos2d::Ref, public cocostudio::NodeReaderProtocol
+{
+    DECLARE_CLASS_NODE_READER_INFO
 
-NS_TIMELINE_END
+public:
+
+    BoneNodeReader();
+    ~BoneNodeReader();
+
+    static BoneNodeReader* getInstance();
+    /** @deprecated Use method destroyInstance() instead */
+    CC_DEPRECATED_ATTRIBUTE static void purge();
+    static void destroyInstance();
+
+    flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
+        flatbuffers::FlatBufferBuilder* builder) override;
+    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* boneOptions) override;
+
+    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* boneOptions) override;
+};
+
+#endif /* defined(__BONENODEREADER_H_) */

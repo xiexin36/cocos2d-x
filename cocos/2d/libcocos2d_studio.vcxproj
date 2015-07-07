@@ -532,7 +532,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\chipmunk\prebuilt\win32\release-lib\*.*
     <ClCompile Include="..\editor-support\cocostudio\TriggerObj.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetCallBackHandlerProtocol.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\ArmatureNodeReader.cpp" />
-    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\BoneReader\BoneReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ButtonReader\ButtonReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\CheckBoxReader\CheckBoxReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ComAudioReader\ComAudioReader.cpp" />
@@ -551,6 +550,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\chipmunk\prebuilt\win32\release-lib\*.*
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ProjectNodeReader\ProjectNodeReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\ScrollViewReader\ScrollViewReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SingleNodeReader\SingleNodeReader.cpp" />
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\BoneNodeReader.cpp" />
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SliderReader\SliderReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\Sprite3DReader\Sprite3DReader.cpp" />
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SpriteReader\SpriteReader.cpp" />
@@ -1101,7 +1102,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\chipmunk\prebuilt\win32\release-lib\*.*
     <ClInclude Include="..\editor-support\cocostudio\CocoLoader.h" />
     <ClInclude Include="..\editor-support\cocostudio\CocosStudioExport.h" />
     <ClInclude Include="..\editor-support\cocostudio\CocoStudio.h" />
-    <ClInclude Include="..\editor-support\cocostudio\CSBoneBinary_generated.h" />
     <ClInclude Include="..\editor-support\cocostudio\CSParse3DBinary_generated.h" />
     <ClInclude Include="..\editor-support\cocostudio\CSParseBinary_generated.h" />
     <ClInclude Include="..\editor-support\cocostudio\DictionaryHelper.h" />
@@ -1112,7 +1112,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\chipmunk\prebuilt\win32\release-lib\*.*
     <ClInclude Include="..\editor-support\cocostudio\WidgetCallBackHandlerProtocol.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\ArmatureNodeReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ArmatureNodeReader\CSArmatureNode_generated.h" />
-    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\BoneReader\BoneReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ButtonReader\ButtonReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\CheckBoxReader\CheckBoxReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ComAudioReader\ComAudioReader.h" />
@@ -1131,6 +1130,9 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\chipmunk\prebuilt\win32\release-lib\*.*
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ProjectNodeReader\ProjectNodeReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\ScrollViewReader\ScrollViewReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SingleNodeReader\SingleNodeReader.h" />
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\BoneNodeReader.h" />
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\CSBoneBinary_generated.h" />
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SliderReader\SliderReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\Sprite3DReader\Sprite3DReader.h" />
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SpriteReader\SpriteReader.h" />

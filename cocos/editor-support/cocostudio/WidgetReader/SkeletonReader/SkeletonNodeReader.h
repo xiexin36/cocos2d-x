@@ -22,32 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __BONEREADER_H_
-#define __BONEREADER_H_
+#ifndef _SKELETONNODEREADER_H_
+#define _SKELETONNODEREADER_H_
 
 #include "cocos2d.h"
-#include "cocostudio/WidgetReader/NodeReaderProtocol.h"
-#include "cocostudio/WidgetReader/NodeReaderDefine.h"
+#include "cocostudio/WidgetReader/SkeletonReader/BoneNodeReader.h"
 
-class BoneReader : public cocos2d::Ref, public cocostudio::NodeReaderProtocol
+class SkeletonNodeReader : public  BoneNodeReader
 {
     DECLARE_CLASS_NODE_READER_INFO
 
 public:
 
-    BoneReader();
-    ~BoneReader();
+    SkeletonNodeReader();
+    ~SkeletonNodeReader();
 
-    static BoneReader* getInstance();
+    static SkeletonNodeReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
     CC_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
-    flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
-        flatbuffers::FlatBufferBuilder* builder) override;
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* boneOptions) override;
-
     cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* boneOptions) override;
 };
-
-#endif /* defined(__BONEREADER_H_) */
+#endif //_SKELETONNODEREADER_H_

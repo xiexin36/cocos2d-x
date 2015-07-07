@@ -59,6 +59,7 @@ struct ResourceData;
 namespace flatbuffers {
 
 struct BoneOptions;
+struct SkeletonOptions;
 
 struct BoneOptions : private flatbuffers::Table {
   const flatbuffers::WidgetOptions *nodeOptions() const { return GetPointer<const flatbuffers::WidgetOptions *>(4); }
@@ -96,6 +97,35 @@ inline flatbuffers::Offset<BoneOptions> CreateBoneOptions(flatbuffers::FlatBuffe
   builder_.add_blendFunc(blendFunc);
   builder_.add_length(length);
   builder_.add_nodeOptions(nodeOptions);
+  return builder_.Finish();
+}
+
+struct SkeletonOptions : private flatbuffers::Table {
+  const BoneOptions *boneOptions() const { return GetPointer<const BoneOptions *>(4); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* boneOptions */) &&
+           verifier.VerifyTable(boneOptions()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SkeletonOptionsBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_boneOptions(flatbuffers::Offset<BoneOptions> boneOptions) { fbb_.AddOffset(4, boneOptions); }
+  SkeletonOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  SkeletonOptionsBuilder &operator=(const SkeletonOptionsBuilder &);
+  flatbuffers::Offset<SkeletonOptions> Finish() {
+    auto o = flatbuffers::Offset<SkeletonOptions>(fbb_.EndTable(start_, 1));
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SkeletonOptions> CreateSkeletonOptions(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<BoneOptions> boneOptions = 0) {
+  SkeletonOptionsBuilder builder_(_fbb);
+  builder_.add_boneOptions(boneOptions);
   return builder_.Finish();
 }
 

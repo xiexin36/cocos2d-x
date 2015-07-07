@@ -271,7 +271,7 @@
     <Filter Include="cocostudio\TimelineAction\Skeleton">
       <UniqueIdentifier>{395744c5-d100-45f6-b9ab-ab61e8e3b53d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cocostudio\reader\WidgetReader\BoneReader">
+    <Filter Include="cocostudio\reader\WidgetReader\SkeletonReader">
       <UniqueIdentifier>{d82df64b-9e3a-4c83-bdec-66a1839ad494}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -1849,8 +1849,11 @@
     <ClCompile Include="..\editor-support\cocostudio\ActionTimeline\CCSkinNode.cpp">
       <Filter>cocostudio\TimelineAction\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\BoneReader\BoneReader.cpp">
-      <Filter>cocostudio\reader\WidgetReader\BoneReader</Filter>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\BoneNodeReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3619,11 +3622,14 @@
     <ClInclude Include="..\editor-support\cocostudio\ActionTimeline\CCSkinNode.h">
       <Filter>cocostudio\TimelineAction\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="..\editor-support\cocostudio\CSBoneBinary_generated.h">
-      <Filter>cocostudio\json</Filter>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\BoneNodeReader.h">
+      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
     </ClInclude>
-    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\BoneReader\BoneReader.h">
-      <Filter>cocostudio\reader\WidgetReader\BoneReader</Filter>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\CSBoneBinary_generated.h">
+      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.h">
+      <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
