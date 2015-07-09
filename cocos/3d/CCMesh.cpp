@@ -55,6 +55,25 @@ Mesh::~Mesh()
     CC_SAFE_RELEASE(_glProgramState);
 }
 
+//Generate a dummy texture when the texture file is missing
+static Texture2D * getDummyTexture()
+{
+    auto texture = Director::getInstance()->getTextureCache()->getTextureForKey("/dummyTexture");
+    if (!texture)
+    {
+#ifdef NDEBUG
+        unsigned char data[] = { 0, 0, 0, 0 };//1*1 transparent picture
+#else
+        unsigned char data[] = { 255, 0, 0, 255 };//1*1 red picture
+#endif
+        Image * image = new (std::nothrow) Image();
+        image->initWithRawData(data, sizeof(data), 1, 1, sizeof(unsigned char));
+        texture = Director::getInstance()->getTextureCache()->addImage(image, "/dummyTexture");
+        image->release();
+    }
+    return texture;
+}
+
 GLuint Mesh::getVertexBuffer() const
 {
     return _meshIndexData->getVertexBuffer()->getVBO();
@@ -180,6 +199,8 @@ void Mesh::setTexture(const std::string& texPath)
 
 void Mesh::setTexture(Texture2D* tex)
 {
+    if (tex == nullptr)
+        tex = getDummyTexture();
     if (tex != _texture)
     {
         CC_SAFE_RETAIN(tex);

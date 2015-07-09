@@ -346,8 +346,7 @@ Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,c
         if (modeldata->matrialId == "" && matrialdatas.materials.size())
         {
             const NTextureData* textureData = matrialdatas.materials[0].getTextureData(NTextureData::Usage::Diffuse);
-            if (!textureData->filename.empty())
-                mesh->setTexture(textureData->filename);
+            mesh->setTexture(textureData->filename);
         }
         else
         {
@@ -355,9 +354,10 @@ Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,c
             if(materialData)
             {
                 const NTextureData* textureData = materialData->getTextureData(NTextureData::Usage::Diffuse);
-                if(textureData && !textureData->filename.empty())
+                if(textureData)
                 {
-                    auto tex = Director::getInstance()->getTextureCache()->addImage(textureData->filename);
+                    mesh->setTexture(textureData->filename);
+                    auto tex = mesh->getTexture();
                     if(tex)
                     {
                         Texture2D::TexParams    texParams;
@@ -366,10 +366,8 @@ Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,c
                         texParams.wrapS = textureData->wrapS;
                         texParams.wrapT = textureData->wrapT;
                         tex->setTexParameters(texParams);
-                        mesh->setTexture(tex);
                         mesh->_isTransparent = (materialData->getTextureData(NTextureData::Usage::Transparency) != nullptr);
                     }
-
                 }
             }
         }
@@ -503,9 +501,11 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                         if(materialData)
                         {
                             const NTextureData* textureData = materialData->getTextureData(NTextureData::Usage::Diffuse);
-                            if(textureData && !textureData->filename.empty())
+                            if(textureData)
                             {
-                                auto tex = Director::getInstance()->getTextureCache()->addImage(textureData->filename);
+                                //auto tex = Director::getInstance()->getTextureCache()->addImage(textureData->filename);
+                                mesh->setTexture(textureData->filename);
+                                auto tex = mesh->getTexture();
                                 if(tex)
                                 {
                                     Texture2D::TexParams    texParams;
@@ -514,10 +514,8 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                                     texParams.wrapS = textureData->wrapS;
                                     texParams.wrapT = textureData->wrapT;
                                     tex->setTexParameters(texParams);
-                                    mesh->setTexture(tex);
                                     mesh->_isTransparent = (materialData->getTextureData(NTextureData::Usage::Transparency) != nullptr);
                                 }
-
                             }
                         }
                     }
@@ -531,7 +529,6 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                     setScaleX(scale.x);
                     setScaleY(scale.y);
                     setScaleZ(scale.z);
-                    
                 }
             }
             else
