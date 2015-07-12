@@ -28,6 +28,8 @@ THE SOFTWARE.
 #include "renderer/CCGLProgram.h"
 #include "renderer/CCGLProgramState.h"
 
+#include "cocostudio/CCDatas.h"
+#include "cocostudio/CCTransformHelp.h"
 #include "CCBoneNode.h"
 #include "CCSkeletonNode.h"
 
@@ -42,6 +44,7 @@ BoneNode::BoneNode()
 , _rackColor(Color4F::WHITE)
 , _rootSkeleton(nullptr)
 , _blendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED)
+, _isTransformWithOutSkew(true)
 {
 }
 
@@ -304,9 +307,13 @@ void BoneNode::onDraw(const Mat4& transform, uint32_t flags)
 
     cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
+    glEnable(GL_POLYGON_SMOOTH);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
+
+    CHECK_GL_ERROR_DEBUG();
 }
 
 BoneNode::~BoneNode()
@@ -422,6 +429,9 @@ void BoneNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t p
 
     uint32_t flags = processParentFlags(parentTransform, parentFlags);
 
+    if (_isTransformWithOutSkew)
+        _modelViewTransform = transformWithOutSkew(parentTransform);
+
     // IMPORTANT:
     // To ease the migration to v3.0, we still support the Mat4 stack,
     // but it is deprecated and your code should not rely on it
@@ -530,6 +540,33 @@ cocos2d::AffineTransform BoneNode::getBoneToSkeletonAffineTransform() const
 SkeletonNode* BoneNode::getRootSkeletonNode() const
 {
     return _rootSkeleton;
+}
+
+cocos2d::Mat4 BoneNode::transformWithOutSkew(const cocos2d::Mat4& parentTransf)
+{
+    BaseData parentNode;
+    TransformHelp::matrixToNode(parentTransf, parentNode);
+    BaseData toParentNode;
+    getNodeToParentTransform(); // make ure transform is not dirty
+    TransformHelp::matrixToNode(_transform, toParentNode);
+    toParentNode.scaleX *= parentNode.scaleX;  // scale to self coordnate
+    toParentNode.scaleY *= parentNode.scaleY;
+    parentNode.scaleX = 1;  //ignore scale
+    parentNode.scaleY = 1;
+    Mat4 helpMatrix1, helpMatrix2;
+    TransformHelp::nodeToMatrix(toParentNode, helpMatrix1);
+    TransformHelp::nodeToMatrix(parentNode, helpMatrix2);
+    helpMatrix1 = helpMatrix2 * helpMatrix1;
+
+    ////scale postion
+    helpMatrix1.m[12] = parentTransf.m[0] * _transform.m[12] +
+        parentTransf.m[4] * _transform.m[13] + parentTransf.m[8] *
+        _transform.m[14] + parentTransf.m[12] * _transform.m[15];
+    helpMatrix1.m[13] = parentTransf.m[1] * _transform.m[12] +
+        parentTransf.m[5] * _transform.m[13] + parentTransf.m[9] *
+        _transform.m[14] + parentTransf.m[13] * _transform.m[15];
+
+    return helpMatrix1;
 }
 
 NS_TIMELINE_END
