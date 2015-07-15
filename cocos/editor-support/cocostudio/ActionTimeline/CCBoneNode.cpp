@@ -28,8 +28,6 @@ THE SOFTWARE.
 #include "renderer/CCGLProgram.h"
 #include "renderer/CCGLProgramState.h"
 
-#include "cocostudio/CCDatas.h"
-#include "cocostudio/CCTransformHelp.h"
 #include "CCBoneNode.h"
 #include "CCSkeletonNode.h"
 
@@ -44,7 +42,6 @@ BoneNode::BoneNode()
 , _rackColor(Color4F::WHITE)
 , _rootSkeleton(nullptr)
 , _blendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED)
-, _isTransformWithOutSkew(true)
 {
 }
 
@@ -269,10 +266,10 @@ void BoneNode::updateVertices()
 {
     if (_length != _squareVertices[2].x || _squareVertices[3].y != _width / 2)
     {
-        _squareVertices[0].x = _squareVertices[3].x = _length * .1f;
-        _squareVertices[1].y = _squareVertices[2].y = _width * .5f;
-        _squareVertices[3].y = _width;
-        _squareVertices[2].x = _length;
+        _squareVertices[0].x = _squareVertices[2].x = _length * .1f;
+        _squareVertices[1].y = _squareVertices[3].y = _width * .5f;
+        _squareVertices[2].y = _width;
+        _squareVertices[3].x = _length;
         _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
     }
 }
@@ -307,9 +304,15 @@ void BoneNode::onDraw(const Mat4& transform, uint32_t flags)
 
     cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
-    glEnable(GL_POLYGON_SMOOTH);
-
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+ #ifdef EMSCRIPTEN
+     setGLBufferData(_noMVPVertices, 4 * sizeof(Vec3), 0);
+ #else
+     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
+ #endif
+     glEnable(GL_LINE_SMOOTH);
+     glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+     glDrawArrays(GL_LINE_LOOP, 0, 4);
 
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
 
@@ -429,9 +432,6 @@ void BoneNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t p
 
     uint32_t flags = processParentFlags(parentTransform, parentFlags);
 
-    if (_isTransformWithOutSkew)
-        _modelViewTransform = transformWithOutSkew(parentTransform);
-
     // IMPORTANT:
     // To ease the migration to v3.0, we still support the Mat4 stack,
     // but it is deprecated and your code should not rely on it
@@ -542,31 +542,27 @@ SkeletonNode* BoneNode::getRootSkeletonNode() const
     return _rootSkeleton;
 }
 
-cocos2d::Mat4 BoneNode::transformWithOutSkew(const cocos2d::Mat4& parentTransf)
+bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
 {
-    BaseData parentNode;
-    TransformHelp::matrixToNode(parentTransf, parentNode);
-    BaseData toParentNode;
-    getNodeToParentTransform(); // make ure transform is not dirty
-    TransformHelp::matrixToNode(_transform, toParentNode);
-    toParentNode.scaleX *= parentNode.scaleX;  // scale to self coordnate
-    toParentNode.scaleY *= parentNode.scaleY;
-    parentNode.scaleX = 1;  //ignore scale
-    parentNode.scaleY = 1;
-    Mat4 helpMatrix1, helpMatrix2;
-    TransformHelp::nodeToMatrix(toParentNode, helpMatrix1);
-    TransformHelp::nodeToMatrix(parentNode, helpMatrix2);
-    helpMatrix1 = helpMatrix2 * helpMatrix1;
+    if (bonePoint.x >= 0 && bonePoint.y >= 0
+        && bonePoint.x <= _contentSize.width &&
+        bonePoint.y <= _contentSize.height)
+    {
+        if (_length != 0)
+        {
+            float a1 = _squareVertices[1].y / ( _squareVertices[3].x - _squareVertices[0].x);
+            float a2 = _squareVertices[1].y / _squareVertices[0].x;
+            float b1 = a1 * _squareVertices[0].x;
+            float b2 = a1 * _squareVertices[3].x + _squareVertices[1].y;
 
-    ////scale postion
-    helpMatrix1.m[12] = parentTransf.m[0] * _transform.m[12] +
-        parentTransf.m[4] * _transform.m[13] + parentTransf.m[8] *
-        _transform.m[14] + parentTransf.m[12] * _transform.m[15];
-    helpMatrix1.m[13] = parentTransf.m[1] * _transform.m[12] +
-        parentTransf.m[5] * _transform.m[13] + parentTransf.m[9] *
-        _transform.m[14] + parentTransf.m[13] * _transform.m[15];
-
-    return helpMatrix1;
+            if (bonePoint.y >= a1 * bonePoint.x - b1 &&
+                bonePoint.y <= a2 * bonePoint.x + _squareVertices[1].y &&
+                bonePoint.y >= -a2 * bonePoint.x + _squareVertices[1].y &&
+                bonePoint.y <= -a1 * bonePoint.x + b2)
+                return true;
+        }
+    }
+    return false;
 }
 
 NS_TIMELINE_END

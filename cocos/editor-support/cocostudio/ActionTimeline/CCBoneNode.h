@@ -135,6 +135,7 @@ public:
     // transform & draw
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 
+    virtual bool isPointOnRack(const cocos2d::Vec2& bonePoint);
 protected:
     BoneNode();
     virtual ~BoneNode();
@@ -167,14 +168,10 @@ protected:
     virtual void visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags) override;
     virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags); 
 
-    // make parent scale to self scale instead of skew
-    virtual cocos2d::Mat4 transformWithOutSkew(const cocos2d::Mat4& parentTransf);
 protected:
     cocos2d::CustomCommand _customCommand;
     cocos2d::BlendFunc     _blendFunc;
     
-    bool _isTransformWithOutSkew;
-
     float            _length;
     float            _width;
     bool             _isRackShow;
