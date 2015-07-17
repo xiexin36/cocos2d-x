@@ -230,10 +230,10 @@ void Button::loadTextures(const std::string& normal,
 
 void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
 {
-    if (normal.empty() || (_normalFileName == normal && _normalTexType == texType))
-    {
-        return;
-    }
+    //if (normal.empty() || (_normalFileName == normal && _normalTexType == texType))
+    //{
+    //    return;
+    //}
     _normalFileName = normal;
     _normalTexType = texType;
     
