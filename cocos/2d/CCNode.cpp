@@ -404,7 +404,7 @@ void Node::updateRotation3D()
 
     float angleX = atan2f(2.f * (w * x + y * z), 1.f - 2.f * (x * x + y * y));
     float angleY = asinf(2.f * (w * y - z * x));
-    float angleZ = atanf(2.f * (w * z + x * y) / (1.f - 2.f * (y * y + z * z)));
+    float angleZ = atan2f(2.f * (w * z + x * y), (1.f - 2.f * (y * y + z * z)));
     
     if (isnan(angleX) || isnan(angleY) || isnan(angleZ))
         return;
