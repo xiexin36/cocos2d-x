@@ -59,7 +59,7 @@ public:
 
     bool     isDistanceFieldEnabled() const { return _distanceFieldEnabled;}
     float    getOutlineSize() const { return _outlineSize; }
-    void     renderCharAt(unsigned char *dest,int posX, int posY, unsigned char* bitmap,long bitmapWidth,long bitmapHeight); 
+    void     renderCharAt(unsigned char *dest,int posX, int posY, unsigned char* bitmap,long bitmapWidth,long bitmapHeight, int curPageDataSize); 
 
     virtual FontAtlas   * createFontAtlas() override;
     virtual int         * getHorizontalKerningForTextUTF16(const std::u16string& text, int &outNumLetters) const override;
