@@ -500,14 +500,17 @@ unsigned char * makeDistanceMap( unsigned char *img, long width, long height)
     return out;
 }
 
-void FontFreeType::renderCharAt(unsigned char *dest,int posX, int posY, unsigned char* bitmap,long bitmapWidth,long bitmapHeight)
+
+
+void FontFreeType::renderCharAt(unsigned char *dest, int posX, int posY, unsigned char* bitmap, long bitmapWidth, long bitmapHeight, int curPageDataSize)
 {
     int iX = posX;
     int iY = posY;
+    int index = 0;
 
     if (_distanceFieldEnabled)
     {
-        auto distanceMap = makeDistanceMap(bitmap,bitmapWidth,bitmapHeight);
+        auto distanceMap = makeDistanceMap(bitmap, bitmapWidth, bitmapHeight);
 
         bitmapWidth += 2 * DistanceMapSpread;
         bitmapHeight += 2 * DistanceMapSpread;
@@ -517,28 +520,33 @@ void FontFreeType::renderCharAt(unsigned char *dest,int posX, int posY, unsigned
             long bitmap_y = y * bitmapWidth;
 
             for (long x = 0; x < bitmapWidth; ++x)
-            {    
+            {
                 /* Dual channel 16-bit output (more complicated, but good precision and range) */
-                /*int index = (iX + ( iY * destSize )) * 3;                
+                /*int index = (iX + ( iY * destSize )) * 3;
                 int index2 = (bitmap_y + x)*3;
                 dest[index] = out[index2];
                 dest[index + 1] = out[index2 + 1];
                 dest[index + 2] = out[index2 + 2];*/
 
                 //Single channel 8-bit output 
-                dest[iX + ( iY * FontAtlas::CacheTextureWidth )] = distanceMap[bitmap_y + x];
+                index = iX + (iY * FontAtlas::CacheTextureWidth);
+                if (index < curPageDataSize)
+                {
+                    dest[index] = distanceMap[bitmap_y + x];
+                }
 
                 iX += 1;
             }
 
-            iX  = posX;
+            iX = posX;
             iY += 1;
         }
         free(distanceMap);
     }
-    else if(_outlineSize > 0)
+    else if (_outlineSize > 0)
     {
         unsigned char tempChar;
+
         for (long y = 0; y < bitmapHeight; ++y)
         {
             long bitmap_y = y * bitmapWidth;
@@ -546,17 +554,28 @@ void FontFreeType::renderCharAt(unsigned char *dest,int posX, int posY, unsigned
             for (int x = 0; x < bitmapWidth; ++x)
             {
                 tempChar = bitmap[(bitmap_y + x) * 2];
-                dest[(iX + ( iY * FontAtlas::CacheTextureWidth ) ) * 2] = tempChar;
+                index = (iX + (iY * FontAtlas::CacheTextureWidth)) * 2;
+                if (index < curPageDataSize)
+                {
+                    dest[index] = tempChar;
+                }
+
                 tempChar = bitmap[(bitmap_y + x) * 2 + 1];
-                dest[(iX + ( iY * FontAtlas::CacheTextureWidth ) ) * 2 + 1] = tempChar;
+
+                index = (iX + (iY * FontAtlas::CacheTextureWidth)) * 2 + 1;
+                if (index < curPageDataSize)
+                {
+                    dest[index] = tempChar;
+                }
+
 
                 iX += 1;
             }
 
-            iX  = posX;
+            iX = posX;
             iY += 1;
         }
-        delete [] bitmap;
+        delete[] bitmap;
     }
     else
     {
@@ -569,15 +588,19 @@ void FontFreeType::renderCharAt(unsigned char *dest,int posX, int posY, unsigned
                 unsigned char cTemp = bitmap[bitmap_y + x];
 
                 // the final pixel
-                dest[(iX + ( iY * FontAtlas::CacheTextureWidth ) )] = cTemp;
+                index = (iX + (iY * FontAtlas::CacheTextureWidth));
+                if (index < curPageDataSize)
+                {
+                    dest[index] = cTemp;
+                }
 
                 iX += 1;
             }
 
-            iX  = posX;
+            iX = posX;
             iY += 1;
         }
-    } 
+    }
 }
 
 NS_CC_END
