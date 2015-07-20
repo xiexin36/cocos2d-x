@@ -50,6 +50,7 @@ bool SkeletonNode::init()
 {
     _anchorPoint = Vec2(.5f, .5f);
     _rackLength = _rackWidth = 20;
+    setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     _rootSkeleton = this;
