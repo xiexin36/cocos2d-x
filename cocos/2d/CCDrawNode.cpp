@@ -372,9 +372,9 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
 {
     auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_LENGTH_TEXTURE_COLOR);
     glProgram->use();
-	glProgram->setUniformsForBuiltins(transform);
+    glProgram->setUniformsForBuiltins(transform);
 
-	GL::blendFunc(_blendFunc.src, _blendFunc.dst);
+    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
     if (_dirtyGLLine)
     {
@@ -401,15 +401,15 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
     if (this->_lineSmoothEnable == false)
     {
 //         glDisable(GL_MULTISAMPLE);
-		glDisable(GL_LINE_SMOOTH);
+        glDisable(GL_LINE_SMOOTH);
     }
-	else
-	{
-		glEnable(GL_LINE_SMOOTH);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
-	}
+    else
+    {
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+    }
 
     glLineWidth(this->_lineWidth);
     glDrawArrays(GL_LINES, 0, _bufferCountGLLine);
