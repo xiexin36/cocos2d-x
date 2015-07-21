@@ -122,6 +122,7 @@ public:
     */
     virtual cocos2d::Rect getVisibleSkinsRect() const;
 
+    virtual void visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags) override;
     // transform & draw
     virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 
@@ -165,6 +166,7 @@ protected:
     virtual void sortAllChildren() override;
 
     virtual void updateVertices();
+    virtual void updateDebugDrawTransfrom(const cocos2d::Mat4 &parentViewTransfrom);
     virtual void updateColor() override;
 
     virtual void onDraw(const cocos2d::Mat4 &transform, uint32_t flags); 
@@ -181,6 +183,7 @@ protected:
     cocos2d::Color4F  _rackColor;
     int               _rackLength;
     int               _rackWidth;
+    cocos2d::Mat4     _debubDrawTransform;
 
     cocos2d::Vector<BoneNode*> _childBones;
     cocos2d::Vector<SkinNode*> _boneSkins;

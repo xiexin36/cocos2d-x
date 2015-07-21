@@ -325,6 +325,15 @@ void BoneNode::setDebugDrawColor(const cocos2d::Color4F &color)
     updateColor();
 }
 
+
+void BoneNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
+{
+    Node::visit(renderer, parentTransform, parentFlags);
+    if (_isRackShow)
+        updateDebugDrawTransfrom(parentTransform);
+}
+
+
 void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
     if (!_isRackShow || nullptr != _rootSkeleton)
@@ -334,6 +343,7 @@ void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
     _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
     renderer->addCommand(&_customCommand);
 
+    //auto debugdrawTrans = _modelViewTransform * _rackAdditionTransform;
     for (int i = 0; i < 4; ++i)
     {
         Vec4 pos;
@@ -353,7 +363,6 @@ bool BoneNode::init()
     _anchorPoint = Vec2(0.0f, 0.5f);
     _rackLength = 50;
     _rackWidth = 20;
-    setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
     setGLProgramState(cocos2d::GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     return true;
@@ -501,6 +510,7 @@ bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
 void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
 {
     Vec3 vpos[4];
+    //auto debugdrawTrans = bone->_modelViewTransform * _rackAdditionTransform;
     for (int i = 0; i < 4; i++)
     {
         Vec4 pos;
@@ -546,11 +556,14 @@ void BoneNode::setName(const std::string& name)
     Node::setName(name);
     if (_rootSkeleton != nullptr)
     {
-        auto iter = _rootSkeleton->_subBonesMap.find(oldname);
-        if (iter != _rootSkeleton->_subBonesMap.end())
+        auto oiter = _rootSkeleton->_subBonesMap.find(oldname);
+        auto niter = _rootSkeleton->_subBonesMap.find(name);
+        if (oiter != _rootSkeleton->_subBonesMap.end() &&
+            niter == _rootSkeleton->_subBonesMap.end())
         {
-            _rootSkeleton->_subBonesMap.erase(iter);
-            _rootSkeleton->_subBonesMap.insert(name, iter->second);
+            auto node = oiter->second;
+            _rootSkeleton->_subBonesMap.erase(oiter);
+            _rootSkeleton->_subBonesMap.insert(name, node);
         }
     }
 }
@@ -605,6 +618,14 @@ void BoneNode::setVisible(bool visible)
         _rootSkeleton->_subDrawBonesDirty = true;
         _rootSkeleton->_subDrawBonesOrderDirty = true;
     }
+}
+
+void BoneNode::updateDebugDrawTransfrom(const cocos2d::Mat4 &parentViewTransfrom)
+{
+    cocos2d::Vec3 anchorPos(-_rackLength * _anchorPoint.x * _scaleX,
+            -_rackWidth * _anchorPoint.y * _scaleY, 0);
+    //parentTransform * this->getNodeToParentTransform();
+
 }
 
 NS_TIMELINE_END

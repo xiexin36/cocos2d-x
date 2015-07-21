@@ -49,7 +49,7 @@ SkeletonNode* SkeletonNode::create()
 bool SkeletonNode::init()
 {
     _anchorPoint = Vec2(.5f, .5f);
-    _rackLength = _rackWidth = 20;
+    _rackLength = _rackWidth = 20; 
     setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
     setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
@@ -144,6 +144,7 @@ void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32
         _customCommand.init(_globalZOrder, parentTransform, parentFlags);
         _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, parentTransform, parentFlags);
         renderer->addCommand(&_customCommand);
+        //auto debugdrawTrans = _modelViewTransform * _rackAdditionTransform;
         for (int i = 0; i < 8; ++i)
         {
             Vec4 pos;
