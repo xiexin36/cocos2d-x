@@ -363,6 +363,7 @@ bool BoneNode::init()
     _anchorPoint = Vec2(0.0f, 0.5f);
     _rackLength = 50;
     _rackWidth = 20;
+    setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
     setGLProgramState(cocos2d::GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     return true;
