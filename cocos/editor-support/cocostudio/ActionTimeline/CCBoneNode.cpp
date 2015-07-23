@@ -326,14 +326,6 @@ void BoneNode::setDebugDrawColor(const cocos2d::Color4F &color)
 }
 
 
-void BoneNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
-{
-    Node::visit(renderer, parentTransform, parentFlags);
-    if (_isRackShow)
-        updateDebugDrawTransfrom(parentTransform);
-}
-
-
 void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
     if (!_isRackShow || nullptr != _rootSkeleton)
@@ -343,7 +335,6 @@ void BoneNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
     _customCommand.func = CC_CALLBACK_0(BoneNode::onDraw, this, transform, flags);
     renderer->addCommand(&_customCommand);
 
-    //auto debugdrawTrans = _modelViewTransform * _rackAdditionTransform;
     for (int i = 0; i < 4; ++i)
     {
         Vec4 pos;
@@ -360,10 +351,8 @@ BoneNode::~BoneNode()
 
 bool BoneNode::init()
 {
-    _anchorPoint = Vec2(0.0f, 0.5f);
     _rackLength = 50;
     _rackWidth = 20;
-    setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
     setGLProgramState(cocos2d::GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     return true;
@@ -371,13 +360,18 @@ bool BoneNode::init()
 
 void BoneNode::updateVertices()
 {
-    if (_rackLength != _squareVertices[2].x || _squareVertices[3].y != _rackWidth / 2)
+    if (_rackLength != _squareVertices[2].x - _anchorPointInPoints.x || _squareVertices[3].y != _rackWidth / 2 - _anchorPointInPoints.y)
     {
-         _squareVertices[0].x = _squareVertices[2].x = _rackLength * .1f;
-         _squareVertices[1].y = _squareVertices[3].y = _rackWidth * .5f;
-         _squareVertices[2].y = _rackWidth;
-         _squareVertices[3].x = _rackLength;
+        _squareVertices[1].x = _squareVertices[1].y = _squareVertices[3].y = .0f;
+        _squareVertices[0].x = _squareVertices[2].x = _rackLength * .1f;
+        _squareVertices[2].y = _rackWidth * .5f;
+        _squareVertices[0].y = -_squareVertices[2].y;
+        _squareVertices[3].x = _rackLength;
 
+        for (int i = 0; i < 4; i++)
+        {
+            _squareVertices[i] += _anchorPointInPoints;
+        }
         _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
     }
 }
@@ -486,9 +480,9 @@ SkeletonNode* BoneNode::getRootSkeletonNode() const
 #ifdef CC_STUDIO_ENABLED_VIEW
 bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
 {
-    if (bonePoint.x >= 0.0f && bonePoint.y >= 0.0f
+    if (bonePoint.x >= 0.0f && bonePoint.y >= _squareVertices[0].y
         && bonePoint.x <= _rackLength &&
-        bonePoint.y <=_rackWidth)
+        bonePoint.y <= _squareVertices[2].y)
     {
         if (_rackLength != 0.0f && _rackWidth != 0.0f)
         {
@@ -511,7 +505,6 @@ bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
 void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
 {
     Vec3 vpos[4];
-    //auto debugdrawTrans = bone->_modelViewTransform * _rackAdditionTransform;
     for (int i = 0; i < 4; i++)
     {
         Vec4 pos;
@@ -621,12 +614,16 @@ void BoneNode::setVisible(bool visible)
     }
 }
 
-void BoneNode::updateDebugDrawTransfrom(const cocos2d::Mat4 &parentViewTransfrom)
+void BoneNode::setContentSize(const Size& contentSize)
 {
-    cocos2d::Vec3 anchorPos(-_rackLength * _anchorPoint.x * _scaleX,
-            -_rackWidth * _anchorPoint.y * _scaleY, 0);
-    //parentTransform * this->getNodeToParentTransform();
+    Node::setContentSize(contentSize);
+    updateVertices();
+}
 
+void BoneNode::setAnchorPoint(const Vec2& anchorPoint)
+{
+    Node::setAnchorPoint(anchorPoint);
+    updateVertices();
 }
 
 NS_TIMELINE_END

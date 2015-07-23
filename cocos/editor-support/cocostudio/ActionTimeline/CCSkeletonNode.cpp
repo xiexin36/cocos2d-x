@@ -48,7 +48,6 @@ SkeletonNode* SkeletonNode::create()
 
 bool SkeletonNode::init()
 {
-    _anchorPoint = Vec2(.5f, .5f);
     _rackLength = _rackWidth = 20; 
     setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
@@ -110,17 +109,24 @@ SkeletonNode::~SkeletonNode()
 
 void SkeletonNode::updateVertices()
 {
-    if (_rackLength != _squareVertices[6].x || _rackWidth != _squareVertices[3].y)
+    if (_rackLength != _squareVertices[6].x - _anchorPointInPoints.x || _rackWidth != _squareVertices[3].y - _anchorPointInPoints.y)
     {
         const float radiusl = _rackLength * .5f;
         const float radiusw = _rackWidth * .5f;
         const float radiusl_2 = radiusl * .25f;
         const float radiusw_2 = radiusw * .25f;
-        _squareVertices[0].x = _squareVertices[4].x = _squareVertices[7].x = _squareVertices[3].x = radiusl;
-        _squareVertices[5].y = _squareVertices[2].y = _squareVertices[1].y = _squareVertices[6].y = radiusw;
-        _squareVertices[6].x = _rackLength;  _squareVertices[3].y = _rackWidth;
-        _squareVertices[1].x = radiusl + radiusl_2; _squareVertices[7].y = radiusw + radiusw_2;
-        _squareVertices[2].x = radiusl - radiusl_2; _squareVertices[4].y = radiusw - radiusw_2;
+        _squareVertices[5].y = _squareVertices[2].y = _squareVertices[1].y = _squareVertices[6].y
+            = _squareVertices[0].x = _squareVertices[4].x = _squareVertices[7].x = _squareVertices[3].x = .0f;
+        _squareVertices[5].x = -radiusl; _squareVertices[0].y = -radiusw;
+        _squareVertices[6].x =  radiusl;  _squareVertices[3].y = radiusw;
+        _squareVertices[1].x =  radiusl_2; _squareVertices[7].y = radiusw_2;
+        _squareVertices[2].x = - radiusl_2; _squareVertices[4].y = - radiusw_2;
+
+
+        for (int i = 0; i < 8; i++)
+        {
+            _squareVertices[i] += _anchorPointInPoints;
+        }
 
         _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
     }
@@ -144,7 +150,6 @@ void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32
         _customCommand.init(_globalZOrder, parentTransform, parentFlags);
         _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, parentTransform, parentFlags);
         renderer->addCommand(&_customCommand);
-        //auto debugdrawTrans = _modelViewTransform * _rackAdditionTransform;
         for (int i = 0; i < 8; ++i)
         {
             Vec4 pos;
