@@ -239,7 +239,7 @@ bool FontAtlas::prepareLetterDefinitions(const std::u16string& utf16String)
                         tex->release();
                     }  
                 }
-                fontTTf->renderCharAt(_currentPageData,_currentPageOrigX,_currentPageOrigY,bitmap,bitmapWidth,bitmapHeight);
+                fontTTf->renderCharAt(_currentPageData,_currentPageOrigX,_currentPageOrigY,bitmap,bitmapWidth,bitmapHeight, _currentPageDataSize);
 
                 tempDef.U                = _currentPageOrigX;
                 tempDef.V                = _currentPageOrigY;
