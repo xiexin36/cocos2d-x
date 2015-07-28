@@ -357,7 +357,7 @@ void SkeletonNode::updateAllDrawBones()
         auto topChildren = top->getChildBones();
         for (const auto& childbone : topChildren)
         {
-            if (childbone->isVisible() && bone->isDebugDrawEnabled())
+            if (childbone->isVisible() && childbone->isDebugDrawEnabled())
                 boneStack.push(childbone);
         }
     }
