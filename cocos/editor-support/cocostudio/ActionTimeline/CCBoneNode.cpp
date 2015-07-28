@@ -36,7 +36,7 @@ using namespace cocos2d;
 NS_TIMELINE_BEGIN
 
 BoneNode::BoneNode()
-: _isRackShow(true)
+: _isRackShow(false)
 , _rackColor(Color4F::WHITE)
 , _rootSkeleton(nullptr)
 , _blendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED)
@@ -604,7 +604,7 @@ void BoneNode::setVisible(bool visible)
         return;
 
     Node::setVisible(visible);
-    if (_isRackShow)
+    if (_isRackShow && _rootSkeleton != nullptr)
     {
         _rootSkeleton->_subDrawBonesDirty = true;
         _rootSkeleton->_subDrawBonesOrderDirty = true;
