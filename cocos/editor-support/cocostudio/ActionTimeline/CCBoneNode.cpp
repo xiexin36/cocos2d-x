@@ -465,9 +465,12 @@ cocos2d::Vector<SkinNode*> BoneNode::getAllSubSkins() const
 
 void BoneNode::sortAllChildren()
 {
-    Node::sortAllChildren();
-    std::sort(_childBones.begin(), _childBones.end(), nodeComparisonLess);
-    std::sort(_boneSkins.begin(), _boneSkins.end(), nodeComparisonLess);
+    if (_reorderChildDirty)
+    {
+        std::sort(_childBones.begin(), _childBones.end(), cocos2d::nodeComparisonLess);
+        std::sort(_boneSkins.begin(), _boneSkins.end(), cocos2d::nodeComparisonLess);
+        Node::sortAllChildren();
+    }
 }
 
 SkeletonNode* BoneNode::getRootSkeletonNode() const
