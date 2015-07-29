@@ -400,8 +400,15 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
     //如果骨开启线抗锯齿,如参考线绘制, 则先关闭多重采样
     if (this->_lineSmoothEnable == false)
     {
-        glDisable(GL_MULTISAMPLE);
+//         glDisable(GL_MULTISAMPLE);
         glDisable(GL_LINE_SMOOTH);
+    }
+    else
+    {
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
     }
 
     glLineWidth(this->_lineWidth);
@@ -415,8 +422,8 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _bufferCountGLLine);
     //如果骨开启线抗锯齿,如参考线绘制, 则先关闭多重采样
-    if (this->_lineSmoothEnable == false)
-        glEnable(GL_MULTISAMPLE);
+//     if (this->_lineSmoothEnable == false)
+//         glEnable(GL_MULTISAMPLE);
 
     CHECK_GL_ERROR_DEBUG();
 }
