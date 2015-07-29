@@ -1049,7 +1049,7 @@ bool Bundle3D::loadJson(const std::string& path)
     if (_jsonReader.ParseInsitu<0>(_jsonBuffer).HasParseError())
     {
         clear();
-        CCASSERT(false, "Parse json failed");
+        //CCASSERT(false, "Parse json failed");
         return false;
     }
 
