@@ -36,7 +36,7 @@ using namespace cocos2d;
 NS_TIMELINE_BEGIN
 
 BoneNode::BoneNode()
-: _isRackShow(true)
+: _isRackShow(false)
 , _rackColor(Color4F::WHITE)
 , _rootSkeleton(nullptr)
 , _blendFunc(BlendFunc::ALPHA_NON_PREMULTIPLIED)
@@ -465,9 +465,12 @@ cocos2d::Vector<SkinNode*> BoneNode::getAllSubSkins() const
 
 void BoneNode::sortAllChildren()
 {
-    Node::sortAllChildren();
-    std::sort(_childBones.begin(), _childBones.end(), nodeComparisonLess);
-    std::sort(_boneSkins.begin(), _boneSkins.end(), nodeComparisonLess);
+    if (_reorderChildDirty)
+    {
+        std::sort(_childBones.begin(), _childBones.end(), cocos2d::nodeComparisonLess);
+        std::sort(_boneSkins.begin(), _boneSkins.end(), cocos2d::nodeComparisonLess);
+        Node::sortAllChildren();
+    }
 }
 
 SkeletonNode* BoneNode::getRootSkeletonNode() const
@@ -604,7 +607,7 @@ void BoneNode::setVisible(bool visible)
         return;
 
     Node::setVisible(visible);
-    if (_isRackShow)
+    if (_isRackShow && _rootSkeleton != nullptr)
     {
         _rootSkeleton->_subDrawBonesDirty = true;
         _rootSkeleton->_subDrawBonesOrderDirty = true;
