@@ -48,7 +48,6 @@ SkeletonNode* SkeletonNode::create()
 
 bool SkeletonNode::init()
 {
-    _anchorPoint = Vec2(.5f, .5f);
     _rackLength = _rackWidth = 20; 
     setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
@@ -110,17 +109,24 @@ SkeletonNode::~SkeletonNode()
 
 void SkeletonNode::updateVertices()
 {
-    if (_rackLength != _squareVertices[6].x || _rackWidth != _squareVertices[3].y)
+    if (_rackLength != _squareVertices[6].x - _anchorPointInPoints.x || _rackWidth != _squareVertices[3].y - _anchorPointInPoints.y)
     {
         const float radiusl = _rackLength * .5f;
         const float radiusw = _rackWidth * .5f;
         const float radiusl_2 = radiusl * .25f;
         const float radiusw_2 = radiusw * .25f;
-        _squareVertices[0].x = _squareVertices[4].x = _squareVertices[7].x = _squareVertices[3].x = radiusl;
-        _squareVertices[5].y = _squareVertices[2].y = _squareVertices[1].y = _squareVertices[6].y = radiusw;
-        _squareVertices[6].x = _rackLength;  _squareVertices[3].y = _rackWidth;
-        _squareVertices[1].x = radiusl + radiusl_2; _squareVertices[7].y = radiusw + radiusw_2;
-        _squareVertices[2].x = radiusl - radiusl_2; _squareVertices[4].y = radiusw - radiusw_2;
+        _squareVertices[5].y = _squareVertices[2].y = _squareVertices[1].y = _squareVertices[6].y
+            = _squareVertices[0].x = _squareVertices[4].x = _squareVertices[7].x = _squareVertices[3].x = .0f;
+        _squareVertices[5].x = -radiusl; _squareVertices[0].y = -radiusw;
+        _squareVertices[6].x =  radiusl;  _squareVertices[3].y = radiusw;
+        _squareVertices[1].x =  radiusl_2; _squareVertices[7].y = radiusw_2;
+        _squareVertices[2].x = - radiusl_2; _squareVertices[4].y = - radiusw_2;
+
+
+        for (int i = 0; i < 8; i++)
+        {
+            _squareVertices[i] += _anchorPointInPoints;
+        }
 
         _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
     }
@@ -138,26 +144,72 @@ void SkeletonNode::updateColor()
 
 void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
 {
-    BoneNode::visit(renderer, parentTransform, parentFlags);
-    if (_visible && _isRackShow)
+    // quick return if not visible. children won't be drawn.
+    if (!_visible)
     {
-        _customCommand.init(_globalZOrder, parentTransform, parentFlags);
-        _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, parentTransform, parentFlags);
-        renderer->addCommand(&_customCommand);
-        //auto debugdrawTrans = _modelViewTransform * _rackAdditionTransform;
-        for (int i = 0; i < 8; ++i)
+        return;
+    }
+
+    uint32_t flags = processParentFlags(parentTransform, parentFlags);
+
+    // IMPORTANT:
+    // To ease the migration to v3.0, we still support the Mat4 stack,
+    // but it is deprecated and your code should not rely on it
+    _director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    _director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
+
+    bool visibleByCamera = isVisitableByVisitingCamera();
+
+    int i = 0;
+
+    if (!_children.empty())
+    {
+        sortAllChildren();
+        // draw children zOrder < 0
+        for (; i < _children.size(); i++)
         {
-            Vec4 pos;
-            pos.x = _squareVertices[i].x; pos.y = _squareVertices[i].y; pos.z = _positionZ;
-            pos.w = 1;
-            _modelViewTransform.transformVector(&pos);
-            _noMVPVertices[i] = Vec3(pos.x, pos.y, pos.z) / pos.w;
+            auto node = _children.at(i);
+
+            if (node && node->getLocalZOrder() < 0)
+                node->visit(renderer, _modelViewTransform, flags);
+            else
+                break;
         }
 
-        this->draw(renderer, parentTransform, parentFlags);
-        _batchBoneCommand.init(_globalZOrder, parentTransform, parentFlags);
-        _batchBoneCommand.func = CC_CALLBACK_0(SkeletonNode::batchDrawAllSubBones, this, parentTransform);
+        for (auto it = _children.cbegin() + i; it != _children.cend(); ++it)
+            (*it)->visit(renderer, _modelViewTransform, flags);
+    }
+    
+    if (visibleByCamera)
+    {
+        this->draw(renderer, _modelViewTransform, flags);
+        // batch draw all sub bones
+        _batchBoneCommand.init(_globalZOrder, _modelViewTransform, parentFlags);
+        _batchBoneCommand.func = CC_CALLBACK_0(SkeletonNode::batchDrawAllSubBones, this, _modelViewTransform);
         renderer->addCommand(&_batchBoneCommand);
+    }
+    _director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    // FIX ME: Why need to set _orderOfArrival to 0??
+    // Please refer to https://github.com/cocos2d/cocos2d-x/pull/6920
+    // reset for next frame
+    // _orderOfArrival = 0;
+}
+
+void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
+{
+    if (!_isRackShow)
+        return;
+
+    _customCommand.init(_globalZOrder, transform, flags);
+    _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, transform, flags);
+    renderer->addCommand(&_customCommand);
+    for (int i = 0; i < 8; ++i)
+    {
+        cocos2d::Vec4 pos;
+        pos.x = _squareVertices[i].x; pos.y = _squareVertices[i].y; pos.z = _positionZ;
+        pos.w = 1;
+        _modelViewTransform.transformVector(&pos);
+        _noMVPVertices[i] = cocos2d::Vec3(pos.x, pos.y, pos.z) / pos.w;
     }
 }
 
@@ -288,11 +340,26 @@ void SkeletonNode::addSkinGroup(std::string groupName, std::map<std::string, std
 void SkeletonNode::updateAllDrawBones()
 {
     _subDrawBones.clear();
-    for (const auto& bonepair : _subBonesMap)
+    // get All Visible SubBones
+    // get all sub bones as visible visit
+    std::stack<BoneNode*> boneStack;
+    for (const auto& bone : _childBones)
     {
-        auto bone = bonepair.second;
         if (bone->isVisible() && bone->isDebugDrawEnabled())
-            _subDrawBones.pushBack(bone);
+            boneStack.push(bone);
+    }
+
+    while (boneStack.size() > 0)
+    {
+        auto top = boneStack.top();
+        _subDrawBones.pushBack(top);
+        boneStack.pop();
+        auto topChildren = top->getChildBones();
+        for (const auto& childbone : topChildren)
+        {
+            if (childbone->isVisible() && childbone->isDebugDrawEnabled())
+                boneStack.push(childbone);
+        }
     }
     _subDrawBonesDirty = false;
 }
