@@ -1,6 +1,6 @@
 /****************************************************************************
-Copyright (c) 2014 cocos2d-x.org
-
+Copyright (c) 2015 Chukong Technologies Inc.
+ 
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +30,8 @@ THE SOFTWARE.
 #include "renderer/CCGLProgramState.h"
 #include <stack>
 
-using namespace cocos2d;
+using namespace cocos2d::GL;
+
 NS_TIMELINE_BEGIN
 
 SkeletonNode* SkeletonNode::create()
@@ -49,20 +50,19 @@ SkeletonNode* SkeletonNode::create()
 bool SkeletonNode::init()
 {
     _rackLength = _rackWidth = 20; 
-    setContentSize(Size(_rackLength, _rackWidth));
     updateVertices();
-    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
+    setGLProgramState(cocos2d::GLProgramState::getOrCreateWithGLProgramName(cocos2d::GLProgram::SHADER_NAME_POSITION_COLOR_NO_MVP));
     _rootSkeleton = this;
     return true;
 }
 
-Rect SkeletonNode::getBoundingBox() const
+cocos2d::Rect SkeletonNode::getBoundingBox() const
 {
     float minx, miny, maxx, maxy = 0;
     minx = miny = maxx = maxy;
-    Rect boundingBox = getVisibleSkinsRect();
+    cocos2d::Rect boundingBox = getVisibleSkinsRect();
     bool first = true;
-    if (!boundingBox.equals(Rect::ZERO))
+    if (!boundingBox.equals(cocos2d::Rect::ZERO))
     {
         minx = boundingBox.getMinX();
         miny = boundingBox.getMinY();
@@ -73,8 +73,9 @@ Rect SkeletonNode::getBoundingBox() const
     auto allbones = getAllSubBones();
     for (const auto& bone : allbones)
     {
-        Rect r = RectApplyAffineTransform(bone->getVisibleSkinsRect(), bone->getBoneToSkeletonAffineTransform());
-        if (r.equals(Rect::ZERO))
+        cocos2d::Rect r = RectApplyAffineTransform(bone->getVisibleSkinsRect(),
+                                          bone->getBoneToSkeletonAffineTransform());
+        if (r.equals(cocos2d::Rect::ZERO))
             continue;
 
         if (first)
@@ -99,7 +100,10 @@ Rect SkeletonNode::getBoundingBox() const
 }
 
 SkeletonNode::SkeletonNode()
-    : BoneNode()
+: BoneNode()
+, _subDrawBonesDirty(true)
+, _subDrawBonesOrderDirty(true)
+, _batchedVeticesCount(0)
 {
 }
 
@@ -141,8 +145,7 @@ void SkeletonNode::updateColor()
     _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
 }
 
-
-void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags)
+void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
 {
     // quick return if not visible. children won't be drawn.
     if (!_visible)
@@ -179,7 +182,7 @@ void SkeletonNode::visit(Renderer *renderer, const Mat4& parentTransform, uint32
         for (auto it = _children.cbegin() + i; it != _children.cend(); ++it)
             (*it)->visit(renderer, _modelViewTransform, flags);
     }
-    
+
     if (visibleByCamera)
     {
         this->draw(renderer, _modelViewTransform, flags);
@@ -213,7 +216,7 @@ void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transf
     }
 }
 
-void SkeletonNode::batchDrawAllSubBones(const Mat4 &transform)
+void SkeletonNode::batchDrawAllSubBones(const cocos2d::Mat4 &transform)
 {
     if (_subDrawBonesDirty)
     {
@@ -227,26 +230,18 @@ void SkeletonNode::batchDrawAllSubBones(const Mat4 &transform)
     {
         batchBoneDrawToSkeleton(bone);
     }
-    Vec3* vetices = _batchedBoneVetices.data();
-    Color4F* veticesColor = _batchedBoneColors.data();
+    cocos2d::Vec3* vetices = _batchedBoneVetices.data();
+    cocos2d::Color4F* veticesColor = _batchedBoneColors.data();
     getGLProgram()->use();
     getGLProgram()->setUniformsForBuiltins(transform);
 
-    GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POSITION | GL::VERTEX_ATTRIB_FLAG_COLOR);
+    cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION | cocos2d::GL::VERTEX_ATTRIB_FLAG_COLOR);
 
-#ifdef EMSCRIPTEN
-    setGLBufferData(vetices, _batchedVeticesCount * sizeof(Vec3), 0);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-    setGLBufferData(veticesColor, _batchedVeticesCount * sizeof(Color4F), 1);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
-#else
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, vetices);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, veticesColor);
-#endif // EMSCRIPTEN
+    glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, vetices);
+    glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, veticesColor);
 
-    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
+    cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
     
 #ifdef CC_STUDIO_ENABLED_VIEW
     glLineWidth(1);
@@ -268,12 +263,12 @@ void SkeletonNode::batchDrawAllSubBones(const Mat4 &transform)
 }
 
 
-void SkeletonNode::onDraw(const Mat4 &transform, uint32_t flags)
+void SkeletonNode::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 {
     getGLProgram()->use();
     getGLProgram()->setUniformsForBuiltins(transform);
 
-    GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POSITION | GL::VERTEX_ATTRIB_FLAG_COLOR);
+    cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION | cocos2d::GL::VERTEX_ATTRIB_FLAG_COLOR);
 
     //
     // Attributes
@@ -286,11 +281,11 @@ void SkeletonNode::onDraw(const Mat4 &transform, uint32_t flags)
     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
 #else
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
+    glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
+    glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
 #endif // EMSCRIPTEN
 
-    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
+    cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
@@ -327,7 +322,7 @@ BoneNode* SkeletonNode::getBoneNode(const std::string& boneName)
     return nullptr;
 }
 
-const Map<std::string, BoneNode*>& SkeletonNode::getAllSubBonesMap() const
+const cocos2d::Map<std::string, BoneNode*>& SkeletonNode::getAllSubBonesMap() const
 {
     return _subBonesMap;
 }
@@ -341,7 +336,7 @@ void SkeletonNode::updateAllDrawBones()
 {
     _subDrawBones.clear();
     // get All Visible SubBones
-    // get all sub bones as visible visit
+    // get all sub bones as visit with visible
     std::stack<BoneNode*> boneStack;
     for (const auto& bone : _childBones)
     {
@@ -366,7 +361,7 @@ void SkeletonNode::updateAllDrawBones()
 
 void SkeletonNode::sortAllDrawBones()
 {
-    std::sort(_subDrawBones.begin(), _subDrawBones.end(), nodeComparisonLess);
+    std::sort(_subDrawBones.begin(), _subDrawBones.end(), cocos2d::nodeComparisonLess);
     _subDrawBonesOrderDirty = false;
 }
 
