@@ -1,6 +1,6 @@
 /****************************************************************************
-Copyright (c) 2014 cocos2d-x.org
-
+Copyright (c) 2015 Chukong Technologies Inc.
+ 
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -72,11 +72,12 @@ public:
 
     cocos2d::Rect getBoundingBox() const override;
 
-protected:
+CC_CONSTRUCTOR_ACCESS:
     SkeletonNode();
     virtual ~SkeletonNode();
     virtual bool init() override;
-
+    
+protected:
     virtual void updateVertices() override;
     virtual void updateColor() override;
 
