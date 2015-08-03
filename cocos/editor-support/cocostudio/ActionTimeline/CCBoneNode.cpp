@@ -441,10 +441,9 @@ SkeletonNode* BoneNode::getRootSkeletonNode() const
     return _rootSkeleton;
 }
 
-
-AffineTransform BoneNode::getBoneToSkeletonAffineTransform() const
+cocos2d::AffineTransform BoneNode::getBoneToSkeletonAffineTransform() const
 {
-    auto retTrans = AffineTransform::IDENTITY;
+    auto retTrans = cocos2d::AffineTransform::IDENTITY;
     if (_rootSkeleton == nullptr)
     {
         CCLOG("can not tranform before added to Skeleton");
