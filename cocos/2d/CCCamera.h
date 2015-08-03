@@ -51,6 +51,8 @@ enum class CameraFlag
     USER6 = 1 << 6,
     USER7 = 1 << 7,
     USER8 = 1 << 8,
+    SkyBox = 1 << 10,
+    DEFAULTCAMERA = DEFAULT | SkyBox,
     PIXEL = 1 << 13,
     FRONT = 1 << 14,
 };
@@ -185,6 +187,9 @@ public:
      * Get the default camera of the current running scene.
      */
     static Camera* getDefaultCamera();
+
+    float csGetNearPlane() const { return _nearPlane; }
+    float csGetFarPlane() const { return _farPlane; }
 
 CC_CONSTRUCTOR_ACCESS:
     Camera();

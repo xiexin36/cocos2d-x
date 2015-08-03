@@ -69,6 +69,9 @@ public:
     /** reload sky box after GLESContext reconstructed.*/
     void reload();
 
+    //check whether this camera mask is visible by the current visiting camera
+    virtual bool isVisitableByVisitingCamera() const override;
+
 CC_CONSTRUCTOR_ACCESS:
     /**
     * Constructor.
