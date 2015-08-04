@@ -226,9 +226,10 @@ void SkeletonNode::batchDrawAllSubBones(const cocos2d::Mat4 &transform)
     checkSubBonesDirty();
 
     _batchedVeticesCount = 0;
-    for (const auto& bone : _subDrawBones)
+    for (const auto& bone : _subOrderedAllBones)
     {
-        batchBoneDrawToSkeleton(bone);
+        if (bone->isDebugDrawEnabled())
+            batchBoneDrawToSkeleton(bone);
     }
     cocos2d::Vec3* vetices = _batchedBoneVetices.data();
     cocos2d::Color4F* veticesColor = _batchedBoneColors.data();
@@ -336,57 +337,40 @@ void SkeletonNode::checkSubBonesDirty()
 {
     if (_subBonesDirty)
     {
-        updateAllDrawBones();
         updateOrderedAllbones();
         _subBonesDirty = false;
     }
     if (_subBonesOrderDirty)
     {
-        sortAllDrawBones();
         sortOrderedAllBones();
         _subBonesOrderDirty = false;
     }
 }
 
-void SkeletonNode::updateAllDrawBones()
+void SkeletonNode::updateOrderedAllbones()
 {
-    _subDrawBones.clear();
-    // update draw bones, get All Visible SubBones
+    _subOrderedAllBones.clear();
+    // update sub bones, get All Visible SubBones
     // get all sub bones as visit with visible
     std::stack<BoneNode*> boneStack;
     for (const auto& bone : _childBones)
     {
-        if (bone->isVisible() && bone->isDebugDrawEnabled())
+        if (bone->isVisible())
             boneStack.push(bone);
     }
 
     while (boneStack.size() > 0)
     {
         auto top = boneStack.top();
-        _subDrawBones.pushBack(top);
+        _subOrderedAllBones.pushBack(top);
         boneStack.pop();
         auto topChildren = top->getChildBones();
         for (const auto& childbone : topChildren)
         {
-            if (childbone->isVisible() && childbone->isDebugDrawEnabled())
+            if (childbone->isVisible())
                 boneStack.push(childbone);
         }
     }
-}
-
-void SkeletonNode::updateOrderedAllbones()
-{
-    // update all ordered bones
-    _subOrderedAllBones.clear();
-    for (const auto& iter : _subBonesMap)
-    {
-        _subOrderedAllBones.push_back(iter.second);
-    }
-}
-
-void SkeletonNode::sortAllDrawBones()
-{
-    std::sort(_subDrawBones.begin(), _subDrawBones.end(), cocos2d::nodeComparisonLess);
 }
 
 void SkeletonNode::sortOrderedAllBones()

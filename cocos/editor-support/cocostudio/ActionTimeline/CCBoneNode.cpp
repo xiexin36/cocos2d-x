@@ -133,6 +133,11 @@ void BoneNode::removeFromBoneList(BoneNode* bone)
             }
         }
     }
+    else
+    {
+        _rootSkeleton->_subBonesDirty = true;
+        _rootSkeleton->_subBonesOrderDirty = true;
+    }
     _childBones.eraseObject(bone);
 }
 
@@ -541,7 +546,7 @@ void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
     }
 
     int count = bone->_rootSkeleton->_batchedVeticesCount;
-    if (count + 8 >(int)(bone->_rootSkeleton->_batchedBoneVetices.capacity()))
+    if (count + 8 >(int)(bone->_rootSkeleton->_batchedBoneVetices.size()))
     {
         bone->_rootSkeleton->_batchedBoneVetices.resize(count + 100);
         bone->_rootSkeleton->_batchedBoneColors.resize(count + 100);

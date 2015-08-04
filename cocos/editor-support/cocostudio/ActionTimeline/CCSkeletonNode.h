@@ -99,20 +99,17 @@ private:
 
     void checkSubBonesDirty();
     // for draw skins as ordered bones' local z
-    std::vector<BoneNode*>         _subOrderedAllBones;
+    cocos2d::Vector<BoneNode*>         _subOrderedAllBones;
     void updateOrderedAllbones();
     void sortOrderedAllBones();
     // for batch draw sub bones
     bool                           _subBonesDirty;
     bool                           _subBonesOrderDirty;
-    cocos2d::Vector<BoneNode*>     _subDrawBones;      // for draw faster, cache a list from _subBonesMap, sorted by render order
     std::vector<cocos2d::Vec3>     _batchedBoneVetices;
     std::vector<cocos2d::Color4F>  _batchedBoneColors;
     int                            _batchedVeticesCount;
     cocos2d::CustomCommand         _batchBoneCommand;
 
-    void updateAllDrawBones();
-    void sortAllDrawBones();
     void batchDrawAllSubBones(const cocos2d::Mat4 &transform);
     void batchSubBone(BoneNode* bone);
 };
