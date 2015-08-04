@@ -97,9 +97,14 @@ private:
     CC_DISALLOW_COPY_AND_ASSIGN(SkeletonNode);
 
 
+    void checkSubBonesDirty();
+    // for draw skins as ordered bones' local z
+    std::vector<BoneNode*>         _subOrderedAllBones;
+    void updateOrderedAllbones();
+    void sortOrderedAllBones();
     // for batch draw sub bones
-    bool                           _subDrawBonesDirty;
-    bool                           _subDrawBonesOrderDirty;
+    bool                           _subBonesDirty;
+    bool                           _subBonesOrderDirty;
     cocos2d::Vector<BoneNode*>     _subDrawBones;      // for draw faster, cache a list from _subBonesMap, sorted by render order
     std::vector<cocos2d::Vec3>     _batchedBoneVetices;
     std::vector<cocos2d::Color4F>  _batchedBoneColors;
