@@ -169,15 +169,6 @@ void SimpleAudioEngine::stopEffect(unsigned int nSoundId)
     }
 }
 
-void SimpleAudioEngine::stopEffect(const char * fullPath)
-{
-    if (fullPath && *fullPath)
-    {
-        unsigned int id = _Hash(fullPath);
-        stopEffect(id);
-    }
-}
-
 void SimpleAudioEngine::preloadEffect(const char* pszFilePath)
 {
     int nRet = 0;

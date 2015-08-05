@@ -249,9 +249,6 @@ public:
      */
     virtual void unloadEffect(const char* filePath);
 
-    // for cocostudio using
-    virtual void stopEffect(const char * fullPath);
-
 protected:
     /**
     * Constructor of SimpleAudioEngine.
