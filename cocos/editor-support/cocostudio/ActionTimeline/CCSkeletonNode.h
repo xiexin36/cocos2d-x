@@ -1,6 +1,6 @@
 /****************************************************************************
-Copyright (c) 2014 cocos2d-x.org
-
+Copyright (c) 2015 Chukong Technologies Inc.
+ 
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -72,11 +72,12 @@ public:
 
     cocos2d::Rect getBoundingBox() const override;
 
-protected:
+CC_CONSTRUCTOR_ACCESS:
     SkeletonNode();
     virtual ~SkeletonNode();
     virtual bool init() override;
-
+    
+protected:
     virtual void updateVertices() override;
     virtual void updateColor() override;
 
@@ -96,17 +97,19 @@ private:
     CC_DISALLOW_COPY_AND_ASSIGN(SkeletonNode);
 
 
+    void checkSubBonesDirty();
+    // for draw skins as ordered bones' local z
+    cocos2d::Vector<BoneNode*>         _subOrderedAllBones;
+    void updateOrderedAllbones();
+    void sortOrderedAllBones();
     // for batch draw sub bones
-    bool                           _subDrawBonesDirty;
-    bool                           _subDrawBonesOrderDirty;
-    cocos2d::Vector<BoneNode*>     _subDrawBones;      // for draw faster, cache a list from _subBonesMap, sorted by render order
+    bool                           _subBonesDirty;
+    bool                           _subBonesOrderDirty;
     std::vector<cocos2d::Vec3>     _batchedBoneVetices;
     std::vector<cocos2d::Color4F>  _batchedBoneColors;
     int                            _batchedVeticesCount;
     cocos2d::CustomCommand         _batchBoneCommand;
 
-    void updateAllDrawBones();
-    void sortAllDrawBones();
     void batchDrawAllSubBones(const cocos2d::Mat4 &transform);
     void batchSubBone(BoneNode* bone);
 };
