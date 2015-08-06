@@ -226,7 +226,7 @@ namespace cocostudio
         std::string path = fileData->path()->c_str();
         
         Sprite3D* ret = Sprite3D::create();
-        if(!FileUtils::getInstance()->isFileExist(path))
+        if(FileUtils::getInstance()->isFileExist(path))
         {
             ret->initWithFile(path);
         }
