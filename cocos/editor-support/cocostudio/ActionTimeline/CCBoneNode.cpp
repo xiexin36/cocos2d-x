@@ -116,7 +116,7 @@ void BoneNode::removeChild(Node* child, bool cleanup /* = true */)
 void BoneNode::removeFromBoneList(BoneNode* bone)
 {
     auto skeletonNode = dynamic_cast<SkeletonNode*>(bone);
-    if (skeletonNode == nullptr && bone->_rootSkeleton != nullptr) // is not a nested skeleton
+    if (skeletonNode == nullptr && bone->_rootSkeleton != _rootSkeleton)  // is not a nested skeleton, and it is in skeleton tree
     {
         bone->_rootSkeleton = nullptr;
         auto subBones = bone->getAllSubBones();
