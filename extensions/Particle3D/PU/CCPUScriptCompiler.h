@@ -44,7 +44,7 @@ enum PUAbstractNodeType
 class PUAbstractNode;
 typedef std::list<PUAbstractNode*> PUAbstractNodeList;
 
-class PUAbstractNode
+class CC_DLL PUAbstractNode
 {
 public:
     std::string file;
@@ -71,7 +71,7 @@ public:
 
 
 /** This specific abstract node represents a script object */
-class PUObjectAbstractNode : public PUAbstractNode
+class CC_DLL PUObjectAbstractNode : public PUAbstractNode
 {
 private:
     std::map<std::string,std::string> _env;
@@ -97,7 +97,7 @@ public:
 };
 
 /** This abstract node represents a script property */
-class  PUPropertyAbstractNode : public PUAbstractNode
+class CC_DLL PUPropertyAbstractNode : public PUAbstractNode
 {
 public:
     std::string name;
@@ -111,7 +111,7 @@ public:
 };
 
 /** This is an abstract node which cannot be broken down further */
-class PUAtomAbstractNode : public PUAbstractNode
+class CC_DLL PUAtomAbstractNode : public PUAbstractNode
 {
 public:
     std::string value;
@@ -125,7 +125,7 @@ private:
 };
 
 class PUParticleSystem3D;
-class PUScriptCompiler
+class CC_DLL PUScriptCompiler
 {
 
 private:
