@@ -109,6 +109,10 @@ SkeletonNode::SkeletonNode()
 
 SkeletonNode::~SkeletonNode()
 {
+    for (auto &bonepair : _subBonesMap)
+    {
+        setRootSkeleton(bonepair.second, nullptr);
+    }
 }
 
 void SkeletonNode::updateVertices()
@@ -161,11 +165,7 @@ void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& paren
     _director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     _director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
 
-    bool visibleByCamera = isVisitableByVisitingCamera();
-
     int i = 0;
-
-
     if (!_children.empty())
     {
         sortAllChildren();
@@ -271,20 +271,9 @@ void SkeletonNode::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 
     cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION | cocos2d::GL::VERTEX_ATTRIB_FLAG_COLOR);
 
-    //
-    // Attributes
-    //
-#ifdef EMSCRIPTEN
-    setGLBufferData(_noMVPVertices, 8 * sizeof(Vec3), 0);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-    setGLBufferData(_squareColors, 8 * sizeof(Color4F), 1);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
-#else
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
     glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
-#endif // EMSCRIPTEN
 
     cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
