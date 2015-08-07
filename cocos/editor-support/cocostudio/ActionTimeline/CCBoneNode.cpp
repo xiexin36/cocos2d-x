@@ -108,36 +108,40 @@ void BoneNode::removeChild(Node* child, bool cleanup /* = true */)
     ssize_t index = _children.getIndex(child);
     if (index != cocos2d::CC_INVALID_INDEX)
     {
-        Node::removeChild(child, cleanup);
         removeFromChildrenListHelper(child);
+        Node::removeChild(child, cleanup);
     }
 }
 
 void BoneNode::removeFromBoneList(BoneNode* bone)
 {
-    auto skeletonNode = dynamic_cast<SkeletonNode*>(bone);
-    if (_rootSkeleton != nullptr && 
-        skeletonNode == nullptr && bone->_rootSkeleton == _rootSkeleton)  // is not a nested skeleton, and it is in skeleton tree
-    {
-        bone->_rootSkeleton = nullptr;
-        auto subBones = bone->getAllSubBones();
-        subBones.pushBack(bone);
-        for (auto &subBone : subBones)
+    if (_rootSkeleton != nullptr)
+    {    
+        auto skeletonNode = dynamic_cast<SkeletonNode*>(bone);
+        if (skeletonNode == nullptr)  // is not a nested skeleton
         {
-            subBone->_rootSkeleton = nullptr;
-            auto toremoveIter = _rootSkeleton->_subBonesMap.find(subBone->getName());
-            if (toremoveIter != _rootSkeleton->_subBonesMap.end())
+            auto subBones = bone->getAllSubBones();
+            subBones.pushBack(bone);
+            for (auto &subBone : subBones)
             {
-                _rootSkeleton->_subBonesMap.erase(toremoveIter);
-                _rootSkeleton->_subBonesDirty = true;
-                _rootSkeleton->_subBonesOrderDirty = true;
+                if (subBone->_rootSkeleton == nullptr)
+                    continue;
+                subBone->_rootSkeleton = nullptr;
+
+                auto toremoveIter = _rootSkeleton->_subBonesMap.find(subBone->getName());
+                if (toremoveIter != _rootSkeleton->_subBonesMap.end())
+                {
+                    _rootSkeleton->_subBonesMap.erase(toremoveIter);
+                    _rootSkeleton->_subBonesDirty = true;
+                    _rootSkeleton->_subBonesOrderDirty = true;
+                }
             }
         }
-    }
-    else
-    {
-        _rootSkeleton->_subBonesDirty = true;
-        _rootSkeleton->_subBonesOrderDirty = true;
+        else
+        {
+            _rootSkeleton->_subBonesDirty = true;
+            _rootSkeleton->_subBonesOrderDirty = true;
+        }
     }
     _childBones.eraseObject(bone);
 }
@@ -330,15 +334,17 @@ void BoneNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTra
 
     int i = 0;
 
-    if (!_childBones.empty())
+    if (!_children.empty())
     {
         sortAllChildren();
         // draw children zOrder < 0
-        for (; i < _childBones.size(); i++)
+        for (; i < _children.size(); i++)
         {
-            auto bone = _childBones.at(i);
-            if (bone && bone->getZOrder() < 0)
-                bone->visit(renderer, _modelViewTransform, flags);
+            auto node = _children.at(i);
+            if (_rootSkeleton != nullptr && _boneSkins.contains(node)) // skip skin when bone is in a skeleton
+                continue;
+            if (node && node->getLocalZOrder() < 0)
+                node->visit(renderer, _modelViewTransform, flags);
             else
                 break;
         }
@@ -346,8 +352,13 @@ void BoneNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTra
         if (visibleByCamera)
             this->draw(renderer, _modelViewTransform, flags);
 
-        for (auto it = _childBones.cbegin() + i; it != _childBones.cend(); ++it)
-            (*it)->visit(renderer, _modelViewTransform, flags);
+        for (auto it = _children.cbegin() + i; it != _children.cend(); ++it)
+        {
+            auto node = (*it);
+            if (_rootSkeleton != nullptr && _boneSkins.contains(node)) // skip skin when bone is in a skeleton
+                continue;
+            node->visit(renderer, _modelViewTransform, flags);
+        }
     }
     else if (visibleByCamera)
     {
@@ -580,7 +591,7 @@ void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
 
 
 // call after self visit
-void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone)
+void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone) const
 {
     // quick return if not visible. children won't be drawn.
     if (!bone->_visible)
@@ -594,9 +605,6 @@ void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone)
     _director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     _director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, bone->_modelViewTransform);
 
-    bool visibleByCamera = bone->isVisitableByVisitingCamera();
-
-    int i = 0;
     if (!bone->_boneSkins.empty())
     {
         bone->sortAllChildren();
@@ -610,6 +618,11 @@ void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone)
     // Please refer to https://github.com/cocos2d/cocos2d-x/pull/6920
     // reset for next frame
     // _orderOfArrival = 0;
+}
+
+void BoneNode::setRootSkeleton(BoneNode* bone, SkeletonNode* skeleton) const
+{
+    bone->_rootSkeleton = skeleton;
 }
 
 void BoneNode::setLocalZOrder(int localZOrder)
