@@ -109,6 +109,10 @@ SkeletonNode::SkeletonNode()
 
 SkeletonNode::~SkeletonNode()
 {
+    for (auto &bonepair : _subBonesMap)
+    {
+        setRootSkeleton(bonepair.second, nullptr);
+    }
 }
 
 void SkeletonNode::updateVertices()
@@ -161,11 +165,7 @@ void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& paren
     _director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     _director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
 
-    bool visibleByCamera = isVisitableByVisitingCamera();
-
     int i = 0;
-
-
     if (!_children.empty())
     {
         sortAllChildren();
@@ -190,12 +190,14 @@ void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& paren
         visitSkins(renderer, bone);
     }
 
-    this->draw(renderer, _modelViewTransform, flags);
-    // batch draw all sub bones
-    _batchBoneCommand.init(_globalZOrder, _modelViewTransform, parentFlags);
-    _batchBoneCommand.func = CC_CALLBACK_0(SkeletonNode::batchDrawAllSubBones, this, _modelViewTransform);
-    renderer->addCommand(&_batchBoneCommand);
-
+    if (_isRackShow)
+    {
+        this->draw(renderer, _modelViewTransform, flags);
+        // batch draw all sub bones
+        _batchBoneCommand.init(_globalZOrder, _modelViewTransform, parentFlags);
+        _batchBoneCommand.func = CC_CALLBACK_0(SkeletonNode::batchDrawAllSubBones, this, _modelViewTransform);
+        renderer->addCommand(&_batchBoneCommand);
+    }
     _director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     // FIX ME: Why need to set _orderOfArrival to 0??
     // Please refer to https://github.com/cocos2d/cocos2d-x/pull/6920
@@ -205,9 +207,6 @@ void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& paren
 
 void SkeletonNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    if (!_isRackShow)
-        return;
-
     _customCommand.init(_globalZOrder, transform, flags);
     _customCommand.func = CC_CALLBACK_0(SkeletonNode::onDraw, this, transform, flags);
     renderer->addCommand(&_customCommand);
@@ -228,9 +227,9 @@ void SkeletonNode::batchDrawAllSubBones(const cocos2d::Mat4 &transform)
     _batchedVeticesCount = 0;
     for (const auto& bone : _subOrderedAllBones)
     {
-        if (bone->isDebugDrawEnabled())
-            batchBoneDrawToSkeleton(bone);
+        batchBoneDrawToSkeleton(bone);
     }
+
     cocos2d::Vec3* vetices = _batchedBoneVetices.data();
     cocos2d::Color4F* veticesColor = _batchedBoneColors.data();
     getGLProgram()->use();
@@ -271,20 +270,9 @@ void SkeletonNode::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 
     cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION | cocos2d::GL::VERTEX_ATTRIB_FLAG_COLOR);
 
-    //
-    // Attributes
-    //
-#ifdef EMSCRIPTEN
-    setGLBufferData(_noMVPVertices, 8 * sizeof(Vec3), 0);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-    setGLBufferData(_squareColors, 8 * sizeof(Color4F), 1);
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, 0);
-#else
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
     glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
-#endif // EMSCRIPTEN
 
     cocos2d::GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
