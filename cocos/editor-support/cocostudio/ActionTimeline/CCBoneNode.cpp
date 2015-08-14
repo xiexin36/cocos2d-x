@@ -183,12 +183,9 @@ void BoneNode::addToSkinList(SkinNode* skin)
 {
     _boneSkins.pushBack(skin);
     auto blendSkin = dynamic_cast<BlendProtocol*>(skin);
-    if (_blendFunc != blendSkin->getBlendFunc())
+    if (nullptr != blendSkin && _blendFunc != blendSkin->getBlendFunc())
     {
-        if (nullptr != blendSkin)
-        {
-            blendSkin->setBlendFunc(_blendFunc);
-        }
+        blendSkin->setBlendFunc(_blendFunc);
     }
 }
 
