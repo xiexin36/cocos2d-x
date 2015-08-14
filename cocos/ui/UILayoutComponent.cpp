@@ -184,7 +184,7 @@ namespace ui {
             else
             {
                 _positionPercentX = 0;
-                if (_usingPositionPercentX)
+                if (_usingPositionPercentX || _horizontalEdge == HorizontalEdge::Center)
                     ownerPoint.x = 0;
             }
 
@@ -193,7 +193,7 @@ namespace ui {
             else
             {
                 _positionPercentY = 0;
-                if (_usingPositionPercentY)
+                if (_usingPositionPercentY || _verticalEdge == VerticalEdge::Center)
                     ownerPoint.y = 0;
             }
 
@@ -287,7 +287,7 @@ namespace ui {
             {
                 _positionPercentX = 0;
                 ownerPoint.x = 0;
-                if (_usingPositionPercentX)
+                if (_usingPositionPercentX || _horizontalEdge == HorizontalEdge::Center)
                     _owner->setPosition(ownerPoint);
             }
 
@@ -318,7 +318,7 @@ namespace ui {
             {
                 _positionPercentY = 0;
                 ownerPoint.y = 0;
-                if (_usingPositionPercentY)
+                if (_usingPositionPercentY || _verticalEdge == VerticalEdge::Center)
                     _owner->setPosition(ownerPoint);
             }
 
