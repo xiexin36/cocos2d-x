@@ -227,7 +227,7 @@ namespace ui {
     {
         _positionPercentX = percentMargin;
 
-        if (_usingPositionPercentX)
+        if (_usingPositionPercentX || _horizontalEdge == HorizontalEdge::Center)
         {
             Node* parent = this->getOwnerParent();
             if (parent != nullptr)
@@ -259,7 +259,7 @@ namespace ui {
     {
         _positionPercentY = percentMargin;
 
-        if (_usingPositionPercentY)
+        if (_usingPositionPercentY || _verticalEdge == VerticalEdge::Center)
         {
             Node* parent = this->getOwnerParent();
             if (parent != nullptr)
