@@ -120,7 +120,7 @@ namespace cocostudio
             {
                 fov = atof(value.c_str());
             }
-            else if(attriname == "UserCameraFlagMode")
+            else if (attriname == "UserCameraFlagMode")
             {
                 if (cameraFlag == 0)
                 {
@@ -128,12 +128,14 @@ namespace cocostudio
                     else if (value == "USER1") cameraFlag = 1 << 1;
                     else if (value == "USER2") cameraFlag = 1 << 2;
                     else if (value == "USER3") cameraFlag = 1 << 3;
-                	else if (value == "USER4") cameraFlag = 1 << 4;
-				}
+                    else if (value == "USER4") cameraFlag = 1 << 4;
+                }
             }
             else if (attriname == "CameraFlagData")
             {
-                cameraFlag = atoi(value.c_str());
+                int flag = atoi(value.c_str());
+                if (flag != 0)
+                    cameraFlag = flag;
             }
             else if (attriname == "SkyBoxEnabled")
             {
