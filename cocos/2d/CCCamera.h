@@ -20,7 +20,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-****************************************************************************/
+
+ Code based GamePlay3D's Camera: http://gameplay3d.org
+
+ ****************************************************************************/
 #ifndef _CCCAMERA_H__
 #define _CCCAMERA_H__
 
@@ -30,6 +33,7 @@ THE SOFTWARE.
 NS_CC_BEGIN
 
 class Scene;
+class CameraBackgroundBrush;
 
 /**
  * Note: 
@@ -63,6 +67,8 @@ enum class CameraFlag
 class CC_DLL Camera :public Node
 {
     friend class Scene;
+    friend class Director;
+    friend class EventDispatcher;
 public:
     /**
     * The type of camera.
@@ -130,30 +136,60 @@ public:
     /**get view projection matrix*/
     const Mat4& getViewProjectionMatrix() const;
     
-    /* convert the specified point of viewport from world-space coordinates into the screen-space coordinates.
+    /* convert the specified point in 3D world-space coordinates into the screen-space coordinates.
      *
+     * Origin point at left top corner in screen-space.
      * @param src The world-space position.
      * @return The screen-space position.
      */
     Vec2 project(const Vec3& src) const;
     
-    /**
-     * Convert the specified point of viewport from screen-space coordinate into the world-space coordinate.
+    /* convert the specified point in 3D world-space coordinates into the GL-screen-space coordinates.
      *
+     * Origin point at left bottom corner in GL-screen-space.
+     * @param src The 3D world-space position.
+     * @return The GL-screen-space position.
+     */
+    Vec2 projectGL(const Vec3& src) const;
+    
+    /**
+     * Convert the specified point of screen-space coordinate into the 3D world-space coordinate.
+     *
+     * Origin point at left top corner in screen-space.
      * @param src The screen-space position.
-     * @return The world-space position.
+     * @return The 3D world-space position.
      */
     Vec3 unproject(const Vec3& src) const;
-
-    /**
-     * Convert the specified point of viewport from screen-space coordinate into the world-space coordinate.
-     *
-     * @param viewport The viewport size to use.
-     * @param src The screen-space position.
-     * @param dst The world-space position.
-     */
-    void unproject(const Size& viewport, const Vec3* src, Vec3* dst) const;
     
+    /**
+     * Convert the specified point of GL-screen-space coordinate into the 3D world-space coordinate.
+     *
+     * Origin point at left bottom corner in GL-screen-space.
+     * @param src The GL-screen-space position.
+     * @return The 3D world-space position.
+     */
+    Vec3 unprojectGL(const Vec3& src) const;
+    
+    /**
+     * Convert the specified point of screen-space coordinate into the 3D world-space coordinate.
+     *
+     * Origin point at left top corner in screen-space.
+     * @param size The window size to use.
+     * @param src  The screen-space position.
+     * @param dst  The 3D world-space position.
+     */
+    void unproject(const Size& size, const Vec3* src, Vec3* dst) const;
+    
+    /**
+     * Convert the specified point of GL-screen-space coordinate into the 3D world-space coordinate.
+     *
+     * Origin point at left bottom corner in GL-screen-space.
+     * @param size The window size to use.
+     * @param src  The GL-screen-space position.
+     * @param dst  The 3D world-space position.
+     */
+    void unprojectGL(const Size& size, const Vec3* src, Vec3* dst) const;
+
     /**
      * Is this aabb visible in frustum
      */
@@ -167,12 +203,27 @@ public:
     /**
      * set depth, camera with larger depth is drawn on top of camera with smaller depth, the depth of camera with CameraFlag::DEFAULT is 0, user defined camera is -1 by default
      */
-    void setDepth(int depth);
+    void setDepth(int8_t depth);
     
     /**
      * get depth, camera with larger depth is drawn on top of camera with smaller depth, the depth of camera with CameraFlag::DEFAULT is 0, user defined camera is -1 by default
      */
-    int getDepth() const { return _depth; }
+    int8_t getDepth() const { return _depth; }
+    
+    /**
+     get rendered order
+     */
+    int getRenderOrder() const;
+    
+    /**
+     * Get the frustum's far plane.
+     */
+    float getFarPlane() const { return _farPlane; }
+
+    /**
+     * Get the frustum's near plane.
+     */
+    float getNearPlane() const { return _nearPlane; }
     
     //override
     virtual void onEnter() override;
@@ -187,10 +238,33 @@ public:
      * Get the default camera of the current running scene.
      */
     static Camera* getDefaultCamera();
+    /**
+     Before rendering scene with this camera, the background need to be cleared. It clears the depth buffer with max depth by default. Use setBackgroundBrush to modify the default behavior
+     */
+    void clearBackground();
+    
+    /**
+     * Whether or not the viewprojection matrix was updated since the last frame.
+     * @return True if the viewprojection matrix was updated since the last frame.
+     */
+    bool isViewProjectionUpdated() const {return _viewProjectionUpdated;}
+    
+    /**
+     * set the background brush. See CameraBackgroundBrush for more information.
+     * @param clearBrush Brush used to clear the background
+     */
+    void setBackgroundBrush(CameraBackgroundBrush* clearBrush);
+    
+    /**
+     * Get clear brush
+     */
+    CameraBackgroundBrush* getBackgroundBrush() const { return _clearBrush; }
 
-    float csGetNearPlane() const { return _nearPlane; }
-    float csGetFarPlane() const { return _farPlane; }
-
+    //For Editor
+    bool isBrushValid();
+    
+    virtual void visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
+    
 CC_CONSTRUCTOR_ACCESS:
     Camera();
     ~Camera();
@@ -207,7 +281,6 @@ CC_CONSTRUCTOR_ACCESS:
     bool initDefault();
     bool initPerspective(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
     bool initOrthographic(float zoomX, float zoomY, float nearPlane, float farPlane);
-
 protected:
 
     Scene* _scene; //Scene camera belongs to
@@ -223,13 +296,14 @@ protected:
     float _nearPlane;
     float _farPlane;
     mutable bool  _viewProjectionDirty;
+    bool _viewProjectionUpdated; //Whether or not the viewprojection matrix was updated since the last frame.
     unsigned short _cameraFlag; // camera flag
     mutable Frustum _frustum;   // camera frustum
     mutable bool _frustumDirty;
     int  _depth;                 //camera depth, the depth of camera with CameraFlag::DEFAULT flag is 0 by default, a camera with larger depth is drawn on top of camera with smaller detph
     static Camera* _visitingCamera;
     
-    friend class Director;
+    CameraBackgroundBrush* _clearBrush; //brush used to clear the back ground
 };
 
 NS_CC_END

@@ -20,8 +20,12 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
+
+ Code based GamePlay3D's Camera: http://gameplay3d.org
+
  ****************************************************************************/
 #include "2d/CCCamera.h"
+#include "2d/CCCameraBackgroundBrush.h"
 #include "base/CCDirector.h"
 #include "platform/CCGLView.h"
 #include "2d/CCScene.h"
@@ -29,7 +33,6 @@
 NS_CC_BEGIN
 
 Camera* Camera::_visitingCamera = nullptr;
-
 
 Camera* Camera::getDefaultCamera()
 {
@@ -42,7 +45,7 @@ Camera* Camera::getDefaultCamera()
     return nullptr;
 }
 
-    Camera* Camera::create()
+Camera* Camera::create()
 {
     Camera* camera = new (std::nothrow) Camera();
     camera->initDefault();
@@ -86,11 +89,13 @@ Camera::Camera()
 , _depth(-1)
 {
     _frustum.setClipZ(true);
+    _clearBrush = CameraBackgroundBrush::createDepthBrush(1.f);
+    _clearBrush->retain();
 }
 
 Camera::~Camera()
 {
-    
+    CC_SAFE_RELEASE(_clearBrush);
 }
 
 const Mat4& Camera::getProjectionMatrix() const
@@ -142,12 +147,8 @@ void Camera::lookAt(const Vec3& lookAtPos, const Vec3& up)
     
     Quaternion  quaternion;
     Quaternion::createFromRotationMatrix(rotation,&quaternion);
-
-    float rotx = atan2f(2 * (quaternion.w * quaternion.x + quaternion.y * quaternion.z), 1 - 2 * (quaternion.x * quaternion.x + quaternion.y * quaternion.y));
-    float roty = asin(clampf(2 * (quaternion.w * quaternion.y - quaternion.z * quaternion.x) , -1.0f , 1.0f));
-    float rotz = -atan2(2 * (quaternion.w * quaternion.z + quaternion.x * quaternion.y) , 1 - 2 * (quaternion.y * quaternion.y + quaternion.z * quaternion.z));
-    
-    setRotation3D(Vec3(CC_RADIANS_TO_DEGREES(rotx),CC_RADIANS_TO_DEGREES(roty),CC_RADIANS_TO_DEGREES(rotz)));
+    quaternion.normalize();
+    setRotationQuat(quaternion);
 }
 
 const Mat4& Camera::getViewProjectionMatrix() const
@@ -205,14 +206,6 @@ bool Camera::initPerspective(float fieldOfView, float aspectRatio, float nearPla
     _nearPlane = nearPlane;
     _farPlane = farPlane;
     Mat4::createPerspective(_fieldOfView, _aspectRatio, _nearPlane, _farPlane, &_projection);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WP8
-    //if needed, we need to add a rotation for Landscape orientations on Windows Phone 8 since it is always in Portrait Mode
-    GLView* view = Director::getInstance()->getOpenGLView();
-    if(view != nullptr)
-    {
-        setAdditionalProjection(view->getOrientationMatrix());
-    }
-#endif
     _viewProjectionDirty = true;
     _frustumDirty = true;
     
@@ -226,14 +219,6 @@ bool Camera::initOrthographic(float zoomX, float zoomY, float nearPlane, float f
     _nearPlane = nearPlane;
     _farPlane = farPlane;
     Mat4::createOrthographicOffCenter(0, _zoom[0], 0, _zoom[1], _nearPlane, _farPlane, &_projection);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WP8
-    //if needed, we need to add a rotation for Landscape orientations on Windows Phone 8 since it is always in Portrait Mode
-    GLView* view = Director::getInstance()->getOpenGLView();
-    if(view != nullptr)
-    {
-        setAdditionalProjection(view->getOrientationMatrix());
-    }
-#endif
     _viewProjectionDirty = true;
     _frustumDirty = true;
     
@@ -248,7 +233,7 @@ Vec2 Camera::project(const Vec3& src) const
     Vec4 clipPos;
     getViewProjectionMatrix().transformVector(Vec4(src.x, src.y, src.z, 1.0f), &clipPos);
     
-    CCASSERT(clipPos.w != 0.0f, "");
+    CCASSERT(clipPos.w != 0.0f, "clipPos.w can't be 0.0f!");
     float ndcX = clipPos.x / clipPos.w;
     float ndcY = clipPos.y / clipPos.w;
     
@@ -257,11 +242,42 @@ Vec2 Camera::project(const Vec3& src) const
     return screenPos;
 }
 
+Vec2 Camera::projectGL(const Vec3& src) const
+{
+    Vec2 screenPos;
+    
+    auto viewport = Director::getInstance()->getWinSize();
+    Vec4 clipPos;
+    getViewProjectionMatrix().transformVector(Vec4(src.x, src.y, src.z, 1.0f), &clipPos);
+    
+    CCASSERT(clipPos.w != 0.0f, "clipPos.w can't be 0.0f!");
+    float ndcX = clipPos.x / clipPos.w;
+    float ndcY = clipPos.y / clipPos.w;
+    
+    screenPos.x = (ndcX + 1.0f) * 0.5f * viewport.width;
+    screenPos.y = (ndcY + 1.0f) * 0.5f * viewport.height;
+    return screenPos;
+}
+
 Vec3 Camera::unproject(const Vec3& src) const
 {
-    auto viewport = Director::getInstance()->getWinSize();
+    Vec3 dst;
+    unproject(Director::getInstance()->getWinSize(), &src, &dst);
+    return dst;
+}
 
-    Vec4 screen(src.x / viewport.width, ((viewport.height - src.y)) / viewport.height, src.z, 1.0f);
+Vec3 Camera::unprojectGL(const Vec3& src) const
+{
+    Vec3 dst;
+    unprojectGL(Director::getInstance()->getWinSize(), &src, &dst);
+    return dst;
+}
+
+void Camera::unproject(const Size& viewport, const Vec3* src, Vec3* dst) const
+{
+    CCASSERT(src && dst, "vec3 can not be null");
+    
+    Vec4 screen(src->x / viewport.width, ((viewport.height - src->y)) / viewport.height, src->z, 1.0f);
     screen.x = screen.x * 2.0f - 1.0f;
     screen.y = screen.y * 2.0f - 1.0f;
     screen.z = screen.z * 2.0f - 1.0f;
@@ -274,14 +290,14 @@ Vec3 Camera::unproject(const Vec3& src) const
         screen.z /= screen.w;
     }
     
-    return Vec3(screen.x, screen.y, screen.z);
+    dst->set(screen.x, screen.y, screen.z);
 }
 
-void Camera::unproject(const Size& viewport, const Vec3* src, Vec3* dst) const
+void Camera::unprojectGL(const Size& viewport, const Vec3* src, Vec3* dst) const
 {
     CCASSERT(src && dst, "vec3 can not be null");
     
-    Vec4 screen(src->x / viewport.width, ((viewport.height - src->y)) / viewport.height, src->z, 1.0f);
+    Vec4 screen(src->x / viewport.width, src->y / viewport.height, src->z, 1.0f);
     screen.x = screen.x * 2.0f - 1.0f;
     screen.y = screen.y * 2.0f - 1.0f;
     screen.z = screen.z * 2.0f - 1.0f;
@@ -315,7 +331,7 @@ float Camera::getDepthInView(const Mat4& transform) const
     return depth;
 }
 
-void Camera::setDepth(int depth)
+void Camera::setDepth(int8_t depth)
 {
     if (_depth != depth)
     {
@@ -375,6 +391,32 @@ void Camera::setScene(Scene* scene)
             }
         }
     }
+}
+
+void Camera::clearBackground()
+{
+    if (_clearBrush)
+    {
+        _clearBrush->drawBackground(this);
+    }
+}
+
+void Camera::visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags)
+{
+    _viewProjectionUpdated = _transformUpdated;
+    return Node::visit(renderer, parentTransform, parentFlags);
+}
+
+void Camera::setBackgroundBrush(CameraBackgroundBrush* clearBrush)
+{
+    CC_SAFE_RETAIN(clearBrush);
+    CC_SAFE_RELEASE(_clearBrush);
+    _clearBrush = clearBrush;
+}
+
+bool Camera::isBrushValid()
+{
+    return _clearBrush != nullptr && _clearBrush->isValid();
 }
 
 NS_CC_END
