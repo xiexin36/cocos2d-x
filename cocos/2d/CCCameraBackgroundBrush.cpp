@@ -294,6 +294,7 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
     if (!_actived)
         return;
 
+    GLboolean oldBlend;
     GLboolean oldDepthTest;
     GLint oldDepthFunc;
     GLboolean oldDepthMask;
@@ -308,6 +309,9 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
         glDepthMask(GL_TRUE);
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_ALWAYS);
+
+        oldBlend = glIsEnabled(GL_BLEND);
+        glDisable(GL_BLEND);
     }
 
 
@@ -359,6 +363,11 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
         if (GL_FALSE == oldDepthMask)
         {
             glDepthMask(GL_FALSE);
+        }
+
+        if (GL_TRUE == oldBlend)
+        {
+            glEnable(GL_BLEND);
         }
 
         /* IMPORTANT: We only need to update the states that are not restored.
@@ -464,7 +473,7 @@ void CameraBackgroundSkyBoxBrush::setTextureValid(bool valid)
 
 bool CameraBackgroundSkyBoxBrush::isValid()
 {
-    return _textureValid && _actived;
+    return _actived;
 }
 
 NS_CC_END
