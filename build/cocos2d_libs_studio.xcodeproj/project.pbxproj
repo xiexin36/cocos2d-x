@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C85E2EC1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */; };
+		0C85E2ED1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */; };
+		0C85E2EE1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */; };
+		0C85E2EF1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */; };
+		0C85E2F01B8BFA140093FCC2 /* CocosStudioExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F559D7B01AB4657B0063AEA8 /* CocosStudioExtension.h */; };
+		0C85E2F11B8BFA170093FCC2 /* CocosStudioExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F559D7AF1AB4657B0063AEA8 /* CocosStudioExtension.cpp */; };
 		156D1A291B60905400B5A65A /* CCBoneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 156D1A211B60905400B5A65A /* CCBoneNode.cpp */; };
 		156D1A2A1B60905400B5A65A /* CCBoneNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 156D1A221B60905400B5A65A /* CCBoneNode.h */; };
 		156D1A2B1B60905400B5A65A /* CCBoneNodeChain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 156D1A231B60905400B5A65A /* CCBoneNodeChain.cpp */; };
@@ -2673,6 +2679,10 @@
 		06CAAABF186AD63B0012A414 /* TriggerMng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerMng.h; sourceTree = "<group>"; };
 		06CAAAC0186AD63B0012A414 /* TriggerObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerObj.cpp; sourceTree = "<group>"; };
 		06CAAAC1186AD63B0012A414 /* TriggerObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerObj.h; sourceTree = "<group>"; };
+		0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCCameraBackgroundBrush.cpp; sourceTree = "<group>"; };
+		0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCameraBackgroundBrush.h; sourceTree = "<group>"; };
+		0C85E2F21B8BFA320093FCC2 /* ccShader_CameraClear.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_CameraClear.frag; sourceTree = "<group>"; };
+		0C85E2F31B8BFA320093FCC2 /* ccShader_CameraClear.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_CameraClear.vert; sourceTree = "<group>"; };
 		1551A33F158F2AB200E66CFE /* libcocos2d Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2d Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1551A342158F2AB200E66CFE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		156D1A211B60905400B5A65A /* CCBoneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCBoneNode.cpp; sourceTree = "<group>"; };
@@ -6110,6 +6120,8 @@
 		46A169A11807B037005B8026 /* 2d */ = {
 			isa = PBXGroup;
 			children = (
+				0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */,
+				0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */,
 				94F5E0201B01CC10002D0CC7 /* MarchingSquare.cpp */,
 				94F5E0211B01CC10002D0CC7 /* MarchingSquare.h */,
 				94F5E0221B01CC10002D0CC7 /* SpritePolygon.cpp */,
@@ -6265,6 +6277,8 @@
 		5034CA5D191D591900CE6051 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				0C85E2F21B8BFA320093FCC2 /* ccShader_CameraClear.frag */,
+				0C85E2F31B8BFA320093FCC2 /* ccShader_CameraClear.vert */,
 				B67C624319D4186F00F11FC6 /* ccShader_3D_ColorNormal.frag */,
 				B67C624419D4186F00F11FC6 /* ccShader_3D_ColorNormalTex.frag */,
 				B67C624519D4186F00F11FC6 /* ccShader_3D_PositionNormalTex.vert */,
@@ -7326,6 +7340,7 @@
 				50ABBEA91925AB6F00A911A9 /* CCTouch.h in Headers */,
 				15AE1A5E19AAD40300C27E9E /* b2Body.h in Headers */,
 				50ABBE971925AB6F00A911A9 /* CCProtocols.h in Headers */,
+				0C85E2EE1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h in Headers */,
 				50ABC0691926664800A911A9 /* CCStdC-mac.h in Headers */,
 				15AE1A2B19AAD3D500C27E9E /* b2Distance.h in Headers */,
 				15AE198919AAD36A00C27E9E /* ButtonReader.h in Headers */,
@@ -7503,6 +7518,7 @@
 				1A570088180BC5A10088DEC7 /* CCActionPageTurn3D.h in Headers */,
 				15AE1B9319AADA9A00C27E9E /* UIHelper.h in Headers */,
 				50ABBD9E1925AB4100A911A9 /* ccGLStateCache.h in Headers */,
+				0C85E2EF1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h in Headers */,
 				15AE1B9619AADA9A00C27E9E /* CocosGUI.h in Headers */,
 				1A57008C180BC5A10088DEC7 /* CCActionProgressTimer.h in Headers */,
 				43E62E181A6D044300DD097C /* CCSprite3D.h in Headers */,
@@ -7907,6 +7923,7 @@
 				15AE198019AAD35700C27E9E /* CCTimeLine.h in Headers */,
 				38B8E2E419E671D2002D7CE7 /* UILayoutComponent.h in Headers */,
 				43E62E481A6D049900DD097C /* CCAllocatorStrategyPool.h in Headers */,
+				0C85E2F01B8BFA140093FCC2 /* CocosStudioExtension.h in Headers */,
 				50ABBD4F1925AB0000A911A9 /* MathUtil.h in Headers */,
 				1A01C69718F57BE800EFE3A6 /* CCInteger.h in Headers */,
 				15AE1C0619AAE01E00C27E9E /* CCTableViewCell.h in Headers */,
@@ -8605,6 +8622,7 @@
 				B276EF611988D1D500CD400F /* CCVertexIndexData.cpp in Sources */,
 				15AE199819AAD39600C27E9E /* LoadingBarReader.cpp in Sources */,
 				503DD8F71926B0DB00CD74DD /* CCIMEDispatcher.cpp in Sources */,
+				0C85E2EC1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp in Sources */,
 				50ABBE751925AB6F00A911A9 /* CCEventListenerTouch.cpp in Sources */,
 				15AE18F019AAD35000C27E9E /* CCArmatureAnimation.cpp in Sources */,
 				50ABBE511925AB6F00A911A9 /* CCEventDispatcher.cpp in Sources */,
@@ -8853,6 +8871,7 @@
 				B29A7E0619EE1B7700872B35 /* extension.c in Sources */,
 				3E6176681960F89B00DE83F5 /* CCController-iOS.mm in Sources */,
 				430275D71AB7447000993C80 /* CCPUScriptTranslator.cpp in Sources */,
+				0C85E2ED1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp in Sources */,
 				430274171AB7446F00993C80 /* CCPUBehaviour.cpp in Sources */,
 				15AE18B219AAD33D00C27E9E /* CCBReader.cpp in Sources */,
 				430275E71AB7447000993C80 /* CCPUSlaveBehaviour.cpp in Sources */,
@@ -9339,6 +9358,7 @@
 				15AE196519AAD35100C27E9E /* CCTween.cpp in Sources */,
 				94F5E0641B01CC51002D0CC7 /* sweep.cc in Sources */,
 				46C02E0818E91123004B7456 /* xxhash.c in Sources */,
+				0C85E2F11B8BFA170093FCC2 /* CocosStudioExtension.cpp in Sources */,
 				4302741B1AB7446F00993C80 /* CCPUBehaviourManager.cpp in Sources */,
 				50ABBED01925AB6F00A911A9 /* TGAlib.cpp in Sources */,
 				43E62E341A6D049900DD097C /* CCAllocatorDiagnostics.cpp in Sources */,
