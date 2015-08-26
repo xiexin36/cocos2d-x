@@ -190,7 +190,6 @@ void SkeletonNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& paren
         visitSkins(renderer, bone);
     }
 
-    _isRackShow = false;
     if (_isRackShow)
     {
         this->draw(renderer, _modelViewTransform, flags);

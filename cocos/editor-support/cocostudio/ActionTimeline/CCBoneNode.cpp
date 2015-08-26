@@ -343,7 +343,6 @@ void BoneNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTra
 
     bool visibleByCamera = isVisitableByVisitingCamera();
     bool isdebugdraw = visibleByCamera && _isRackShow && nullptr == _rootSkeleton;
-    isdebugdraw = true;
     int i = 0;
 
     if (!_children.empty())
