@@ -13,6 +13,10 @@
 		0C85E2EF1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */; };
 		0C85E2F01B8BFA140093FCC2 /* CocosStudioExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F559D7B01AB4657B0063AEA8 /* CocosStudioExtension.h */; };
 		0C85E2F11B8BFA170093FCC2 /* CocosStudioExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F559D7AF1AB4657B0063AEA8 /* CocosStudioExtension.cpp */; };
+		0CF97DE91B8DC4B3009E0710 /* GameNode3DReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CF97DE71B8DC4B3009E0710 /* GameNode3DReader.cpp */; };
+		0CF97DEA1B8DC4B3009E0710 /* GameNode3DReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CF97DE71B8DC4B3009E0710 /* GameNode3DReader.cpp */; };
+		0CF97DEB1B8DC4B3009E0710 /* GameNode3DReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CF97DE81B8DC4B3009E0710 /* GameNode3DReader.h */; };
+		0CF97DEC1B8DC4B3009E0710 /* GameNode3DReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CF97DE81B8DC4B3009E0710 /* GameNode3DReader.h */; };
 		156D1A291B60905400B5A65A /* CCBoneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 156D1A211B60905400B5A65A /* CCBoneNode.cpp */; };
 		156D1A2A1B60905400B5A65A /* CCBoneNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 156D1A221B60905400B5A65A /* CCBoneNode.h */; };
 		156D1A2B1B60905400B5A65A /* CCBoneNodeChain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 156D1A231B60905400B5A65A /* CCBoneNodeChain.cpp */; };
@@ -2683,6 +2687,8 @@
 		0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCameraBackgroundBrush.h; sourceTree = "<group>"; };
 		0C85E2F21B8BFA320093FCC2 /* ccShader_CameraClear.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_CameraClear.frag; sourceTree = "<group>"; };
 		0C85E2F31B8BFA320093FCC2 /* ccShader_CameraClear.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_CameraClear.vert; sourceTree = "<group>"; };
+		0CF97DE71B8DC4B3009E0710 /* GameNode3DReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameNode3DReader.cpp; sourceTree = "<group>"; };
+		0CF97DE81B8DC4B3009E0710 /* GameNode3DReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameNode3DReader.h; sourceTree = "<group>"; };
 		1551A33F158F2AB200E66CFE /* libcocos2d Mac.dylib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libcocos2d Mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1551A342158F2AB200E66CFE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		156D1A211B60905400B5A65A /* CCBoneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCBoneNode.cpp; sourceTree = "<group>"; };
@@ -4153,6 +4159,15 @@
 				0634A4CF194B19E400E608AF /* CCTimelineMacro.h */,
 			);
 			path = ActionTimeline;
+			sourceTree = "<group>";
+		};
+		0CF97DE61B8DC4B3009E0710 /* GameNode3DReader */ = {
+			isa = PBXGroup;
+			children = (
+				0CF97DE71B8DC4B3009E0710 /* GameNode3DReader.cpp */,
+				0CF97DE81B8DC4B3009E0710 /* GameNode3DReader.h */,
+			);
+			path = GameNode3DReader;
 			sourceTree = "<group>";
 		};
 		1551A334158F2AB200E66CFE = {
@@ -6418,6 +6433,7 @@
 		50FCEB6818C72017004AD434 /* WidgetReader */ = {
 			isa = PBXGroup;
 			children = (
+				0CF97DE61B8DC4B3009E0710 /* GameNode3DReader */,
 				156D1A311B60906100B5A65A /* SkeletonReader */,
 				4333473D1AA4F71600052EE6 /* Node3DReader */,
 				433347401AA4F71600052EE6 /* Particle3DReader */,
@@ -7336,6 +7352,7 @@
 				B29A7E3519EE1B7700872B35 /* AnimationStateData.h in Headers */,
 				15AE1BC619AAE00000C27E9E /* AssetsManager.h in Headers */,
 				430273F01AB7446F00993C80 /* CCPUAffector.h in Headers */,
+				0CF97DEB1B8DC4B3009E0710 /* GameNode3DReader.h in Headers */,
 				430274F01AB7446F00993C80 /* CCPULineEmitterTranslator.h in Headers */,
 				50ABBEA91925AB6F00A911A9 /* CCTouch.h in Headers */,
 				15AE1A5E19AAD40300C27E9E /* b2Body.h in Headers */,
@@ -7655,6 +7672,7 @@
 				3EACC9A719F5014D00EB3C5E /* CCLight.h in Headers */,
 				430274CD1AB7446F00993C80 /* CCPUInterParticleCollider.h in Headers */,
 				15AE194E19AAD35100C27E9E /* CCDataReaderHelper.h in Headers */,
+				0CF97DEC1B8DC4B3009E0710 /* GameNode3DReader.h in Headers */,
 				15AE1ADB19AAD41000C27E9E /* b2Rope.h in Headers */,
 				1A5701CE180BCB5A0088DEC7 /* CCLabelTTF.h in Headers */,
 				15AE1AB119AAD40300C27E9E /* b2ChainAndPolygonContact.h in Headers */,
@@ -8737,6 +8755,7 @@
 				15AE1BB719AADFEF00C27E9E /* WebSocket.cpp in Sources */,
 				15AE1B5119AADA9900C27E9E /* UIPageView.cpp in Sources */,
 				4302759A1AB7446F00993C80 /* CCPUPositionEmitter.cpp in Sources */,
+				0CF97DE91B8DC4B3009E0710 /* GameNode3DReader.cpp in Sources */,
 				15AE18EC19AAD35000C27E9E /* CCActionObject.cpp in Sources */,
 				43E62DF11A6D044300DD097C /* CCFrustum.cpp in Sources */,
 				1A01C68E18F57BE800EFE3A6 /* CCDictionary.cpp in Sources */,
@@ -9369,6 +9388,7 @@
 				4302742F1AB7446F00993C80 /* CCPUBoxEmitter.cpp in Sources */,
 				43E62E161A6D044300DD097C /* CCSprite3D.cpp in Sources */,
 				15AE1AB419AAD40300C27E9E /* b2Contact.cpp in Sources */,
+				0CF97DEA1B8DC4B3009E0710 /* GameNode3DReader.cpp in Sources */,
 				B29A7DDC19EE1B7700872B35 /* Event.c in Sources */,
 				43E62E1A1A6D044300DD097C /* CCSprite3DMaterial.cpp in Sources */,
 				50ABBEB41925AB6F00A911A9 /* CCUserDefault-apple.mm in Sources */,

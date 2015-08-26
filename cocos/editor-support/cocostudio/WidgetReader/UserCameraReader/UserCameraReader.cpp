@@ -108,6 +108,7 @@ namespace cocostudio
         float fov = 60.f;
         unsigned int cameraFlag = 0;
         bool skyBoxEnabled = false;
+        bool skyBoxValid = true;
 
         std::string attriname;
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -141,9 +142,16 @@ namespace cocostudio
             {
                 skyBoxEnabled = (value == "True") ? true : false;
             }
+            else if (attriname == "SkyBoxValid")
+            {
+                skyBoxValid = (value == "True") ? true : false;
+            }
             
             attribute = attribute->Next();
         }
+
+        if (!skyBoxValid)
+            skyBoxEnabled = false;
 
         Vec2 clipPlane(1, 1000);
 
