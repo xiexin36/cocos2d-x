@@ -74,14 +74,14 @@ BoneNode* BoneNode::create(int length)
 
 void BoneNode::addChild(cocos2d::Node* child, int localZOrder, int tag)
 {
-    Node::addChild(child, localZOrder, tag);
     addToChildrenListHelper(child);
+    Node::addChild(child, localZOrder, tag);
 }
 
 void BoneNode::addChild(Node* child, int localZOrder, const std::string &name)
 {
-    Node::addChild(child, localZOrder, name);
     addToChildrenListHelper(child);
+    Node::addChild(child, localZOrder, name);
 }
 
 void BoneNode::addSkin(SkinNode* skin, bool isDisplay, bool hideOthers)
@@ -343,6 +343,7 @@ void BoneNode::visit(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTra
 
     bool visibleByCamera = isVisitableByVisitingCamera();
     bool isdebugdraw = visibleByCamera && _isRackShow && nullptr == _rootSkeleton;
+    isdebugdraw = true;
     int i = 0;
 
     if (!_children.empty())
@@ -715,6 +716,44 @@ void BoneNode::setAnchorPoint(const cocos2d::Vec2& anchorPoint)
 {
     Node::setAnchorPoint(anchorPoint);
     updateVertices();
+}
+
+void BoneNode::updateDisplayedColor(const cocos2d::Color3B& parentColor)
+{
+    if (_cascadeColorEnabled)
+    {
+        for (const auto &child : _boneSkins)
+        {
+            child->updateDisplayedColor(_displayedColor);
+        }
+    }
+}
+
+void BoneNode::updateDisplayedOpacity(GLubyte parentOpacity)
+{
+    if (_cascadeOpacityEnabled)
+    {
+        for (const auto& child : _boneSkins)
+        {
+            child->updateDisplayedOpacity(_displayedOpacity);
+        }
+    }
+}
+
+void BoneNode::disableCascadeOpacity()
+{
+    for (const auto& child : _boneSkins)
+    {
+        child->updateDisplayedOpacity(255);
+    }
+}
+
+void BoneNode::disableCascadeColor()
+{
+    for (const auto& child : _boneSkins)
+    {
+        child->updateDisplayedColor(cocos2d::Color3B::WHITE);
+    }
 }
 
 NS_TIMELINE_END
