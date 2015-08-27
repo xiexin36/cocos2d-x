@@ -150,6 +150,7 @@ struct Sprite3DOptions : private flatbuffers::Table {
   const Node3DOption *node3DOption() const { return GetPointer<const Node3DOption *>(4); }
   const flatbuffers::ResourceData *fileData() const { return GetPointer<const flatbuffers::ResourceData *>(6); }
   uint8_t runAction() const { return GetField<uint8_t>(8, 0); }
+  uint8_t isFlipped() const { return GetField<uint8_t>(10, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* node3DOption */) &&
@@ -157,6 +158,7 @@ struct Sprite3DOptions : private flatbuffers::Table {
            VerifyField<flatbuffers::uoffset_t>(verifier, 6 /* fileData */) &&
            verifier.VerifyTable(fileData()) &&
            VerifyField<uint8_t>(verifier, 8 /* runAction */) &&
+           VerifyField<uint8_t>(verifier, 10 /* isFlipped */) &&
            verifier.EndTable();
   }
 };
@@ -167,10 +169,11 @@ struct Sprite3DOptionsBuilder {
   void add_node3DOption(flatbuffers::Offset<Node3DOption> node3DOption) { fbb_.AddOffset(4, node3DOption); }
   void add_fileData(flatbuffers::Offset<flatbuffers::ResourceData> fileData) { fbb_.AddOffset(6, fileData); }
   void add_runAction(uint8_t runAction) { fbb_.AddElement<uint8_t>(8, runAction, 0); }
+  void add_isFlipped(uint8_t isFlipped) { fbb_.AddElement<uint8_t>(10, isFlipped, 0); }
   Sprite3DOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   Sprite3DOptionsBuilder &operator=(const Sprite3DOptionsBuilder &);
   flatbuffers::Offset<Sprite3DOptions> Finish() {
-    auto o = flatbuffers::Offset<Sprite3DOptions>(fbb_.EndTable(start_, 3));
+    auto o = flatbuffers::Offset<Sprite3DOptions>(fbb_.EndTable(start_, 4));
     return o;
   }
 };
@@ -178,10 +181,12 @@ struct Sprite3DOptionsBuilder {
 inline flatbuffers::Offset<Sprite3DOptions> CreateSprite3DOptions(flatbuffers::FlatBufferBuilder &_fbb,
    flatbuffers::Offset<Node3DOption> node3DOption = 0,
    flatbuffers::Offset<flatbuffers::ResourceData> fileData = 0,
-   uint8_t runAction = 0) {
+   uint8_t runAction = 0,
+   uint8_t isFlipped = 0) {
   Sprite3DOptionsBuilder builder_(_fbb);
   builder_.add_fileData(fileData);
   builder_.add_node3DOption(node3DOption);
+  builder_.add_isFlipped(isFlipped);
   builder_.add_runAction(runAction);
   return builder_.Finish();
 }
