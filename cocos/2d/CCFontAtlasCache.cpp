@@ -265,7 +265,7 @@ bool FontAtlasCache::releaseFontAtlas(FontAtlas *atlas)
 }
 
 
-void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset/* = Vec2::ZERO*/)
+void FontAtlasCache::unloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset/* = Vec2::ZERO*/)
 {
     std::string atlasName = generateFontName(fontFileName, 0, GlyphCollection::CUSTOM, false);
     auto it = _atlasMap.find(atlasName);
@@ -288,7 +288,7 @@ void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const V
     
 }
 
-void FontAtlasCache::reloadFontAtlasTTF(const std::string& fontFileName)
+void FontAtlasCache::unloadFontAtlasTTF(const std::string& fontFileName)
 {
     TTFConfig config;
     config.fontFilePath = fontFileName;
