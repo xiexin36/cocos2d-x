@@ -163,7 +163,7 @@ void Skybox::onDraw(const Mat4& transform, uint32_t flags)
     cameraModelMat.m[12] = cameraModelMat.m[13] = cameraModelMat.m[14] = 0;
     state->setUniformMat4("u_cameraRot", cameraModelMat);
 
-    state->apply(transform);
+    state->apply(Mat4::IDENTITY);
 
     GLboolean depthFlag = glIsEnabled(GL_DEPTH_TEST);
     GLint depthFunc;

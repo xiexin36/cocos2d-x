@@ -1861,6 +1861,9 @@
     <ClCompile Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.cpp">
       <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
     </ClCompile>
+    <ClCompile Include="CCCameraBackgroundBrush.cpp">
+      <Filter>2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\physics\CCPhysicsBody.h">
@@ -3639,6 +3642,9 @@
     </ClInclude>
     <ClInclude Include="..\editor-support\cocostudio\WidgetReader\SkeletonReader\SkeletonNodeReader.h">
       <Filter>cocostudio\reader\WidgetReader\SkeletonReader</Filter>
+    </ClInclude>
+    <ClInclude Include="CCCameraBackgroundBrush.h">
+      <Filter>2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

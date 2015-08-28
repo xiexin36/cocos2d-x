@@ -79,6 +79,7 @@ namespace cocostudio
         std::string name = "";
         int skyBoxMask = 1;
         bool skyBoxEnabled = false;
+        bool skyBoxValid = true;
 
         std::string leftPath = "";
         std::string leftPlistFile = "";
@@ -122,6 +123,10 @@ namespace cocostudio
             {
                 skyBoxEnabled = (value == "True") ? true : false;
             }
+            else if (attriname == "SkyBoxValid")
+            {
+                skyBoxValid = (value == "True") ? true : false;
+            }
             else if (attriname == "skyBoxMask")
             {
                 skyBoxMask = atoi(value.c_str());
@@ -137,6 +142,9 @@ namespace cocostudio
             
             attribute = attribute->Next();
         }
+
+        if (!skyBoxValid)
+            skyBoxEnabled = false;
 
         const tinyxml2::XMLElement* child = objectData->FirstChildElement();
         while (child)
@@ -410,7 +418,7 @@ namespace cocostudio
             auto forwardFileData = options->forwardFileData()->path()->c_str();
             auto backFileData = options->backFileData()->path()->c_str();
 
-            Skybox* childBox = Skybox::create(leftFileData,rightFileData,upFileData,downFileData,forwardFileData,backFileData);
+            Skybox* childBox = Skybox::create(leftFileData,rightFileData,upFileData,downFileData,forwardFileData,backFileData );
             unsigned short cameraFlag = 1 << 10;
             childBox->setCameraMask(cameraFlag, false);
             node->addChild(childBox);
