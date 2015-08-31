@@ -564,7 +564,7 @@ bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
 
 void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
 {
-    bool visibleByCamera = isVisitableByVisitingCamera();
+    bool visibleByCamera = bone->isVisitableByVisitingCamera();
     if (!visibleByCamera)
     {
         return;
