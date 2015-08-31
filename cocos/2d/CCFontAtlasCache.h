@@ -53,7 +53,7 @@ public:
      */
     static void purgeCachedData();
 
-    static void unloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset = Vec2::ZERO);
+    static void reloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset = Vec2::ZERO);
     static void unloadFontAtlasTTF(const std::string& fontFileName);
     
 private: 
