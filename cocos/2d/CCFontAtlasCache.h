@@ -54,7 +54,7 @@ public:
     static void purgeCachedData();
 
     static void reloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset = Vec2::ZERO);
-    static void reloadFontAtlasTTF(const std::string& fontFileName);
+    static void unloadFontAtlasTTF(const std::string& fontFileName);
     
 private: 
     static std::string generateFontName(const std::string& fontFileName, int size, GlyphCollection theGlyphs, bool useDistanceField);

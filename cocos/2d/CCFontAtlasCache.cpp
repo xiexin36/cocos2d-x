@@ -288,37 +288,18 @@ void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const V
     
 }
 
-void FontAtlasCache::reloadFontAtlasTTF(const std::string& fontFileName)
+void FontAtlasCache::unloadFontAtlasTTF(const std::string& fontFileName)
 {
-    TTFConfig config;
-    config.fontFilePath = fontFileName;
-    config.fontSize = 20;
-
-    bool useDistanceField = config.distanceFieldEnabled;
-    if (config.outlineSize > 0)
+    auto item = _atlasMap.begin();
+    while (item != _atlasMap.end())
     {
-        useDistanceField = false;
-    }
-    int fontSize = config.fontSize;
-    auto contentScaleFactor = CC_CONTENT_SCALE_FACTOR();
-
-    if (useDistanceField)
-    {
-        fontSize = Label::DistanceFieldFontSize / contentScaleFactor;
-    }
-
-    auto atlasName = generateFontName(config.fontFilePath, fontSize, GlyphCollection::DYNAMIC, useDistanceField);
-    atlasName.append("_outline_");
-    std::stringstream ss;
-    ss << config.outlineSize;
-    atlasName.append(ss.str());
-
-    auto it = _atlasMap.find(atlasName);
-
-    if (it != _atlasMap.end())
-    {
-        CC_SAFE_RELEASE_NULL(it->second);
-        _atlasMap.erase(it);
+        if (item->first.find(fontFileName) >= 0)
+        {
+            CC_SAFE_RELEASE_NULL(item->second);
+            item = _atlasMap.erase(item);
+        }
+        else
+            item++;
     }
 }
 NS_CC_END
