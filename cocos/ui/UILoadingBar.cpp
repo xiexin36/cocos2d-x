@@ -160,9 +160,19 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
         default:
             break;
     }
-    
+    this->setupTexture();
+}
+
+void LoadingBar::loadTexture(SpriteFrame* spriteframe)
+{
+    this->_barRenderer->initWithSpriteFrame(spriteframe);
+    this->setupTexture();
+}
+
+void LoadingBar::setupTexture()
+{
     _barRendererTextureSize = _barRenderer->getContentSize();
-    
+
     switch (_direction)
     {
         case Direction::LEFT:
@@ -193,7 +203,7 @@ void LoadingBar::loadTexture(const std::string& texture,TextureResType texType)
 
     barRendererScaleChangedWithSize();
     updateContentSizeWithTextureSize(_barRendererTextureSize);
-    
+
     this->updateProgressBar();
     _barRendererAdaptDirty = true;
 }
@@ -396,7 +406,11 @@ void LoadingBar::copySpecialProperties(Widget *widget)
     {
         _prevIgnoreSize = loadingBar->_prevIgnoreSize;
         setScale9Enabled(loadingBar->_scale9Enabled);
-        loadTexture(loadingBar->_textureFile, loadingBar->_renderBarTexType);
+        auto barSprite = loadingBar->_barRenderer->getSprite();
+        if(nullptr != barSprite)
+        {
+            loadTexture(barSprite->getSpriteFrame());
+        }
         setCapInsets(loadingBar->_capInsets);
         setPercent(loadingBar->_percent);
         setDirection(loadingBar->_direction);

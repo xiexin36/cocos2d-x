@@ -137,7 +137,7 @@ public:
     int             _margin;
     //! filename containing the tiles (should be spritesheet / texture atlas)
     std::string     _sourceImage;
-	std::string     _originSourceImage;
+    std::string     _originSourceImage;
     //! size in pixels of the image
     Size            _imageSize;
 public:

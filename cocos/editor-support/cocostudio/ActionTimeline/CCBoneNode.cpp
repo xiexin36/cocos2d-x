@@ -441,6 +441,44 @@ void BoneNode::updateColor()
     _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
 }
 
+void BoneNode::updateDisplayedColor(const cocos2d::Color3B& parentColor)
+{
+    if (_cascadeColorEnabled)
+    {
+        for (const auto &child : _boneSkins)
+        {
+            child->updateDisplayedColor(_displayedColor);
+        }
+    }
+}
+
+void BoneNode::updateDisplayedOpacity(GLubyte parentOpacity)
+{
+    if (_cascadeOpacityEnabled)
+    {
+        for (const auto& child : _boneSkins)
+        {
+            child->updateDisplayedOpacity(_displayedOpacity);
+        }
+    }
+}
+
+void BoneNode::disableCascadeOpacity()
+{
+    for (const auto& child : _boneSkins)
+    {
+        child->updateDisplayedOpacity(255);
+    }
+}
+
+void BoneNode::disableCascadeColor()
+{
+    for (const auto& child : _boneSkins)
+    {
+        child->updateDisplayedColor(cocos2d::Color3B::WHITE);
+    }
+}
+
 void BoneNode::onDraw(const cocos2d::Mat4 &transform, uint32_t flags)
 {
     getGLProgram()->use();
@@ -521,20 +559,6 @@ void BoneNode::sortAllChildren()
 SkeletonNode* BoneNode::getRootSkeletonNode() const
 {
     return _rootSkeleton;
-}
-
-cocos2d::AffineTransform BoneNode::getBoneToSkeletonAffineTransform() const
-{
-    auto retTrans = cocos2d::AffineTransform::IDENTITY;
-    if (_rootSkeleton == nullptr)
-    {
-        CCLOG("can not tranform before added to Skeleton");
-        return retTrans;
-    }
-    retTrans = this->getNodeToParentAffineTransform();
-    for (Node *p = _parent; p != _rootSkeleton; p = p->getParent())
-        retTrans = AffineTransformConcat(retTrans, p->getNodeToParentAffineTransform());
-    return retTrans;
 }
 
 #ifdef CC_STUDIO_ENABLED_VIEW
@@ -721,44 +745,6 @@ void BoneNode::setAnchorPoint(const cocos2d::Vec2& anchorPoint)
 {
     Node::setAnchorPoint(anchorPoint);
     updateVertices();
-}
-
-void BoneNode::updateDisplayedColor(const cocos2d::Color3B& parentColor)
-{
-    if (_cascadeColorEnabled)
-    {
-        for (const auto &child : _boneSkins)
-        {
-            child->updateDisplayedColor(_displayedColor);
-        }
-    }
-}
-
-void BoneNode::updateDisplayedOpacity(GLubyte parentOpacity)
-{
-    if (_cascadeOpacityEnabled)
-    {
-        for (const auto& child : _boneSkins)
-        {
-            child->updateDisplayedOpacity(_displayedOpacity);
-        }
-    }
-}
-
-void BoneNode::disableCascadeOpacity()
-{
-    for (const auto& child : _boneSkins)
-    {
-        child->updateDisplayedOpacity(255);
-    }
-}
-
-void BoneNode::disableCascadeColor()
-{
-    for (const auto& child : _boneSkins)
-    {
-        child->updateDisplayedColor(cocos2d::Color3B::WHITE);
-    }
 }
 
 NS_TIMELINE_END

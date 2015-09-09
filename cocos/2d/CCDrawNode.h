@@ -311,12 +311,12 @@ public:
     // Overrides
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 
+    void setLineWidth(int lineWidth);
+
     //For editor
     void csSetLineSmooth(bool enable);
 
     bool csIsLineSmooth();
-
-    void csSetLineWidth(float width);
 
     float csGetLineWidth();
     //For editor
@@ -360,12 +360,11 @@ protected:
     bool        _dirty;
     bool        _dirtyGLPoint;
     bool        _dirtyGLLine;
+    
+    int         _lineWidth;
 
     //For editor
-    float _lineWidth;
-
     bool _lineSmoothEnable;
-    //For editor
 
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(DrawNode);

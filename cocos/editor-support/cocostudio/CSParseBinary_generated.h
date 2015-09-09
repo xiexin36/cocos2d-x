@@ -303,7 +303,7 @@ inline flatbuffers::Offset<NodeTree> CreateNodeTree(flatbuffers::FlatBufferBuild
 }
 
 struct Options : private flatbuffers::Table {
-  const Table *data() const { return GetPointer<const Table *>(4); }
+    const Table *data() const { return GetPointer<const Table *>(4); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<flatbuffers::uoffset_t>(verifier, 4 /* data */) &&

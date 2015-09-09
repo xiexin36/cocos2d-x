@@ -698,7 +698,7 @@ CC_LUA_DLL extern bool luaval_to_ccvaluevector(lua_State* L, int lo, cocos2d::Va
  * @return Return true if the type of Lua value at the index is a Lua userdata, otherwise return false.
  */
 template <class T>
-bool luaval_to_object(lua_State* L, int lo, const char* type, T** ret)
+bool luaval_to_object(lua_State* L, int lo, const char* type, T** ret, const char* funcName = "")
 {
     if(nullptr == L || lua_gettop(L) < lo)
         return false;
@@ -708,8 +708,8 @@ bool luaval_to_object(lua_State* L, int lo, const char* type, T** ret)
     
     *ret = static_cast<T*>(tolua_tousertype(L, lo, 0));
     
-    if (nullptr == ret)
-        LUA_PRECONDITION(ret, "Invalid Native Object");
+    if (nullptr == *ret)
+        CCLOG("Warning: %s argument %d is invalid native object(nullptr)", funcName, lo);
     
     return true;
 }
@@ -818,6 +818,19 @@ CC_LUA_DLL extern bool luaval_to_std_vector_v3f_c4b_t2f(lua_State* L, int lo, st
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
 CC_LUA_DLL extern bool luaval_to_std_vector_vec2(lua_State* L, int lo, std::vector<cocos2d::Vec2>* ret, const char* funcName = "");
+
+/**
+ * Get a pointer points to a std::vector<cocos2d::Vec3> from a Lua array table in the stack.
+ *
+ * @param L the current lua_State.
+ * @param lo the given accpetable index of stack.
+ * @param ret a pointer points to a std::vector<cocos2d::Vec3>.
+ * @param funcName the name of calling function, it is used for error output in the debug model.
+ * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
+ */
+CC_LUA_DLL extern bool luaval_to_std_vector_vec3(lua_State* L, int lo, std::vector<cocos2d::Vec3>* ret, const char* funcName = "");
+
+CC_LUA_DLL extern bool luaval_to_std_map_string_string(lua_State* L, int lo, std::map<std::string, std::string>* ret, const char* funcName);
 
 /**@}**/
 
@@ -1264,8 +1277,27 @@ CC_LUA_DLL void quaternion_to_luaval(lua_State* L, const cocos2d::Quaternion& in
  */
 CC_LUA_DLL void texParams_to_luaval(lua_State* L, const cocos2d::Texture2D::TexParams& inValue);
 
+/**
+ * Push a Lua array table converted from a std::vector<cocos2d::Vec3> into the Lua stack.
+ * The format of table as follows: {vec3Value1, vec3Value2, ..., vec3ValueSize}
+ *
+ * @param L the current lua_State.
+ * @param inValue a std::vector<cocos2d::Vec3> vaule.
+ */
+CC_LUA_DLL void std_vector_vec3_to_luaval(lua_State* L, const std::vector<cocos2d::Vec3>& inValue);
+
+/**
+ * Push a Lua dict table converted from a std::map<std::string, std::string> into the Lua stack.
+ *
+ * @param L the current lua_State.
+ * @param inValue a std::map<std::string, std::string> vaule.
+ */
+CC_LUA_DLL void std_map_string_string_to_luaval(lua_State* L, const std::map<std::string, std::string>& inValue);
+
+// For cocoStudio
 CC_LUA_DLL extern bool luaval_to_node(lua_State* L, int lo, const char* type, cocos2d::Node** node);
 CC_LUA_DLL extern void node_to_luaval(lua_State* L, const char* type, cocos2d::Node* node);
+
 // end group
 /// @}
 #endif //__COCOS2DX_SCRIPTING_LUA_COCOS2DXSUPPORT_LUABAISCCONVERSIONS_H__
