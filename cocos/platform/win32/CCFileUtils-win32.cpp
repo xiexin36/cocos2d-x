@@ -137,12 +137,14 @@ static void _checkPath()
     if (0 == s_resourcePath.length())
     {
         WCHAR *pUtf16ExePath = nullptr;
-        //_get_wpgmptr(&pUtf16ExePath); // CocoStudio Notice : This function won't work under studio, will cause a assert in system library
 
+#ifdef CC_STUDIO_ENABLED_VIEW
         WCHAR utf16Path[CC_MAX_PATH] = { 0 };
         GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
         pUtf16ExePath = &(utf16Path[0]);
-
+#else
+        _get_wpgmptr(&pUtf16ExePath); // CocoStudio Notice : This function won't work under studio, will cause a assert in system library
+#endif
         // We need only directory part without exe
         WCHAR *pUtf16DirEnd = wcsrchr(pUtf16ExePath, L'\\');
 
