@@ -50,7 +50,11 @@ CC_LUA_DLL TOLUA_API int register_all_cocos2dx_spine_manual(lua_State* L);
  * If you don't register the spine module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
+#ifdef CC_STUDIO_ENABLED_VIEW
 CC_LUA_DLL TOLUA_API int register_spine_module(lua_State* L);
+#else
+int register_spine_module(lua_State* L);
+#endif
 
 // end group
 /// @}

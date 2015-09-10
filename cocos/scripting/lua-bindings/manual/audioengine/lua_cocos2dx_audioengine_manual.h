@@ -46,8 +46,11 @@ extern "C" {
  * If you don't register the audioengine module, the package size would become smaller .
  * The current mechanism,this function is called in the lua_module_register.h
  */
-
+#ifdef CC_STUDIO_ENABLED_VIEW
 CC_LUA_DLL TOLUA_API int  register_audioengine_module(lua_State* L);
+#else
+int  register_audioengine_module(lua_State* L);
+#endif
 
 // end group
 /// @}

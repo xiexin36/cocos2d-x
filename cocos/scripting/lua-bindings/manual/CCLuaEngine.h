@@ -50,7 +50,11 @@ NS_CC_BEGIN
  * @lua NA
  * @js NA
  */
+#ifdef CC_STUDIO_ENABLED_VIEW
 class CC_LUA_DLL LuaEngine : public ScriptEngineProtocol
+#else
+class LuaEngine : public ScriptEngineProtocol
+#endif
 {
 public:
     /**
