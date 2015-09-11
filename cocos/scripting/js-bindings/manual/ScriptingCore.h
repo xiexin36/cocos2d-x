@@ -35,6 +35,7 @@
 #include "spidermonkey_specifics.h"
 #include "js_manual_conversions.h"
 #include "mozilla/Maybe.h"
+#include "js-BingingsExport.h"
 
 #include <assert.h>
 #include <memory>
@@ -54,7 +55,7 @@ public:
     void update(float d);
 };
 
-class ScriptingCore : public cocos2d::ScriptEngineProtocol
+class CC_JS_DLL ScriptingCore : public cocos2d::ScriptEngineProtocol
 {
 private:
     JSRuntime *_rt;

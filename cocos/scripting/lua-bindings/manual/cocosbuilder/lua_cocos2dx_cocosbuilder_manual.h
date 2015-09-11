@@ -48,11 +48,7 @@ TOLUA_API int register_all_cocos2dx_cocosbuilder_manual(lua_State* tolua_S);
  * If you don't register the cocosbuilder module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
-#ifdef CC_STUDIO_ENABLED_VIEW
 CC_LUA_DLL TOLUA_API int register_cocosbuilder_module(lua_State* tolua_S);
-#else
-int register_cocosbuilder_module(lua_State* tolua_S);
-#endif
 
 // end group
 /// @}

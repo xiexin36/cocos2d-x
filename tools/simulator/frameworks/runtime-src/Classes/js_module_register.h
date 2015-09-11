@@ -45,6 +45,7 @@
 #endif
 
 USING_NS_CC;
+/*
 int js_module_register()
 {
     ScriptingCore* sc = ScriptingCore::getInstance();
@@ -120,6 +121,6 @@ int js_module_register()
 #endif
     return 1;
 }
-
+*/
 #endif  // __JS_TEMPLATE_RUNTIME_FRAMEWORKS_RUNTIME_SRC_CLASSES_JS_MODULE_REGISTER_H__
 

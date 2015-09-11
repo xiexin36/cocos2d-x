@@ -40,6 +40,8 @@
     <ClCompile Include="..\auto\lua_cocos2dx_experimental_auto.cpp" />
     <ClCompile Include="..\auto\lua_cocos2dx_experimental_video_auto.cpp" />
     <ClCompile Include="..\auto\lua_cocos2dx_extension_auto.cpp" />
+    <ClCompile Include="..\auto\lua_cocos2dx_navmesh_auto.cpp" />
+    <ClCompile Include="..\auto\lua_cocos2dx_physics3d_auto.cpp" />
     <ClCompile Include="..\auto\lua_cocos2dx_physics_auto.cpp" />
     <ClCompile Include="..\auto\lua_cocos2dx_spine_auto.cpp" />
     <ClCompile Include="..\auto\lua_cocos2dx_studio_auto.cpp" />
@@ -66,10 +68,13 @@
     <ClCompile Include="..\manual\cocostudio\lua_cocos2dx_csloader_manual.cpp" />
     <ClCompile Include="..\manual\extension\lua_cocos2dx_extension_manual.cpp" />
     <ClCompile Include="..\manual\LuaBasicConversions.cpp" />
+    <ClCompile Include="..\manual\navmesh\lua_cocos2dx_navmesh_conversions.cpp" />
+    <ClCompile Include="..\manual\navmesh\lua_cocos2dx_navmesh_manual.cpp" />
     <ClCompile Include="..\manual\network\lua_cocos2dx_network_manual.cpp" />
     <ClCompile Include="..\manual\network\lua_extensions.c" />
     <ClCompile Include="..\manual\network\Lua_web_socket.cpp" />
     <ClCompile Include="..\manual\network\lua_xml_http_request.cpp" />
+    <ClCompile Include="..\manual\physics3d\lua_cocos2dx_physics3d_manual.cpp" />
     <ClCompile Include="..\manual\spine\LuaSkeletonAnimation.cpp" />
     <ClCompile Include="..\manual\spine\lua_cocos2dx_spine_manual.cpp" />
     <ClCompile Include="..\manual\tolua_fix.cpp" />
@@ -108,6 +113,8 @@
     <ClInclude Include="..\auto\lua_cocos2dx_experimental_auto.hpp" />
     <ClInclude Include="..\auto\lua_cocos2dx_experimental_video_auto.hpp" />
     <ClInclude Include="..\auto\lua_cocos2dx_extension_auto.hpp" />
+    <ClInclude Include="..\auto\lua_cocos2dx_navmesh_auto.hpp" />
+    <ClInclude Include="..\auto\lua_cocos2dx_physics3d_auto.hpp" />
     <ClInclude Include="..\auto\lua_cocos2dx_physics_auto.hpp" />
     <ClInclude Include="..\auto\lua_cocos2dx_spine_auto.hpp" />
     <ClInclude Include="..\auto\lua_cocos2dx_studio_auto.hpp" />
@@ -135,10 +142,13 @@
     <ClInclude Include="..\manual\extension\lua_cocos2dx_extension_manual.h" />
     <ClInclude Include="..\manual\Lua-BingingsExport.h" />
     <ClInclude Include="..\manual\LuaBasicConversions.h" />
+    <ClInclude Include="..\manual\navmesh\lua_cocos2dx_navmesh_conversions.h" />
+    <ClInclude Include="..\manual\navmesh\lua_cocos2dx_navmesh_manual.h" />
     <ClInclude Include="..\manual\network\lua_cocos2dx_network_manual.h" />
     <ClInclude Include="..\manual\network\lua_extensions.h" />
     <ClInclude Include="..\manual\network\Lua_web_socket.h" />
     <ClInclude Include="..\manual\network\lua_xml_http_request.h" />
+    <ClInclude Include="..\manual\physics3d\lua_cocos2dx_physics3d_manual.h" />
     <ClInclude Include="..\manual\spine\LuaSkeletonAnimation.h" />
     <ClInclude Include="..\manual\spine\lua_cocos2dx_spine_manual.hpp" />
     <ClInclude Include="..\manual\tolua_fix.h" />
@@ -264,8 +274,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(EngineRoot);$(EngineRoot)cocos;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\luajit\include;$(EngineRoot)external\lua;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)cocos\2d;$(EngineRoot)cocos\3d;$(EngineRoot)cocos\base;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\libwebsockets\win32\include;$(EngineRoot)cocos\ui;$(EngineRoot)cocos\editor-support;$(EngineRoot)external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRLUADLL;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;CC_CONSTRUCTOR_ACCESS=public;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(EngineRoot);$(EngineRoot)cocos\2d;$(EngineRoot)cocos\base;$(EngineRoot)cocos\3d;$(EngineRoot)cocos\physics3d;$(EngineRoot)cocos\audio\include;$(EngineRoot)cocos\ui;$(EngineRoot)cocos\navmesh;$(EngineRoot)external;$(EngineRoot)external\lua;$(EngineRoot)external\lua\tolua;$(EngineRoot)external\lua\luajit\include;$(EngineRoot)external\libwebsockets\win32\include;$(EngineRoot)extensions;$(EngineRoot)cocos\editor-support;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\editor-support\cocostudio\ActionTimeline;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\scripting\lua-bindings\manual;$(EngineRoot)cocos\scripting\lua-bindings\auto;$(EngineRoot)cocos\scripting\lua-bindings\manual\extension;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocostudio;$(EngineRoot)cocos\scripting\lua-bindings\manual\ui;$(EngineRoot)cocos\scripting\lua-bindings\manual\cocos2d;$(EngineRoot)cocos\scripting\lua-bindings\manual\navmesh;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRLUADLL;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;CC_CONSTRUCTOR_ACCESS=public;CC_STUDIO_ENABLED_VIEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>

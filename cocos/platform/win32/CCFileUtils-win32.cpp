@@ -140,7 +140,8 @@ static void _checkPath()
 
 #ifdef CC_STUDIO_ENABLED_VIEW
         WCHAR utf16Path[CC_MAX_PATH] = { 0 };
-        GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
+        GetModuleFileNameW(NULL, utf16Path, CC_MAX_PATH - 1);
+//        GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
         pUtf16ExePath = &(utf16Path[0]);
 #else
         _get_wpgmptr(&pUtf16ExePath); // CocoStudio Notice : This function won't work under studio, will cause a assert in system library

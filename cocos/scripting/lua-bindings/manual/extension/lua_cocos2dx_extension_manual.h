@@ -46,21 +46,13 @@ extern "C" {
  * If you don't register the extension module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
-#ifdef CC_STUDIO_ENABLED_VIEW
 CC_LUA_DLL TOLUA_API int  register_extension_module(lua_State* tolua_S);
-#else
-int  register_extension_module(lua_State* tolua_S);
-#endif
 
 // end group
 /// @}
 
 /// @cond
-#ifdef CC_STUDIO_ENABLED_VIEW
 CC_LUA_DLL TOLUA_API int  register_all_cocos2dx_extension_manual(lua_State* tolua_S);
-#else
-int  register_all_cocos2dx_extension_manual(lua_State* tolua_S);
-#endif
 /// @endcond
 
 struct LuaAssetsManagerEventData

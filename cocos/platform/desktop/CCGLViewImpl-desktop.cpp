@@ -284,11 +284,8 @@ GLViewImpl::GLViewImpl()
 
     GLFWEventHandler::setGLViewImpl(this);
 
-    // Modify for cocoStudio
-#if !defined(CC_STUDIO_ENABLED_VIEW)
     glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
     glfwInit();
-#endif
 }
 
 // Modify for cocoStudio

@@ -88,7 +88,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);$(EngineRoot)external\spidermonkey\prebuilt\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcocos2d.lib;libluacocos2d.lib;libcurl_imp.lib;websockets.lib;mozjs-33.lib;libbox2d.lib;libSpine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcocos2d.lib;libluacocos2d.lib;libcurl_imp.lib;websockets.lib;mozjs-33.lib;libbox2d.lib;libSpine.lib;lua51.lib;libjscocos2d.lib;libsimulator.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(ProjectDir)../../../runtime/win32/$(TargetName).pdb</ProgramDatabaseFile>
       <OutputFile>$(ProjectDir)../../../runtime/win32/$(TargetName)$(TargetExt)</OutputFile>
       <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -204,6 +204,8 @@ xcopy /Y /Q "$(OutDir)lang" "$(ProjectDir)..\..\..\runtime\win32"
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\external\lua\tolua\tolua++.h" />
+    <ClInclude Include="..\..\..\..\..\external\lua\tolua\tolua_event.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\ide-support\CodeIDESupport.h" />
     <ClInclude Include="..\Classes\ide-support\lua_debugger.h" />
@@ -216,6 +218,11 @@ xcopy /Y /Q "$(OutDir)lang" "$(ProjectDir)..\..\..\runtime\win32"
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_event.c" />
+    <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_is.c" />
+    <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_map.c" />
+    <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_push.c" />
+    <ClCompile Include="..\..\..\..\..\external\lua\tolua\tolua_to.c" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ide-support\lua_debugger.c" />
     <ClCompile Include="..\Classes\ide-support\RuntimeJsImpl.cpp" />
@@ -231,14 +238,8 @@ xcopy /Y /Q "$(OutDir)lang" "$(ProjectDir)..\..\..\runtime\win32"
     <Image Include="res\game.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\cocos\scripting\js-bindings\proj.win32\libjscocos2d.vcxproj">
-      <Project>{39379840-825a-45a0-b363-c09ffef864bd}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\cocos\scripting\lua-bindings\proj.win32\libluacocos2d.vcxproj">
       <Project>{9f2d6ce6-c893-4400-b50c-6db70cc2562f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\libsimulator\proj.win32\libsimulator.vcxproj">
-      <Project>{001b324a-bb91-4e83-875c-c92f75c40857}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

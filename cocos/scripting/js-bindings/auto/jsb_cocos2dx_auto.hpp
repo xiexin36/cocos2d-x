@@ -4,14 +4,15 @@
 
 #include "jsapi.h"
 #include "jsfriendapi.h"
+#include "js-BingingsExport.h"
 
 extern JSClass  *jsb_cocos2d_Texture2D_class;
 extern JSObject *jsb_cocos2d_Texture2D_prototype;
 
 bool js_cocos2dx_Texture2D_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_Texture2D_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_Texture2D(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_Texture2D(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_Texture2D_getGLProgram(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Texture2D_getMaxT(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Texture2D_getStringForFormat(JSContext *cx, uint32_t argc, jsval *vp);
@@ -48,7 +49,7 @@ extern JSObject *jsb_cocos2d_Touch_prototype;
 bool js_cocos2dx_Touch_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_Touch_finalize(JSContext *cx, JSObject *obj);
 void js_register_cocos2dx_Touch(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void register_all_cocos2dx(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_Touch_getPreviousLocationInView(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Touch_getLocation(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Touch_getDelta(JSContext *cx, uint32_t argc, jsval *vp);
@@ -66,7 +67,7 @@ extern JSObject *jsb_cocos2d_Event_prototype;
 bool js_cocos2dx_Event_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_Event_finalize(JSContext *cx, JSObject *obj);
 void js_register_cocos2dx_Event(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void register_all_cocos2dx(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_Event_isStopped(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Event_getType(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Event_getCurrentTarget(JSContext *cx, uint32_t argc, jsval *vp);

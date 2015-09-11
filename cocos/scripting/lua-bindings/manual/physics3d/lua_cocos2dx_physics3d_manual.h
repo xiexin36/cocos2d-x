@@ -48,11 +48,8 @@ extern "C" {
  * If you don't register the physics3d module, the package size would become smaller .
  * The current mechanism,this function is called in the lua_module_register.h
  */
-#ifdef CC_STUDIO_ENABLED_VIEW
+
 CC_LUA_DLL TOLUA_API int  register_physics3d_module(lua_State* L);
-#else
-int  register_physics3d_module(lua_State* L);
-#endif
 
 // end group
 /// @}
