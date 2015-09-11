@@ -288,6 +288,12 @@
     <ClCompile Include="..\auto\lua_cocos2dx_navmesh_auto.cpp">
       <Filter>auto</Filter>
     </ClCompile>
+    <ClCompile Include="..\auto\lua_cocos2dx_experimental_webview_auto.cpp">
+      <Filter>auto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\manual\ui\lua_cocos2dx_experimental_webview_manual.cpp">
+      <Filter>manual\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\auto\lua_cocos2dx_auto.hpp">
@@ -505,6 +511,12 @@
     </ClInclude>
     <ClInclude Include="..\auto\lua_cocos2dx_navmesh_auto.hpp">
       <Filter>auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\auto\lua_cocos2dx_experimental_webview_auto.hpp">
+      <Filter>auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\manual\ui\lua_cocos2dx_experimental_webview_manual.hpp">
+      <Filter>manual\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
