@@ -329,7 +329,7 @@ public:
 ValueMap FileUtils::getValueMapFromFile(const std::string& filename)
 {
     const std::string fullPath = fullPathForFilename(filename.c_str());
-     DictMaker tMaker;
+    DictMaker tMaker;
     return tMaker.dictionaryWithContentsOfFile(fullPath.c_str());
 }
 

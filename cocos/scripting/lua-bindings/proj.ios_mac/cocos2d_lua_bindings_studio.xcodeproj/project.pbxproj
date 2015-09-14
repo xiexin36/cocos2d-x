@@ -248,7 +248,7 @@
 		3E2BDB0619C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3E2BDB0419C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp */; };
 		3E2BDB0A19C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E2BDB0819C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp */; };
 		3E2BDB0B19C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E2BDB0919C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h */; };
-		430084C21A5197CC0070AB2A /* libcocos2d Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */; };
+		430084C21A5197CC0070AB2A /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 430084BF1A5197C50070AB2A /* libcocos2d Mac.a */; };
 		434E49111A4B19D50094BF9D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434E49101A4B19D50094BF9D /* OpenGL.framework */; };
 		4359FC391A4B25E500705159 /* Lua-BingingsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 4359FC381A4B25E500705159 /* Lua-BingingsExport.h */; };
 		43E62E551A70180000DD097C /* lua-cocos-studio-conversions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43E62E531A70180000DD097C /* lua-cocos-studio-conversions.cpp */; };
@@ -259,6 +259,18 @@
 		566F016019B5EB0F00FCA620 /* CustomGUIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 566F015D19B5EB0F00FCA620 /* CustomGUIReader.cpp */; };
 		566F016119B5EB0F00FCA620 /* CustomGUIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 566F015E19B5EB0F00FCA620 /* CustomGUIReader.h */; };
 		566F016219B5EB0F00FCA620 /* CustomGUIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 566F015E19B5EB0F00FCA620 /* CustomGUIReader.h */; };
+		940119801BA3009A00B130C5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9401197F1BA3009900B130C5 /* AppKit.framework */; };
+		940119841BA300A000B130C5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119831BA300A000B130C5 /* ApplicationServices.framework */; };
+		940119861BA300B500B130C5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119851BA300B500B130C5 /* OpenAL.framework */; };
+		940119881BA300BB00B130C5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119871BA300BB00B130C5 /* AudioToolbox.framework */; };
+		9401198A1BA300C600B130C5 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119891BA300C600B130C5 /* CoreFoundation.framework */; };
+		9401198C1BA300D600B130C5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9401198B1BA300D600B130C5 /* Foundation.framework */; };
+		9401198E1BA300DD00B130C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9401198D1BA300DD00B130C5 /* Cocoa.framework */; };
+		940119901BA300F300B130C5 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9401198F1BA300F300B130C5 /* Quartz.framework */; };
+		940119921BA300FF00B130C5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119911BA300FF00B130C5 /* libz.dylib */; };
+		940119941BA301B200B130C5 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119931BA301B200B130C5 /* IOKit.framework */; };
+		940119961BA301BB00B130C5 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119951BA301BB00B130C5 /* libcurl.dylib */; };
+		940119981BA301F500B130C5 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 940119971BA301F500B130C5 /* libiconv.dylib */; };
 		F4FE0D5719ECD00100B8B12B /* luasocket_scripts.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */; };
 		F4FE0D5819ECD00100B8B12B /* luasocket_scripts.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */; };
 		F4FE0D5919ECD00100B8B12B /* luasocket_scripts.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE0D5619ECD00100B8B12B /* luasocket_scripts.h */; };
@@ -424,6 +436,18 @@
 		43E62E541A70180000DD097C /* lua-cocos-studio-conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "lua-cocos-studio-conversions.h"; sourceTree = "<group>"; };
 		566F015D19B5EB0F00FCA620 /* CustomGUIReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomGUIReader.cpp; sourceTree = "<group>"; };
 		566F015E19B5EB0F00FCA620 /* CustomGUIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomGUIReader.h; sourceTree = "<group>"; };
+		9401197F1BA3009900B130C5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		940119831BA300A000B130C5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		940119851BA300B500B130C5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		940119871BA300BB00B130C5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		940119891BA300C600B130C5 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		9401198B1BA300D600B130C5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9401198D1BA300DD00B130C5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		9401198F1BA300F300B130C5 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		940119911BA300FF00B130C5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		940119931BA301B200B130C5 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		940119951BA301BB00B130C5 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
+		940119971BA301F500B130C5 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		F4FE0D5519ECD00100B8B12B /* luasocket_scripts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = luasocket_scripts.c; sourceTree = "<group>"; };
 		F4FE0D5619ECD00100B8B12B /* luasocket_scripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = luasocket_scripts.h; sourceTree = "<group>"; };
 		F526F99F1AB48CDD00A91B72 /* LuaBasicConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaBasicConversions.h; sourceTree = "<group>"; };
@@ -434,9 +458,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F526F9621AB4740E00A91B72 /* libluajit.a in Frameworks */,
-				430084C21A5197CC0070AB2A /* libcocos2d Mac.dylib in Frameworks */,
+				940119981BA301F500B130C5 /* libiconv.dylib in Frameworks */,
+				940119961BA301BB00B130C5 /* libcurl.dylib in Frameworks */,
+				940119941BA301B200B130C5 /* IOKit.framework in Frameworks */,
+				940119921BA300FF00B130C5 /* libz.dylib in Frameworks */,
+				940119901BA300F300B130C5 /* Quartz.framework in Frameworks */,
 				434E49111A4B19D50094BF9D /* OpenGL.framework in Frameworks */,
+				9401198E1BA300DD00B130C5 /* Cocoa.framework in Frameworks */,
+				9401198C1BA300D600B130C5 /* Foundation.framework in Frameworks */,
+				9401198A1BA300C600B130C5 /* CoreFoundation.framework in Frameworks */,
+				940119881BA300BB00B130C5 /* AudioToolbox.framework in Frameworks */,
+				940119861BA300B500B130C5 /* OpenAL.framework in Frameworks */,
+				940119841BA300A000B130C5 /* ApplicationServices.framework in Frameworks */,
+				940119801BA3009A00B130C5 /* AppKit.framework in Frameworks */,
+				F526F9621AB4740E00A91B72 /* libluajit.a in Frameworks */,
+				430084C21A5197CC0070AB2A /* libcocos2d Mac.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +509,18 @@
 		1551A334158F2AB200E66CFE = {
 			isa = PBXGroup;
 			children = (
+				940119971BA301F500B130C5 /* libiconv.dylib */,
+				940119951BA301BB00B130C5 /* libcurl.dylib */,
+				940119931BA301B200B130C5 /* IOKit.framework */,
+				940119911BA300FF00B130C5 /* libz.dylib */,
+				9401198F1BA300F300B130C5 /* Quartz.framework */,
+				9401198D1BA300DD00B130C5 /* Cocoa.framework */,
+				9401198B1BA300D600B130C5 /* Foundation.framework */,
+				940119891BA300C600B130C5 /* CoreFoundation.framework */,
+				940119871BA300BB00B130C5 /* AudioToolbox.framework */,
+				940119851BA300B500B130C5 /* OpenAL.framework */,
+				940119831BA300A000B130C5 /* ApplicationServices.framework */,
+				9401197F1BA3009900B130C5 /* AppKit.framework */,
 				430084B91A5197C40070AB2A /* cocos2d_libs_studio.xcodeproj */,
 				434E49101A4B19D50094BF9D /* OpenGL.framework */,
 				1ABCA1E218CD8F230087CE3A /* external */,
@@ -785,7 +833,7 @@
 		430084BA1A5197C40070AB2A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */,
+				430084BF1A5197C50070AB2A /* libcocos2d Mac.a */,
 				430084C11A5197C50070AB2A /* libcocos2d iOS.a */,
 			);
 			name = Products;
@@ -999,10 +1047,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */ = {
+		430084BF1A5197C50070AB2A /* libcocos2d Mac.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libcocos2d Mac.dylib";
+			path = "libcocos2d Mac.a";
 			remoteRef = 430084BE1A5197C50070AB2A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
