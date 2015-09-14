@@ -44,6 +44,13 @@
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
 
 --------------------------------
+-- 
+-- @function [parent=#DrawNode] setLineWidth 
+-- @param self
+-- @param #int lineWidth
+-- @return DrawNode#DrawNode self (return value: cc.DrawNode)
+        
+--------------------------------
 -- js NA
 -- @function [parent=#DrawNode] onDrawGLPoint 
 -- @param self
@@ -223,6 +230,18 @@
 -- @param #cc.Renderer renderer
 -- @param #mat4_table transform
 -- @param #unsigned int flags
+-- @return DrawNode#DrawNode self (return value: cc.DrawNode)
+        
+--------------------------------
+-- 
+-- @function [parent=#DrawNode] init 
+-- @param self
+-- @return bool#bool ret (return value: bool)
+        
+--------------------------------
+-- 
+-- @function [parent=#DrawNode] DrawNode 
+-- @param self
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
         
 return nil

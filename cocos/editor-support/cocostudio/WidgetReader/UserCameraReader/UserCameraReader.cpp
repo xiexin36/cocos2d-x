@@ -28,6 +28,7 @@
 #include "cocostudio/CSParse3DBinary_generated.h"
 #include "cocostudio/FlatBuffersSerialize.h"
 #include "cocostudio/WidgetReader/Node3DReader/Node3DReader.h"
+#include "cocostudio/WidgetReader/GameNode3DReader/GameNode3DReader.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -121,7 +122,7 @@ namespace cocostudio
             {
                 fov = atof(value.c_str());
             }
-            else if (attriname == "UserCameraFlagMode")
+            else if(attriname == "UserCameraFlagMode")
             {
                 if (cameraFlag == 0)
                 {
@@ -192,9 +193,6 @@ namespace cocostudio
             }
             else if (name == "LeftImage")
             {
-                std::string texture = "";
-                std::string texturePng = "";
-
                 attribute = child->FirstAttribute();
 
                 while (attribute)
@@ -213,7 +211,6 @@ namespace cocostudio
                     else if (name == "Plist")
                     {
                         leftPlistFile = value;
-                        texture = value;
                     }
 
                     attribute = attribute->Next();
@@ -222,14 +219,11 @@ namespace cocostudio
                 if (leftResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(leftPlistFile));
                 }
             }
             else if (name == "RightImage")
             {
-                std::string texture = "";
-                std::string texturePng = "";
-
                 attribute = child->FirstAttribute();
 
                 while (attribute)
@@ -248,7 +242,6 @@ namespace cocostudio
                     else if (name == "Plist")
                     {
                         rightPlistFile = value;
-                        texture = value;
                     }
 
                     attribute = attribute->Next();
@@ -257,14 +250,11 @@ namespace cocostudio
                 if (rightResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(rightPlistFile));
                 }
             }
             else if (name == "UpImage")
             {
-                std::string texture = "";
-                std::string texturePng = "";
-
                 attribute = child->FirstAttribute();
 
                 while (attribute)
@@ -283,7 +273,6 @@ namespace cocostudio
                     else if (name == "Plist")
                     {
                         upPlistFile = value;
-                        texture = value;
                     }
 
                     attribute = attribute->Next();
@@ -292,14 +281,11 @@ namespace cocostudio
                 if (upResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(upPlistFile));
                 }
             }
             else if (name == "DownImage")
             {
-                std::string texture = "";
-                std::string texturePng = "";
-
                 attribute = child->FirstAttribute();
 
                 while (attribute)
@@ -318,7 +304,6 @@ namespace cocostudio
                     else if (name == "Plist")
                     {
                         downPlistFile = value;
-                        texture = value;
                     }
 
                     attribute = attribute->Next();
@@ -327,14 +312,11 @@ namespace cocostudio
                 if (downResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(downPlistFile));
                 }
             }
             else if (name == "ForwardImage")
             {
-                std::string texture = "";
-                std::string texturePng = "";
-
                 attribute = child->FirstAttribute();
 
                 while (attribute)
@@ -353,7 +335,6 @@ namespace cocostudio
                     else if (name == "Plist")
                     {
                         forwardPlistFile = value;
-                        texture = value;
                     }
 
                     attribute = attribute->Next();
@@ -362,14 +343,11 @@ namespace cocostudio
                 if (forwardResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(forwardPlistFile));
                 }
             }
             else if (name == "BackImage")
             {
-                std::string texture = "";
-                std::string texturePng = "";
-
                 attribute = child->FirstAttribute();
 
                 while (attribute)
@@ -388,7 +366,6 @@ namespace cocostudio
                     else if (name == "Plist")
                     {
                         backPlistFile = value;
-                        texture = value;
                     }
 
                     attribute = attribute->Next();
@@ -397,7 +374,7 @@ namespace cocostudio
                 if (backResourceType == 1)
                 {
                     FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                    fbs->_textures.push_back(builder->CreateString(texture));
+                    fbs->_textures.push_back(builder->CreateString(backPlistFile));
                 }
             }
             
@@ -449,23 +426,41 @@ namespace cocostudio
         int cameraFlag = options->cameraFlag();
         camera->setCameraFlag((CameraFlag)cameraFlag);
 
+        auto node3DReader = Node3DReader::getInstance();
+        node3DReader->setPropsWithFlatBuffers(node, (Table*)(options->node3DOption()));
+
         bool skyBoxEnabled = options->skyBoxEnabled() != 0;
         if (skyBoxEnabled)
         {
-            auto leftFileData = options->leftFileData()->path()->c_str();
-            auto rightFileData = options->rightFileData()->path()->c_str();
-            auto upFileData = options->upFileData()->path()->c_str();
-            auto downFileData = options->downFileData()->path()->c_str();
-            auto forwardFileData = options->forwardFileData()->path()->c_str();
-            auto backFileData = options->backFileData()->path()->c_str();
+            std::string leftFileData = options->leftFileData()->path()->c_str();
+            std::string rightFileData = options->rightFileData()->path()->c_str();
+            std::string upFileData = options->upFileData()->path()->c_str();
+            std::string downFileData = options->downFileData()->path()->c_str();
+            std::string forwardFileData = options->forwardFileData()->path()->c_str();
+            std::string backFileData = options->backFileData()->path()->c_str();
+            FileUtils *fileUtils = FileUtils::getInstance();
 
-            Skybox* childBox = Skybox::create(leftFileData, rightFileData, upFileData, downFileData, forwardFileData, backFileData);
-            childBox->setCameraMask(cameraFlag);
-            node->addChild(childBox);
+            if (fileUtils->isFileExist(leftFileData)
+                && fileUtils->isFileExist(rightFileData)
+                && fileUtils->isFileExist(upFileData)
+                && fileUtils->isFileExist(downFileData)
+                && fileUtils->isFileExist(forwardFileData)
+                && fileUtils->isFileExist(backFileData))
+            {
+                CameraBackgroundSkyBoxBrush* brush = CameraBackgroundSkyBoxBrush::create(leftFileData, rightFileData, upFileData, downFileData, forwardFileData, backFileData);
+                camera->setBackgroundBrush(brush);
+            }
+            else
+            {
+                if (GameNode3DReader::getSceneBrushInstance() != nullptr)
+                    camera->setBackgroundBrush(GameNode3DReader::getSceneBrushInstance());
+            }
         }
-
-        auto node3DReader = Node3DReader::getInstance();
-        node3DReader->setPropsWithFlatBuffers(node, (Table*)(options->node3DOption()));
+        else
+        {
+            if (GameNode3DReader::getSceneBrushInstance() != nullptr)
+                camera->setBackgroundBrush(GameNode3DReader::getSceneBrushInstance());
+        }
     }
     
     Node* UserCameraReader::createNodeWithFlatBuffers(const flatbuffers::Table *userCameraDOptions)

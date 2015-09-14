@@ -2,6 +2,7 @@
 
 #include "UIButtonTest/UIButtonTest.h"
 #include "UICheckBoxTest/UICheckBoxTest.h"
+#include "UIRadioButtonTest/UIRadioButtonTest.h"
 #include "UISliderTest/UISliderTest.h"
 #include "UIImageViewTest/UIImageViewTest.h"
 #include "UILoadingBarTest/UILoadingBarTest.h"
@@ -23,7 +24,7 @@
 #include "UIWebViewTest/UIWebViewTest.h"
 #endif
 #include "UIScale9SpriteTest.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #include "UIEditBoxTest.h"
 #endif
 
@@ -35,13 +36,14 @@ GUIDynamicCreateTests::GUIDynamicCreateTests()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     addTest("WebView Test", [](){ return new (std::nothrow) WebViewTests; });
 #endif
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     addTest("EditBox Test", [](){ return new (std::nothrow) UIEditBoxTests; });
 #endif
     addTest("Focus Test", [](){ return new (std::nothrow) UIFocusTests; });
     addTest("Scale9Sprite Test", [](){ return new (std::nothrow) UIScale9SpriteTests; });
     addTest("Button Test", [](){ return new (std::nothrow) UIButtonTests; });
     addTest("CheckBox Test", [](){ return new (std::nothrow) UICheckBoxTests; });
+    addTest("RadioButton Test", [](){ return new (std::nothrow) UIRadioButtonTests; });
     addTest("Slider Test", [](){ return new (std::nothrow) UISliderTests; });
    
     addTest("ImageView Test", [](){ return new (std::nothrow) UIImageViewTests; });

@@ -29,6 +29,9 @@ THE SOFTWARE.
 
 #include "2d/CCNode.h"
 #include "3d/CCFrustum.h"
+#include "renderer/CCQuadCommand.h"
+#include "renderer/CCCustomCommand.h"
+#include "renderer/CCFrameBuffer.h"
 
 NS_CC_BEGIN
 
@@ -60,10 +63,9 @@ enum class CameraFlag
     PIXEL = 1 << 13,
     FRONT = 1 << 14,
 };
-
 /**
-* Defines a camera .
-*/
+ * Defines a camera .
+ */
 class CC_DLL Camera :public Node
 {
     friend class Scene;
@@ -242,6 +244,18 @@ public:
      Before rendering scene with this camera, the background need to be cleared. It clears the depth buffer with max depth by default. Use setBackgroundBrush to modify the default behavior
      */
     void clearBackground();
+    /**
+     Apply the FBO, RenderTargets and viewport.
+     */
+    void apply();
+    /**
+     Set FBO, which will attacha several render target for the rendered result.
+    */
+    void setFrameBufferObject(experimental::FrameBuffer* fbo);
+    /**
+     Set Viewport for camera.
+     */
+    void setViewport(const experimental::Viewport& vp) { _viewport = vp; }
     
     /**
      * Whether or not the viewprojection matrix was updated since the last frame.
@@ -281,6 +295,8 @@ CC_CONSTRUCTOR_ACCESS:
     bool initDefault();
     bool initPerspective(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
     bool initOrthographic(float zoomX, float zoomY, float nearPlane, float farPlane);
+    void applyFrameBufferObject();
+    void applyViewport();
 protected:
 
     Scene* _scene; //Scene camera belongs to
@@ -300,10 +316,19 @@ protected:
     unsigned short _cameraFlag; // camera flag
     mutable Frustum _frustum;   // camera frustum
     mutable bool _frustumDirty;
-    int  _depth;                 //camera depth, the depth of camera with CameraFlag::DEFAULT flag is 0 by default, a camera with larger depth is drawn on top of camera with smaller detph
+    int8_t  _depth;                 //camera depth, the depth of camera with CameraFlag::DEFAULT flag is 0 by default, a camera with larger depth is drawn on top of camera with smaller detph
     static Camera* _visitingCamera;
     
     CameraBackgroundBrush* _clearBrush; //brush used to clear the back ground
+    
+    experimental::Viewport _viewport;
+    
+    experimental::FrameBuffer* _fbo;
+protected:
+    static experimental::Viewport _defaultViewport;
+public:
+    static const experimental::Viewport& getDefaultViewport() { return _defaultViewport; }
+    static void setDefaultViewport(const experimental::Viewport& vp) { _defaultViewport = vp; }
 };
 
 NS_CC_END

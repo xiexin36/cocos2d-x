@@ -181,6 +181,9 @@ protected:
     void setScale9Scale();
     void updateProgressBar();
     void barRendererScaleChangedWithSize();
+
+    void setupTexture();
+    void loadTexture(SpriteFrame* spriteframe);
     
     virtual void adaptRenderers() override;
     
@@ -196,8 +199,10 @@ protected:
     bool _scale9Enabled;
     bool _prevIgnoreSize;
     Rect _capInsets;
-    std::string _textureFile;
     bool _barRendererAdaptDirty;
+
+    // For editor
+    std::string _textureFile;
 };
 
 }

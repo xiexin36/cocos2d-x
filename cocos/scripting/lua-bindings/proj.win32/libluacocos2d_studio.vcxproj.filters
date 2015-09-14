@@ -73,6 +73,12 @@
     <Filter Include="manual\audioengine">
       <UniqueIdentifier>{08e7d51a-6f8a-4e54-8abe-a86101be8dad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="manual\physics3d">
+      <UniqueIdentifier>{8e556596-ce04-4529-b852-be506659e967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manual\navmesh">
+      <UniqueIdentifier>{084e3b84-2b2a-400a-ba77-06f9c6b31cad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\auto\lua_cocos2dx_auto.cpp">
@@ -266,6 +272,27 @@
     </ClCompile>
     <ClCompile Include="..\manual\cocostudio\lua-cocos-studio-conversions.cpp">
       <Filter>manual\cocostudio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\manual\physics3d\lua_cocos2dx_physics3d_manual.cpp">
+      <Filter>manual\physics3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\auto\lua_cocos2dx_physics3d_auto.cpp">
+      <Filter>auto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\manual\navmesh\lua_cocos2dx_navmesh_conversions.cpp">
+      <Filter>manual\navmesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\manual\navmesh\lua_cocos2dx_navmesh_manual.cpp">
+      <Filter>manual\navmesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\auto\lua_cocos2dx_navmesh_auto.cpp">
+      <Filter>auto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\auto\lua_cocos2dx_experimental_webview_auto.cpp">
+      <Filter>auto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\manual\ui\lua_cocos2dx_experimental_webview_manual.cpp">
+      <Filter>manual\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -469,6 +496,27 @@
     </ClInclude>
     <ClInclude Include="..\manual\cocostudio\lua-cocos-studio-conversions.h">
       <Filter>manual\cocostudio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\manual\physics3d\lua_cocos2dx_physics3d_manual.h">
+      <Filter>manual\physics3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\auto\lua_cocos2dx_physics3d_auto.hpp">
+      <Filter>auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\manual\navmesh\lua_cocos2dx_navmesh_conversions.h">
+      <Filter>manual\navmesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\manual\navmesh\lua_cocos2dx_navmesh_manual.h">
+      <Filter>manual\navmesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\auto\lua_cocos2dx_navmesh_auto.hpp">
+      <Filter>auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\auto\lua_cocos2dx_experimental_webview_auto.hpp">
+      <Filter>auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\manual\ui\lua_cocos2dx_experimental_webview_manual.hpp">
+      <Filter>manual\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

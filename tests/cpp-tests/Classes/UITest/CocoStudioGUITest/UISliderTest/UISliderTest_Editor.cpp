@@ -35,7 +35,7 @@ bool UISliderTest_Editor::init()
 {
     if (UIScene_Editor::init())
     {
-        Node* node = CSLoader::createNode("cocosui/UIEditorTest/UISlider/crossplatform_UISlider_Editor_1.csb");
+        Node* node = CSLoader::createNode("cocosui/UIEditorTest/UISlider/res.csb");
         Node* child = node->getChildByTag(5);
         child->removeFromParent();
         _layout = static_cast<Layout*>(child);
@@ -64,7 +64,7 @@ void UISliderTest_Editor::sliderEvent(Ref *pSender, Slider::EventType type)
         case Slider::EventType::ON_PERCENTAGE_CHANGED:
         {
             Slider* slider = static_cast<Slider*>(pSender);
-            _displayValueLabel->setString(CCString::createWithFormat("percent %d", slider->getPercent())->getCString());
+            _displayValueLabel->setString(StringUtils::format("percent %d", slider->getPercent()));
         }
             break;
             

@@ -92,6 +92,7 @@ PointSide Plane::getSide(const Vec3& point) const
         return PointSide::IN_PLANE;
 }
 
+// For editor
 PointSide Plane::getSide(const Vec3& point, const Vec3& halfSize) const
 {
 	float dist = dist2Plane(point);
