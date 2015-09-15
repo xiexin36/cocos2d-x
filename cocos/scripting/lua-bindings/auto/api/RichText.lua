@@ -54,22 +54,15 @@
         
 --------------------------------
 -- 
--- @function [parent=#RichText] setAnchorPoint 
+-- @function [parent=#RichText] init 
 -- @param self
--- @param #vec2_table pt
--- @return RichText#RichText self (return value: ccui.RichText)
+-- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- 
 -- @function [parent=#RichText] getDescription 
 -- @param self
 -- @return string#string ret (return value: string)
-        
---------------------------------
--- 
--- @function [parent=#RichText] getVirtualRendererSize 
--- @param self
--- @return size_table#size_table ret (return value: size_table)
         
 --------------------------------
 -- 

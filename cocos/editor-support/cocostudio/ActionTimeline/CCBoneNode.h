@@ -152,9 +152,6 @@ public:
     // set localzorder, and reculate debugdraw
     virtual void setAnchorPoint(const cocos2d::Vec2& anchorPoint) override;
     
-    /***** for cocostudio temporary, remove after merged cocos2d-x 3.7.1*************/
-    cocos2d::AffineTransform getBoneToSkeletonAffineTransform() const;
-
 #ifdef CC_STUDIO_ENABLED_VIEW
     // hit test , bonePoint is in self coordinate
     virtual bool isPointOnRack(const cocos2d::Vec2& bonePoint);

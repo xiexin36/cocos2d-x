@@ -149,6 +149,7 @@ public:
     */
     bool isSpriteFramesWithFileLoaded(const std::string& plist) const;
 
+    // For editor
      /** Reload texture from the plist file
      * If the file image hasn't loaded before, load it.
      * Otherwise the texture will be reloaded from the plist file.
@@ -226,6 +227,7 @@ protected:
      */
     void addSpriteFramesWithDictionary(ValueMap& dictionary, Texture2D *texture);
 
+    // For editor
 	/*reload multiple Sprite Frames with a dictionary. The texture will be associated with the created sprite frames.
      */
     void reloadSpriteFramesWithDictionary(ValueMap& dictionary, Texture2D *texture);

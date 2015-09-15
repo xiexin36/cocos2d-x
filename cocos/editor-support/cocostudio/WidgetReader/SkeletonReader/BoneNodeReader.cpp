@@ -1,3 +1,27 @@
+/****************************************************************************
+Copyright (c) 2015 Chukong Technologies Inc.
+
+http://www.cocos2d-x.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+****************************************************************************/
+
 #include "tinyxml2/tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 #include "cocostudio/WidgetReader/NodeReader/NodeReader.h"
@@ -69,12 +93,12 @@ Offset<Table> BoneNodeReader::createOptionsWithFlatBuffers(const tinyxml2::XMLEl
         std::string name = child->Name();
         if (name == "BlendFunc")
         {
-            const tinyxml2::XMLAttribute* attribute = child->FirstAttribute();
+            const tinyxml2::XMLAttribute* battribute = child->FirstAttribute();
 
-            while (attribute)
+            while (battribute)
             {
-                name = attribute->Name();
-                std::string value = attribute->Value();
+                name = battribute->Name();
+                std::string value = battribute->Value();
 
                 if (name == "Src")
                 {
@@ -85,7 +109,7 @@ Offset<Table> BoneNodeReader::createOptionsWithFlatBuffers(const tinyxml2::XMLEl
                     blendFunc.dst = atoi(value.c_str());
                 }
 
-                attribute = attribute->Next();
+                battribute = battribute->Next();
             }
         }
 
@@ -132,5 +156,6 @@ cocos2d::Node*  BoneNodeReader::createNodeWithFlatBuffers(const flatbuffers::Tab
     // super options (node)
     auto nodeReader = NodeReader::getInstance();
     nodeReader->setPropsWithFlatBuffers(bone, (Table*)options->nodeOptions());
+
     return bone;
 }

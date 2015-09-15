@@ -52,8 +52,9 @@ THE SOFTWARE.
 #else
 #include <unistd.h>
 #endif
+#include "libSimulatorExport.h"
 
-class FileServer
+class CC_LIBSIM_DLL FileServer
 {
     static FileServer *s_sharedFileServer;
 public:

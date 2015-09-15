@@ -69,8 +69,9 @@ public:
     /** reload sky box after GLESContext reconstructed.*/
     void reload();
 
+    // For editor
     //check whether this camera mask is visible by the current visiting camera
-    virtual bool isVisitableByVisitingCamera() const override;
+    virtual bool isVisitableByVisitingCamera() const;
 
 CC_CONSTRUCTOR_ACCESS:
     /**
@@ -86,7 +87,7 @@ CC_CONSTRUCTOR_ACCESS:
     /**
     * init Skybox.
     */
-    virtual bool init();
+    virtual bool init() override;
     
     /**
      * initialize with texture path

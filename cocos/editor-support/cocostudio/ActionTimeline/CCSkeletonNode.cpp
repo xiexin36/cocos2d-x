@@ -74,7 +74,7 @@ cocos2d::Rect SkeletonNode::getBoundingBox() const
     for (const auto& bone : allbones)
     {
         cocos2d::Rect r = RectApplyAffineTransform(bone->getVisibleSkinsRect(),
-            bone->getBoneToSkeletonAffineTransform());
+            bone->getNodeToParentAffineTransform(bone->getRootSkeletonNode()));
         if (r.equals(cocos2d::Rect::ZERO))
             continue;
 

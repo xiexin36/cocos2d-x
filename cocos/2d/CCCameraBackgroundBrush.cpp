@@ -32,7 +32,8 @@
 #include "renderer/CCGLProgramCache.h"
 #include "renderer/CCGLProgramState.h"
 #include "renderer/CCRenderer.h"
-#include "3d/CCTextureCube.h"
+#include "renderer/CCRenderState.h"
+#include "renderer/CCTextureCube.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #include "base/CCEventCustom.h"
@@ -202,6 +203,13 @@ CameraBackgroundColorBrush::~CameraBackgroundColorBrush()
     
 }
 
+bool CameraBackgroundColorBrush::init()
+{
+    CameraBackgroundDepthBrush::init();
+    this->_clearColor = GL_TRUE;
+    return true;
+}
+
 void CameraBackgroundColorBrush::setColor(const Color4F& color)
 {
     _quad.bl.colors = _quad.br.colors = _quad.tl.colors = _quad.tr.colors = Color4B(color);
@@ -211,7 +219,6 @@ CameraBackgroundColorBrush* CameraBackgroundColorBrush::create(const Color4F& co
 {
     auto ret = new (std::nothrow) CameraBackgroundColorBrush();
     ret->init();
-    ret->_clearColor = GL_TRUE;
     ret->setColor(color);
     ret->setDepth(depth);
     
@@ -294,36 +301,32 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
     if (!_actived)
         return;
 
-    GLboolean oldBlend;
-    GLboolean oldDepthTest;
-    GLint oldDepthFunc;
-    GLboolean oldDepthMask;
-    {
-        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-        glStencilMask(0);
-
-        oldDepthTest = glIsEnabled(GL_DEPTH_TEST);
-        glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
-        glGetBooleanv(GL_DEPTH_WRITEMASK, &oldDepthMask);
-
-        glDepthMask(GL_TRUE);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_ALWAYS);
-
-        oldBlend = glIsEnabled(GL_BLEND);
-        glDisable(GL_BLEND);
-    }
-
-
     Mat4 cameraModelMat = camera->getNodeToWorldTransform();
     
+    _glProgramState->apply(Mat4::IDENTITY);
     
     Vec4 color(1.f, 1.f, 1.f, 1.f);
     _glProgramState->setUniformVec4("u_color", color);
     cameraModelMat.m[12] = cameraModelMat.m[13] = cameraModelMat.m[14] = 0;
     _glProgramState->setUniformMat4("u_cameraRot", cameraModelMat);
     
-    _glProgramState->apply(Mat4::IDENTITY);
+    glEnable(GL_DEPTH_TEST);
+    RenderState::StateBlock::_defaultState->setDepthTest(true);
+    
+    glDepthMask(GL_TRUE);
+    RenderState::StateBlock::_defaultState->setDepthWrite(true);
+    
+    glDepthFunc(GL_ALWAYS);
+    RenderState::StateBlock::_defaultState->setDepthFunction(RenderState::DEPTH_ALWAYS);
+    
+    glEnable(GL_CULL_FACE);
+    RenderState::StateBlock::_defaultState->setCullFace(true);
+    
+    glCullFace(GL_BACK);
+    RenderState::StateBlock::_defaultState->setCullFaceSide(RenderState::CULL_FACE_SIDE_BACK);
+    
+    glDisable(GL_BLEND);
+    RenderState::StateBlock::_defaultState->setBlend(false);
     
     if (Configuration::getInstance()->supportsShareableVAO())
     {
@@ -353,34 +356,8 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
     
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 8);
 
-    {
-        if (GL_FALSE == oldDepthTest)
-        {
-            glDisable(GL_DEPTH_TEST);
-        }
-        glDepthFunc(oldDepthFunc);
+    //glStencilMask(0xFFFFF);
 
-        if (GL_FALSE == oldDepthMask)
-        {
-            glDepthMask(GL_FALSE);
-        }
-
-        if (GL_TRUE == oldBlend)
-        {
-            glEnable(GL_BLEND);
-        }
-
-        /* IMPORTANT: We only need to update the states that are not restored.
-        Since we don't know what was the previous value of the mask, we update the RenderState
-        after setting it.
-        The other values don't need to be updated since they were restored to their original values
-        */
-        glStencilMask(0xFFFFF);
-        //        RenderState::StateBlock::_defaultState->setStencilWrite(0xFFFFF);
-
-        /* BUG: RenderState does not support glColorMask yet. */
-        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    }
     CHECK_GL_ERROR_DEBUG();
 }
 

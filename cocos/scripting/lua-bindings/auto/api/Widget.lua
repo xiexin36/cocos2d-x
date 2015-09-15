@@ -349,6 +349,17 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
+-- Dispatch a EventFocus through a EventDispatcher<br>
+-- param widgetLoseFocus  The widget which lose its focus<br>
+-- param widgetGetFocus he widget whihc get its focus<br>
+-- return void
+-- @function [parent=#Widget] dispatchFocusEvent 
+-- @param self
+-- @param #ccui.Widget widgetLoseFocus
+-- @param #ccui.Widget widgetGetFocus
+-- @return Widget#Widget self (return value: ccui.Widget)
+        
+--------------------------------
 -- Toggle use unify size.<br>
 -- param enable True to use unify size, false otherwise.<br>
 -- return void
@@ -375,11 +386,15 @@
 --------------------------------
 -- Checks a point is in widget's content space.<br>
 -- This function is used for determining touch area of widget.<br>
--- param pt The point in `Vec2`.<br>
+-- param pt        The point in `Vec2`.<br>
+-- param camera    The camera look at widget, used to convert GL screen point to near/far plane.<br>
+-- param p         Point to a Vec3 for store the intersect point, if don't need them set to nullptr.<br>
 -- return true if the point is in widget's content space, flase otherwise.
 -- @function [parent=#Widget] hitTest 
 -- @param self
 -- @param #vec2_table pt
+-- @param #cc.Camera camera
+-- @param #vec3_table p
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
@@ -403,6 +418,17 @@
 -- @param #size_table parentSize
 -- @return Widget#Widget self (return value: ccui.Widget)
 
+--------------------------------
+-- This method is called when a focus change event happens<br>
+-- param widgetLostFocus  The widget which lose its focus<br>
+-- param widgetGetFocus  The widget whihc get its focus<br>
+-- return void
+-- @function [parent=#Widget] onFocusChange 
+-- @param self
+-- @param #ccui.Widget widgetLostFocus
+-- @param #ccui.Widget widgetGetFocus
+-- @return Widget#Widget self (return value: ccui.Widget)
+        
 --------------------------------
 -- 
 -- @function [parent=#Widget] getTouchMovePosition 
@@ -436,6 +462,15 @@
 -- @function [parent=#Widget] getPositionPercent 
 -- @param self
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
+        
+--------------------------------
+-- brief Propagate touch events to its parents
+-- @function [parent=#Widget] propagateTouchEvent 
+-- @param self
+-- @param #int event
+-- @param #ccui.Widget sender
+-- @param #cc.Touch touch
+-- @return Widget#Widget self (return value: ccui.Widget)
         
 --------------------------------
 -- Returns the flag which indicates whether the widget is flipped horizontally or not.<br>
@@ -473,6 +508,15 @@
 -- @function [parent=#Widget] setSizeType 
 -- @param self
 -- @param #int type
+-- @return Widget#Widget self (return value: ccui.Widget)
+        
+--------------------------------
+-- 
+-- @function [parent=#Widget] interceptTouchEvent 
+-- @param self
+-- @param #int event
+-- @param #ccui.Widget sender
+-- @param #cc.Touch touch
 -- @return Widget#Widget self (return value: ccui.Widget)
         
 --------------------------------
@@ -555,6 +599,12 @@
 -- @param #float scaley
 -- @return Widget#Widget self (return value: ccui.Widget)
 
+--------------------------------
+-- 
+-- @function [parent=#Widget] init 
+-- @param self
+-- @return bool#bool ret (return value: bool)
+        
 --------------------------------
 -- Changes the position (x,y) of the widget in OpenGL coordinates<br>
 -- Usually we use p(x,y) to compose a Vec2 object.<br>

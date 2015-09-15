@@ -135,9 +135,20 @@ void ImageView::loadTexture(const std::string& fileName, TextureResType texType)
         default:
             break;
     }
-    
+
+    this->setupTexture();
+}
+
+void ImageView::loadTexture(SpriteFrame* spriteframe)
+{
+    _imageRenderer->initWithSpriteFrame(spriteframe);
+    this->setupTexture();
+}
+
+void ImageView::setupTexture()
+{
     _imageTextureSize = _imageRenderer->getContentSize();
-  
+
     this->updateChildrenDisplayedRGBA();
 
     updateContentSizeWithTextureSize(_imageTextureSize);
@@ -164,15 +175,15 @@ void ImageView::setTextureRect(const Rect &rect)
     }
 }
     
-void ImageView::setScale9Enabled(bool enable)
+void ImageView::setScale9Enabled(bool able)
 {
-    if (_scale9Enabled == enable)
+    if (_scale9Enabled == able)
     {
         return;
     }
     
     
-    _scale9Enabled = enable;
+    _scale9Enabled = able;
     _imageRenderer->setScale9Enabled(_scale9Enabled);
     
     if (_scale9Enabled)
@@ -293,10 +304,15 @@ void ImageView::copySpecialProperties(Widget *widget)
     {
         _prevIgnoreSize = imageView->_prevIgnoreSize;
         setScale9Enabled(imageView->_scale9Enabled);
-        loadTexture(imageView->_textureFile, imageView->_imageTexType);
+        auto imageSprite = imageView->_imageRenderer->getSprite();
+        if(nullptr != imageSprite)
+        {
+            loadTexture(imageSprite->getSpriteFrame());
+        }
         setCapInsets(imageView->_capInsets);
     }
 }
+
 //For Editor
 ResouceData ImageView::csGetRenderFile()
 {

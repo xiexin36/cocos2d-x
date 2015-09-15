@@ -29,10 +29,17 @@
 #include "base/CCDirector.h"
 #include "platform/CCGLView.h"
 #include "2d/CCScene.h"
+#include "renderer/CCRenderer.h"
+#include "renderer/CCQuadCommand.h"
+#include "renderer/CCGLProgramCache.h"
+#include "renderer/ccGLStateCache.h"
+#include "renderer/CCFrameBuffer.h"
+#include "renderer/CCRenderState.h"
 
 NS_CC_BEGIN
 
 Camera* Camera::_visitingCamera = nullptr;
+experimental::Viewport Camera::_defaultViewport;
 
 Camera* Camera::getDefaultCamera()
 {
@@ -87,6 +94,7 @@ Camera::Camera()
 , _cameraFlag(1)
 , _frustumDirty(true)
 , _depth(-1)
+, _fbo(nullptr)
 {
     _frustum.setClipZ(true);
     _clearBrush = CameraBackgroundBrush::createDepthBrush(1.f);
@@ -95,6 +103,7 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+    CC_SAFE_RELEASE_NULL(_fbo);
     CC_SAFE_RELEASE(_clearBrush);
 }
 
@@ -399,6 +408,64 @@ void Camera::clearBackground()
     {
         _clearBrush->drawBackground(this);
     }
+}
+
+void Camera::setFrameBufferObject(experimental::FrameBuffer *fbo)
+{
+    CC_SAFE_RETAIN(fbo);
+    CC_SAFE_RELEASE_NULL(_fbo);
+    _fbo = fbo;
+    if(_scene)
+    {
+        _scene->setCameraOrderDirty();
+    }
+}
+
+void Camera::applyFrameBufferObject()
+{
+    if(nullptr == _fbo)
+    {
+        experimental::FrameBuffer::applyDefaultFBO();
+    }
+    else
+    {
+        _fbo->applyFBO();
+    }
+}
+
+void Camera::apply()
+{
+    applyFrameBufferObject();
+    applyViewport();
+}
+
+void Camera::applyViewport()
+{
+    if(nullptr == _fbo)
+    {
+        glViewport(getDefaultViewport()._left, getDefaultViewport()._bottom, getDefaultViewport()._width, getDefaultViewport()._height);
+    }
+    else
+    {
+        glViewport(_viewport._left * _fbo->getWidth(), _viewport._bottom * _fbo->getHeight(),
+                   _viewport._width * _fbo->getWidth(), _viewport._height * _fbo->getHeight());
+    }
+    
+}
+
+int Camera::getRenderOrder() const
+{
+    int result(0);
+    if(_fbo)
+    {
+        result = _fbo->getFID()<<8;
+    }
+    else
+    {
+        result = 127 <<8;
+    }
+    result += _depth;
+    return result;
 }
 
 void Camera::visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags)

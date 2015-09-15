@@ -776,10 +776,7 @@ Offset<TimeLine> FlatBuffersSerialize::createTimeLine(const tinyxml2::XMLElement
                                 0, //InnerActionFrame
                                 blendFrame);
         }
-        else
-        {
-            CCLOG("Unknown property : %s", property.c_str());
-        }
+
         frames.push_back(frame);
                 
         frameElement = frameElement->NextSiblingElement();

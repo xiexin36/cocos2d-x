@@ -584,7 +584,7 @@ std::string SpriteBatchNodeZOrder::subtitle() const
 
 SpriteBatchNodeReorder::SpriteBatchNodeReorder()
 {
-    auto a = Array::createWithCapacity(10);
+    auto a = __Array::createWithCapacity(10);
     auto asmtest = SpriteBatchNode::create("animations/ghosts.png");
     
     for(int i=0; i<10; i++)
@@ -675,15 +675,24 @@ std::string SpriteBatchNodeReorderIssue744::subtitle() const
 
 Sprite* SpriteBatchNodeReorderIssue766::makeSpriteZ(int aZ)
 {
-    auto sprite = Sprite::createWithTexture(batchNode->getTexture(), Rect(128,0,64,64));
+    Rect rcw(128,0,64,64);
+    rcw = CC_RECT_PIXELS_TO_POINTS(rcw);
+    auto sprite = Sprite::createWithTexture(batchNode->getTexture(), rcw);
+    sprite->setScale(CC_CONTENT_SCALE_FACTOR());
     batchNode->addChild(sprite, aZ+1, 0);
 
     //children
-    auto spriteShadow = Sprite::createWithTexture(batchNode->getTexture(), Rect(0,0,64,64));
+    Rect rc1(0,0,64,64);
+    rc1 = CC_RECT_PIXELS_TO_POINTS(rc1);
+    auto spriteShadow = Sprite::createWithTexture(batchNode->getTexture(), rc1);
     spriteShadow->setOpacity(128);
+    sprite->setScale(CC_CONTENT_SCALE_FACTOR());
     sprite->addChild(spriteShadow, aZ, 3);
 
-    auto spriteTop = Sprite::createWithTexture(batchNode->getTexture(), Rect(64,0,64,64));
+    Rect rc2(64,0,64,64);
+    rc2 = CC_RECT_PIXELS_TO_POINTS(rc2);
+    auto spriteTop = Sprite::createWithTexture(batchNode->getTexture(), rc2);
+    sprite->setScale(CC_CONTENT_SCALE_FACTOR());
     sprite->addChild(spriteTop, aZ+2, 3);
 
     return sprite;
@@ -3332,32 +3341,26 @@ class MySprite1 : public Sprite
 {
 public:
     CREATE_FUNC(MySprite1);
-    MySprite1() : ivar(10) {}
+    MySprite1() {}
     static MySprite1* createWithSpriteFrameName(const std::string& spriteFrameName)
     {
         auto sprite = MySprite1::create();
         sprite->setSpriteFrame(spriteFrameName);
         return sprite;
     }
-
-private:
-    int ivar;
 };
 
 class MySprite2 : public Sprite
 {
 public:
     CREATE_FUNC(MySprite2);
-    MySprite2() : ivar(10) {}
+    MySprite2() {}
     static MySprite2* create(const std::string& name)
     {
         auto sprite = MySprite2::create();
         sprite ->setTexture(name);
         return sprite;
     }
-
-private:
-    int ivar;
 };
 
 //------------------------------------------------------------------

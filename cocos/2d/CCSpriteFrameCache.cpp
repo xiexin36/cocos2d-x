@@ -39,7 +39,7 @@ THE SOFTWARE.
 #include "base/CCDirector.h"
 #include "renderer/CCTexture2D.h"
 #include "renderer/CCTextureCache.h"
-
+#include "base/CCNinePatchImageParser.h"
 
 #include "deprecated/CCString.h"
 
@@ -105,6 +105,10 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
     // check the format
     CCASSERT(format >=0 && format <= 3, "format is not supported for SpriteFrameCache addSpriteFramesWithDictionary:textureFilename:");
 
+    auto textureFileName = Director::getInstance()->getTextureCache()->getTextureFilePath(texture);
+    auto image = new Image();
+    image->initWithImageFile(textureFileName);
+    NinePatchImageParser parser;
     for (auto iter = framesDict.begin(); iter != framesDict.end(); ++iter)
     {
         ValueMap& frameDict = iter->second.asValueMap();
@@ -184,7 +188,7 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
 
                 _spriteFramesAliases[oneAlias] = Value(spriteFrameName);
             }
-            
+
             // create frame
             spriteFrame = SpriteFrame::createWithTexture(texture,
                                                          Rect(textureRect.origin.x, textureRect.origin.y, spriteSize.width, spriteSize.height),
@@ -193,11 +197,19 @@ void SpriteFrameCache::addSpriteFramesWithDictionary(ValueMap& dictionary, Textu
                                                          spriteSourceSize);
         }
 
+        bool flag = NinePatchImageParser::isNinePatchImage(spriteFrameName);
+        if(flag)
+        {
+            parser.setSpriteFrameInfo(image, spriteFrame->getRectInPixels(), spriteFrame->isRotated());
+            texture->addSpriteFrameCapInset(spriteFrame, parser.parseCapInset());
+        }
         // add sprite frame
         _spriteFrames.insert(spriteFrameName, spriteFrame);
     }
+    CC_SAFE_DELETE(image);
 }
 
+// For editor
 /*reload multiple Sprite Frames with a dictionary. The texture will be associated with the created sprite frames.
     */
 void SpriteFrameCache::reloadSpriteFramesWithDictionary(ValueMap& dictionary, Texture2D *texture)
@@ -432,6 +444,7 @@ void SpriteFrameCache::addSpriteFrame(SpriteFrame* frame, const std::string& fra
     _spriteFrames.insert(frameName, frame);
 }
 
+// For editor
 bool SpriteFrameCache::reloadTexture(const std::string& plist)
 {
 	CCASSERT(plist.size()>0, "plist filename should not be nullptr");
@@ -478,7 +491,9 @@ bool SpriteFrameCache::reloadTexture(const std::string& plist)
         CCLOG("cocos2d: SpriteFrameCache: Trying to use file %s as texture", texturePath.c_str());
     }
 
-	Texture2D *texture = Director::getInstance()->getTextureCache()->reloadTexture(texturePath.c_str());
+    Texture2D *texture = nullptr;
+    if (Director::getInstance()->getTextureCache()->reloadTexture(texturePath.c_str()))
+        texture = Director::getInstance()->getTextureCache()->getTextureForKey(texturePath);
 
     if (texture)
     {
@@ -510,13 +525,14 @@ void SpriteFrameCache::removeUnusedSpriteFrames()
         if( spriteFrame->getReferenceCount() == 1 )
         {
             toRemoveFrames.push_back(iter->first);
+            spriteFrame->getTexture()->removeSpriteFrameCapInset(spriteFrame);
             CCLOG("cocos2d: SpriteFrameCache: removing unused frame: %s", iter->first.c_str());
             removed = true;
         }
     }
 
     _spriteFrames.erase(toRemoveFrames);
-    
+
     // FIXME:. Since we don't know the .plist file that originated the frame, we must remove all .plist from the cache
     if( removed )
     {
@@ -634,4 +650,3 @@ SpriteFrame* SpriteFrameCache::getSpriteFrameByName(const std::string& name)
 }
 
 NS_CC_END
-
