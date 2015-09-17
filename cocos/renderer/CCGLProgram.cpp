@@ -553,17 +553,18 @@ bool GLProgram::link()
     parseVertexAttribs();
     parseUniforms();
 
-    if (_vertShader)
-    {
-        glDeleteShader(_vertShader);
-    }
+    //For editor
+    //if (_vertShader)
+    //{
+    //    glDeleteShader(_vertShader);
+    //}
 
-    if (_fragShader)
-    {
-        glDeleteShader(_fragShader);
-    }
+    //if (_fragShader)
+    //{
+    //    glDeleteShader(_fragShader);
+    //}
 
-    _vertShader = _fragShader = 0;
+    //_vertShader = _fragShader = 0;
 
 #if DEBUG || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     glGetProgramiv(_program, GL_LINK_STATUS, &status);
