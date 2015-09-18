@@ -421,14 +421,17 @@ namespace ui {
     {
         _percentWidth = percentWidth;
 
-        Node* parent = this->getOwnerParent();
-        if (parent != nullptr)
+        if (_usingPercentWidth)
         {
-            Size ownerSize = _owner->getContentSize();
-            ownerSize.width = parent->getContentSize().width * _percentWidth;
-            _owner->setContentSize(ownerSize);
+            Node* parent = this->getOwnerParent();
+            if (parent != nullptr)
+            {
+                Size ownerSize = _owner->getContentSize();
+                ownerSize.width = parent->getContentSize().width * _percentWidth;
+                _owner->setContentSize(ownerSize);
 
-            this->refreshHorizontalMargin();
+                this->refreshHorizontalMargin();
+            }
         }
     }
 
@@ -481,14 +484,17 @@ namespace ui {
     {
         _percentHeight = percentHeight;
 
-        Node* parent = this->getOwnerParent();
-        if (parent != nullptr)
+        if (_usingPercentHeight)
         {
-            Size ownerSize = _owner->getContentSize();
-            ownerSize.height = parent->getContentSize().height * _percentHeight;
-            _owner->setContentSize(ownerSize);
+            Node* parent = this->getOwnerParent();
+            if (parent != nullptr)
+            {
+                Size ownerSize = _owner->getContentSize();
+                ownerSize.height = parent->getContentSize().height * _percentHeight;
+                _owner->setContentSize(ownerSize);
 
-            this->refreshVerticalMargin();
+                this->refreshVerticalMargin();
+            }
         }
     }
 
