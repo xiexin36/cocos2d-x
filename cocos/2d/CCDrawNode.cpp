@@ -400,14 +400,10 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
     //如果开启线抗锯齿,如参考线绘制, 则先关闭多重采样
-    if (this->_lineSmoothEnable == true)
+    if (this->_lineSmoothEnable == false)
     {
         glDisable(GL_MULTISAMPLE);
-
-        glEnable(GL_LINE_SMOOTH);
-        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
-        glEnable(GL_BLEND);
-        GL::blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_LINE_SMOOTH);
     }
 
     glLineWidth(_lineWidth);
