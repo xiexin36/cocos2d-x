@@ -345,8 +345,8 @@ void Slider::loadSlidBallTexturePressed(const std::string& pressed,TextureResTyp
     }*/
     _slidBallPressedTextureFile = pressed;
     _ballPTexType = texType;
-	if(!pressed.empty())
-        _isSliderBallPressedTextureLoaded = true;
+    _isSliderBallPressedTextureLoaded = !pressed.empty();
+
     switch (_ballPTexType)
     {
         case TextureResType::LOCAL:
@@ -374,8 +374,8 @@ void Slider::loadSlidBallTextureDisabled(const std::string& disabled,TextureResT
     {
         return;
     }*/
-	if (!disabled.empty())
-        _isSliderBallDisabledTexturedLoaded = true;
+    _isSliderBallDisabledTexturedLoaded = !disabled.empty();
+
     _slidBallDisabledTextureFile = disabled;
     _ballDTexType = texType;
     switch (_ballDTexType)
