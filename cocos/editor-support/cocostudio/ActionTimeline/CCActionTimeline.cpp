@@ -199,8 +199,11 @@ void ActionTimeline::step(float delta)
     }
 
     _time += delta * _timeSpeed;
-    const float endtoffset = _time - _endFrame * _frameInternal;
+    float deltaCurrFrameTime = abs(_time - _currentFrame * _frameInternal);
+    if (deltaCurrFrameTime < _frameInternal)
+        return;
 
+    const float endtoffset = _time - _endFrame * _frameInternal;
     if (endtoffset < _frameInternal)
     {
         _currentFrame = (int)(_time / _frameInternal);

@@ -180,8 +180,8 @@ void AbstractCheckButton::loadTextureBackGroundSelected(const std::string& backG
     
     _backGroundSelectedFileName = backGroundSelected;
     _backGroundSelectedTexType = texType;
-	if(!backGroundSelected.empty())
-        _isBackgroundSelectedTextureLoaded = true;
+    _isBackgroundSelectedTextureLoaded = !backGroundSelected.empty();
+
     switch (_backGroundSelectedTexType)
     {
         case TextureResType::LOCAL:
@@ -251,8 +251,8 @@ void AbstractCheckButton::loadTextureBackGroundDisabled(const std::string& backG
     }*/
     _backGroundDisabledFileName = backGroundDisabled;
     _backGroundDisabledTexType = texType;
-	if(!backGroundDisabled.empty())
-        _isBackgroundDisabledTextureLoaded = true;
+    _isBackgroundDisabledTextureLoaded = !backGroundDisabled.empty();
+
     switch (_backGroundDisabledTexType)
     {
         case TextureResType::LOCAL:
@@ -289,8 +289,8 @@ void AbstractCheckButton::loadTextureFrontCrossDisabled(const std::string& front
     }*/
     _frontCrossDisabledFileName = frontCrossDisabled;
     _frontCrossDisabledTexType = texType;
-	if(!frontCrossDisabled.empty())
-        _isFrontCrossDisabledTextureLoaded = true;
+    _isFrontCrossDisabledTextureLoaded = !frontCrossDisabled.empty();
+
     switch (_frontCrossDisabledTexType)
     {
         case TextureResType::LOCAL:
