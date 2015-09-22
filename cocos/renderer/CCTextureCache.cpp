@@ -59,6 +59,7 @@ TextureCache::TextureCache()
 : _loadingThread(nullptr)
 , _needQuit(false)
 , _asyncRefCount(0)
+, _dirty(false)
 {
 }
 
@@ -352,6 +353,7 @@ Texture2D * TextureCache::addImage(const std::string &path)
                 VolatileTextureMgr::addImageTexture(texture, fullpath);
 #endif
                 // texture already retained, no need to re-retain it
+                texture->setPath(fullpath);
                 _textures.insert( std::make_pair(fullpath, texture) );
 
                 //parse 9-patch info
@@ -400,6 +402,7 @@ Texture2D* TextureCache::addImage(Image *image, const std::string &key)
 
         if(texture)
         {
+            texture->setPath(key);
             _textures.insert( std::make_pair(key, texture) );
             texture->retain();
 
@@ -493,7 +496,8 @@ void TextureCache::removeTexture(Texture2D* texture)
 
     for( auto it=_textures.cbegin(); it!=_textures.cend(); /* nothing */ ) {
         if( it->second == texture ) {
-            texture->release();
+            texture->setValid(false);
+            texture->autorelease();
             _textures.erase(it++);
             break;
         } else
@@ -512,7 +516,8 @@ void TextureCache::removeTextureForKey(const std::string &textureKeyName)
     }
 
     if( it != _textures.end() ) {
-        (it->second)->release();
+        it->second->setValid(false);
+        (it->second)->autorelease();
         _textures.erase(it);
     }
 }
@@ -596,6 +601,26 @@ std::string TextureCache::getCachedTextureInfo() const
     buffer += buftmp;
 
     return buffer;
+}
+
+void TextureCache::renameTextureWithKey(std::string srcName, std::string dstName)
+{
+    std::string key = srcName;
+    auto it = _textures.find(key);
+
+    if( it == _textures.end() ) {
+        key = FileUtils::getInstance()->fullPathForFilename(srcName);
+        it = _textures.find(key);
+    }
+
+    if( it != _textures.end() ) {
+        std::string fullpath = FileUtils::getInstance()->fullPathForFilename(dstName);
+        Texture2D* tex = it->second;
+        tex->setPath(key);
+        _textures.insert(std::make_pair(fullpath, tex));
+        _textures.erase(it);
+        this->setDirty(true);
+    }
 }
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA

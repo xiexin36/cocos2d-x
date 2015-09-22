@@ -203,7 +203,10 @@ public:
      * @return The full path of the file.
      */
     const std::string getTextureFilePath(Texture2D* texture)const;
-
+    //For editor by liam
+    void renameTextureWithKey(std::string srcName, std::string dstName);
+    void setDirty(bool dirty) { _dirty = dirty; }
+    bool isDirty()const { return _dirty; }
 private:
     void addImageAsyncCallBack(float dt);
     void loadImage();
@@ -228,6 +231,8 @@ protected:
     int _asyncRefCount;
 
     std::unordered_map<std::string, Texture2D*> _textures;
+    //For editor by liam
+    bool _dirty;
 };
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA

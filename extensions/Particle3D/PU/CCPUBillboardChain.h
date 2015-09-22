@@ -233,7 +233,9 @@ public:
     //virtual bool preRender(SceneManager* sm, RenderSystem* rsys);
     //void getWorldTransforms(Matrix4*) const;
     /// @copydoc MovableObject::visitRenderables
-
+	
+    //For editor by liam
+    GLuint checkTextureName();
 protected:
 
     /// Setup the STL collections
@@ -324,6 +326,9 @@ protected:
 
     std::vector<VertexInfo> _vertices;
     std::vector<unsigned short> _indices;
+	
+	//For editor by liam
+    std::string            _texFile;
 };
 
 NS_CC_END

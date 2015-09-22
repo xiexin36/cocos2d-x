@@ -43,6 +43,7 @@ Particle3DQuadRender::Particle3DQuadRender()
 , _glProgramState(nullptr)
 , _indexBuffer(nullptr)
 , _vertexBuffer(nullptr)
+, _texFile("")
 {
 }
 
@@ -60,6 +61,7 @@ Particle3DQuadRender* Particle3DQuadRender::create(const std::string& texFile)
     auto ret = new (std::nothrow)Particle3DQuadRender();
     if (ret && ret->initQuadRender(texFile))
     {
+        ret->_texFile = texFile;
         ret->autorelease();
     }
     else
@@ -157,7 +159,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4 &transform, Par
     _vertexBuffer->updateVertices(&_posuvcolors[0], vertexindex/* * sizeof(_posuvcolors[0])*/, 0);
     _indexBuffer->updateIndices(&_indexData[0], index/* * sizeof(unsigned short)*/, 0);
     
-    GLuint texId = (_texture ? _texture->getName() : 0);
+    GLuint texId = this->checkTextureName();
     float depthZ = -(viewMat.m[2] * transform.m[12] + viewMat.m[6] * transform.m[13] + viewMat.m[10] * transform.m[14] + viewMat.m[14]);
 
     _meshCommand->init(
@@ -176,7 +178,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4 &transform, Par
     renderer->addCommand(_meshCommand);
 }
 
-bool Particle3DQuadRender::initQuadRender( const std::string& texFile )
+bool Particle3DQuadRender::initQuadRender(const std::string& texFile)
 {
     GLProgram* glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_3D_PARTICLE_COLOR);
     if (!texFile.empty())
@@ -211,6 +213,28 @@ bool Particle3DQuadRender::initQuadRender( const std::string& texFile )
     _stateBlock->setCullFace(true);
     _stateBlock->setCullFaceSide(RenderState::CULL_FACE_SIDE_BACK);
     return true;
+}
+
+GLuint Particle3DQuadRender::checkTextureName()
+{
+    if (TextureCache::getInstance()->isDirty())
+    {
+        if (TextureCache::getInstance()->getTextureForKey(_texFile) == nullptr)
+        {
+            _texture = nullptr;
+            this->initQuadRender("");
+        }
+        else
+            this->initQuadRender(_texFile);
+    }
+
+    if (_texture == nullptr || !_texture->isValid())
+    {
+        _texture = nullptr;
+        return 0;
+    }
+
+    return _texture->getName();
 }
 
 //////////////////////////////////////////////////////////////////////////////
