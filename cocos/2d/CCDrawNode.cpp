@@ -399,32 +399,27 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
         // texcood
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
-    //如果骨开启线抗锯齿,如参考线绘制, 则先关闭多重采样
+    //如果开启线抗锯齿,如参考线绘制, 则先关闭多重采样
     if (this->_lineSmoothEnable == false)
     {
-//         glDisable(GL_MULTISAMPLE);
+        glDisable(GL_MULTISAMPLE);
         glDisable(GL_LINE_SMOOTH);
-    }
-    else
-    {
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_BLEND);
-        GL::blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
     }
 
     glLineWidth(_lineWidth);
     glDrawArrays(GL_LINES, 0, _bufferCountGLLine);
-    
+
     if (Configuration::getInstance()->supportsShareableVAO())
     {
         GL::bindVAO(0);
     }
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,_bufferCountGLLine);
+    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _bufferCountGLLine);
+    //如果开启线抗锯齿, 如参考线绘制, 绘制完成开启多重采样
+    if (this->_lineSmoothEnable == true)
+        glEnable(GL_MULTISAMPLE);
+
     CHECK_GL_ERROR_DEBUG();
 }
 
