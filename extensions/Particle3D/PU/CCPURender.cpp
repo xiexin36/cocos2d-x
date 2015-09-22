@@ -599,12 +599,14 @@ GLuint PUParticle3DEntityRender::checkTextureName()
         else
             this->initRender(_texFile);
     }
-
-    if (_texture == nullptr || !_texture->isValid())
+    else if (_texture != nullptr && !_texture->isValid())
     {
         _texture = nullptr;
-        return 0;
+        this->initRender("");
     }
+
+    if (_texture == nullptr)
+        return 0;
 
     return _texture->getName();
 }

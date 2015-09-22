@@ -227,12 +227,14 @@ GLuint Particle3DQuadRender::checkTextureName()
         else
             this->initQuadRender(_texFile);
     }
-
-    if (_texture == nullptr || !_texture->isValid())
+    else if (_texture != nullptr && !_texture->isValid())
     {
         _texture = nullptr;
-        return 0;
+        this->initQuadRender("");
     }
+
+    if (_texture == nullptr)
+        return 0;
 
     return _texture->getName();
 }

@@ -743,12 +743,15 @@ GLuint PUBillboardChain::checkTextureName()
         else
             this->init(_texFile);
     }
-
-    if (_texture == nullptr || !_texture->isValid())
+    else if (_texture != nullptr && !_texture->isValid())
     {
         _texture = nullptr;
-        return 0;
+        this->init("");
     }
+
+    if (_texture == nullptr)
+        return 0;
+
     return _texture->getName();
 }
 
