@@ -248,7 +248,7 @@
 		3E2BDB0619C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3E2BDB0419C5E5FE0055CDCD /* lua_cocos2dx_audioengine_auto.hpp */; };
 		3E2BDB0A19C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E2BDB0819C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.cpp */; };
 		3E2BDB0B19C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E2BDB0919C5E6100055CDCD /* lua_cocos2dx_audioengine_manual.h */; };
-		430084C21A5197CC0070AB2A /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 430084BF1A5197C50070AB2A /* libcocos2d Mac.a */; };
+		430084C21A5197CC0070AB2A /* libcocos2d Mac.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */; };
 		434E49111A4B19D50094BF9D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434E49101A4B19D50094BF9D /* OpenGL.framework */; };
 		4359FC391A4B25E500705159 /* Lua-BingingsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 4359FC381A4B25E500705159 /* Lua-BingingsExport.h */; };
 		43E62E551A70180000DD097C /* lua-cocos-studio-conversions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43E62E531A70180000DD097C /* lua-cocos-studio-conversions.cpp */; };
@@ -472,7 +472,7 @@
 				940119841BA300A000B130C5 /* ApplicationServices.framework in Frameworks */,
 				940119801BA3009A00B130C5 /* AppKit.framework in Frameworks */,
 				F526F9621AB4740E00A91B72 /* libluajit.a in Frameworks */,
-				430084C21A5197CC0070AB2A /* libcocos2d Mac.a in Frameworks */,
+				430084C21A5197CC0070AB2A /* libcocos2d Mac.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,7 +833,7 @@
 		430084BA1A5197C40070AB2A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				430084BF1A5197C50070AB2A /* libcocos2d Mac.a */,
+				430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */,
 				430084C11A5197C50070AB2A /* libcocos2d iOS.a */,
 			);
 			name = Products;
@@ -1047,10 +1047,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		430084BF1A5197C50070AB2A /* libcocos2d Mac.a */ = {
+		430084BF1A5197C50070AB2A /* libcocos2d Mac.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libcocos2d Mac.a";
+			path = "libcocos2d Mac.dylib";
 			remoteRef = 430084BE1A5197C50070AB2A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1248,7 +1248,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../.. $(SRCROOT)/../../.. $(SRCROOT)/../../../base $(SRCROOT)/../../../3d $(SRCROOT)/../../../2d $(SRCROOT)/../../../deprecated $(SRCROOT)/../../../physics $(SRCROOT)/../../../math/kazmath $(SRCROOT)/../../../2d/platform $(SRCROOT)/../../../audio/include $(SRCROOT)/../../../editor-support $(SRCROOT)/../../../editor-support/spine $(SRCROOT)/../../../editor-support/cocostudio $(SRCROOT)/../../../editor-support/cocosbuilder $(SRCROOT)/../../../ui $(SRCROOT)/../../../storage $(SRCROOT)/../../../../extensions $(SRCROOT)/../../../../external $(SRCROOT)/../../../../external/chipmunk/include/chipmunk $(SRCROOT)/../../../../external/lua $(SRCROOT)/../../../../external/lua/luajit/include $(SRCROOT)/../../../../external/lua/tolua $(SRCROOT)/../../../editor-support/cocostudio/ActionTimeline";
 			};
@@ -1283,7 +1283,7 @@
 				HEADER_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../.. $(SRCROOT)/../../.. $(SRCROOT)/../../../base $(SRCROOT)/../../../3d $(SRCROOT)/../../../2d $(SRCROOT)/../../../deprecated $(SRCROOT)/../../../physics $(SRCROOT)/../../../math/kazmath $(SRCROOT)/../../../2d/platform $(SRCROOT)/../../../audio/include $(SRCROOT)/../../../editor-support $(SRCROOT)/../../../editor-support/spine $(SRCROOT)/../../../editor-support/cocostudio $(SRCROOT)/../../../editor-support/cocosbuilder $(SRCROOT)/../../../ui $(SRCROOT)/../../../storage $(SRCROOT)/../../../../extensions $(SRCROOT)/../../../../external $(SRCROOT)/../../../../external/chipmunk/include/chipmunk $(SRCROOT)/../../../../external/lua $(SRCROOT)/../../../../external/lua/luajit/include $(SRCROOT)/../../../../external/lua/tolua $(SRCROOT)/../../../editor-support/cocostudio/ActionTimeline";
 				VALIDATE_PRODUCT = YES;
