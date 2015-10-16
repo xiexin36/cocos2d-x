@@ -270,6 +270,7 @@ void FontAtlasCache::unloadFontAtlasTTF(const std::string& fontFileName)
         {
             CC_SAFE_RELEASE_NULL(item->second);
             item = _atlasMap.erase(item);
+            FontFreeType::releaseFont(fontFileName);
         }
         else
             item++;
