@@ -146,11 +146,12 @@ namespace ui {
                             const Size &originalSize,
                             const Rect& capInsets)
     {
+        Rect actualCapInsets;
         if(sprite)
         {
             auto texture = sprite->getTexture();
             auto spriteFrame = sprite->getSpriteFrame();
-            Rect actualCapInsets = capInsets;
+            actualCapInsets = capInsets;
 
             if (texture->isContain9PatchInfo())
             {
@@ -165,15 +166,14 @@ namespace ui {
 
                 }
             }
-           
-            this->updateWithSprite(sprite,
-                                   rect,
-                                   rotated,
-                                   offset,
-                                   originalSize,
-                                   actualCapInsets);
         }
-
+        //For editor when clear texture
+        this->updateWithSprite(sprite,
+            rect,
+            rotated,
+            offset,
+            originalSize,
+            actualCapInsets);
         return true;
     }
 

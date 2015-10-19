@@ -286,6 +286,9 @@
     <Filter Include="physics3d">
       <UniqueIdentifier>{9335290f-6538-4fe2-ac0f-c2b3577616f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cocostudio\reader\WidgetReader\Light3DReader">
+      <UniqueIdentifier>{c89c1c72-b2a1-4c89-bea0-2cc4c30f3f46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
@@ -1941,6 +1944,9 @@
     </ClCompile>
     <ClCompile Include="..\physics3d\CCPhysicsSprite3D.cpp">
       <Filter>physics3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor-support\cocostudio\WidgetReader\Light3DReader\Light3DReader.cpp">
+      <Filter>cocostudio\reader\WidgetReader\Light3DReader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3795,6 +3801,9 @@
     </ClInclude>
     <ClInclude Include="..\physics3d\CCPhysicsSprite3D.h">
       <Filter>physics3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor-support\cocostudio\WidgetReader\Light3DReader\Light3DReader.h">
+      <Filter>cocostudio\reader\WidgetReader\Light3DReader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
