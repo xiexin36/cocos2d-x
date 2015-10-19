@@ -40,7 +40,6 @@ THE SOFTWARE.
 #include "cocostudio/FlatBuffersSerialize.h"
 
 #include <fstream>
-#include <map>
 
 using namespace cocos2d;
 using namespace flatbuffers;
@@ -479,52 +478,17 @@ inline ActionTimeline* ActionTimelineCache::createActionWithDataBuffer(const coc
         action->addAnimationInfo(info);
     }
 
-    auto timeLines = nodeAction->timeLines();
-    int timelineLength = timeLines->size();
-    std::map<std::string, cocostudio::timeline::Timeline*> properTimelineMap;
+    auto timelines = nodeAction->timeLines();
+    int timelineLength = timelines->size();
     for (int i = 0; i < timelineLength; i++)
     {
-        auto timelineFlatBuf = timeLines->Get(i);
+        auto timelineFlatBuf = timelines->Get(i);
         Timeline* timeline = loadTimelineWithFlatBuffers(timelineFlatBuf);
+        
         if (timeline)
-        {
-            properTimelineMap.insert(std::make_pair(timelineFlatBuf->property()->c_str(), timeline));
-        }
+            action->addTimeline(timeline);
     }
 
-    // sort the timelines depends property name
-    int nodetimelineCount = properTimelineMap.size();
-    cocostudio::timeline::Timeline** sortedTimeline = new cocostudio::timeline::Timeline*[nodetimelineCount];
-    int timelineIterIndex = 0;
-
-    auto anchorIter = properTimelineMap.find(Property_AnchorPoint);// make sure position timeline before anchor point timeline
-    auto positionIter = properTimelineMap.find(Property_Position);
-    int positionTimelieIndex = -1;
-    bool needsortanchor = anchorIter != properTimelineMap.end() && positionIter != properTimelineMap.end();
-    for (const auto& properTimelinePair : properTimelineMap)
-    {
-        if (needsortanchor)
-        {
-            if (properTimelinePair == (*positionIter))
-                positionTimelieIndex = timelineIterIndex;
-            else if (properTimelinePair == (*anchorIter) && positionTimelieIndex != -1)
-            {
-                sortedTimeline[positionTimelieIndex] = properTimelinePair.second;
-                sortedTimeline[timelineIterIndex] = positionIter->second;
-                timelineIterIndex++;
-                needsortanchor = false;
-                continue;
-            }
-        }
-        sortedTimeline[timelineIterIndex] = properTimelinePair.second;
-        timelineIterIndex++;
-    }
-    //end sort
-    for (int i = 0; i < nodetimelineCount; i++)
-    {
-        action->addTimeline(sortedTimeline[i]);
-    }
-    delete[] sortedTimeline;
     return action;
 }
 
@@ -1005,50 +969,15 @@ ActionTimeline* ActionTimelineCache::createActionWithFlatBuffersForSimulator(con
 
     auto timeLines = nodeAction->timeLines();
     int timelineLength = timeLines->size();
-    std::map<std::string, cocostudio::timeline::Timeline*> properTimelineMap;
     for (int i = 0; i < timelineLength; i++)
     {
         auto timelineFlatBuf = timeLines->Get(i);
         Timeline* timeline = loadTimelineWithFlatBuffers(timelineFlatBuf);
+        
         if (timeline)
-        {
-            properTimelineMap.insert(std::make_pair(timelineFlatBuf->property()->c_str(), timeline));
-        }
+            action->addTimeline(timeline);
     }
     
-    // sort the timelines depends property name
-    int nodetimelineCount = properTimelineMap.size();
-    cocostudio::timeline::Timeline** sortedTimeline = new cocostudio::timeline::Timeline*[nodetimelineCount];
-    int timelineIterIndex = 0;
-
-    auto anchorIter = properTimelineMap.find(Property_AnchorPoint);// make sure position timeline before anchor point timeline
-    auto positionIter = properTimelineMap.find(Property_Position);
-    int positionTimelieIndex = -1;
-    bool needsortanchor = anchorIter != properTimelineMap.end() && positionIter != properTimelineMap.end();
-    for (const auto& properTimelinePair : properTimelineMap)
-    {
-        if (needsortanchor)
-        {
-            if (properTimelinePair == (*positionIter))
-                positionTimelieIndex = timelineIterIndex;
-            else if (properTimelinePair == (*anchorIter) && positionTimelieIndex != -1)
-            {
-                sortedTimeline[positionTimelieIndex] = properTimelinePair.second;
-                sortedTimeline[timelineIterIndex] = positionIter->second;
-                timelineIterIndex++;
-                needsortanchor = false;
-                continue;
-            }
-        }
-        sortedTimeline[timelineIterIndex] = properTimelinePair.second;
-        timelineIterIndex++;
-    }
-    //end sort
-    for (int i = 0; i < nodetimelineCount; i++)
-    {
-        action->addTimeline(sortedTimeline[i]);
-    }
-    delete[] sortedTimeline;
     fbs->deleteFlatBufferBuilder();
     
     return action;
