@@ -101,6 +101,8 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
 
     bool initQuadRender(const std::string& texFile);
+    //For editor by liam
+    GLuint checkTextureName();
     
 protected:
     MeshCommand*           _meshCommand;
@@ -108,6 +110,8 @@ protected:
     GLProgramState*        _glProgramState;
     IndexBuffer*           _indexBuffer; //index buffer
     VertexBuffer*          _vertexBuffer; // vertex buffer
+    //For editor by liam
+    std::string            _texFile;
     
     struct posuvcolor
     {

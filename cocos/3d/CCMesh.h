@@ -193,6 +193,9 @@ public:
      * force set this Sprite3D to 2D render queue
      */
     void setForce2DQueue(bool force2D) { _force2DQueue = force2D; }
+	
+	//For editor by liam
+    GLuint checkTextureName();
 
 CC_CONSTRUCTOR_ACCESS:
 
@@ -234,6 +237,9 @@ protected:
     std::vector<float> _spotLightUniformInnerAngleCosValues;
     std::vector<float> _spotLightUniformOuterAngleCosValues;
     std::vector<float> _spotLightUniformRangeInverseValues;
+	
+	//For editor by liam
+    std::string _texFile;
 };
 
 // end of 3d group

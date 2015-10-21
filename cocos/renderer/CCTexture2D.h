@@ -406,7 +406,11 @@ public:
     /** Get a shader program from the texture.*/
     GLProgram* getGLProgram() const;
 
-
+    //For editor by liam
+    void setValid(bool valid) { _valid = valid; }
+    bool isValid()const { return _valid; }
+    void setPath(std::string file) { _filePath = file; }//谨慎调用，会有资源管理问题；
+    std::string getPath()const { return _filePath; }
 public:
     /** Get pixel info map, the key-value pairs is PixelFormat and PixelFormatInfo.*/
     static const PixelFormatInfoMap& getPixelFormatInfoMap();
@@ -540,6 +544,12 @@ protected:
     friend class SpriteFrameCache;
     friend class TextureCache;
     friend class ui::Scale9Sprite;
+	
+	//For editor by liam
+    //是否有效
+    bool _valid;
+    //文件路径
+    std::string _filePath;
 };
 
 

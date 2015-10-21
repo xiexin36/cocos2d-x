@@ -436,6 +436,8 @@ Texture2D::Texture2D()
 , _shaderProgram(nullptr)
 , _antialiasEnabled(true)
 , _ninePatchInfo(nullptr)
+, _valid(true)
+, _filePath("")
 {
 }
 
