@@ -324,6 +324,10 @@ void Director::drawScene()
     {
         calculateMPF();
     }
+
+    //For editor by liam
+    if (_textureCache != nullptr)
+        _textureCache->setDirty(false);
 }
 
 void Director::calculateDeltaTime()
