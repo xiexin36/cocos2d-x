@@ -1,19 +1,15 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2014 Chukong Technologies Inc.
-
 http://www.cocos2d-x.org
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -122,6 +118,7 @@ static bool _initWithString(const char * text, Device::TextAlign align, const ch
         // linebreak
         if (info->width > 0) {
             if ([string sizeWithAttributes:tokenAttributesDict].width > info->width) {
+                int nextLineTop = 0;
                 NSMutableString *lineBreak = [[[NSMutableString alloc] init] autorelease];
                 NSUInteger length = [string length];
                 NSRange range = NSMakeRange(0, 1);
@@ -136,8 +133,6 @@ static bool _initWithString(const char * text, Device::TextAlign align, const ch
                         lastBreakLocation = i + insertCount;
                     }
                     textSize = [lineBreak sizeWithAttributes:tokenAttributesDict];
-                    if(info->height > 0 && (int)textSize.height > info->height)
-                        break;
                     if ((int)textSize.width > info->width) {
                         if(lastBreakLocation > 0) {
                             [lineBreak insertString:@"\r" atIndex:lastBreakLocation];
@@ -147,6 +142,10 @@ static bool _initWithString(const char * text, Device::TextAlign align, const ch
                             [lineBreak insertString:@"\r" atIndex:[lineBreak length] - 1];
                         }
                         insertCount += 1;
+                        
+                        nextLineTop += (int)textSize.height;
+                        if(info->height > 0 && nextLineTop > (int)info->height)
+                            break;
                     }
                 }
                 
@@ -202,7 +201,7 @@ static bool _initWithString(const char * text, Device::TextAlign align, const ch
         
         [image lockFocus];
         
-        // patch for mac retina display and lableTTF
+        // patch for mac retina display and labelTTF
         [[NSAffineTransform transform] set];
         
         //[stringWithAttributes drawAtPoint:NSMakePoint(xPadding, offsetY)]; // draw at offset position
