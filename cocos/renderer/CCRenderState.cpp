@@ -153,6 +153,12 @@ RenderState* RenderState::getTopmost(RenderState* below)
     return NULL;
 }
 
+void RenderState::setStateBlock(StateBlock* state)
+{
+    CC_SAFE_RETAIN(state);
+    CC_SAFE_RELEASE(_state);
+    _state = state;
+}
 RenderState::StateBlock* RenderState::getStateBlock() const
 {
     return _state;

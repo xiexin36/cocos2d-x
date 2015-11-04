@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C261F321BE75EC600707478 /* Light3DReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C261F301BE75EC600707478 /* Light3DReader.cpp */; };
+		0C261F331BE75EC600707478 /* Light3DReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C261F301BE75EC600707478 /* Light3DReader.cpp */; };
+		0C261F341BE75EC600707478 /* Light3DReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C261F311BE75EC600707478 /* Light3DReader.h */; };
+		0C261F351BE75EC600707478 /* Light3DReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C261F311BE75EC600707478 /* Light3DReader.h */; };
 		0C85E2EC1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */; };
 		0C85E2ED1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */; };
 		0C85E2EE1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */; };
@@ -3252,6 +3256,8 @@
 		06CAAABF186AD63B0012A414 /* TriggerMng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerMng.h; sourceTree = "<group>"; };
 		06CAAAC0186AD63B0012A414 /* TriggerObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerObj.cpp; sourceTree = "<group>"; };
 		06CAAAC1186AD63B0012A414 /* TriggerObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerObj.h; sourceTree = "<group>"; };
+		0C261F301BE75EC600707478 /* Light3DReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Light3DReader.cpp; sourceTree = "<group>"; };
+		0C261F311BE75EC600707478 /* Light3DReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light3DReader.h; sourceTree = "<group>"; };
 		0C85E2EA1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCCameraBackgroundBrush.cpp; sourceTree = "<group>"; };
 		0C85E2EB1B8BFA0B0093FCC2 /* CCCameraBackgroundBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCameraBackgroundBrush.h; sourceTree = "<group>"; };
 		0C85E2F21B8BFA320093FCC2 /* ccShader_CameraClear.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_CameraClear.frag; sourceTree = "<group>"; };
@@ -5248,6 +5254,15 @@
 				0634A4CF194B19E400E608AF /* CCTimelineMacro.h */,
 			);
 			path = ActionTimeline;
+			sourceTree = "<group>";
+		};
+		0C261F2F1BE75EC600707478 /* Light3DReader */ = {
+			isa = PBXGroup;
+			children = (
+				0C261F301BE75EC600707478 /* Light3DReader.cpp */,
+				0C261F311BE75EC600707478 /* Light3DReader.h */,
+			);
+			path = Light3DReader;
 			sourceTree = "<group>";
 		};
 		0CF97DE61B8DC4B3009E0710 /* GameNode3DReader */ = {
@@ -7551,6 +7566,7 @@
 		50FCEB6818C72017004AD434 /* WidgetReader */ = {
 			isa = PBXGroup;
 			children = (
+				0C261F2F1BE75EC600707478 /* Light3DReader */,
 				0CF97DE61B8DC4B3009E0710 /* GameNode3DReader */,
 				156D1A311B60906100B5A65A /* SkeletonReader */,
 				4333473D1AA4F71600052EE6 /* Node3DReader */,
@@ -8946,6 +8962,7 @@
 				433347571AA4F71600052EE6 /* UserCameraReader.h in Headers */,
 				9DE035161BCE8F6700A9E800 /* Recast.h in Headers */,
 				B29A7E1F19EE1B7700872B35 /* BoneData.h in Headers */,
+				0C261F341BE75EC600707478 /* Light3DReader.h in Headers */,
 				430274401AB7446F00993C80 /* CCPUCollisionAvoidanceAffector.h in Headers */,
 				9DE0310B1BCE8E5000A9E800 /* Bullet-C-Api.h in Headers */,
 				430275601AB7446F00993C80 /* CCPUOnTimeObserver.h in Headers */,
@@ -9870,6 +9887,7 @@
 				15AE1BEE19AAE01E00C27E9E /* CCControlExtensions.h in Headers */,
 				430274291AB7446F00993C80 /* CCPUBoxCollider.h in Headers */,
 				1A5701E5180BCB8C0088DEC7 /* CCScene.h in Headers */,
+				0C261F351BE75EC600707478 /* Light3DReader.h in Headers */,
 				43E62E3E1A6D049900DD097C /* CCAllocatorMacros.h in Headers */,
 				1A5701E9180BCB8C0088DEC7 /* CCTransition.h in Headers */,
 				15AE198F19AAD36E00C27E9E /* CheckBoxReader.h in Headers */,
@@ -10704,6 +10722,7 @@
 				1A5701E6180BCB8C0088DEC7 /* CCTransition.cpp in Sources */,
 				9DE031ED1BCE8E6300A9E800 /* btAxisSweep3.cpp in Sources */,
 				B24AA985195A675C007B4522 /* CCFastTMXLayer.cpp in Sources */,
+				0C261F321BE75EC600707478 /* Light3DReader.cpp in Sources */,
 				15AE1A6A19AAD40300C27E9E /* b2ChainAndCircleContact.cpp in Sources */,
 				15B3708819EE414C00ABE682 /* Manifest.cpp in Sources */,
 				9DE032B71BCE8E7A00A9E800 /* btGjkPairDetector.cpp in Sources */,
@@ -11680,6 +11699,7 @@
 				50ABBE8C1925AB6F00A911A9 /* CCNS.cpp in Sources */,
 				B29A7DE019EE1B7700872B35 /* IkConstraintData.c in Sources */,
 				43E62E381A6D049900DD097C /* CCAllocatorGlobal.cpp in Sources */,
+				0C261F331BE75EC600707478 /* Light3DReader.cpp in Sources */,
 				B29A7DFC19EE1B7700872B35 /* spine-cocos2dx.cpp in Sources */,
 				15AE1BA919AADFDF00C27E9E /* UIVBox.cpp in Sources */,
 				50ABBDAE1925AB4100A911A9 /* CCRenderer.cpp in Sources */,

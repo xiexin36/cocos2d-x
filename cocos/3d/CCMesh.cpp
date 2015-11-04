@@ -401,6 +401,10 @@ void Mesh::setGLProgramState(GLProgramState* glProgramState)
 {
     // XXX create dummy texture
     auto material = Material::createWithGLStateProgram(glProgramState);
+
+    if (_material)
+        material->setStateBlock(_material->getStateBlock());
+
     setMaterial(material);
 
     // Was the texture set before teh GLProgramState ? Set it
