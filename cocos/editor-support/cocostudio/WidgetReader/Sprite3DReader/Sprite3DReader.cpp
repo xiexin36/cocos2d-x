@@ -193,7 +193,7 @@ namespace cocostudio
                                                                 resourceType),
                                              runAction,
                                              isFlipped,
-                                             1
+                                             lightFlag
                                              );
         
         return *(Offset<Table>*)(&options);
@@ -242,6 +242,11 @@ namespace cocostudio
         {
             sprite3D->setCullFaceEnabled(true);
             sprite3D->setCullFace(GL_FRONT);
+        }
+
+        if (lightFlag <= 0)
+        {
+            lightFlag = 1;
         }
         sprite3D->setLightMask(lightFlag);
         

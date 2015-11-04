@@ -248,6 +248,9 @@ void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const V
         CC_SAFE_RELEASE_NULL(it->second);
         _atlasMap.erase(it);
     }
+    else
+        return;
+
     FontFNT::reloadBMFontResource(fontFileName);
     auto font = FontFNT::create(fontFileName, imageOffset);
     if (font)
