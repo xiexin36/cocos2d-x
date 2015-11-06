@@ -52,7 +52,7 @@ static std::unordered_map<std::string, DataRef> s_cacheFontData;
 FontFreeType * FontFreeType::create(const std::string &fontName, int fontSize, GlyphCollection glyphs, const char *customGlyphs,bool distanceFieldEnabled /* = false */,int outline /* = 0 */)
 {
     // use memPatch to avoid new FontFreeType object has the same address as old one
-    int * memPatch = new int[random() % 4 + 2];
+    int * memPatch = new int[random() % 2 + 1];
     FontFreeType *tempFont =  new FontFreeType(distanceFieldEnabled,outline);
     delete[] memPatch;
 
