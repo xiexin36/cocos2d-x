@@ -557,6 +557,9 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
             RenderState::StateBlock::_defaultState->setDepthWrite(false);
             RenderState::StateBlock::_defaultState->setBlend(true);
         }
+        glDisable(GL_CULL_FACE);
+        RenderState::StateBlock::_defaultState->setCullFace(false);
+
         for (auto it = zNegQueue.cbegin(); it != zNegQueue.cend(); ++it)
         {
             processRenderCommand(*it);
@@ -578,6 +581,8 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
         RenderState::StateBlock::_defaultState->setDepthWrite(true);
         RenderState::StateBlock::_defaultState->setBlend(false);
 
+        glEnable(GL_CULL_FACE);
+        RenderState::StateBlock::_defaultState->setCullFace(true);
 
         for (auto it = opaqueQueue.cbegin(); it != opaqueQueue.cend(); ++it)
         {
@@ -600,6 +605,8 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
         RenderState::StateBlock::_defaultState->setDepthWrite(false);
         RenderState::StateBlock::_defaultState->setBlend(true);
 
+        glEnable(GL_CULL_FACE);
+        RenderState::StateBlock::_defaultState->setCullFace(true);
 
         for (auto it = transQueue.cbegin(); it != transQueue.cend(); ++it)
         {
@@ -636,6 +643,10 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
             RenderState::StateBlock::_defaultState->setBlend(true);
 
         }
+
+        glDisable(GL_CULL_FACE);
+        RenderState::StateBlock::_defaultState->setCullFace(false);
+
         for (auto it = zZeroQueue.cbegin(); it != zZeroQueue.cend(); ++it)
         {
             processRenderCommand(*it);
@@ -672,6 +683,9 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
             
         }
         
+        glDisable(GL_CULL_FACE);
+        RenderState::StateBlock::_defaultState->setCullFace(false);
+
         for (auto it = zPosQueue.cbegin(); it != zPosQueue.cend(); ++it)
         {
             processRenderCommand(*it);
