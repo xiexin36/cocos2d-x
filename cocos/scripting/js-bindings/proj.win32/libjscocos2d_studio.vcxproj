@@ -123,7 +123,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '12.0'">v120</PlatformToolset>
@@ -155,6 +155,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(Configuration).win32\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -190,7 +191,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\..\external\spidermonkey\prebuilt\win32\*.*" 
       <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_LIB;XP_WIN;JS_HAVE___INTN;JS_INTPTR_TYPE=int;COCOS2D_JAVASCRIPT=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_LIB;XP_WIN;JS_HAVE___INTN;JS_INTPTR_TYPE=int;COCOS2D_JAVASCRIPT=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;_USRJSDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)..;$(EngineRoot);$(EngineRoot)cocos;$(EngineRoot)cocos\base;$(EngineRoot)cocos\3d;$(EngineRoot)cocos\2d;$(EngineRoot)cocos\physics3d;$(EngineRoot)cocos\ui;$(EngineRoot)cocos\navmesh;$(EngineRoot)cocos\storage;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\audio\include;$(EngineRoot)extensions;$(EngineRoot)external;$(ProjectDir)..\auto;$(ProjectDir)..\manual;$(ProjectDir)..\manual\cocostudio;$(ProjectDir)..\manual\navmesh;$(ProjectDir)..\manual\spine;$(ProjectDir)..\..\..\..\external\spidermonkey\include\win32;$(EngineRoot)external\chipmunk\include\chipmunk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068;4101;4800;4251;4244;4099;4083;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -201,6 +202,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\..\external\spidermonkey\prebuilt\win32\*.*" 
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OpenAL32.lib;advapi32.lib;comdlg32.lib;gdi32.lib;glew32.lib;kernel32.lib;libSpine.lib;libcocos2d.lib;libcurl_imp.lib;libmpg123.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;mozjs-33.lib;odbc32.lib;odbccp32.lib;ole32.lib;oleaut32.lib;opengl32.lib;shell32.lib;sqlite3.lib;user32.lib;uuid.lib;websockets.lib;winspool.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
