@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "ui/UIScale9Sprite.h"
 #include "ui/UIHelper.h"
 #include "2d/CCSprite.h"
+#include "2d/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -39,8 +40,8 @@ ImageView::ImageView():
 _scale9Enabled(false),
 _prevIgnoreSize(true),
 _capInsets(Rect::ZERO),
-_imageRenderer(nullptr),
 _textureFile(""),
+_imageRenderer(nullptr),
 _imageTexType(TextureResType::LOCAL),
 _imageTextureSize(_contentSize),
 _imageRendererAdaptDirty(true)
@@ -118,7 +119,7 @@ void ImageView::initRenderer()
 
 void ImageView::loadTexture(const std::string& fileName, TextureResType texType)
 {
-    if (fileName.empty() || (_textureFile == fileName && _imageTexType == texType))
+    if (fileName.empty())
     {
         return;
     }
@@ -313,14 +314,14 @@ void ImageView::copySpecialProperties(Widget *widget)
     }
 }
 
-//For Editor
-ResouceData ImageView::csGetRenderFile()
+ResouceData ImageView::getRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_imageTexType;
     rData.file = _textureFile;
     return rData;
 }
+
 }
 
 NS_CC_END

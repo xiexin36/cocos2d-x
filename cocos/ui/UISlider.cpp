@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "ui/UIHelper.h"
 #include "2d/CCSprite.h"
 #include "2d/CCCamera.h"
+#include "2d/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -57,11 +58,6 @@ _sliderBallNormalTextureScaleX(1.0),
 _sliderBallNormalTextureScaleY(1.0),
 _isSliderBallPressedTextureLoaded(false),
 _isSliderBallDisabledTexturedLoaded(false),
-_textureFile(""),
-_progressBarTextureFile(""),
-_slidBallNormalTextureFile(""),
-_slidBallPressedTextureFile(""),
-_slidBallDisabledTextureFile(""),
 _capInsetsBarRenderer(Rect::ZERO),
 _capInsetsProgressBarRenderer(Rect::ZERO),
 _sliderEventListener(nullptr),
@@ -73,7 +69,12 @@ _ballNTexType(TextureResType::LOCAL),
 _ballPTexType(TextureResType::LOCAL),
 _ballDTexType(TextureResType::LOCAL),
 _barRendererAdaptDirty(true),
-_progressBarRendererDirty(true)
+_progressBarRendererDirty(true),
+_textureFile(""),
+_progressBarTextureFile(""),
+_slidBallNormalTextureFile(""),
+_slidBallPressedTextureFile(""),
+_slidBallDisabledTextureFile("")
 {
     setTouchEnabled(true);
 }
@@ -152,11 +153,13 @@ void Slider::initRenderer()
 
 void Slider::loadBarTexture(const std::string& fileName, TextureResType texType)
 {
-    /*if (fileName.empty())
+    _textureFile = fileName;
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (fileName.empty())
     {
         return;
-    }*/
-    _textureFile = fileName;
+    }
+#endif
     _barTexType = texType;
     switch (_barTexType)
     {
@@ -188,11 +191,13 @@ void Slider::setupBarTexture()
 
 void Slider::loadProgressBarTexture(const std::string& fileName, TextureResType texType)
 {
-    /*if (fileName.empty())
+    _progressBarTextureFile = fileName;
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (fileName.empty())
     {
         return;
-    }*/
-    _progressBarTextureFile = fileName;
+    }
+#endif
     _progressBarTexType = texType;
     switch (_progressBarTexType)
     {
@@ -312,11 +317,13 @@ void Slider::loadSlidBallTextures(const std::string& normal,
 
 void Slider::loadSlidBallTextureNormal(const std::string& normal,TextureResType texType)
 {
-    /*if (normal.empty())
+    _slidBallNormalTextureFile = normal;
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (normal.empty())
     {
         return;
-    }*/
-    _slidBallNormalTextureFile = normal;
+    }
+#endif
     _ballNTexType = texType;
     switch (_ballNTexType)
     {
@@ -339,14 +346,15 @@ void Slider::loadSlidBallTextureNormal(SpriteFrame* spriteframe)
 
 void Slider::loadSlidBallTexturePressed(const std::string& pressed,TextureResType texType)
 {
-    /*if (pressed.empty())
+    _slidBallPressedTextureFile = pressed;
+    _isSliderBallPressedTextureLoaded = !pressed.empty();
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (pressed.empty())
     {
         return;
-    }*/
-    _slidBallPressedTextureFile = pressed;
+    }
+#endif
     _ballPTexType = texType;
-    _isSliderBallPressedTextureLoaded = !pressed.empty();
-
     switch (_ballPTexType)
     {
         case TextureResType::LOCAL:
@@ -370,13 +378,14 @@ void Slider::loadSlidBallTexturePressed(SpriteFrame* spriteframe)
 
 void Slider::loadSlidBallTextureDisabled(const std::string& disabled,TextureResType texType)
 {
-    /*if (disabled.empty())
+    _slidBallDisabledTextureFile = disabled;
+    _isSliderBallDisabledTexturedLoaded = !disabled.empty();
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (disabled.empty())
     {
         return;
-    }*/
-    _isSliderBallDisabledTexturedLoaded = !disabled.empty();
-
-    _slidBallDisabledTextureFile = disabled;
+    }
+#endif
     _ballDTexType = texType;
     switch (_ballDTexType)
     {
@@ -443,7 +452,11 @@ bool Slider::hitTest(const cocos2d::Vec2 &pt, const Camera *camera, Vec3 *p) con
     Rect rect;
     rect.size = _slidBallNormalRenderer->getContentSize();
     auto w2l = _slidBallNormalRenderer->getWorldToNodeTransform();
-    return isScreenPointInRect(pt, camera, w2l, rect, nullptr);
+
+    Rect sliderBarRect;
+    sliderBarRect.size = this->_barRenderer->getContentSize();
+    auto barW2l = this->_barRenderer->getWorldToNodeTransform();
+    return isScreenPointInRect(pt, camera, w2l, rect, nullptr) || isScreenPointInRect(pt, camera, barW2l, sliderBarRect, nullptr);
 }
 
 bool Slider::onTouchBegan(Touch *touch, Event *unusedEvent)
@@ -467,6 +480,7 @@ void Slider::onTouchMoved(Touch *touch, Event *unusedEvent)
 void Slider::onTouchEnded(Touch *touch, Event *unusedEvent)
 {
     Widget::onTouchEnded(touch, unusedEvent);
+    percentChangedEvent(EventType::ON_PERCENTAGE_CHANGED);
     percentChangedEvent(EventType::ON_SLIDEBALL_UP);
 }
 
@@ -730,36 +744,35 @@ void Slider::copySpecialProperties(Widget *widget)
     }
 }
 
-//For Editor
-ResouceData Slider::csGetBackFile()
+ResouceData Slider::getBackFile()
 {
     ResouceData rData;
     rData.type = (int)_barTexType;
     rData.file = _textureFile;
     return rData;
 }
-ResouceData Slider::csGetProgressBarFile()
+ResouceData Slider::getProgressBarFile()
 {
     ResouceData rData;
     rData.type = (int)_progressBarTexType;
     rData.file = _progressBarTextureFile;
     return rData;
 }
-ResouceData Slider::csGetBallNormalFile()
+ResouceData Slider::getBallNormalFile()
 {
     ResouceData rData;
     rData.type = (int)_ballNTexType;
     rData.file = _slidBallNormalTextureFile;
     return rData;
 }
-ResouceData Slider::csGetBallPressedFile()
+ResouceData Slider::getBallPressedFile()
 {
     ResouceData rData;
     rData.type = (int)_ballPTexType;
     rData.file = _slidBallPressedTextureFile;
     return rData;
 }
-ResouceData Slider::csGetBallDisabeldFile()
+ResouceData Slider::getBallDisabeldFile()
 {
     ResouceData rData;
     rData.type = (int)_ballDTexType;

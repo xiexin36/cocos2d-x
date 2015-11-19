@@ -24,13 +24,14 @@
 #ifndef __COCOS2DX_SCRIPTING_LUA_COCOS2DXSUPPORT_LUABAISCCONVERSIONS_H__
 #define __COCOS2DX_SCRIPTING_LUA_COCOS2DXSUPPORT_LUABAISCCONVERSIONS_H__
 
+#include "Lua-BingingsExport.h"
+
 extern "C" {
 #include "lua.h"
 #include "tolua++.h"
 }
 #include "tolua_fix.h"
 #include "cocos2d.h"
-#include "Lua-BingingsExport.h"
 
 using namespace cocos2d;
 
@@ -54,7 +55,7 @@ cocos2d::log(__VA_ARGS__);                                                  \
 /**
  * If the typename of userdata at the given accepteable index of stack is equal to type it return true,otherwise return false .
  * If def != 0, lo could greater than the top index of stack, return value is true.
- * If the value of the given index is nil, retrun value also is true.
+ * If the value of the given index is nil, return value also is true.
  *
  * @param L the current lua_State.
  * @param lo the given accpetable index of stack.
@@ -62,14 +63,14 @@ cocos2d::log(__VA_ARGS__);                                                  \
  * @param def whether has default value.
  * @return Return true if the typename of userdata at the given accepteable index of stack is equal to type, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_is_usertype(lua_State* L,int lo,const char* type, int def);
+CC_LUA_DLL extern bool luaval_is_usertype(lua_State* L, int lo, const char* type, int def);
 // to native
 
 /**
  * @name luaval_to_native
  * The following function are all used to convert the Lua values at the given acceptable index to the corresponding c++ values.
  * If the Lua values can be converted the return value is true, otherwise return false.
- * If it happens error during the conversion process, it outputs the error msg in the console to provide infromation about the name of calling function, the typename of value at the given acceptable index, and so on.
+ * If it happens error during the conversion process, it outputs the error msg in the console to provide information about the name of calling function, the typename of value at the given acceptable index, and so on.
  * @{
  **/
 
@@ -180,7 +181,7 @@ CC_LUA_DLL extern bool luaval_to_long_long(lua_State* L, int lo, long long* outV
  * @param lo the given accpetable index of stack.
  * @param outValue the pointer to store std::string value converted from the Lua value.
  * @param funcName the name of calling function, it is used for error output in the debug model.
- * @return Return true if the value at the given accpetable index of stack is is a string or a number convertible to a string, otherwise return false.
+ * @return Return true if the value at the given acceptable index of stack is a string or a number convertible to a string, otherwise return false.
  */
 CC_LUA_DLL extern bool luaval_to_std_string(lua_State* L, int lo, std::string* outValue, const char* funcName = "");
 
@@ -327,7 +328,7 @@ CC_LUA_DLL extern bool luaval_to_fontdefinition(lua_State* L, int lo, FontDefini
 CC_LUA_DLL extern bool luaval_to_mat4(lua_State* L, int lo, cocos2d::Mat4* outValue, const char* funcName = "");
 
 /**
- * Get a __Array object value frome the given accpetable index of stack.
+ * Get a __Array object value from the given accpetable index of stack.
  * Because __Array is deprecated, so this function would be not called anymore.
  */
 CC_LUA_DLL extern bool luaval_to_array(lua_State* L, int lo, __Array** outValue, const char* funcName = "");
@@ -838,7 +839,7 @@ CC_LUA_DLL extern bool luaval_to_std_map_string_string(lua_State* L, int lo, std
 
 /**
  * @name native_to_luaval
- * The following function are all used to convert native c++ values to the the corresponding Lua values,then push it into the Lua stack.
+ * The following function are all used to convert native c++ values to the corresponding Lua values, then push it into the Lua stack.
  *
  * @{
  **/
@@ -1294,7 +1295,7 @@ CC_LUA_DLL void std_vector_vec3_to_luaval(lua_State* L, const std::vector<cocos2
  */
 CC_LUA_DLL void std_map_string_string_to_luaval(lua_State* L, const std::map<std::string, std::string>& inValue);
 
-// For cocoStudio
+// Follow 2 function is added for Cocos Studio to compatible with MacOSX 32bit version
 CC_LUA_DLL extern bool luaval_to_node(lua_State* L, int lo, const char* type, cocos2d::Node** node);
 CC_LUA_DLL extern void node_to_luaval(lua_State* L, const char* type, cocos2d::Node* node);
 

@@ -26,6 +26,8 @@
 
 #if CC_USE_NAVMESH
 
+#include "Lua-BingingsExport.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -34,7 +36,6 @@ extern "C" {
 }
 #endif
 
-#include "Lua-BingingsExport.h"
 
 /**
  * @addtogroup lua

@@ -26,7 +26,8 @@
 
 #include "jsapi.h"
 #include "jsfriendapi.h"
+#include "js-BingingsExport.h"
 
-void register_jsb_socketio(JSContext* cx, JS::HandleObject global);
+CC_JS_DLL void register_jsb_socketio(JSContext* cx, JS::HandleObject global);
 
 #endif /* defined(__jsb_socketio__) */

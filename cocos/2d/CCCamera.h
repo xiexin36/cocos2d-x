@@ -58,6 +58,8 @@ enum class CameraFlag
     USER6 = 1 << 6,
     USER7 = 1 << 7,
     USER8 = 1 << 8,
+
+    // Use in cocos studio for edit 3d relate component
     SkyBox = 1 << 10,
     DEFAULTCAMERA = DEFAULT | SkyBox,
     PIXEL = 1 << 13,
@@ -249,7 +251,7 @@ public:
      */
     void apply();
     /**
-     Set FBO, which will attacha several render target for the rendered result.
+     Set FBO, which will attach several render target for the rendered result.
     */
     void setFrameBufferObject(experimental::FrameBuffer* fbo);
     /**
@@ -273,12 +275,11 @@ public:
      * Get clear brush
      */
     CameraBackgroundBrush* getBackgroundBrush() const { return _clearBrush; }
-
-    //For Editor
-    bool isBrushValid();
     
     virtual void visit(Renderer* renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
-    
+
+    bool isBrushValid();
+
 CC_CONSTRUCTOR_ACCESS:
     Camera();
     ~Camera();
@@ -288,7 +289,7 @@ CC_CONSTRUCTOR_ACCESS:
      */
     void setScene(Scene* scene);
     
-    /**set additional matrix for the projection matrix, it multiplys mat to projection matrix when called, used by WP8*/
+    /**set additional matrix for the projection matrix, it multiplies mat to projection matrix when called, used by WP8*/
     void setAdditionalProjection(const Mat4& mat);
     
     /** init camera */
@@ -316,7 +317,7 @@ protected:
     unsigned short _cameraFlag; // camera flag
     mutable Frustum _frustum;   // camera frustum
     mutable bool _frustumDirty;
-    int8_t  _depth;                 //camera depth, the depth of camera with CameraFlag::DEFAULT flag is 0 by default, a camera with larger depth is drawn on top of camera with smaller detph
+    int8_t  _depth;                 //camera depth, the depth of camera with CameraFlag::DEFAULT flag is 0 by default, a camera with larger depth is drawn on top of camera with smaller depth
     static Camera* _visitingCamera;
     
     CameraBackgroundBrush* _clearBrush; //brush used to clear the back ground

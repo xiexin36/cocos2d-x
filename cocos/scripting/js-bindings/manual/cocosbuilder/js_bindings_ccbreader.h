@@ -27,6 +27,7 @@
 
 #include "cocosbuilder_specifics.hpp"
 #include "cocosbuilder/CocosBuilder.h"
+#include "js-BingingsExport.h"
 
 class CCBScriptCallbackProxy:  public cocos2d::Layer
 , public cocosbuilder::CCBSelectorResolver
@@ -69,7 +70,7 @@ protected:
     CCB_VIRTUAL_NEW_AUTORELEASE_CREATECCNODE_METHOD(CCBScriptCallbackProxy);
 };
 
-void register_CCBuilderReader(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_CCBuilderReader(JSContext *cx, JS::HandleObject global);
 bool js_CocosBuilder_Run(JSContext *cx, uint32_t argc, jsval *vp);
 
 #endif /* __JS_BINDINGS_CCBREADER_H__ */

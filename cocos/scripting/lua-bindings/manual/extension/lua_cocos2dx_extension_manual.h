@@ -24,6 +24,8 @@
 #ifndef COCOS2DX_SCRIPT_LUA_COCOS2DX_SUPPORT_LUA_COCOS2DX_EXTENSION_MANUAL_H
 #define COCOS2DX_SCRIPT_LUA_COCOS2DX_SUPPORT_LUA_COCOS2DX_EXTENSION_MANUAL_H
 
+#include "Lua-BingingsExport.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -31,8 +33,6 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-#include "Lua-BingingsExport.h"
 
 /**
  * @addtogroup lua

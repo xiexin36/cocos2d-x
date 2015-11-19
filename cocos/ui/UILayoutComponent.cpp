@@ -86,7 +86,7 @@ namespace ui {
                 break;
             }
 
-            //put layout component initalized code here
+            //put layout component initialized code here
 
         } while (0);
         return ret;
@@ -648,7 +648,7 @@ namespace ui {
             PageView* page = static_cast<PageView*>(_owner);
             page->forceDoLayout();
 
-            Vector<Layout*> _layoutVector = page->getPages();
+            Vector<Widget*> _layoutVector = page->getItems();
             for(auto& item : _layoutVector)
             {
                 ui::Helper::doLayout(item);

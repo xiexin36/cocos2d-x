@@ -1,4 +1,5 @@
 #include "base/ccConfig.h"
+#include "../manual/js-BingingsExport.h"
 #ifndef __cocos2dx_3d_extension_h__
 #define __cocos2dx_3d_extension_h__
 
@@ -10,8 +11,8 @@ extern JSObject *jsb_cocos2d_ParticleSystem3D_prototype;
 
 bool js_cocos2dx_3d_extension_ParticleSystem3D_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_3d_extension_ParticleSystem3D_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_3d_extension_ParticleSystem3D(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_3d_extension(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_3d_extension_ParticleSystem3D(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_3d_extension(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_3d_extension_ParticleSystem3D_resumeParticleSystem(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_3d_extension_ParticleSystem3D_startParticleSystem(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_3d_extension_ParticleSystem3D_isEnabled(JSContext *cx, uint32_t argc, jsval *vp);
@@ -33,8 +34,8 @@ extern JSObject *jsb_cocos2d_PUParticleSystem3D_prototype;
 
 bool js_cocos2dx_3d_extension_PUParticleSystem3D_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_3d_extension_PUParticleSystem3D_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_3d_extension_PUParticleSystem3D(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_3d_extension(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_3d_extension_PUParticleSystem3D(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_3d_extension(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_3d_extension_PUParticleSystem3D_initWithFilePath(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_3d_extension_PUParticleSystem3D_getParticleSystemScaleVelocity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_3d_extension_PUParticleSystem3D_setEmittedSystemQuota(JSContext *cx, uint32_t argc, jsval *vp);

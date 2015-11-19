@@ -100,11 +100,10 @@ public:
     */
     PointSide getSide(const Vec3& point) const;
 
-    // For editor
-	/**
-	* Return the side where the point is.
-	*/
-	PointSide getSide(const Vec3& point, const Vec3& halfSize) const;
+    /**
+    * Return the side where the point is.
+    */
+    PointSide getSide(const Vec3& point, const Vec3& halfSize) const;
 
 protected:
     Vec3 _normal; // the normal line of the plane
