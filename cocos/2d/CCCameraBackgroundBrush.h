@@ -104,10 +104,9 @@ public:
      */
     virtual void drawBackground(Camera* camera) {}
 
-    //For editor
     virtual bool isValid() { return true; }
-    
-CC_CONSTRUCTOR_ACCESS:
+
+CC_CONSTRUCTOR_ACCESS :
     CameraBackgroundBrush();
     virtual ~CameraBackgroundBrush();
 
@@ -206,12 +205,7 @@ class EventListenerCustom;
  */
 class CC_DLL CameraBackgroundSkyBoxBrush : public CameraBackgroundBrush
 {
-private:
-    bool _actived;
-    bool _textureValid;
 public:
-    bool isActived();
-    void setActived(bool actived);
     /**
      * Get brush type. Should be BrushType::SKYBOX
      * @return brush type
@@ -245,11 +239,12 @@ public:
      */
     virtual void drawBackground(Camera* camera) override;
 
-    //For editor
+    bool isActived() const;
+    void setActived(bool actived);
     virtual void setTextureValid(bool valid);
     virtual bool isValid()override;
-    
-CC_CONSTRUCTOR_ACCESS:
+
+CC_CONSTRUCTOR_ACCESS :
     CameraBackgroundSkyBoxBrush();
     virtual ~CameraBackgroundSkyBoxBrush();
     
@@ -270,6 +265,10 @@ protected:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     EventListenerCustom* _backToForegroundListener;
 #endif
+
+private:
+    bool _actived;
+    bool _textureValid;
 };
 
 NS_CC_END

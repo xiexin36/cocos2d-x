@@ -35,8 +35,9 @@
 #include "js_bindings_config.h"
 #include "ScriptingCore.h"
 #include "jsb_helper.h"
+#include "js-BingingsExport.h"
 
-class MinXmlHttpRequest : public cocos2d::Ref
+class CC_JS_DLL MinXmlHttpRequest : public cocos2d::Ref
 {
 public:
     enum class ResponseType

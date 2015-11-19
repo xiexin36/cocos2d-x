@@ -147,9 +147,9 @@ void register_FileUtils(JSContext *cx, JS::HandleObject global)
         ns.set(nsval.toObjectOrNull());
     }
 
-//    JS::RootedObject proto(cx, jsb_cocos2d_FileUtils_prototype);
-//    JS_DefineFunction(cx, proto, "addSearchPath", runtime_FileUtils_addSearchPath, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE);
-//    JS_DefineFunction(cx, proto, "setSearchPaths", runtime_FileUtils_setSearchPaths, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE);
+    JS::RootedObject proto(cx, jsb_cocos2d_FileUtils_prototype);
+    JS_DefineFunction(cx, proto, "addSearchPath", runtime_FileUtils_addSearchPath, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE);
+    JS_DefineFunction(cx, proto, "setSearchPaths", runtime_FileUtils_setSearchPaths, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE);
 }
 
 RuntimeJsImpl* RuntimeJsImpl::create()
@@ -165,7 +165,7 @@ bool RuntimeJsImpl::initJsEnv()
         return true;
     }
     
-    //js_module_register();
+    js_module_register();
     ScriptingCore::getInstance()->addRegisterCallback(register_FileUtils);
     ScriptingCore::getInstance()->start();
     _hasStarted = true;

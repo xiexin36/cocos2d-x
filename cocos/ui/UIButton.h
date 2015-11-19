@@ -36,6 +36,7 @@ NS_CC_BEGIN
 
 class Label;
 class SpriteFrame;
+struct CC_DLL ResouceData;
 
 namespace ui{
 
@@ -274,16 +275,36 @@ public:
      * @since v3.3
      */
     float getZoomScale()const;
+    
+    /**
+     * @brief Return the nine-patch sprite of normal state
+     * @return the nine-patch sprite of normal state
+     * @since v3.9
+     */
+    Scale9Sprite* getRendererNormal() const { return _buttonNormalRenderer; }
+    
+    /**
+     * @brief Return the nine-patch sprite of clicked state
+     * @return the nine-patch sprite of clicked state
+     * @since v3.9
+     */
+    Scale9Sprite* getRendererClicked() const { return _buttonClickedRenderer; }
+    
+    /**
+     * @brief Return the nine-patch sprite of disabled state
+     * @return the nine-patch sprite of disabled state
+     * @since v3.9
+     */
+    Scale9Sprite* getRendererDisabled() const { return _buttonDisabledRenderer; }
 
     void resetNormalRender();
     void resetPressedRender();
     void resetDisabledRender();
 
-    //For Editor
-    ResouceData csGetNormalFile();
-    ResouceData csGetPressedFile();
-    ResouceData csGetDisabledFile();
-    
+    ResouceData getNormalFile();
+    ResouceData getPressedFile();
+    ResouceData getDisabledFile();
+
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
     virtual bool init(const std::string& normalImage,
@@ -323,13 +344,10 @@ protected:
 protected:
     Scale9Sprite* _buttonNormalRenderer;
     Scale9Sprite* _buttonClickedRenderer;
-    Scale9Sprite* _buttonDisableRenderer;
+    Scale9Sprite* _buttonDisabledRenderer;
     Label* _titleRenderer;
 
     float _zoomScale;
-    std::string _normalFileName;
-    std::string _clickedFileName;
-    std::string _disabledFileName;
     bool _prevIgnoreSize;
     bool _scale9Enabled;
     bool _pressedActionEnabled;
@@ -337,9 +355,7 @@ protected:
     Rect _capInsetsNormal;
     Rect _capInsetsPressed;
     Rect _capInsetsDisabled;
-    TextureResType _normalTexType;
-    TextureResType _pressedTexType;
-    TextureResType _disabledTexType;
+
     Size _normalTextureSize;
     Size _pressedTextureSize;
     Size _disabledTextureSize;
@@ -356,6 +372,13 @@ protected:
     bool _pressedTextureAdaptDirty;
     bool _disabledTextureAdaptDirty;
 
+    std::string _normalFileName;
+    std::string _clickedFileName;
+    std::string _disabledFileName;
+    TextureResType _normalTexType;
+    TextureResType _pressedTexType;
+    TextureResType _disabledTexType;
+
 private:
     enum class FontType
     {
@@ -364,9 +387,9 @@ private:
         BMFONT
     };
 
-    std::string _fontName;
     int _fontSize;
     FontType _type;
+    std::string _fontName;
 };
 
 }

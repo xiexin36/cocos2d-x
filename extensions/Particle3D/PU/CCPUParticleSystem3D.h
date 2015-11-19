@@ -353,7 +353,6 @@ public:
     virtual PUParticleSystem3D* clone();
     virtual void copyAttributesTo(PUParticleSystem3D* system);
 
-    // change for editor
     bool initSystem(const std::string &filePath);
 
 CC_CONSTRUCTOR_ACCESS:

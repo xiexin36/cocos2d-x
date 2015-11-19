@@ -1,5 +1,6 @@
 #include "base/ccConfig.h"
 #if CC_USE_NAVMESH
+#include "../manual/js-BingingsExport.h"
 #ifndef __cocos2dx_navmesh_h__
 #define __cocos2dx_navmesh_h__
 
@@ -11,8 +12,8 @@ extern JSObject *jsb_cocos2d_NavMeshAgent_prototype;
 
 bool js_cocos2dx_navmesh_NavMeshAgent_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_navmesh_NavMeshAgent_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_navmesh_NavMeshAgent(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_navmesh(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_navmesh_NavMeshAgent(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_navmesh(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_navmesh_NavMeshAgent_setMaxSpeed(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_navmesh_NavMeshAgent_syncToNode(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_navmesh_NavMeshAgent_completeOffMeshLink(JSContext *cx, uint32_t argc, jsval *vp);
@@ -49,8 +50,8 @@ extern JSObject *jsb_cocos2d_NavMeshObstacle_prototype;
 
 bool js_cocos2dx_navmesh_NavMeshObstacle_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_navmesh_NavMeshObstacle_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_navmesh_NavMeshObstacle(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_navmesh(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_navmesh_NavMeshObstacle(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_navmesh(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_navmesh_NavMeshObstacle_getSyncFlag(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_navmesh_NavMeshObstacle_initWith(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_navmesh_NavMeshObstacle_syncToObstacle(JSContext *cx, uint32_t argc, jsval *vp);
@@ -67,8 +68,8 @@ extern JSObject *jsb_cocos2d_NavMesh_prototype;
 
 bool js_cocos2dx_navmesh_NavMesh_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_navmesh_NavMesh_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_navmesh_NavMesh(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_navmesh(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_navmesh_NavMesh(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_navmesh(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_navmesh_NavMesh_removeNavMeshObstacle(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_navmesh_NavMesh_removeNavMeshAgent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_navmesh_NavMesh_update(JSContext *cx, uint32_t argc, jsval *vp);

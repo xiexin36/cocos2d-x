@@ -24,6 +24,8 @@
 #ifndef COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_LUA_COCOS2DX_COCOSBUILDER_H
 #define COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_LUA_COCOS2DX_COCOSBUILDER_H
 
+#include "Lua-BingingsExport.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -31,8 +33,6 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-#include "Lua-BingingsExport.h"
 
 TOLUA_API int register_all_cocos2dx_cocosbuilder_manual(lua_State* tolua_S);
 

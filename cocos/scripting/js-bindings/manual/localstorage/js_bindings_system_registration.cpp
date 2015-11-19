@@ -27,6 +27,7 @@
 #include "cocos2d.h"
 
 // system
+#include "js_bindings_system_registration.h"
 #include "js_bindings_system_functions.h"
 
 
@@ -51,7 +52,7 @@ void jsb_register_system( JSContext *_cx,  JS::HandleObject object)
 
     // sys.localStorage functions
     JS::RootedObject system(_cx, ls);
-#include "js_bindings_system_functions_registration.h"
+
     
     
     // Init DB with full path

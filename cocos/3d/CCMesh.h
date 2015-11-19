@@ -59,7 +59,7 @@ class CC_DLL Mesh : public Ref
     friend class Sprite3D;
 public:
     typedef std::vector<unsigned short> IndexArray;
-    /**create mesh from positions, normals, and so on, sigle SubMesh*/
+    /**create mesh from positions, normals, and so on, single SubMesh*/
     static Mesh* create(const std::vector<float>& positions, const std::vector<float>& normals, const std::vector<float>& texs, const IndexArray& indices);
     /**create mesh with vertex attributes*/
     CC_DEPRECATED_ATTRIBUTE static Mesh* create(const std::vector<float>& vertices, int perVertexSizeInFloat, const IndexArray& indices, int numIndex, const std::vector<MeshVertexAttrib>& attribs, int attribCount){ return create(vertices, perVertexSizeInFloat, indices, attribs); }
@@ -193,8 +193,7 @@ public:
      * force set this Sprite3D to 2D render queue
      */
     void setForce2DQueue(bool force2D) { _force2DQueue = force2D; }
-	
-	//For editor by liam
+
     GLuint checkTextureName();
 
 CC_CONSTRUCTOR_ACCESS:
@@ -222,23 +221,22 @@ protected:
     Material*           _material;
     AABB                _aabb;
     std::function<void()> _visibleChanged;
-
+    
     ///light parameters
     std::vector<Vec3> _dirLightUniformColorValues;
     std::vector<Vec3> _dirLightUniformDirValues;
-
+    
     std::vector<Vec3> _pointLightUniformColorValues;
     std::vector<Vec3> _pointLightUniformPositionValues;
     std::vector<float> _pointLightUniformRangeInverseValues;
-
+    
     std::vector<Vec3> _spotLightUniformColorValues;
     std::vector<Vec3> _spotLightUniformPositionValues;
     std::vector<Vec3> _spotLightUniformDirValues;
     std::vector<float> _spotLightUniformInnerAngleCosValues;
     std::vector<float> _spotLightUniformOuterAngleCosValues;
     std::vector<float> _spotLightUniformRangeInverseValues;
-	
-	//For editor by liam
+
     std::string _texFile;
 };
 

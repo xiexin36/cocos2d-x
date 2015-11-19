@@ -1,5 +1,6 @@
 #include "base/ccConfig.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "../manual/js-BingingsExport.h"
 #ifndef __cocos2dx_experimental_video_h__
 #define __cocos2dx_experimental_video_h__
 
@@ -11,8 +12,8 @@ extern JSObject *jsb_cocos2d_experimental_ui_VideoPlayer_prototype;
 
 bool js_cocos2dx_experimental_video_VideoPlayer_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_experimental_video_VideoPlayer_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_experimental_video_VideoPlayer(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_experimental_video(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_experimental_video_VideoPlayer(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_experimental_video(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_experimental_video_VideoPlayer_getFileName(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_experimental_video_VideoPlayer_getURL(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_experimental_video_VideoPlayer_play(JSContext *cx, uint32_t argc, jsval *vp);

@@ -32,6 +32,7 @@
 
 // system
 #include "jsb_opengl_functions.h"
+#include "jsb_opengl_registration.h"
 
 void JSB_register_opengl(JSContext *_cx, JS::HandleObject object)
 {

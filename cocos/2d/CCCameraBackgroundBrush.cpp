@@ -302,12 +302,14 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
         return;
 
     Mat4 cameraModelMat = camera->getNodeToWorldTransform();
+    
     Vec4 color(1.f, 1.f, 1.f, 1.f);
     _glProgramState->setUniformVec4("u_color", color);
     cameraModelMat.m[12] = cameraModelMat.m[13] = cameraModelMat.m[14] = 0;
     _glProgramState->setUniformMat4("u_cameraRot", cameraModelMat);
+    
     _glProgramState->apply(Mat4::IDENTITY);
-
+    
     glEnable(GL_DEPTH_TEST);
     RenderState::StateBlock::_defaultState->setDepthTest(true);
     
@@ -353,9 +355,7 @@ void CameraBackgroundSkyBoxBrush::drawBackground(Camera* camera)
     }
     
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 8);
-
-    //glStencilMask(0xFFFFF);
-
+    
     CHECK_GL_ERROR_DEBUG();
 }
 
@@ -432,7 +432,7 @@ void CameraBackgroundSkyBoxBrush::setTexture(TextureCube*  texture)
     _glProgramState->setUniformTexture("u_Env", _texture);
 }
 
-bool CameraBackgroundSkyBoxBrush::isActived()
+bool CameraBackgroundSkyBoxBrush::isActived() const
 {
     return _actived;
 }

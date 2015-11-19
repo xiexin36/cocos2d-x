@@ -54,12 +54,11 @@ public:
      */
     static void purgeCachedData();
 
-    // For cocostudio
     static void reloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset = Vec2::ZERO);
     static void unloadFontAtlasTTF(const std::string& fontFileName);
-    
+
 private:
-    static std::string generateFontName(const std::string& fontFileName, int size, bool useDistanceField);
+    static std::string generateFontName(const std::string& fontFileName, float size, bool useDistanceField);
     static std::unordered_map<std::string, FontAtlas *> _atlasMap;
 };
 

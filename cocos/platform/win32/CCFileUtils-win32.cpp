@@ -134,18 +134,18 @@ static std::string UTF8StringToMultiByte(const std::string& strUtf8)
 
 static void _checkPath()
 {
-    if (0 == s_resourcePath.length())
+    if (s_resourcePath.empty())
     {
         WCHAR *pUtf16ExePath = nullptr;
-
 #ifdef CC_STUDIO_ENABLED_VIEW
         WCHAR utf16Path[CC_MAX_PATH] = { 0 };
         GetModuleFileNameW(NULL, utf16Path, CC_MAX_PATH - 1);
-//        GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
+        //        GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
         pUtf16ExePath = &(utf16Path[0]);
 #else
         _get_wpgmptr(&pUtf16ExePath); // CocoStudio Notice : This function won't work under studio, will cause a assert in system library
 #endif
+
         // We need only directory part without exe
         WCHAR *pUtf16DirEnd = wcsrchr(pUtf16ExePath, L'\\');
 
@@ -198,9 +198,22 @@ std::string FileUtilsWin32::getSuitableFOpen(const std::string& filenameUtf8) co
     return UTF8StringToMultiByte(filenameUtf8);
 }
 
+long FileUtilsWin32::getFileSize(const std::string &filepath)
+{
+    WIN32_FILE_ATTRIBUTE_DATA fad;
+    if (!GetFileAttributesEx(StringUtf8ToWideChar(filepath).c_str(), GetFileExInfoStandard, &fad))
+    {
+        return 0; // error condition, could call GetLastError to find out more
+    }
+    LARGE_INTEGER size;
+    size.HighPart = fad.nFileSizeHigh;
+    size.LowPart = fad.nFileSizeLow;
+    return (long)size.QuadPart;
+}
+
 bool FileUtilsWin32::isFileExistInternal(const std::string& strFilePath) const
 {
-    if (0 == strFilePath.length())
+    if (strFilePath.empty())
     {
         return false;
     }
@@ -599,8 +612,9 @@ bool FileUtilsWin32::removeDirectory(const std::string& dirPath)
         BOOL find = true;
         while (find)
         {
-            //. ..
-            if (wfd.cFileName[0] != '.')
+            // Need check string . and .. for delete folders and files begin name.
+            std::wstring fileName = wfd.cFileName;
+            if (fileName != L"." && fileName != L"..")
             {
                 std::wstring temp = wpath + wfd.cFileName;
                 if (wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)

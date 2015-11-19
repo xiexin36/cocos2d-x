@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include "ui/UIAbstractCheckButton.h"
 #include "2d/CCSprite.h"
+#include "2d/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -134,11 +135,14 @@ void AbstractCheckButton::loadTextures(const std::string& backGround,
 
 void AbstractCheckButton::loadTextureBackGround(const std::string& backGround,TextureResType texType)
 {
-    /*if (backGround.empty() || (_backGroundFileName == backGround && _backGroundTexType == texType))
+    _backGroundFileName = backGround;
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (backGround.empty())
     {
         return;
-    }*/
-    _backGroundFileName = backGround;
+    }
+#endif
+
     _backGroundTexType = texType;
     switch (_backGroundTexType)
     {
@@ -172,16 +176,16 @@ void AbstractCheckButton::loadTextureBackGround(SpriteFrame* spriteFrame)
 
 void AbstractCheckButton::loadTextureBackGroundSelected(const std::string& backGroundSelected,TextureResType texType)
 {
-    /*if (backGroundSelected.empty() ||
-        (_backGroundSelectedFileName == backGroundSelected && _backGroundSelectedTexType == texType))
+    _backGroundSelectedFileName = backGroundSelected;
+    _isBackgroundSelectedTextureLoaded = !backGroundSelected.empty();
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (backGroundSelected.empty())
     {
         return;
-    }*/
-    
-    _backGroundSelectedFileName = backGroundSelected;
-    _backGroundSelectedTexType = texType;
-    _isBackgroundSelectedTextureLoaded = !backGroundSelected.empty();
+    }
+#endif
 
+    _backGroundSelectedTexType = texType;
     switch (_backGroundSelectedTexType)
     {
         case TextureResType::LOCAL:
@@ -210,11 +214,14 @@ void AbstractCheckButton::setupBackgroundSelectedTexture()
 
 void AbstractCheckButton::loadTextureFrontCross(const std::string& cross,TextureResType texType)
 {
-    /*if (cross.empty() || (_frontCrossFileName == cross && _frontCrossTexType == texType))
+    _frontCrossFileName = cross;
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (cross.empty())
     {
         return;
-    }*/
-    _frontCrossFileName = cross;
+    }
+#endif
+
     _frontCrossTexType = texType;
     switch (_frontCrossTexType)
     {
@@ -244,15 +251,16 @@ void AbstractCheckButton::setupFrontCrossTexture()
 
 void AbstractCheckButton::loadTextureBackGroundDisabled(const std::string& backGroundDisabled,TextureResType texType)
 {
-    /*if (backGroundDisabled.empty() ||
-        (_backGroundDisabledFileName == backGroundDisabled && _backGroundDisabledTexType == texType))
+    _backGroundDisabledFileName = backGroundDisabled;
+    _isBackgroundDisabledTextureLoaded = !backGroundDisabled.empty();
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (backGroundDisabled.empty())
     {
         return;
-    }*/
-    _backGroundDisabledFileName = backGroundDisabled;
-    _backGroundDisabledTexType = texType;
-    _isBackgroundDisabledTextureLoaded = !backGroundDisabled.empty();
+    }
+#endif
 
+    _backGroundDisabledTexType = texType;
     switch (_backGroundDisabledTexType)
     {
         case TextureResType::LOCAL:
@@ -282,15 +290,16 @@ void AbstractCheckButton::setupBackgroundDisable()
 
 void AbstractCheckButton::loadTextureFrontCrossDisabled(const std::string& frontCrossDisabled,TextureResType texType)
 {
-    /*if (frontCrossDisabled.empty() ||
-        (_frontCrossDisabledFileName == frontCrossDisabled && _frontCrossDisabledTexType == texType))
+    _frontCrossDisabledFileName = frontCrossDisabled;
+    _isFrontCrossDisabledTextureLoaded = !frontCrossDisabled.empty();
+#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    if (frontCrossDisabled.empty())
     {
         return;
-    }*/
-    _frontCrossDisabledFileName = frontCrossDisabled;
-    _frontCrossDisabledTexType = texType;
-    _isFrontCrossDisabledTextureLoaded = !frontCrossDisabled.empty();
+    }
+#endif
 
+    _frontCrossDisabledTexType = texType;
     switch (_frontCrossDisabledTexType)
     {
         case TextureResType::LOCAL:
@@ -595,7 +604,8 @@ void AbstractCheckButton::copySpecialProperties(Widget *widget)
     }
 }
 
-ResouceData AbstractCheckButton::csGetBackNormalFile()
+
+ResouceData AbstractCheckButton::getBackNormalFile()
 {
     ResouceData rData;
     rData.type = (int)_backGroundTexType;
@@ -603,7 +613,7 @@ ResouceData AbstractCheckButton::csGetBackNormalFile()
     return rData;
 }
 
-ResouceData AbstractCheckButton::csGetBackPressedFile()
+ResouceData AbstractCheckButton::getBackPressedFile()
 {
     ResouceData rData;
     rData.type = (int)_backGroundSelectedTexType;
@@ -611,7 +621,7 @@ ResouceData AbstractCheckButton::csGetBackPressedFile()
     return rData;
 }
 
-ResouceData AbstractCheckButton::csGetBackDisabledFile()
+ResouceData AbstractCheckButton::getBackDisabledFile()
 {
     ResouceData rData;
     rData.type = (int)_backGroundDisabledTexType;
@@ -619,7 +629,7 @@ ResouceData AbstractCheckButton::csGetBackDisabledFile()
     return rData;
 }
 
-ResouceData AbstractCheckButton::csGetCrossNormalFile()
+ResouceData AbstractCheckButton::getCrossNormalFile()
 {
     ResouceData rData;
     rData.type = (int)_frontCrossTexType;
@@ -627,7 +637,7 @@ ResouceData AbstractCheckButton::csGetCrossNormalFile()
     return rData;
 }
 
-ResouceData AbstractCheckButton::csGetCrossDisabeldFile()
+ResouceData AbstractCheckButton::getCrossDisabeldFile()
 {
     ResouceData rData;
     rData.type = (int)_frontCrossDisabledTexType;

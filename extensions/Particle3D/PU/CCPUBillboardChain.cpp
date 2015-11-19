@@ -76,8 +76,7 @@ PUBillboardChain::PUBillboardChain(const std::string& name, const std::string &t
                                _texture(nullptr),
                                _glProgramState(nullptr),
                                _indexBuffer(nullptr),
-                               _vertexBuffer(nullptr),
-							   _texFile(texFile)
+                               _vertexBuffer(nullptr)
 {
 
     _stateBlock = RenderState::StateBlock::create();
@@ -730,29 +729,6 @@ void PUBillboardChain::setDepthWrite( bool isDepthWrite )
 void PUBillboardChain::setBlendFunc(const BlendFunc& blendFunc)
 {
     _stateBlock->setBlendFunc(blendFunc);
-}
-GLuint PUBillboardChain::checkTextureName()
-{
-    if (TextureCache::getInstance()->isDirty())
-    {
-        if (TextureCache::getInstance()->getTextureForKey(_texFile) == nullptr)
-        {
-            _texture = nullptr;
-            this->init("");
-        }
-        else
-            this->init(_texFile);
-    }
-    else if (_texture != nullptr && !_texture->isValid())
-    {
-        _texture = nullptr;
-        this->init("");
-    }
-
-    if (_texture == nullptr)
-        return 0;
-
-    return _texture->getName();
 }
 
 //-----------------------------------------------------------------------

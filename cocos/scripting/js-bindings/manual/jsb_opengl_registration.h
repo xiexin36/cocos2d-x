@@ -24,7 +24,8 @@
 #ifndef __JSB_OPENGL_REGISTRATION
 #define __JSB_OPENGL_REGISTRATION
 #include "jsb_opengl_functions.h"
+#include "js-BingingsExport.h"
 
-void JSB_register_opengl( JSContext *globalC, JS::HandleObject globalO);
+CC_JS_DLL void JSB_register_opengl( JSContext *globalC, JS::HandleObject globalO);
 
 #endif // __JSB_OPENGL_REGISTRATION

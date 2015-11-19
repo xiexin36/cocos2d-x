@@ -31,6 +31,7 @@ THE SOFTWARE.
 #include "cocos2d.h"
 #include "navmesh/CCNavMesh.h"
 #include "js_manual_conversions.h"
+#include "jsb_cocos2dx_navmesh_manual.h"
 
 static bool jsb_cocos2dx_navmesh_NavMeshAgent_move(JSContext *cx, uint32_t argc, jsval *vp)
 {

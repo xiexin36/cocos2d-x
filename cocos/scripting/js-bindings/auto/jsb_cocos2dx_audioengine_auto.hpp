@@ -1,5 +1,6 @@
 #include "base/ccConfig.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "../manual/js-BingingsExport.h"
 #ifndef __cocos2dx_audioengine_h__
 #define __cocos2dx_audioengine_h__
 
@@ -11,8 +12,8 @@ extern JSObject *jsb_cocos2d_experimental_AudioProfile_prototype;
 
 bool js_cocos2dx_audioengine_AudioProfile_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_audioengine_AudioProfile_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_audioengine_AudioProfile(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_audioengine(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_audioengine_AudioProfile(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_audioengine(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_audioengine_AudioProfile_AudioProfile(JSContext *cx, uint32_t argc, jsval *vp);
 
 extern JSClass  *jsb_cocos2d_experimental_AudioEngine_class;
@@ -20,8 +21,8 @@ extern JSObject *jsb_cocos2d_experimental_AudioEngine_prototype;
 
 bool js_cocos2dx_audioengine_AudioEngine_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_audioengine_AudioEngine_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_audioengine_AudioEngine(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_audioengine(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_audioengine_AudioEngine(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_audioengine(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_audioengine_AudioEngine_lazyInit(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_audioengine_AudioEngine_setCurrentTime(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_audioengine_AudioEngine_getVolume(JSContext *cx, uint32_t argc, jsval *vp);

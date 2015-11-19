@@ -96,7 +96,13 @@ void resetDesignResolution()
     cocos2d::Size size = ConfigParser::getInstance()->getInitViewSize();
     if (!ConfigParser::getInstance()->isLanscape())
     {
-        std::swap(size.width, size.height);
+        if (size.width > size.height)
+            std::swap(size.width, size.height);
+    }
+    else
+    {
+        if (size.width < size.height)
+            std::swap(size.width, size.height);
     }
     Director::getInstance()->getOpenGLView()->setDesignResolutionSize(size.width, size.height, ResolutionPolicy::EXACT_FIT);
 }
@@ -184,7 +190,7 @@ void RuntimeEngine::setProjectPath(const std::string &workPath)
 
     if (workPath.empty())
     {
-//        extern std::string getCurAppPath();
+        //        extern std::string getCurAppPath();
         std::string appPath = std::string("");// getCurAppPath();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
         TCHAR szAppDir[MAX_PATH] = { 0 };
@@ -206,14 +212,14 @@ void RuntimeEngine::setProjectPath(const std::string &workPath)
             char fuldir[MAX_PATH] = { 0 };
             _fullpath(fuldir, strPath.c_str(), MAX_PATH);
             appPath = fuldir;
-        }
+    }
         appPath.append("/../../");
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
         appPath.append("/../../../");
 #endif
         appPath = replaceAll(appPath, "\\", "/");
         g_projectPath = appPath;
-    }
+}
     else
     {
         g_projectPath = workPath;

@@ -202,7 +202,7 @@ FontAtlas* FontAtlasCache::getFontAtlasCharMap(const std::string& charMapFile, i
     return nullptr;
 }
 
-std::string FontAtlasCache::generateFontName(const std::string& fontFileName, int size, bool useDistanceField)
+std::string FontAtlasCache::generateFontName(const std::string& fontFileName, float size, bool useDistanceField)
 {
     std::string tempName(fontFileName);
     
@@ -210,7 +210,8 @@ std::string FontAtlasCache::generateFontName(const std::string& fontFileName, in
         tempName.append("df");
     // std::to_string is not supported on android, using std::stringstream instead.
     std::stringstream ss;
-    ss << size;
+    ss.precision(2);
+    ss << std::fixed << size;
     return  tempName.append(ss.str());
 }
 
@@ -237,7 +238,6 @@ bool FontAtlasCache::releaseFontAtlas(FontAtlas *atlas)
     return false;
 }
 
-
 void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const Vec2& imageOffset/* = Vec2::ZERO*/)
 {
     std::string atlasName = generateFontName(fontFileName, 0, false);
@@ -248,9 +248,6 @@ void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const V
         CC_SAFE_RELEASE_NULL(it->second);
         _atlasMap.erase(it);
     }
-    else
-        return;
-
     FontFNT::reloadBMFontResource(fontFileName);
     auto font = FontFNT::create(fontFileName, imageOffset);
     if (font)
@@ -261,7 +258,7 @@ void FontAtlasCache::reloadFontAtlasFNT(const std::string& fontFileName, const V
             _atlasMap[atlasName] = tempAtlas;
         }
     }
-    
+
 }
 
 void FontAtlasCache::unloadFontAtlasTTF(const std::string& fontFileName)
@@ -273,10 +270,10 @@ void FontAtlasCache::unloadFontAtlasTTF(const std::string& fontFileName)
         {
             CC_SAFE_RELEASE_NULL(item->second);
             item = _atlasMap.erase(item);
-            FontFreeType::releaseFont(fontFileName);
         }
         else
             item++;
     }
 }
+
 NS_CC_END

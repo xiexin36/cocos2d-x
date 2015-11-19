@@ -1,5 +1,6 @@
 #include "base/ccConfig.h"
 #if CC_USE_3D_PHYSICS && CC_ENABLE_BULLET_INTEGRATION
+#include "../manual/js-BingingsExport.h"
 #ifndef __cocos2dx_physics3d_h__
 #define __cocos2dx_physics3d_h__
 
@@ -11,8 +12,8 @@ extern JSObject *jsb_cocos2d_Physics3DShape_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DShape_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DShape_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DShape(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DShape(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DShape_initConvexHull(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DShape_getbtShape(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DShape_initSphere(JSContext *cx, uint32_t argc, jsval *vp);
@@ -32,8 +33,8 @@ extern JSObject *jsb_cocos2d_Physics3DObject_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DObject_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DObject_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DObject(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DObject(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DObject_setUserData(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DObject_getUserData(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DObject_getObjType(JSContext *cx, uint32_t argc, jsval *vp);
@@ -50,8 +51,8 @@ extern JSObject *jsb_cocos2d_Physics3DRigidBody_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DRigidBody_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DRigidBody_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DRigidBody(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DRigidBody(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DRigidBody_setGravity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DRigidBody_getFriction(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DRigidBody_setAngularFactor(JSContext *cx, uint32_t argc, jsval *vp);
@@ -108,8 +109,8 @@ extern JSObject *jsb_cocos2d_Physics3DComponent_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DComponent_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DComponent_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DComponent(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DComponent(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DComponent_syncNodeToPhysics(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DComponent_addToPhysicsWorld(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DComponent_syncPhysicsToNode(JSContext *cx, uint32_t argc, jsval *vp);
@@ -126,8 +127,8 @@ extern JSObject *jsb_cocos2d_PhysicsSprite3D_prototype;
 
 bool js_cocos2dx_physics3d_PhysicsSprite3D_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_PhysicsSprite3D_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_PhysicsSprite3D(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_PhysicsSprite3D(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_PhysicsSprite3D_syncNodeToPhysics(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_PhysicsSprite3D_syncPhysicsToNode(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_PhysicsSprite3D_getPhysicsObj(JSContext *cx, uint32_t argc, jsval *vp);
@@ -139,8 +140,8 @@ extern JSObject *jsb_cocos2d_Physics3DWorld_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DWorld_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DWorld_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DWorld(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DWorld(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DWorld_setGravity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DWorld_stepSimulate(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DWorld_needCollisionChecking(JSContext *cx, uint32_t argc, jsval *vp);
@@ -167,8 +168,8 @@ extern JSObject *jsb_cocos2d_Physics3DConstraint_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DConstraint_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DConstraint_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DConstraint(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DConstraint(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DConstraint_setEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DConstraint_setBreakingImpulse(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DConstraint_getUserData(JSContext *cx, uint32_t argc, jsval *vp);
@@ -187,8 +188,8 @@ extern JSObject *jsb_cocos2d_Physics3DPointToPointConstraint_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DPointToPointConstraint_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DPointToPointConstraint_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DPointToPointConstraint(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DPointToPointConstraint(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DPointToPointConstraint_getPivotPointInA(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DPointToPointConstraint_getPivotPointInB(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DPointToPointConstraint_init(JSContext *cx, uint32_t argc, jsval *vp);
@@ -202,8 +203,8 @@ extern JSObject *jsb_cocos2d_Physics3DHingeConstraint_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DHingeConstraint_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DHingeConstraint_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DHingeConstraint(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DHingeConstraint(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DHingeConstraint_getHingeAngle(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DHingeConstraint_getMotorTargetVelosity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DHingeConstraint_getFrameOffsetA(JSContext *cx, uint32_t argc, jsval *vp);
@@ -233,8 +234,8 @@ extern JSObject *jsb_cocos2d_Physics3DSliderConstraint_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DSliderConstraint_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DSliderConstraint_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DSliderConstraint(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DSliderConstraint(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DSliderConstraint_setPoweredAngMotor(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DSliderConstraint_getDampingLimAng(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DSliderConstraint_setRestitutionOrthoLin(JSContext *cx, uint32_t argc, jsval *vp);
@@ -307,8 +308,8 @@ extern JSObject *jsb_cocos2d_Physics3DConeTwistConstraint_prototype;
 
 bool js_cocos2dx_physics3d_Physics3DConeTwistConstraint_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3DConeTwistConstraint_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3DConeTwistConstraint(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3DConeTwistConstraint(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3DConeTwistConstraint_getBFrame(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DConeTwistConstraint_setFixThresh(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3DConeTwistConstraint_getFrameOffsetB(JSContext *cx, uint32_t argc, jsval *vp);
@@ -334,8 +335,8 @@ extern JSObject *jsb_cocos2d_Physics3D6DofConstraint_prototype;
 
 bool js_cocos2dx_physics3d_Physics3D6DofConstraint_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_physics3d_Physics3D6DofConstraint_finalize(JSContext *cx, JSObject *obj);
-void js_register_cocos2dx_physics3d_Physics3D6DofConstraint(JSContext *cx, JS::HandleObject global);
-void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
+CC_JS_DLL void js_register_cocos2dx_physics3d_Physics3D6DofConstraint(JSContext *cx, JS::HandleObject global);
+CC_JS_DLL void register_all_cocos2dx_physics3d(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_physics3d_Physics3D6DofConstraint_setLinearLowerLimit(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3D6DofConstraint_getLinearLowerLimit(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_physics3d_Physics3D6DofConstraint_getAngularUpperLimit(JSContext *cx, uint32_t argc, jsval *vp);
