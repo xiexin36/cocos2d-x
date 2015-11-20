@@ -2072,10 +2072,10 @@
 		B5668D7E1B3838E4003CBD5E /* UIScrollViewBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5668D7B1B3838E4003CBD5E /* UIScrollViewBar.cpp */; };
 		B5668D7F1B3838E4003CBD5E /* UIScrollViewBar.h in Headers */ = {isa = PBXBuildFile; fileRef = B5668D7C1B3838E4003CBD5E /* UIScrollViewBar.h */; };
 		B5668D801B3838E4003CBD5E /* UIScrollViewBar.h in Headers */ = {isa = PBXBuildFile; fileRef = B5668D7C1B3838E4003CBD5E /* UIScrollViewBar.h */; };
-		B5A738961BB0051F00BAAEF8 /* UIPageViewIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5A738941BB0051F00BAAEF8 /* UIPageViewIndicator.cpp */; settings = {ASSET_TAGS = (); }; };
-		B5A738971BB0051F00BAAEF8 /* UIPageViewIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5A738941BB0051F00BAAEF8 /* UIPageViewIndicator.cpp */; settings = {ASSET_TAGS = (); }; };
-		B5A738981BB0051F00BAAEF8 /* UIPageViewIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A738951BB0051F00BAAEF8 /* UIPageViewIndicator.h */; settings = {ASSET_TAGS = (); }; };
-		B5A738991BB0051F00BAAEF8 /* UIPageViewIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A738951BB0051F00BAAEF8 /* UIPageViewIndicator.h */; settings = {ASSET_TAGS = (); }; };
+		B5A738961BB0051F00BAAEF8 /* UIPageViewIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5A738941BB0051F00BAAEF8 /* UIPageViewIndicator.cpp */; };
+		B5A738971BB0051F00BAAEF8 /* UIPageViewIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5A738941BB0051F00BAAEF8 /* UIPageViewIndicator.cpp */; };
+		B5A738981BB0051F00BAAEF8 /* UIPageViewIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A738951BB0051F00BAAEF8 /* UIPageViewIndicator.h */; };
+		B5A738991BB0051F00BAAEF8 /* UIPageViewIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A738951BB0051F00BAAEF8 /* UIPageViewIndicator.h */; };
 		B5CE6DBE1B3BF2B1002B0419 /* UIAbstractCheckButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5CE6DBC1B3BF2B1002B0419 /* UIAbstractCheckButton.cpp */; };
 		B5CE6DBF1B3BF2B1002B0419 /* UIAbstractCheckButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5CE6DBC1B3BF2B1002B0419 /* UIAbstractCheckButton.cpp */; };
 		B5CE6DC01B3BF2B1002B0419 /* UIAbstractCheckButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CE6DBD1B3BF2B1002B0419 /* UIAbstractCheckButton.h */; };
@@ -3683,6 +3683,23 @@
 		ED9C6A9718599AD8000A5232 /* CCNodeGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = ED9C6A9318599AD8000A5232 /* CCNodeGrid.h */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		945C61401BFF09D000732581 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1551A33F158F2AB200E66CFE;
+			remoteInfo = "libcocos2d Mac";
+		};
+		945C61421BFF09D000732581 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A07A4D641783777C0073F6A7;
+			remoteInfo = "libcocos2d iOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0634A4C5194B19E400E608AF /* CCActionTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimeline.cpp; sourceTree = "<group>"; };
 		0634A4C6194B19E400E608AF /* CCActionTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionTimeline.h; sourceTree = "<group>"; };
@@ -4697,6 +4714,7 @@
 		5E9F61251A3FFE3D0038DE01 /* CCPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPlane.h; sourceTree = "<group>"; };
 		8525E3A11B291E42008EE815 /* clipper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = clipper.hpp; sourceTree = "<group>"; };
 		85B374381B204B9400C488D6 /* clipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clipper.cpp; sourceTree = "<group>"; };
+		945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = cocos2d_libs_studio.xcodeproj; sourceTree = "<group>"; };
 		A045F6D41BA81577005076C7 /* CCTextureCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTextureCube.cpp; sourceTree = "<group>"; };
 		A045F6D51BA81577005076C7 /* CCTextureCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTextureCube.h; sourceTree = "<group>"; };
 		A045F6DA1BA816A1005076C7 /* CCCameraBackgroundBrush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCCameraBackgroundBrush.cpp; sourceTree = "<group>"; };
@@ -5707,6 +5725,7 @@
 		1551A334158F2AB200E66CFE = {
 			isa = PBXGroup;
 			children = (
+				945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */,
 				46A15FCC1807A544005B8026 /* AUTHORS */,
 				1A57FFF7180BC5160088DEC7 /* CHANGELOG */,
 				50272539190BF1B900AAF4ED /* cocos2d.cpp */,
@@ -7937,6 +7956,15 @@
 			);
 			name = clipper;
 			path = ../external/clipper;
+			sourceTree = "<group>";
+		};
+		945C613C1BFF09CF00732581 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				945C61411BFF09D000732581 /* libcocos2d Mac.dylib */,
+				945C61431BFF09D000732581 /* libcocos2d iOS.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		A045F6EC1BA81821005076C7 /* GameNode3DReader */ = {
@@ -11116,6 +11144,12 @@
 			mainGroup = 1551A334158F2AB200E66CFE;
 			productRefGroup = 1551A340158F2AB200E66CFE /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 945C613C1BFF09CF00732581 /* Products */;
+					ProjectRef = 945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1551A33E158F2AB200E66CFE /* libcocos2d Mac */,
@@ -11123,6 +11157,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		945C61411BFF09D000732581 /* libcocos2d Mac.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libcocos2d Mac.dylib";
+			remoteRef = 945C61401BFF09D000732581 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		945C61431BFF09D000732581 /* libcocos2d iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libcocos2d iOS.a";
+			remoteRef = 945C61421BFF09D000732581 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1551A33B158F2AB200E66CFE /* Sources */ = {
