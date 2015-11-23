@@ -3052,7 +3052,7 @@
 					"$(SRCROOT)/../../../../external/spidermonkey/prebuilt/mac",
 					"$(SRCROOT)/../../../../external/curl/include/mac",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/I/Debug",
-					/Users/Norman/Projects/cocostudio/cocos2dx/external/chipmunk/prebuilt/mac,
+					"$(SRCROOT)/../../../../external/chipmunk/prebuilt/mac",
 				);
 				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../../external/spidermonkey/include/mac $(SRCROOT)/../../../../cocos/platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac $(SRCROOT)/../../../../external/curl/include/mac";
@@ -3084,7 +3084,7 @@
 					"$(SRCROOT)/../../../../external/spidermonkey/prebuilt/mac",
 					"$(SRCROOT)/../../../../external/curl/include/mac",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/I/Debug",
-					/Users/Norman/Projects/cocostudio/cocos2dx/external/chipmunk/prebuilt/mac,
+					"$(SRCROOT)/../../../../external/chipmunk/prebuilt/mac",
 				);
 				MACH_O_TYPE = mh_dylib;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../../external/spidermonkey/include/mac $(SRCROOT)/../../../../cocos/platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac $(SRCROOT)/../../../../external/curl/include/mac";
