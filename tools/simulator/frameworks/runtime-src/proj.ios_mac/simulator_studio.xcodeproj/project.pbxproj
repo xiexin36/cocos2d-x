@@ -779,7 +779,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = (
 					"-image_base",
-					100000000,
+					10000000,
 					"-pagezero_size",
 					10000,
 				);
@@ -816,7 +816,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = (
 					"-image_base",
-					100000000,
+					10000000,
 					"-pagezero_size",
 					10000,
 				);
