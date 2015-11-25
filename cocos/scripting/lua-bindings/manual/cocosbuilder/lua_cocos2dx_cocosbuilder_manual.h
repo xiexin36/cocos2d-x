@@ -24,8 +24,6 @@
 #ifndef COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_LUA_COCOS2DX_COCOSBUILDER_H
 #define COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_LUA_COCOS2DX_COCOSBUILDER_H
 
-#include "Lua-BingingsExport.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -48,7 +46,7 @@ TOLUA_API int register_all_cocos2dx_cocosbuilder_manual(lua_State* tolua_S);
  * If you don't register the cocosbuilder module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
-CC_LUA_DLL TOLUA_API int register_cocosbuilder_module(lua_State* tolua_S);
+TOLUA_API int register_cocosbuilder_module(lua_State* tolua_S);
 
 // end group
 /// @}

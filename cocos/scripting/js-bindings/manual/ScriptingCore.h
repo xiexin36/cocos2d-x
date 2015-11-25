@@ -35,7 +35,7 @@
 #include "spidermonkey_specifics.h"
 #include "js_manual_conversions.h"
 #include "mozilla/Maybe.h"
-#include "js-BingingsExport.h"
+#include "js-BindingsExport.h"
 
 #include <assert.h>
 #include <memory>

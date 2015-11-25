@@ -304,7 +304,7 @@ bool luaval_to_terraindata(lua_State* L, int lo, cocos2d::Terrain::TerrainData* 
 
 void terraindata_to_luaval(lua_State* L,const cocos2d::Terrain::TerrainData& inValue)
 {
-    if (nullptr == L)
+   /* if (nullptr == L)
         return;
     
     lua_newtable(L);
@@ -319,10 +319,10 @@ void terraindata_to_luaval(lua_State* L,const cocos2d::Terrain::TerrainData& inV
         lua_rawset(L, -3);
     }
     
-    if (nullptr != inValue._alphaMapSrc)
+    if (!inValue._alphaMapSrc.empty())
     {
         lua_pushstring(L, "_alphaMapSrc");
-        lua_pushstring(L, inValue._alphaMapSrc);
+        lua_pushstring(L, inValue._alphaMapSrc.c_str());
         lua_rawset(L, -3);
     }
     
@@ -361,7 +361,7 @@ void terraindata_to_luaval(lua_State* L,const cocos2d::Terrain::TerrainData& inV
     
     lua_pushstring(L, "_skirtHeightRatio");
     lua_pushnumber(L, (lua_Number)inValue._skirtHeightRatio);
-    lua_rawset(L, -3);
+    lua_rawset(L, -3);*/
 }
 
 int lua_cocos2dx_3d_Terrain_create(lua_State* L)

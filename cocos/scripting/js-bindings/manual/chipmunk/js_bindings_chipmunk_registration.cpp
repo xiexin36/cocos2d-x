@@ -33,7 +33,6 @@
 #include "js_bindings_chipmunk_auto_classes.h"
 #include "js_bindings_chipmunk_functions.h"
 #include "js_bindings_chipmunk_manual.h"
-#include "js_bindings_chipmunk_registration.h"
 
 
 void jsb_register_chipmunk(JSContext* cx, JS::HandleObject object)

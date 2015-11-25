@@ -24,8 +24,6 @@
 #ifndef COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_AUDIOENGINE_LUA_COCOS2DX_AUDIOENGINE_MANUAL_H__
 #define COCOS_SCRIPTING_LUA_BINDINGS_MANUAL_AUDIOENGINE_LUA_COCOS2DX_AUDIOENGINE_MANUAL_H__
 
-#include "Lua-BingingsExport.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -47,7 +45,7 @@ extern "C" {
  * The current mechanism,this function is called in the lua_module_register.h
  */
 
-CC_LUA_DLL TOLUA_API int  register_audioengine_module(lua_State* L);
+TOLUA_API int  register_audioengine_module(lua_State* L);
 
 // end group
 /// @}

@@ -31,9 +31,8 @@
 
 #include "jsapi.h"
 #include "physics3d/CCPhysics3DObject.h"
-#include "js-BingingsExport.h"
 
-CC_JS_DLL void register_all_cocos2dx_physics3d_manual(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_physics3d_manual(JSContext *cx, JS::HandleObject global);
 bool jsval_to_physics3DRigidBodyDes(JSContext* cx, JS::HandleValue v, cocos2d::Physics3DRigidBodyDes* des);
 
 #endif

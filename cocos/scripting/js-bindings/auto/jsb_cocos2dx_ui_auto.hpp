@@ -1,5 +1,4 @@
 #include "base/ccConfig.h"
-#include "../manual/js-BingingsExport.h"
 #ifndef __cocos2dx_ui_h__
 #define __cocos2dx_ui_h__
 
@@ -11,8 +10,8 @@ extern JSObject *jsb_cocos2d_ui_LayoutParameter_prototype;
 
 bool js_cocos2dx_ui_LayoutParameter_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_LayoutParameter_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_LayoutParameter(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_LayoutParameter(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_LayoutParameter_clone(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LayoutParameter_getLayoutType(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LayoutParameter_createCloneInstance(JSContext *cx, uint32_t argc, jsval *vp);
@@ -25,8 +24,8 @@ extern JSObject *jsb_cocos2d_ui_LinearLayoutParameter_prototype;
 
 bool js_cocos2dx_ui_LinearLayoutParameter_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_LinearLayoutParameter_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_LinearLayoutParameter(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_LinearLayoutParameter(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_LinearLayoutParameter_setGravity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LinearLayoutParameter_getGravity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LinearLayoutParameter_create(JSContext *cx, uint32_t argc, jsval *vp);
@@ -37,8 +36,8 @@ extern JSObject *jsb_cocos2d_ui_RelativeLayoutParameter_prototype;
 
 bool js_cocos2dx_ui_RelativeLayoutParameter_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RelativeLayoutParameter_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RelativeLayoutParameter(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RelativeLayoutParameter(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RelativeLayoutParameter_setAlign(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RelativeLayoutParameter_setRelativeToWidgetName(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RelativeLayoutParameter_getRelativeName(JSContext *cx, uint32_t argc, jsval *vp);
@@ -53,8 +52,8 @@ extern JSObject *jsb_cocos2d_ui_Widget_prototype;
 
 bool js_cocos2dx_ui_Widget_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Widget_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Widget(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Widget(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Widget_setLayoutComponentEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_setSizePercent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_getCustomSize(JSContext *cx, uint32_t argc, jsval *vp);
@@ -103,6 +102,7 @@ bool js_cocos2dx_ui_Widget_isBright(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_dispatchFocusEvent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_setUnifySizeEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_isPropagateTouchEvents(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_Widget_getCurrentFocusedWidget(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_hitTest(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_isLayoutComponentEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_requestFocus(JSContext *cx, uint32_t argc, jsval *vp);
@@ -124,7 +124,6 @@ bool js_cocos2dx_ui_Widget_setBright(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_setCallbackType(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_isSwallowTouches(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_enableDpadNavigation(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_Widget_getCurrentFocusedWidget(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Widget_Widget(JSContext *cx, uint32_t argc, jsval *vp);
 
@@ -133,8 +132,8 @@ extern JSObject *jsb_cocos2d_ui_Layout_prototype;
 
 bool js_cocos2dx_ui_Layout_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Layout_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Layout(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Layout(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Layout_setBackGroundColorVector(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Layout_setClippingType(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Layout_setBackGroundColorType(JSContext *cx, uint32_t argc, jsval *vp);
@@ -177,8 +176,8 @@ extern JSObject *jsb_cocos2d_ui_Button_prototype;
 
 bool js_cocos2dx_ui_Button_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Button_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Button(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Button(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Button_getNormalTextureSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Button_getTitleText(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Button_setTitleFontSize(JSContext *cx, uint32_t argc, jsval *vp);
@@ -219,8 +218,8 @@ extern JSObject *jsb_cocos2d_ui_AbstractCheckButton_prototype;
 
 bool js_cocos2dx_ui_AbstractCheckButton_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_AbstractCheckButton_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_AbstractCheckButton(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_AbstractCheckButton(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_AbstractCheckButton_loadTextureBackGroundSelected(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_AbstractCheckButton_loadTextureBackGroundDisabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_AbstractCheckButton_setSelected(JSContext *cx, uint32_t argc, jsval *vp);
@@ -243,8 +242,8 @@ extern JSObject *jsb_cocos2d_ui_CheckBox_prototype;
 
 bool js_cocos2dx_ui_CheckBox_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_CheckBox_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_CheckBox(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_CheckBox(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_CheckBox_createInstance(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_CheckBox_CheckBox(JSContext *cx, uint32_t argc, jsval *vp);
@@ -254,8 +253,8 @@ extern JSObject *jsb_cocos2d_ui_RadioButton_prototype;
 
 bool js_cocos2dx_ui_RadioButton_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RadioButton_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RadioButton(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RadioButton(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RadioButton_createInstance(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RadioButton_RadioButton(JSContext *cx, uint32_t argc, jsval *vp);
@@ -265,8 +264,8 @@ extern JSObject *jsb_cocos2d_ui_RadioButtonGroup_prototype;
 
 bool js_cocos2dx_ui_RadioButtonGroup_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RadioButtonGroup_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RadioButtonGroup(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RadioButtonGroup(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RadioButtonGroup_removeRadioButton(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RadioButtonGroup_isAllowedNoSelection(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RadioButtonGroup_getSelectedButtonIndex(JSContext *cx, uint32_t argc, jsval *vp);
@@ -285,8 +284,8 @@ extern JSObject *jsb_cocos2d_ui_ImageView_prototype;
 
 bool js_cocos2dx_ui_ImageView_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_ImageView_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_ImageView(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_ImageView(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_ImageView_loadTexture(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ImageView_init(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ImageView_setScale9Enabled(JSContext *cx, uint32_t argc, jsval *vp);
@@ -303,8 +302,8 @@ extern JSObject *jsb_cocos2d_ui_Text_prototype;
 
 bool js_cocos2dx_ui_Text_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Text_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Text(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Text(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Text_enableShadow(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Text_getFontSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Text_getString(JSContext *cx, uint32_t argc, jsval *vp);
@@ -338,8 +337,8 @@ extern JSObject *jsb_cocos2d_ui_TextAtlas_prototype;
 
 bool js_cocos2dx_ui_TextAtlas_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_TextAtlas_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_TextAtlas(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_TextAtlas(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_TextAtlas_getStringLength(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_TextAtlas_getString(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_TextAtlas_setString(JSContext *cx, uint32_t argc, jsval *vp);
@@ -354,8 +353,8 @@ extern JSObject *jsb_cocos2d_ui_LoadingBar_prototype;
 
 bool js_cocos2dx_ui_LoadingBar_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_LoadingBar_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_LoadingBar(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_LoadingBar(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_LoadingBar_setPercent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LoadingBar_loadTexture(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LoadingBar_setDirection(JSContext *cx, uint32_t argc, jsval *vp);
@@ -374,8 +373,8 @@ extern JSObject *jsb_cocos2d_ui_ScrollView_prototype;
 
 bool js_cocos2dx_ui_ScrollView_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_ScrollView_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_ScrollView(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_ScrollView(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_ScrollView_scrollToTop(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ScrollView_scrollToPercentHorizontal(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ScrollView_setScrollBarOpacity(JSContext *cx, uint32_t argc, jsval *vp);
@@ -435,8 +434,8 @@ extern JSObject *jsb_cocos2d_ui_ListView_prototype;
 
 bool js_cocos2dx_ui_ListView_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_ListView_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_ListView(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_ListView(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_ListView_setGravity(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ListView_removeLastItem(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ListView_getCenterItemInCurrentView(JSContext *cx, uint32_t argc, jsval *vp);
@@ -475,8 +474,8 @@ extern JSObject *jsb_cocos2d_ui_Slider_prototype;
 
 bool js_cocos2dx_ui_Slider_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Slider_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Slider(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Slider(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Slider_setMaxPercent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Slider_setPercent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Slider_loadSlidBallTextureDisabled(JSContext *cx, uint32_t argc, jsval *vp);
@@ -505,8 +504,8 @@ extern JSObject *jsb_cocos2d_ui_UICCTextField_prototype;
 
 bool js_cocos2dx_ui_UICCTextField_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_UICCTextField_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_UICCTextField(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_UICCTextField(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_UICCTextField_onTextFieldAttachWithIME(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_UICCTextField_setPasswordText(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_UICCTextField_setAttachWithIME(JSContext *cx, uint32_t argc, jsval *vp);
@@ -540,8 +539,8 @@ extern JSObject *jsb_cocos2d_ui_TextField_prototype;
 
 bool js_cocos2dx_ui_TextField_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_TextField_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_TextField(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_TextField(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_TextField_setAttachWithIME(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_TextField_getFontSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_TextField_getString(JSContext *cx, uint32_t argc, jsval *vp);
@@ -591,8 +590,8 @@ extern JSObject *jsb_cocos2d_ui_TextBMFont_prototype;
 
 bool js_cocos2dx_ui_TextBMFont_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_TextBMFont_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_TextBMFont(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_TextBMFont(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_TextBMFont_setFntFile(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_TextBMFont_getStringLength(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_TextBMFont_setString(JSContext *cx, uint32_t argc, jsval *vp);
@@ -606,27 +605,25 @@ extern JSObject *jsb_cocos2d_ui_PageView_prototype;
 
 bool js_cocos2dx_ui_PageView_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_PageView_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_PageView(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
-bool js_cocos2dx_ui_PageView_setIndicatorSpaceBetweenIndexNodes(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_setIndicatorSelectedIndexColor(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_getIndicatorSelectedIndexColor(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_getIndicatorPositionAsAnchorPoint(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_setIndicatorPosition(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_getIndicatorPosition(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_insertPage(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_getCurrentPageIndex(JSContext *cx, uint32_t argc, jsval *vp);
+void js_register_cocos2dx_ui_PageView(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+bool js_cocos2dx_ui_PageView_getCustomScrollThreshold(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_getCurPageIndex(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_setDirection(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_addWidgetToPage(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_isUsingCustomScrollThreshold(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_setCurPageIndex(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_PageView_removePage(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_setCurrentPageIndex(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_getIndicatorEnabled(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_setUsingCustomScrollThreshold(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_setCustomScrollThreshold(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_insertPage(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_getDirection(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_PageView_scrollToPage(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_setIndicatorPositionAsAnchorPoint(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_scrollToItem(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_setIndicatorEnabled(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_addPage(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_getIndicatorSpaceBetweenIndexNodes(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_PageView_removeAllPages(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_getPage(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_PageView_removePageAtIndex(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_getPages(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_removeAllPages(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_ui_PageView_addPage(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_PageView_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_PageView_createInstance(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_PageView_PageView(JSContext *cx, uint32_t argc, jsval *vp);
@@ -636,8 +633,8 @@ extern JSObject *jsb_cocos2d_ui_Helper_prototype;
 
 bool js_cocos2dx_ui_Helper_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Helper_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Helper(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Helper(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Helper_getSubStringOfUTF8String(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Helper_convertBoundingBoxToScreen(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Helper_changeLayoutSystemActiveState(JSContext *cx, uint32_t argc, jsval *vp);
@@ -652,8 +649,8 @@ extern JSObject *jsb_cocos2d_ui_RichElement_prototype;
 
 bool js_cocos2dx_ui_RichElement_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RichElement_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RichElement(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RichElement(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RichElement_init(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElement_RichElement(JSContext *cx, uint32_t argc, jsval *vp);
 
@@ -662,8 +659,8 @@ extern JSObject *jsb_cocos2d_ui_RichElementText_prototype;
 
 bool js_cocos2dx_ui_RichElementText_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RichElementText_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RichElementText(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RichElementText(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RichElementText_init(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElementText_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElementText_RichElementText(JSContext *cx, uint32_t argc, jsval *vp);
@@ -673,8 +670,8 @@ extern JSObject *jsb_cocos2d_ui_RichElementImage_prototype;
 
 bool js_cocos2dx_ui_RichElementImage_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RichElementImage_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RichElementImage(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RichElementImage(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RichElementImage_init(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElementImage_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElementImage_RichElementImage(JSContext *cx, uint32_t argc, jsval *vp);
@@ -684,8 +681,8 @@ extern JSObject *jsb_cocos2d_ui_RichElementCustomNode_prototype;
 
 bool js_cocos2dx_ui_RichElementCustomNode_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RichElementCustomNode_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RichElementCustomNode(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RichElementCustomNode(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RichElementCustomNode_init(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElementCustomNode_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichElementCustomNode_RichElementCustomNode(JSContext *cx, uint32_t argc, jsval *vp);
@@ -695,8 +692,8 @@ extern JSObject *jsb_cocos2d_ui_RichText_prototype;
 
 bool js_cocos2dx_ui_RichText_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RichText_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RichText(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RichText(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RichText_insertElement(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichText_pushBackElement(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RichText_setVerticalSpace(JSContext *cx, uint32_t argc, jsval *vp);
@@ -710,8 +707,8 @@ extern JSObject *jsb_cocos2d_ui_HBox_prototype;
 
 bool js_cocos2dx_ui_HBox_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_HBox_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_HBox(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_HBox(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_HBox_initWithSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_HBox_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_HBox_HBox(JSContext *cx, uint32_t argc, jsval *vp);
@@ -721,8 +718,8 @@ extern JSObject *jsb_cocos2d_ui_VBox_prototype;
 
 bool js_cocos2dx_ui_VBox_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_VBox_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_VBox(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_VBox(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_VBox_initWithSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_VBox_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_VBox_VBox(JSContext *cx, uint32_t argc, jsval *vp);
@@ -732,8 +729,8 @@ extern JSObject *jsb_cocos2d_ui_RelativeBox_prototype;
 
 bool js_cocos2dx_ui_RelativeBox_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_RelativeBox_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_RelativeBox(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_RelativeBox(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_RelativeBox_initWithSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RelativeBox_create(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_RelativeBox_RelativeBox(JSContext *cx, uint32_t argc, jsval *vp);
@@ -743,8 +740,8 @@ extern JSObject *jsb_cocos2d_ui_Scale9Sprite_prototype;
 
 bool js_cocos2dx_ui_Scale9Sprite_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_Scale9Sprite_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_Scale9Sprite(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_Scale9Sprite(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_Scale9Sprite_disableCascadeColor(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_updateWithSprite(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_isFlippedX(JSContext *cx, uint32_t argc, jsval *vp);
@@ -759,7 +756,6 @@ bool js_cocos2dx_ui_Scale9Sprite_setInsetBottom(JSContext *cx, uint32_t argc, js
 bool js_cocos2dx_ui_Scale9Sprite_initWithSpriteFrameName(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_getSprite(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_setInsetTop(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_Scale9Sprite_setRenderingType(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_init(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_setPreferredSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_setSpriteFrame(JSContext *cx, uint32_t argc, jsval *vp);
@@ -767,7 +763,6 @@ bool js_cocos2dx_ui_Scale9Sprite_getBlendFunc(JSContext *cx, uint32_t argc, jsva
 bool js_cocos2dx_ui_Scale9Sprite_getInsetBottom(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_getCapInsets(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_isScale9Enabled(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_ui_Scale9Sprite_getRenderingType(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_getInsetRight(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_getOriginalSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_Scale9Sprite_initWithFile(JSContext *cx, uint32_t argc, jsval *vp);
@@ -790,8 +785,8 @@ extern JSObject *jsb_cocos2d_ui_EditBox_prototype;
 
 bool js_cocos2dx_ui_EditBox_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_EditBox_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_EditBox(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_EditBox(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_EditBox_getText(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_EditBox_setFontSize(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_EditBox_setPlaceholderFontName(JSContext *cx, uint32_t argc, jsval *vp);
@@ -818,8 +813,8 @@ extern JSObject *jsb_cocos2d_ui_LayoutComponent_prototype;
 
 bool js_cocos2dx_ui_LayoutComponent_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_LayoutComponent_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_LayoutComponent(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_LayoutComponent(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_LayoutComponent_setStretchWidthEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LayoutComponent_setPercentWidth(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_LayoutComponent_getAnchorPosition(JSContext *cx, uint32_t argc, jsval *vp);
@@ -878,8 +873,8 @@ extern JSObject *jsb_cocos2d_ui_ScrollViewBar_prototype;
 
 bool js_cocos2dx_ui_ScrollViewBar_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_ui_ScrollViewBar_finalize(JSContext *cx, JSObject *obj);
-CC_JS_DLL void js_register_cocos2dx_ui_ScrollViewBar(JSContext *cx, JS::HandleObject global);
-CC_JS_DLL void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
+void js_register_cocos2dx_ui_ScrollViewBar(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_ui(JSContext* cx, JS::HandleObject obj);
 bool js_cocos2dx_ui_ScrollViewBar_setAutoHideEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ScrollViewBar_onScrolled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_ui_ScrollViewBar_isAutoHideEnabled(JSContext *cx, uint32_t argc, jsval *vp);
