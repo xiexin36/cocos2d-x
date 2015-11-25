@@ -669,6 +669,9 @@
 		BAFA590A1B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFA59071B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.cpp */; };
 		BAFA590B1B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = BAFA59081B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.h */; };
 		BAFA590C1B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = BAFA59081B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.h */; };
+		F5B5F7841C06168A00F85AD7 /* js_module_register.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B5F7811C06168A00F85AD7 /* js_module_register.cpp */; };
+		F5B5F7851C06168A00F85AD7 /* js_module_register.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B5F7821C06168A00F85AD7 /* js_module_register.h */; };
+		F5B5F7861C06168A00F85AD7 /* js-BindingsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B5F7831C06168A00F85AD7 /* js-BindingsExport.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1253,6 +1256,9 @@
 		BAFA59021B319F38004F9246 /* jsb_cocos2dx_navmesh_manual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsb_cocos2dx_navmesh_manual.h; sourceTree = "<group>"; };
 		BAFA59071B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jsb_cocos2dx_navmesh_conversions.cpp; sourceTree = "<group>"; };
 		BAFA59081B319F7E004F9246 /* jsb_cocos2dx_navmesh_conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsb_cocos2dx_navmesh_conversions.h; sourceTree = "<group>"; };
+		F5B5F7811C06168A00F85AD7 /* js_module_register.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = js_module_register.cpp; sourceTree = "<group>"; };
+		F5B5F7821C06168A00F85AD7 /* js_module_register.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = js_module_register.h; sourceTree = "<group>"; };
+		F5B5F7831C06168A00F85AD7 /* js-BindingsExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "js-BindingsExport.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1375,6 +1381,9 @@
 				1A119E5018BDF19200352BAA /* cocosbuilder */,
 				1A119E5518BDF19200352BAA /* cocostudio */,
 				1A119E5918BDF19200352BAA /* extension */,
+				F5B5F7811C06168A00F85AD7 /* js_module_register.cpp */,
+				F5B5F7821C06168A00F85AD7 /* js_module_register.h */,
+				F5B5F7831C06168A00F85AD7 /* js-BindingsExport.h */,
 				1A119E6118BDF19200352BAA /* js_bindings_config.h */,
 				1A119E6218BDF19200352BAA /* js_bindings_core.cpp */,
 				1A119E6318BDF19200352BAA /* js_bindings_core.h */,
@@ -2281,6 +2290,7 @@
 				945C68FF1BFF2B9500732581 /* btScalar.h in Headers */,
 				945C68141BFF2B9500732581 /* btTriangleIndexVertexMaterialArray.h in Headers */,
 				945C68481BFF2B9500732581 /* btConvexPenetrationDepthSolver.h in Headers */,
+				F5B5F7851C06168A00F85AD7 /* js_module_register.h in Headers */,
 				945C69311BFF2B9500732581 /* MeshAttachment.h in Headers */,
 				945C68911BFF2B9500732581 /* btMultiBodyConstraint.h in Headers */,
 				945C67D91BFF2B9500732581 /* btCollisionMargin.h in Headers */,
@@ -2453,6 +2463,7 @@
 				945C67B81BFF2B9500732581 /* btConvexPlaneCollisionAlgorithm.h in Headers */,
 				945C693D1BFF2B9500732581 /* SkeletonData.h in Headers */,
 				945C69021BFF2B9500732581 /* btStackAlloc.h in Headers */,
+				F5B5F7861C06168A00F85AD7 /* js-BindingsExport.h in Headers */,
 				945C69151BFF2B9500732581 /* AnimationStateData.h in Headers */,
 				945C68BB1BFF2B9500732581 /* PosixThreadSupport.h in Headers */,
 				1AB5E62D18D05BC80088DAA4 /* jsb_cocos2dx_ui_auto.hpp in Headers */,
@@ -2686,6 +2697,7 @@
 				945C68D71BFF2B9500732581 /* SpuMinkowskiPenetrationDepthSolver.cpp in Sources */,
 				945C686C1BFF2B9500732581 /* btGearConstraint.cpp in Sources */,
 				945C67BF1BFF2B9500732581 /* btHashedSimplePairCache.cpp in Sources */,
+				F5B5F7841C06168A00F85AD7 /* js_module_register.cpp in Sources */,
 				945C68D41BFF2B9500732581 /* SpuGatheringCollisionTask.cpp in Sources */,
 				945C68351BFF2B9500732581 /* gim_box_set.cpp in Sources */,
 				945C67CF1BFF2B9500732581 /* SphereTriangleDetector.cpp in Sources */,
