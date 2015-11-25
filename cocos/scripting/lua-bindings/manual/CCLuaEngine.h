@@ -26,8 +26,6 @@
 #ifndef __CC_LUA_ENGINE_H__
 #define __CC_LUA_ENGINE_H__
 
-#include "Lua-BingingsExport.h"
-
 extern "C" {
 #include "lua.h"
 }
@@ -37,6 +35,7 @@ extern "C" {
 #include "CCLuaStack.h"
 #include "CCLuaValue.h"
 #include "cocos2d/LuaScriptHandlerMgr.h"
+#include "Lua-BindingsExport.h"
 
 /**
  * @addtogroup lua

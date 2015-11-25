@@ -26,8 +26,7 @@
 
 #include "jsapi.h"
 #include "jsfriendapi.h"
-#include "js-BingingsExport.h"
 
-CC_JS_DLL void register_all_cocos2dx_ui_manual(JSContext* cx, JS::HandleObject global);
+void register_all_cocos2dx_ui_manual(JSContext* cx, JS::HandleObject global);
 
 #endif /* defined(__jsb_cocos2dx_ui_manual__) */

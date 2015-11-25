@@ -40,6 +40,7 @@
     <ClCompile Include="..\manual\js_bindings_core.cpp" />
     <ClCompile Include="..\manual\js_bindings_opengl.cpp" />
     <ClCompile Include="..\manual\js_manual_conversions.cpp" />
+    <ClCompile Include="..\manual\js_module_register.cpp" />
     <ClCompile Include="..\manual\localstorage\js_bindings_system_functions.cpp" />
     <ClCompile Include="..\manual\localstorage\js_bindings_system_registration.cpp" />
     <ClCompile Include="..\manual\navmesh\jsb_cocos2dx_navmesh_conversions.cpp" />
@@ -78,7 +79,7 @@
     <ClInclude Include="..\manual\cocostudio\jsb_cocos2dx_studio_manual.h" />
     <ClInclude Include="..\manual\component\CCComponentJS.h" />
     <ClInclude Include="..\manual\extension\jsb_cocos2dx_extension_manual.h" />
-    <ClInclude Include="..\manual\js-BingingsExport.h" />
+    <ClInclude Include="..\manual\js-BindingsExport.h" />
     <ClInclude Include="..\manual\jsb_event_dispatcher_manual.h" />
     <ClInclude Include="..\manual\jsb_helper.h" />
     <ClInclude Include="..\manual\jsb_opengl_functions.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="..\manual\js_bindings_core.h" />
     <ClInclude Include="..\manual\js_bindings_opengl.h" />
     <ClInclude Include="..\manual\js_manual_conversions.h" />
+    <ClInclude Include="..\manual\js_module_register.h" />
     <ClInclude Include="..\manual\localstorage\js_bindings_system_functions.h" />
     <ClInclude Include="..\manual\localstorage\js_bindings_system_functions_registration.h" />
     <ClInclude Include="..\manual\localstorage\js_bindings_system_registration.h" />

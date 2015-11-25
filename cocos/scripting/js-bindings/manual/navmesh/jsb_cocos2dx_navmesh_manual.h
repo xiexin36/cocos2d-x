@@ -30,9 +30,8 @@ THE SOFTWARE.
 #define __jsb_cocos2dx_navmesh_manual__
 
 #include "jsapi.h"
-#include "js-BingingsExport.h"
 
-CC_JS_DLL void register_all_cocos2dx_navmesh_manual(JSContext *cx, JS::HandleObject global);
+void register_all_cocos2dx_navmesh_manual(JSContext *cx, JS::HandleObject global);
 
 #endif // __jsb_cocos2dx_navmesh_manual__
 #endif //#if CC_USE_NAVMESH

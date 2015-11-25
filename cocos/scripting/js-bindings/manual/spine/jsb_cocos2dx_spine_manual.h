@@ -26,9 +26,8 @@
 
 #include "jsapi.h"
 #include "spine/spine-cocos2dx.h"
-#include "js-BingingsExport.h"
 
-CC_JS_DLL void register_all_cocos2dx_spine_manual(JSContext* cx, JS::HandleObject global);
+void register_all_cocos2dx_spine_manual(JSContext* cx, JS::HandleObject global);
 
 extern jsval speventdata_to_jsval(JSContext* cx, spEventData& v);
 extern jsval spevent_to_jsval(JSContext* cx, spEvent& v);

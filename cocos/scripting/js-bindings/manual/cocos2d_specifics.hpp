@@ -26,7 +26,6 @@
 
 #include "ScriptingCore.h"
 #include "platform/CCSAXParser.h"
-#include "js-BingingsExport.h"
 
 class JSScheduleWrapper;
 
@@ -118,7 +117,7 @@ inline js_proxy_t *js_get_or_create_proxy(JSContext *cx, T *native_obj) {
 }
 
 JS::Value anonEvaluate(JSContext *cx, JS::HandleObject thisObj, const char* string);
-CC_JS_DLL void register_cocos2dx_js_core(JSContext* cx, JS::HandleObject obj);
+void register_cocos2dx_js_core(JSContext* cx, JS::HandleObject obj);
 
 
 class JSCallbackWrapper: public cocos2d::Ref {

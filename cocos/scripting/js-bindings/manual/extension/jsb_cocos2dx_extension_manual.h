@@ -29,7 +29,6 @@
 #include "mozilla/Maybe.h"
 #include "cocos/network/CCDownloader.h"
 #include "renderer/CCTexture2D.h"
-#include "js-BingingsExport.h"
 
 class __JSDownloaderDelegator : cocos2d::Ref
 {
@@ -55,6 +54,6 @@ private:
     mozilla::Maybe<JS::PersistentRootedObject> _obj;
 };
 
-CC_JS_DLL void register_all_cocos2dx_extension_manual(JSContext* cx, JS::HandleObject global);
+void register_all_cocos2dx_extension_manual(JSContext* cx, JS::HandleObject global);
 
 #endif /* defined(__jsb_cocos2dx_extension_manual__) */

@@ -693,6 +693,16 @@ isPropagateTouchEvents : function (
 },
 
 /**
+ * @method getCurrentFocusedWidget
+ * @return {ccui.Widget}
+ */
+getCurrentFocusedWidget : function (
+)
+{
+    return ccui.Widget;
+},
+
+/**
  * @method hitTest
  * @param {vec2_object} arg0
  * @param {cc.Camera} arg1
@@ -916,16 +926,6 @@ enableDpadNavigation : function (
 bool 
 )
 {
-},
-
-/**
- * @method getCurrentFocusedWidget
- * @return {ccui.Widget}
- */
-getCurrentFocusedWidget : function (
-)
-{
-    return ccui.Widget;
 },
 
 /**
@@ -3353,12 +3353,12 @@ getItemsMargin : function (
 
 /**
  * @method jumpToItem
- * @param {long} arg0
+ * @param {int} arg0
  * @param {vec2_object} arg1
  * @param {vec2_object} arg2
  */
 jumpToItem : function (
-long, 
+int, 
 vec2, 
 vec2 
 )
@@ -3517,13 +3517,13 @@ long
 
 /**
  * @method scrollToItem
-* @param {long|long} long
+* @param {int|int} int
 * @param {vec2_object|vec2_object} vec2
 * @param {vec2_object|vec2_object} vec2
 * @param {float} float
 */
 scrollToItem : function(
-long,
+int,
 vec2,
 vec2,
 float 
@@ -4706,115 +4706,119 @@ TextBMFont : function (
 ccui.PageView = {
 
 /**
- * @method setIndicatorSpaceBetweenIndexNodes
- * @param {float} arg0
+ * @method getCustomScrollThreshold
+ * @return {float}
  */
-setIndicatorSpaceBetweenIndexNodes : function (
-float 
-)
-{
-},
-
-/**
- * @method setIndicatorSelectedIndexColor
- * @param {color3b_object} arg0
- */
-setIndicatorSelectedIndexColor : function (
-color3b 
-)
-{
-},
-
-/**
- * @method getIndicatorSelectedIndexColor
- * @return {color3b_object}
- */
-getIndicatorSelectedIndexColor : function (
-)
-{
-    return cc.Color3B;
-},
-
-/**
- * @method getIndicatorPositionAsAnchorPoint
- * @return {vec2_object}
- */
-getIndicatorPositionAsAnchorPoint : function (
-)
-{
-    return cc.Vec2;
-},
-
-/**
- * @method setIndicatorPosition
- * @param {vec2_object} arg0
- */
-setIndicatorPosition : function (
-vec2 
-)
-{
-},
-
-/**
- * @method getIndicatorPosition
- * @return {vec2_object}
- */
-getIndicatorPosition : function (
-)
-{
-    return cc.Vec2;
-},
-
-/**
- * @method insertPage
- * @param {ccui.Widget} arg0
- * @param {int} arg1
- */
-insertPage : function (
-widget, 
-int 
-)
-{
-},
-
-/**
- * @method getCurrentPageIndex
- * @return {long}
- */
-getCurrentPageIndex : function (
+getCustomScrollThreshold : function (
 )
 {
     return 0;
 },
 
 /**
- * @method removePage
- * @param {ccui.Widget} arg0
+ * @method getCurPageIndex
+ * @return {long}
  */
-removePage : function (
-widget 
+getCurPageIndex : function (
+)
+{
+    return 0;
+},
+
+/**
+ * @method setDirection
+ * @param {ccui.PageView::Direction} arg0
+ */
+setDirection : function (
+direction 
 )
 {
 },
 
 /**
- * @method setCurrentPageIndex
+ * @method addWidgetToPage
+ * @param {ccui.Widget} arg0
+ * @param {long} arg1
+ * @param {bool} arg2
+ */
+addWidgetToPage : function (
+widget, 
+long, 
+bool 
+)
+{
+},
+
+/**
+ * @method isUsingCustomScrollThreshold
+ * @return {bool}
+ */
+isUsingCustomScrollThreshold : function (
+)
+{
+    return false;
+},
+
+/**
+ * @method setCurPageIndex
  * @param {long} arg0
  */
-setCurrentPageIndex : function (
+setCurPageIndex : function (
 long 
 )
 {
 },
 
 /**
- * @method getIndicatorEnabled
- * @return {bool}
+ * @method removePage
+ * @param {ccui.Layout} arg0
  */
-getIndicatorEnabled : function (
+removePage : function (
+layout 
 )
 {
-    return false;
+},
+
+/**
+ * @method setUsingCustomScrollThreshold
+ * @param {bool} arg0
+ */
+setUsingCustomScrollThreshold : function (
+bool 
+)
+{
+},
+
+/**
+ * @method setCustomScrollThreshold
+ * @param {float} arg0
+ */
+setCustomScrollThreshold : function (
+float 
+)
+{
+},
+
+/**
+ * @method insertPage
+ * @param {ccui.Layout} arg0
+ * @param {int} arg1
+ */
+insertPage : function (
+layout, 
+int 
+)
+{
+},
+
+/**
+ * @method getDirection
+ * @return {ccui.PageView::Direction}
+ */
+getDirection : function (
+)
+{
+    return 0;
 },
 
 /**
@@ -4828,53 +4832,35 @@ long
 },
 
 /**
- * @method setIndicatorPositionAsAnchorPoint
- * @param {vec2_object} arg0
+ * @method getPage
+ * @param {long} arg0
+ * @return {ccui.Layout}
  */
-setIndicatorPositionAsAnchorPoint : function (
-vec2 
+getPage : function (
+long 
 )
 {
+    return ccui.Layout;
 },
 
 /**
- * @method scrollToItem
+ * @method removePageAtIndex
  * @param {long} arg0
  */
-scrollToItem : function (
+removePageAtIndex : function (
 long 
 )
 {
 },
 
 /**
- * @method setIndicatorEnabled
- * @param {bool} arg0
+ * @method getPages
+ * @return {Array}
  */
-setIndicatorEnabled : function (
-bool 
+getPages : function (
 )
 {
-},
-
-/**
- * @method addPage
- * @param {ccui.Widget} arg0
- */
-addPage : function (
-widget 
-)
-{
-},
-
-/**
- * @method getIndicatorSpaceBetweenIndexNodes
- * @return {float}
- */
-getIndicatorSpaceBetweenIndexNodes : function (
-)
-{
-    return 0;
+    return new Array();
 },
 
 /**
@@ -4886,11 +4872,11 @@ removeAllPages : function (
 },
 
 /**
- * @method removePageAtIndex
- * @param {long} arg0
+ * @method addPage
+ * @param {ccui.Layout} arg0
  */
-removePageAtIndex : function (
-long 
+addPage : function (
+layout 
 )
 {
 },
@@ -5589,16 +5575,6 @@ float
 },
 
 /**
- * @method setRenderingType
- * @param {ccui.Scale9Sprite::RenderingType} arg0
- */
-setRenderingType : function (
-renderingtype 
-)
-{
-},
-
-/**
  * @method init
 * @param {cc.Sprite|cc.Sprite|cc.Sprite} sprite
 * @param {rect_object|rect_object|rect_object} rect
@@ -5680,16 +5656,6 @@ isScale9Enabled : function (
 )
 {
     return false;
-},
-
-/**
- * @method getRenderingType
- * @return {ccui.Scale9Sprite::RenderingType}
- */
-getRenderingType : function (
-)
-{
-    return 0;
 },
 
 /**

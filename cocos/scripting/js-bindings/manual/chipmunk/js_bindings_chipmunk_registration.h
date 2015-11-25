@@ -25,8 +25,6 @@
 #ifndef __JSB_CHIPMUNK_REGISTRATION
 #define __JSB_CHIPMUNK_REGISTRATION
 
-#include "js-BingingsExport.h"
-
-CC_JS_DLL void jsb_register_chipmunk( JSContext *globalC, JS::HandleObject globalO);
+void jsb_register_chipmunk( JSContext *globalC, JS::HandleObject globalO);
 
 #endif // __JSB_CHIPMUNK_REGISTRATION
