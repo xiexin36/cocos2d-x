@@ -58,8 +58,8 @@ LOCAL_SRC_FILES := ../manual/CCLuaBridge.cpp \
           ../../../../external/lua/tolua/tolua_to.c \
           ../../../../external/xxtea/xxtea.cpp \
           ../auto/lua_cocos2dx_audioengine_auto.cpp \
-          ../manual/audioengine/lua_cocos2dx_audioengine_manual.cpp
-
+          ../manual/audioengine/lua_cocos2dx_audioengine_manual.cpp \
+          ../manual/lua_module_register.cpp
 #Component
 LOCAL_SRC_FILES += ../manual/CCComponentLua.cpp \
 
