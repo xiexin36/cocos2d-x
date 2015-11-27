@@ -5,7 +5,7 @@
         #include <string.h>
     #endif
 
-    #if defined(CC_STATIC)
+    #if defined(_USRLIBSIMSTATIC)
         #define CC_LIBSIM_DLL
     #else
         #if defined(_USRLIBSIMDLL)

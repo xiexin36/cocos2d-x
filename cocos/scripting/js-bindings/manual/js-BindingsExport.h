@@ -5,7 +5,7 @@
         #include <string.h>
     #endif
 
-    #if defined(CC_STATIC)
+    #if defined(_USRJSSTATIC)
         #define CC_JS_DLL
     #else
         #if defined(_USRJSDLL)
