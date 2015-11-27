@@ -3391,6 +3391,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/I/Debug",
 				);
 				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "libluacocos2d Mac";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac $(SRCROOT)/../../../../external/curl/include/mac";
@@ -3429,6 +3430,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/I/Debug",
 				);
 				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "libluacocos2d Mac";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac $(SRCROOT)/../../../../external/curl/include/mac";
