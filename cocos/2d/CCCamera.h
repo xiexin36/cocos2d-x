@@ -58,10 +58,6 @@ enum class CameraFlag
     USER6 = 1 << 6,
     USER7 = 1 << 7,
     USER8 = 1 << 8,
-    SkyBox = 1 << 10,
-    DEFAULTCAMERA = DEFAULT | SkyBox,
-    PIXEL = 1 << 13,
-    FRONT = 1 << 14,
 };
 /**
  * Defines a camera .
