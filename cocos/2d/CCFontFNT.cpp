@@ -98,7 +98,7 @@ typedef struct _KerningHashElement
     UT_hash_handle	hh;
 } tKerningHashElement;
 
-/** @brief BMFontConfiguration has parsed configuration of the the .fnt file
+/** @brief BMFontConfiguration has parsed configuration of the .fnt file
 @since v0.8
 */
 class CC_DLL BMFontConfiguration : public Ref
@@ -656,64 +656,6 @@ FontFNT * FontFNT::create(const std::string& fntFilePath, const Vec2& imageOffse
     return tempFont;
 }
 
-// For cocostudio
-bool FontFNT::CheckBMFontResource(const std::string& fntFilePath)
-{
-    BMFontConfiguration *newConf = BMFontConfiguration::create(fntFilePath);
-    if (!newConf)
-        return false;
-
-    std::string atlasName = newConf->getAtlasName();
-    if (atlasName.empty())
-    {
-        return false;
-    }
-
-    if (FileUtils::getInstance()->isAbsolutePath(atlasName))
-    {
-        if (!FileUtils::getInstance()->isFileExist(atlasName))
-        {
-            return false;
-        }
-    }
-    else
-    {
-        std::string dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("/"));
-        if (dirpath == fntFilePath)
-        {
-            dirpath = fntFilePath.substr(0, fntFilePath.find_last_of("\\"));
-        }
-        dirpath += "/";
-        atlasName = dirpath + atlasName;
-        if (!FileUtils::getInstance()->isFileExist(atlasName))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void FontFNT::reloadBMFontResource(const std::string& fntFilePath)
-{
-    if (s_configurations == nullptr)
-    {
-        s_configurations = new (std::nothrow) Map<std::string, BMFontConfiguration*>();
-    }
-
-    BMFontConfiguration *ret = s_configurations->at(fntFilePath);
-    if (ret != nullptr)
-    {
-        s_configurations->erase(fntFilePath);
-    }
-    ret = BMFontConfiguration::create(fntFilePath.c_str());
-    if (ret)
-    {
-        s_configurations->insert(fntFilePath, ret);
-        TextureCache::getInstance()->reloadTexture(ret->getAtlasName());
-
-    }
-}
-
 FontFNT::FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset /* = Vec2::ZERO */)
 :_configuration(theContfig)
 ,_imageOffset(CC_POINT_PIXELS_TO_POINTS(imageOffset))
@@ -791,7 +733,7 @@ FontAtlas * FontFNT::createFontAtlas()
     if (_configuration->_commonHeight == 0)
         return nullptr;
     
-    // commone height
+    // common height
     tempAtlas->setLineHeight(_configuration->_commonHeight);
     
     
@@ -841,5 +783,25 @@ FontAtlas * FontFNT::createFontAtlas()
     return tempAtlas;
 }
 
+void FontFNT::reloadBMFontResource(const std::string& fntFilePath)
+{
+    if (s_configurations == nullptr)
+    {
+        s_configurations = new (std::nothrow) Map<std::string, BMFontConfiguration*>();
+    }
+
+    BMFontConfiguration *ret = s_configurations->at(fntFilePath);
+    if (ret != nullptr)
+    {
+        s_configurations->erase(fntFilePath);
+    }
+    ret = BMFontConfiguration::create(fntFilePath.c_str());
+    if (ret)
+    {
+        s_configurations->insert(fntFilePath, ret);
+        TextureCache::getInstance()->reloadTexture(ret->getAtlasName());
+
+    }
+}
 
 NS_CC_END

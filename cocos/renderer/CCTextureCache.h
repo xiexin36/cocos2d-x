@@ -117,7 +117,7 @@ public:
     * The callback will be called from the main thread, so it is safe to create any cocos2d object from the callback.
     * Supported image extensions: .png, .jpg
      @param filepath A null terminated string.
-     @param callback A callback function would be inovked after the image is loaded.
+     @param callback A callback function would be invoked after the image is loaded.
      @since v0.8
     */
     virtual void addImageAsync(const std::string &filepath, const std::function<void(Texture2D*)>& callback);
@@ -191,7 +191,7 @@ public:
     */
     std::string getCachedTextureInfo() const;
 
-    //Wait for texture cahe to quit befor destroy instance.
+    //Wait for texture cache to quit before destroy instance.
     /**Called by director, please do not called outside.*/
     void waitForQuit();
 
@@ -203,10 +203,12 @@ public:
      * @return The full path of the file.
      */
     const std::string getTextureFilePath(Texture2D* texture)const;
-    //For editor by liam
-    void renameTextureWithKey(std::string srcName, std::string dstName);
+
     void setDirty(bool dirty) { _dirty = dirty; }
-    bool isDirty()const { return _dirty; }
+    bool isDirty() const { return _dirty; }
+
+    void renameTextureWithKey(std::string srcName, std::string dstName);
+
 private:
     void addImageAsyncCallBack(float dt);
     void loadImage();
@@ -231,7 +233,7 @@ protected:
     int _asyncRefCount;
 
     std::unordered_map<std::string, Texture2D*> _textures;
-    //For editor by liam
+
     bool _dirty;
 };
 

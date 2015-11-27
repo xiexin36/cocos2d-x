@@ -32,8 +32,6 @@ extern "C" {
 }
 #endif
 
-#include "Lua-BingingsExport.h"
-
 /**
  * @addtogroup lua
  * @{
@@ -46,13 +44,13 @@ extern "C" {
  * If you don't register the extension module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
-CC_LUA_DLL TOLUA_API int  register_extension_module(lua_State* tolua_S);
+TOLUA_API int  register_extension_module(lua_State* tolua_S);
 
 // end group
 /// @}
 
 /// @cond
-CC_LUA_DLL TOLUA_API int  register_all_cocos2dx_extension_manual(lua_State* tolua_S);
+TOLUA_API int  register_all_cocos2dx_extension_manual(lua_State* tolua_S);
 /// @endcond
 
 struct LuaAssetsManagerEventData

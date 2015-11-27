@@ -39,7 +39,7 @@ Configuration* Configuration::s_sharedConfiguration = nullptr;
 const char* Configuration::CONFIG_FILE_LOADED = "config_file_loaded";
 
 Configuration::Configuration()
-: _maxTextureSize(GL_MAX_TEXTURE_SIZE)  // For cocoStudio only
+: _maxTextureSize(0) 
 , _maxModelviewStackDepth(0)
 , _supportsPVRTC(false)
 , _supportsETC1(false)
@@ -50,7 +50,7 @@ Configuration::Configuration()
 , _supportsDiscardFramebuffer(false)
 , _supportsShareableVAO(false)
 , _maxSamplesAllowed(0)
-, _maxTextureUnits(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)  // For cocoStudio only
+, _maxTextureUnits(0)
 , _glExtensions(nullptr)
 , _maxDirLightInShader(1)
 , _maxPointLightInShader(1)
@@ -189,7 +189,7 @@ bool Configuration::checkForGLExtension(const std::string &searchName) const
 
 //
 // getters for specific variables.
-// Mantained for backward compatiblity reasons only.
+// Maintained for backward compatibility reasons only.
 //
 int Configuration::getMaxTextureSize() const
 {

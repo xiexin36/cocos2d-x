@@ -33,7 +33,6 @@
 #include "js/Utility.h"
 #include "js/Value.h"
 #include "js/Vector.h"
-#include "js-BingingsExport.h"
 
 /************************************************************************/
 

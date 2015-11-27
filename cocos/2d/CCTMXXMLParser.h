@@ -137,9 +137,10 @@ public:
     int             _margin;
     //! filename containing the tiles (should be spritesheet / texture atlas)
     std::string     _sourceImage;
-    std::string     _originSourceImage;
     //! size in pixels of the image
     Size            _imageSize;
+    std::string     _originSourceImage;
+
 public:
     /**
      * @js ctor
@@ -280,9 +281,8 @@ public:
     inline void setCurrentString(const std::string& currentString){ _currentString = currentString; }
     inline const std::string& getTMXFileName() const { return _TMXFileName; }
     inline void setTMXFileName(const std::string& fileName){ _TMXFileName = fileName; }
+    inline const std::string& getExternalTilesetFileName() const { return _externalTilesetFilename; }
 
-    // For cocostudio use
-    inline const std::string& getExternalTilesetFileName(){ return _externalTilesetFilename; }
 protected:
     void internalInit(const std::string& tmxFileName, const std::string& resourcePath);
 
@@ -321,8 +321,6 @@ protected:
     ValueMapIntKey _tileProperties;
     int _currentFirstGID;
     bool _recordFirstGID;
-
-    // For cocostudio use
     std::string _externalTilesetFilename;
 };
 
@@ -333,4 +331,3 @@ NS_CC_END
 
 /// @endcond
 #endif
-

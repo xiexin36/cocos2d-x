@@ -34,7 +34,6 @@ extern "C" {
 
 #include "base/CCRef.h"
 #include <string>
-#include "Lua-BingingsExport.h"
 
 TOLUA_API int  register_all_cocos2dx_coco_studio_manual(lua_State* L);
 
@@ -50,7 +49,7 @@ TOLUA_API int  register_all_cocos2dx_coco_studio_manual(lua_State* L);
  * If you don't register the coco studio module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
-CC_LUA_DLL TOLUA_API int  register_cocostudio_module(lua_State* L);
+TOLUA_API int  register_cocostudio_module(lua_State* L);
 
 // end group
 /// @}

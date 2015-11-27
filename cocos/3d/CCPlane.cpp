@@ -92,19 +92,17 @@ PointSide Plane::getSide(const Vec3& point) const
         return PointSide::IN_PLANE;
 }
 
-// For editor
 PointSide Plane::getSide(const Vec3& point, const Vec3& halfSize) const
 {
-	float dist = dist2Plane(point);
+    float dist = dist2Plane(point);
+    float maxAbsDist = fabs(_normal.x * halfSize.x) + fabs(_normal.y * halfSize.y) + fabs(_normal.z * halfSize.z);
 
-	float maxAbsDist = fabs(_normal.x * halfSize.x) + fabs(_normal.y * halfSize.y) + fabs(_normal.z * halfSize.z);
-
-	if (dist > maxAbsDist)
-		return PointSide::FRONT_PLANE;
-	else if (dist < -maxAbsDist)
-		return PointSide::BEHIND_PLANE;
-	else
-		return PointSide::IN_PLANE;
+    if (dist > maxAbsDist)
+        return PointSide::FRONT_PLANE;
+    else if (dist < -maxAbsDist)
+        return PointSide::BEHIND_PLANE;
+    else
+        return PointSide::IN_PLANE;
 }
 
 NS_CC_END

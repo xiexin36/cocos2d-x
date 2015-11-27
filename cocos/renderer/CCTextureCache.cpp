@@ -59,7 +59,6 @@ TextureCache::TextureCache()
 : _loadingThread(nullptr)
 , _needQuit(false)
 , _asyncRefCount(0)
-, _dirty(false)
 {
 }
 
@@ -122,8 +121,8 @@ public:
  How to deal add image many times?
  - At first, this situation is abnormal, we only ensure the logic is correct.
  - If the image has been loaded, the after load image call will return immediately.
- - If the image request is in queue already, there will be have more than one request in queue,
- - In addImageAsyncCallback, will deduplacated the request to ensure only create one texture.
+ - If the image request is in queue already, there will be more than one request in queue,
+ - In addImageAsyncCallback, will deduplicate the request to ensure only create one texture.
  
  Does process all response in addImageAsyncCallback consume more time?
  - Convert image to texture faster than load image from disk, so this isn't a problem.
@@ -353,7 +352,6 @@ Texture2D * TextureCache::addImage(const std::string &path)
                 VolatileTextureMgr::addImageTexture(texture, fullpath);
 #endif
                 // texture already retained, no need to re-retain it
-                texture->setPath(fullpath);
                 _textures.insert( std::make_pair(fullpath, texture) );
 
                 //parse 9-patch info
@@ -402,7 +400,6 @@ Texture2D* TextureCache::addImage(Image *image, const std::string &key)
 
         if(texture)
         {
-            texture->setPath(key);
             _textures.insert( std::make_pair(key, texture) );
             texture->retain();
 
@@ -496,8 +493,7 @@ void TextureCache::removeTexture(Texture2D* texture)
 
     for( auto it=_textures.cbegin(); it!=_textures.cend(); /* nothing */ ) {
         if( it->second == texture ) {
-            texture->setValid(false);
-            texture->autorelease();
+            texture->release();
             _textures.erase(it++);
             break;
         } else
@@ -516,8 +512,7 @@ void TextureCache::removeTextureForKey(const std::string &textureKeyName)
     }
 
     if( it != _textures.end() ) {
-        it->second->setValid(false);
-        (it->second)->autorelease();
+        (it->second)->release();
         _textures.erase(it);
     }
 }
@@ -616,10 +611,19 @@ void TextureCache::renameTextureWithKey(std::string srcName, std::string dstName
     if( it != _textures.end() ) {
         std::string fullpath = FileUtils::getInstance()->fullPathForFilename(dstName);
         Texture2D* tex = it->second;
-        tex->setPath(key);
-        _textures.insert(std::make_pair(fullpath, tex));
-        _textures.erase(it);
-        this->setDirty(true);
+        Image* image = new Image();
+        if (image)
+        {
+            bool ret = image->initWithImageFile(dstName);
+            if (ret)
+            {
+                tex->initWithImage(image);
+                _textures.insert(std::make_pair(fullpath, tex));
+                _textures.erase(it);
+                this->setDirty(true);
+            }
+            CC_SAFE_DELETE(image);
+        }
     }
 }
 

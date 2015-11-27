@@ -182,7 +182,7 @@ namespace cocostudio
         {
             light->setIntensity(intensity);
             light->setEnabled(enabled);
-			light->setLightFlag(flag);
+            light->setLightFlag(flag);
         }
         lightNode->addChild(light);
 

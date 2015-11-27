@@ -29,6 +29,7 @@ THE SOFTWARE.
 #include "2d/CCTMXLayer.h"
 #include "2d/CCSprite.h"
 #include "deprecated/CCString.h" // For StringUtils::format
+#include "2d/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -61,7 +62,7 @@ TMXTiledMap* TMXTiledMap::createWithXML(const std::string& tmxString, const std:
 bool TMXTiledMap::initWithTMXFile(const std::string& tmxFile)
 {
     CCASSERT(tmxFile.size()>0, "TMXTiledMap: tmx file should not be empty");
-    
+
     _tmxFile = tmxFile;
 
     setContentSize(Size::ZERO);
@@ -94,9 +95,9 @@ bool TMXTiledMap::initWithXML(const std::string& tmxString, const std::string& r
 
 TMXTiledMap::TMXTiledMap()
     :_mapSize(Size::ZERO)
-    ,_tileSize(Size::ZERO)
+    ,_tileSize(Size::ZERO)        
     ,_tmxFile("")
-    ,_tmxLayerNum(0)
+    , _tmxLayerNum(0)
 {
 }
 
@@ -179,14 +180,12 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
 
     _tileProperties = mapInfo->getTileProperties();
 
-    int idx=0;
+    int idx = 0;
 
     auto& layers = mapInfo->getLayers();
-    for(const auto &layerInfo : layers) {
+    for (const auto &layerInfo : layers) {
         if (layerInfo->_visible) {
             TMXLayer *child = parseLayer(layerInfo, mapInfo);
-            //为编辑器修改，节省一次循环
-            //addChild(child, idx, idx);
             if (child == nullptr) {
                 idx++;
                 continue;
@@ -197,17 +196,15 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
             // update content size with the max size
             const Size& childSize = child->getContentSize();
             Size currentSize = this->getContentSize();
-            currentSize.width = std::max( currentSize.width, childSize.width );
-            currentSize.height = std::max( currentSize.height, childSize.height );
+            currentSize.width = std::max(currentSize.width, childSize.width);
+            currentSize.height = std::max(currentSize.height, childSize.height);
             this->setContentSize(currentSize);
-            
+
             idx++;
         }
     }
     _tmxLayerNum = idx;
 }
-
-
 
 // public
 TMXLayer * TMXTiledMap::getLayer(const std::string& layerName) const
@@ -228,11 +225,6 @@ TMXLayer * TMXTiledMap::getLayer(const std::string& layerName) const
 
     // layer not found
     return nullptr;
-}
-
-int TMXTiledMap::getLayerNum()
-{
-    return _tmxLayerNum;
 }
 
 TMXObjectGroup * TMXTiledMap::getObjectGroup(const std::string& groupName) const
@@ -287,13 +279,17 @@ std::string TMXTiledMap::getDescription() const
     return StringUtils::format("<TMXTiledMap | Tag = %d, Layers = %d", _tag, static_cast<int>(_children.size()));
 }
 
-ResouceData TMXTiledMap::csGetRenderFile()
+int TMXTiledMap::getLayerNum()
+{
+    return _tmxLayerNum;
+}
+
+ResouceData TMXTiledMap::getRenderFile()
 {
     ResouceData rData;
     rData.type = 0;
     rData.file = _tmxFile;
     return rData;
 }
-
 
 NS_CC_END

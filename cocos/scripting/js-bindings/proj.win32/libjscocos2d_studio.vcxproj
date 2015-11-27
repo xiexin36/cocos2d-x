@@ -31,6 +31,7 @@
     <ClCompile Include="..\manual\cocosbuilder\js_bindings_ccbreader.cpp" />
     <ClCompile Include="..\manual\cocostudio\jsb_cocos2dx_studio_conversions.cpp" />
     <ClCompile Include="..\manual\cocostudio\jsb_cocos2dx_studio_manual.cpp" />
+    <ClCompile Include="..\manual\component\CCComponentJS.cpp" />
     <ClCompile Include="..\manual\extension\jsb_cocos2dx_extension_manual.cpp" />
     <ClCompile Include="..\manual\jsb_event_dispatcher_manual.cpp" />
     <ClCompile Include="..\manual\jsb_opengl_functions.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="..\manual\js_bindings_core.cpp" />
     <ClCompile Include="..\manual\js_bindings_opengl.cpp" />
     <ClCompile Include="..\manual\js_manual_conversions.cpp" />
+    <ClCompile Include="..\manual\js_module_register.cpp" />
     <ClCompile Include="..\manual\localstorage\js_bindings_system_functions.cpp" />
     <ClCompile Include="..\manual\localstorage\js_bindings_system_registration.cpp" />
     <ClCompile Include="..\manual\navmesh\jsb_cocos2dx_navmesh_conversions.cpp" />
@@ -75,8 +77,9 @@
     <ClInclude Include="..\manual\cocosbuilder\js_bindings_ccbreader.h" />
     <ClInclude Include="..\manual\cocostudio\jsb_cocos2dx_studio_conversions.h" />
     <ClInclude Include="..\manual\cocostudio\jsb_cocos2dx_studio_manual.h" />
+    <ClInclude Include="..\manual\component\CCComponentJS.h" />
     <ClInclude Include="..\manual\extension\jsb_cocos2dx_extension_manual.h" />
-    <ClInclude Include="..\manual\js-BingingsExport.h" />
+    <ClInclude Include="..\manual\js-BindingsExport.h" />
     <ClInclude Include="..\manual\jsb_event_dispatcher_manual.h" />
     <ClInclude Include="..\manual\jsb_helper.h" />
     <ClInclude Include="..\manual\jsb_opengl_functions.h" />
@@ -86,6 +89,7 @@
     <ClInclude Include="..\manual\js_bindings_core.h" />
     <ClInclude Include="..\manual\js_bindings_opengl.h" />
     <ClInclude Include="..\manual\js_manual_conversions.h" />
+    <ClInclude Include="..\manual\js_module_register.h" />
     <ClInclude Include="..\manual\localstorage\js_bindings_system_functions.h" />
     <ClInclude Include="..\manual\localstorage\js_bindings_system_functions_registration.h" />
     <ClInclude Include="..\manual\localstorage\js_bindings_system_registration.h" />
@@ -99,11 +103,6 @@
     <ClInclude Include="..\manual\spidermonkey_specifics.h" />
     <ClInclude Include="..\manual\spine\jsb_cocos2dx_spine_manual.h" />
     <ClInclude Include="..\manual\ui\jsb_cocos2dx_ui_manual.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\2d\libcocos2d.vcxproj">
-      <Project>{98a51ba8-fc3a-415b-ac8f-8c7bd464e93e}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{39379840-825A-45A0-B363-C09FFEF864BD}</ProjectGuid>
@@ -148,14 +147,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>$(Configuration).win32\$(ProjectName)\</IntDir>
-    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration).win32\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(Configuration).win32\$(ProjectName)\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -163,7 +160,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_LIB;COCOS2D_DEBUG=1;XP_WIN;_USRJSDLL;JS_HAVE___INTN;JS_INTPTR_TYPE=int;COCOS2D_JAVASCRIPT=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_LIB;COCOS2D_DEBUG=1;XP_WIN;JS_HAVE___INTN;JS_INTPTR_TYPE=int;COCOS2D_JAVASCRIPT=1;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;_USRJSDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)..;$(EngineRoot);$(EngineRoot)cocos;$(EngineRoot)cocos\base;$(EngineRoot)cocos\3d;$(EngineRoot)cocos\2d;$(EngineRoot)cocos\navmesh;$(EngineRoot)cocos\physics3d;$(EngineRoot)cocos\ui;$(EngineRoot)cocos\storage;$(EngineRoot)cocos\editor-support\spine;$(EngineRoot)cocos\editor-support\cocosbuilder;$(EngineRoot)cocos\editor-support\cocostudio;$(EngineRoot)cocos\audio\include;$(EngineRoot)extensions;$(EngineRoot)external;$(ProjectDir)..\auto;$(ProjectDir)..\manual;$(ProjectDir)..\manual\cocostudio;$(ProjectDir)..\manual\navmesh;$(ProjectDir)..\manual\spine;$(ProjectDir)..\..\..\..\external\spidermonkey\include\win32;$(EngineRoot)external\chipmunk\include\chipmunk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068;4101;4800;4251;4244;4099;4083;4700;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -202,8 +199,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\..\external\spidermonkey\prebuilt\win32\*.*" 
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>OpenAL32.lib;advapi32.lib;comdlg32.lib;gdi32.lib;glew32.lib;kernel32.lib;libSpine.lib;libcocos2d.lib;libcurl_imp.lib;libmpg123.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;mozjs-33.lib;odbc32.lib;odbccp32.lib;ole32.lib;oleaut32.lib;opengl32.lib;shell32.lib;sqlite3.lib;user32.lib;uuid.lib;websockets.lib;winspool.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenAL32.lib;advapi32.lib;comdlg32.lib;gdi32.lib;glew32.lib;kernel32.lib;libSpine.lib;libcocos2d.lib;libcurl_imp.lib;libmpg123.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;mozjs-33.lib;odbc32.lib;odbccp32.lib;ole32.lib;oleaut32.lib;opengl32.lib;shell32.lib;sqlite3.lib;user32.lib;uuid.lib;websockets.lib;winspool.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"

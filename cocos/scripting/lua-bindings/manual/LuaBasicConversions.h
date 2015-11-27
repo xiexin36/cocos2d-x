@@ -30,7 +30,7 @@ extern "C" {
 }
 #include "tolua_fix.h"
 #include "cocos2d.h"
-#include "Lua-BingingsExport.h"
+#include "Lua-BindingsExport.h"
 
 using namespace cocos2d;
 
@@ -54,7 +54,7 @@ cocos2d::log(__VA_ARGS__);                                                  \
 /**
  * If the typename of userdata at the given accepteable index of stack is equal to type it return true,otherwise return false .
  * If def != 0, lo could greater than the top index of stack, return value is true.
- * If the value of the given index is nil, retrun value also is true.
+ * If the value of the given index is nil, return value also is true.
  *
  * @param L the current lua_State.
  * @param lo the given accpetable index of stack.
@@ -62,14 +62,14 @@ cocos2d::log(__VA_ARGS__);                                                  \
  * @param def whether has default value.
  * @return Return true if the typename of userdata at the given accepteable index of stack is equal to type, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_is_usertype(lua_State* L,int lo,const char* type, int def);
+extern bool luaval_is_usertype(lua_State* L,int lo,const char* type, int def);
 // to native
 
 /**
  * @name luaval_to_native
  * The following function are all used to convert the Lua values at the given acceptable index to the corresponding c++ values.
  * If the Lua values can be converted the return value is true, otherwise return false.
- * If it happens error during the conversion process, it outputs the error msg in the console to provide infromation about the name of calling function, the typename of value at the given acceptable index, and so on.
+ * If it happens error during the conversion process, it outputs the error msg in the console to provide information about the name of calling function, the typename of value at the given acceptable index, and so on.
  * @{
  **/
 
@@ -84,7 +84,7 @@ CC_LUA_DLL extern bool luaval_is_usertype(lua_State* L,int lo,const char* type, 
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ulong(lua_State* L, int lo, unsigned long* outValue, const char* funcName = "");
+extern bool luaval_to_ulong(lua_State* L,int lo, unsigned long* outValue, const char* funcName="");
 
 /**
  * Get a unsigned short value from the given accpetable index of stack.
@@ -96,7 +96,7 @@ CC_LUA_DLL extern bool luaval_to_ulong(lua_State* L, int lo, unsigned long* outV
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ushort(lua_State* L, int lo, unsigned short* outValue, const char* funcName = "");
+extern bool luaval_to_ushort(lua_State* L, int lo, unsigned short* outValue, const char* funcName = "");
 
 /**
  * Get a int value from the given accpetable index of stack.
@@ -108,7 +108,7 @@ CC_LUA_DLL extern bool luaval_to_ushort(lua_State* L, int lo, unsigned short* ou
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_int32(lua_State* L, int lo, int* outValue, const char* funcName = "");
+extern bool luaval_to_int32(lua_State* L,int lo,int* outValue, const char* funcName = "");
 
 /**
  * Get a unsigned int value from the given accpetable index of stack.
@@ -120,7 +120,7 @@ CC_LUA_DLL extern bool luaval_to_int32(lua_State* L, int lo, int* outValue, cons
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_uint32(lua_State* L, int lo, unsigned int* outValue, const char* funcName = "");
+extern bool luaval_to_uint32(lua_State* L, int lo, unsigned int* outValue, const char* funcName = "");
 
 /**
  * Get a uint16_t value from the given accpetable index of stack.
@@ -132,7 +132,7 @@ CC_LUA_DLL extern bool luaval_to_uint32(lua_State* L, int lo, unsigned int* outV
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_uint16(lua_State* L, int lo, uint16_t* outValue, const char* funcName = "");
+extern bool luaval_to_uint16(lua_State* L,int lo,uint16_t* outValue, const char* funcName = "");
 
 /**
  * Get a boolean value from the given accpetable index of stack.
@@ -146,7 +146,7 @@ CC_LUA_DLL extern bool luaval_to_uint16(lua_State* L, int lo, uint16_t* outValue
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_boolean(lua_State* L, int lo, bool* outValue, const char* funcName = "");
+extern CC_LUA_DLL bool luaval_to_boolean(lua_State* L,int lo,bool* outValue, const char* funcName = "");
 
 /**
  * Get a double value from the given accpetable index of stack.
@@ -158,7 +158,7 @@ CC_LUA_DLL extern bool luaval_to_boolean(lua_State* L, int lo, bool* outValue, c
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_number(lua_State* L, int lo, double* outValue, const char* funcName = "");
+extern bool luaval_to_number(lua_State* L,int lo,double* outValue, const char* funcName = "");
 
 /**
  * Get a long long value from the given accpetable index of stack.
@@ -170,7 +170,7 @@ CC_LUA_DLL extern bool luaval_to_number(lua_State* L, int lo, double* outValue, 
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_long_long(lua_State* L, int lo, long long* outValue, const char* funcName = "");
+extern bool luaval_to_long_long(lua_State* L,int lo,long long* outValue, const char* funcName = "");
 
 /**
  * Get a std::string value from the given accpetable index of stack.
@@ -180,9 +180,9 @@ CC_LUA_DLL extern bool luaval_to_long_long(lua_State* L, int lo, long long* outV
  * @param lo the given accpetable index of stack.
  * @param outValue the pointer to store std::string value converted from the Lua value.
  * @param funcName the name of calling function, it is used for error output in the debug model.
- * @return Return true if the value at the given accpetable index of stack is is a string or a number convertible to a string, otherwise return false.
+ * @return Return true if the value at the given acceptable index of stack is a string or a number convertible to a string, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_std_string(lua_State* L, int lo, std::string* outValue, const char* funcName = "");
+extern CC_LUA_DLL bool luaval_to_std_string(lua_State* L, int lo, std::string* outValue, const char* funcName = "");
 
 /**
  * Get a long value from the given accpetable index of stack.
@@ -194,7 +194,7 @@ CC_LUA_DLL extern bool luaval_to_std_string(lua_State* L, int lo, std::string* o
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_long(lua_State* L, int lo, long* outValue, const char* funcName = "");
+extern bool luaval_to_long(lua_State* L,int lo, long* outValue, const char* funcName = "");
 
 /**
  * Get a ssize_t value from the given accpetable index of stack.
@@ -206,7 +206,7 @@ CC_LUA_DLL extern bool luaval_to_long(lua_State* L, int lo, long* outValue, cons
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a number or a string convertible to a number, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ssize(lua_State* L, int lo, ssize_t* outValue, const char* funcName = "");
+extern bool luaval_to_ssize(lua_State* L,int lo, ssize_t* outValue, const char* funcName = "");
 
 /**
  * Get a Size object value from the given accpetable index of stack.
@@ -219,7 +219,7 @@ CC_LUA_DLL extern bool luaval_to_ssize(lua_State* L, int lo, ssize_t* outValue, 
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_size(lua_State* L, int lo, Size* outValue, const char* funcName = "");
+extern bool luaval_to_size(lua_State* L,int lo,Size* outValue, const char* funcName = "");
 
 /**
  * Get a Rect object value from the given accpetable index of stack.
@@ -232,7 +232,7 @@ CC_LUA_DLL extern bool luaval_to_size(lua_State* L, int lo, Size* outValue, cons
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_rect(lua_State* L, int lo, Rect* outValue, const char* funcName = "");
+extern bool luaval_to_rect(lua_State* L,int lo,Rect* outValue, const char* funcName = "");
 
 /**
  * Get a Color3B object value from the given accpetable index of stack.
@@ -245,7 +245,7 @@ CC_LUA_DLL extern bool luaval_to_rect(lua_State* L, int lo, Rect* outValue, cons
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_color3b(lua_State* L, int lo, Color3B* outValue, const char* funcName = "");
+extern CC_LUA_DLL bool luaval_to_color3b(lua_State* L,int lo,Color3B* outValue, const char* funcName = "");
 
 /**
  * Get a Color4B object value from the given accpetable index of stack.
@@ -258,7 +258,7 @@ CC_LUA_DLL extern bool luaval_to_color3b(lua_State* L, int lo, Color3B* outValue
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_color4b(lua_State* L, int lo, Color4B* outValue, const char* funcName = "");
+extern bool luaval_to_color4b(lua_State* L,int lo,Color4B* outValue, const char* funcName = "");
 
 /**
  * Get a Color4F object value from the given accpetable index of stack.
@@ -271,7 +271,7 @@ CC_LUA_DLL extern bool luaval_to_color4b(lua_State* L, int lo, Color4B* outValue
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_color4f(lua_State* L, int lo, Color4F* outValue, const char* funcName = "");
+extern bool luaval_to_color4f(lua_State* L,int lo,Color4F* outValue, const char* funcName = "");
 #if CC_USE_PHYSICS
 
 /**
@@ -285,7 +285,7 @@ CC_LUA_DLL extern bool luaval_to_color4f(lua_State* L, int lo, Color4F* outValue
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_physics_material(lua_State* L, int lo, cocos2d::PhysicsMaterial* outValue, const char* funcName = "");
+extern bool luaval_to_physics_material(lua_State* L,int lo, cocos2d::PhysicsMaterial* outValue, const char* funcName = "");
 #endif //#if CC_USE_PHYSICS
 
 /**
@@ -298,7 +298,7 @@ CC_LUA_DLL extern bool luaval_to_physics_material(lua_State* L, int lo, cocos2d:
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_affinetransform(lua_State* L, int lo, AffineTransform* outValue, const char* funcName = "");
+extern bool luaval_to_affinetransform(lua_State* L,int lo, AffineTransform* outValue, const char* funcName = "");
 
 /**
  * Get a FontDefinition object value from the given accpetable index of stack.
@@ -311,7 +311,7 @@ CC_LUA_DLL extern bool luaval_to_affinetransform(lua_State* L, int lo, AffineTra
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_fontdefinition(lua_State* L, int lo, FontDefinition* outValue, const char* funcName = "");
+extern bool luaval_to_fontdefinition(lua_State* L, int lo, FontDefinition* outValue , const char* funcName = "");
 
 /**
  * Get a Mat object value from the given accpetable index of stack.
@@ -324,19 +324,19 @@ CC_LUA_DLL extern bool luaval_to_fontdefinition(lua_State* L, int lo, FontDefini
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_mat4(lua_State* L, int lo, cocos2d::Mat4* outValue, const char* funcName = "");
+extern bool luaval_to_mat4(lua_State* L, int lo, cocos2d::Mat4* outValue , const char* funcName = "");
 
 /**
- * Get a __Array object value frome the given accpetable index of stack.
+ * Get a __Array object value from the given accpetable index of stack.
  * Because __Array is deprecated, so this function would be not called anymore.
  */
-CC_LUA_DLL extern bool luaval_to_array(lua_State* L, int lo, __Array** outValue, const char* funcName = "");
+extern bool luaval_to_array(lua_State* L,int lo, __Array** outValue, const char* funcName = "");
 
 /**
  * Get a __Dictionary object value from the given accpetable index of stack.
  * Because __Dictionary is deprecated, so this function would be not called anymore.
  */
-CC_LUA_DLL extern bool luaval_to_dictionary(lua_State* L, int lo, __Dictionary** outValue, const char* funcName = "");
+extern bool luaval_to_dictionary(lua_State* L,int lo, __Dictionary** outValue, const char* funcName = "");
 
 /**
  * Get a array of Vec2 object from the given accpetable index of stack.
@@ -349,13 +349,13 @@ CC_LUA_DLL extern bool luaval_to_dictionary(lua_State* L, int lo, __Dictionary**
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_array_of_vec2(lua_State* L, int lo, cocos2d::Vec2 **points, int *numPoints, const char* funcName = "");
+extern bool luaval_to_array_of_vec2(lua_State* L,int lo,cocos2d::Vec2 **points, int *numPoints, const char* funcName = "");
 
 /**
  * Get a __Array object value by the argc numbers of Lua values in the stack.
  * Because __Array is deprecated, so this function would be not called anymore.
  */
-CC_LUA_DLL extern bool luavals_variadic_to_array(lua_State* L, int argc, __Array** ret);
+extern bool luavals_variadic_to_array(lua_State* L,int argc, __Array** ret);
 
 /**
  * Get a cocos2d::ValueVector object value by the argc numbers of Lua values in the stack.
@@ -365,7 +365,7 @@ CC_LUA_DLL extern bool luavals_variadic_to_array(lua_State* L, int argc, __Array
  * @param ret the pointer to a ValueVector object which stores the values from the Lua table.
  * @return Return false if argc equal to 0 or L equal to nullptr, otherwise return true.
  */
-CC_LUA_DLL extern bool luavals_variadic_to_ccvaluevector(lua_State* L, int argc, cocos2d::ValueVector* ret);
+extern bool luavals_variadic_to_ccvaluevector(lua_State* L, int argc, cocos2d::ValueVector* ret);
 
 /**
  * Get a Vec2 object value from the given accpetable index of stack.
@@ -378,7 +378,7 @@ CC_LUA_DLL extern bool luavals_variadic_to_ccvaluevector(lua_State* L, int argc,
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_vec2(lua_State* L, int lo, cocos2d::Vec2* outValue, const char* funcName = "");
+extern bool luaval_to_vec2(lua_State* L,int lo,cocos2d::Vec2* outValue, const char* funcName = "");
 
 /**
  * Get a Vec3 object value from the given accpetable index of stack.
@@ -391,7 +391,7 @@ CC_LUA_DLL extern bool luaval_to_vec2(lua_State* L, int lo, cocos2d::Vec2* outVa
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_vec3(lua_State* L, int lo, cocos2d::Vec3* outValue, const char* funcName = "");
+extern bool luaval_to_vec3(lua_State* L,int lo,cocos2d::Vec3* outValue, const char* funcName = "");
 
 /**
  * Get a Vec4 object value from the given accpetable index of stack.
@@ -404,7 +404,7 @@ CC_LUA_DLL extern bool luaval_to_vec3(lua_State* L, int lo, cocos2d::Vec3* outVa
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_vec4(lua_State* L, int lo, cocos2d::Vec4* outValue, const char* funcName = "");
+extern bool luaval_to_vec4(lua_State* L,int lo,cocos2d::Vec4* outValue, const char* funcName = "");
 
 /**
  * Get a BlendFunc object value from the given accpetable index of stack.
@@ -417,7 +417,7 @@ CC_LUA_DLL extern bool luaval_to_vec4(lua_State* L, int lo, cocos2d::Vec4* outVa
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_blendfunc(lua_State* L, int lo, cocos2d::BlendFunc* outValue, const char* funcName = "");
+extern bool luaval_to_blendfunc(lua_State* L, int lo, cocos2d::BlendFunc* outValue, const char* funcName = "");
 
 /**
  * Get a TTFConfig object value from the given accpetable index of stack.
@@ -430,7 +430,7 @@ CC_LUA_DLL extern bool luaval_to_blendfunc(lua_State* L, int lo, cocos2d::BlendF
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ttfconfig(lua_State* L, int lo, cocos2d::TTFConfig* outValue, const char* funcName = "");
+extern bool luaval_to_ttfconfig(lua_State* L, int lo, cocos2d::TTFConfig* outValue, const char* funcName = "");
 
 /**
  * Get a Uniform object value from the given accpetable index of stack.
@@ -443,7 +443,7 @@ CC_LUA_DLL extern bool luaval_to_ttfconfig(lua_State* L, int lo, cocos2d::TTFCon
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_uniform(lua_State* L, int lo, cocos2d::Uniform* outValue, const char* funcName = "");
+extern bool luaval_to_uniform(lua_State* L, int lo, cocos2d::Uniform* outValue, const char* funcName = "");
 
 /**
  * Get a VertexAttrib object value from the given accpetable index of stack.
@@ -456,7 +456,7 @@ CC_LUA_DLL extern bool luaval_to_uniform(lua_State* L, int lo, cocos2d::Uniform*
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_vertexattrib(lua_State* L, int lo, cocos2d::VertexAttrib* outValue, const char* funcName = "");
+extern bool luaval_to_vertexattrib(lua_State* L, int lo, cocos2d::VertexAttrib* outValue, const char* funcName = "");
 
 
 /**
@@ -570,7 +570,7 @@ bool luaval_to_ccvector(lua_State* L, int lo , cocos2d::Vector<T>* ret, const ch
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL bool luaval_to_std_vector_string(lua_State* L, int lo, std::vector<std::string>* ret, const char* funcName = "");
+CC_LUA_DLL bool   luaval_to_std_vector_string(lua_State* L, int lo, std::vector<std::string>* ret, const char* funcName = "");
 
 /**
  * Get a pointer points to a std::vector<std::int> from a Lua array table in the stack.
@@ -581,7 +581,7 @@ CC_LUA_DLL bool luaval_to_std_vector_string(lua_State* L, int lo, std::vector<st
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL bool luaval_to_std_vector_int(lua_State* L, int lo, std::vector<int>* ret, const char* funcName = "");
+bool luaval_to_std_vector_int(lua_State* L, int lo, std::vector<int>* ret, const char* funcName = "");
 
 
 /**
@@ -649,7 +649,7 @@ bool luaval_to_ccmap_string_key(lua_State* L, int lo, cocos2d::Map<std::string, 
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the L and ret is not nullptr,otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ccvalue(lua_State* L, int lo, cocos2d::Value* ret, const char* funcName = "");
+extern bool luaval_to_ccvalue(lua_State* L, int lo, cocos2d::Value* ret, const char* funcName = "");
 
 /**
  * Get a cocos2d::ValueMap object from the given accpetable index of stack.
@@ -661,7 +661,7 @@ CC_LUA_DLL extern bool luaval_to_ccvalue(lua_State* L, int lo, cocos2d::Value* r
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the type of Lua value at the index is a Lua table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ccvaluemap(lua_State* L, int lo, cocos2d::ValueMap* ret, const char* funcName = "");
+extern bool luaval_to_ccvaluemap(lua_State* L, int lo, cocos2d::ValueMap* ret, const char* funcName = "");
 
 /**
  * Get a cocos2d::ValueMapIntKey object from the given accpetable index of stack.
@@ -673,7 +673,7 @@ CC_LUA_DLL extern bool luaval_to_ccvaluemap(lua_State* L, int lo, cocos2d::Value
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the type of Lua value at the index is a Lua table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ccvaluemapintkey(lua_State* L, int lo, cocos2d::ValueMapIntKey* ret, const char* funcName = "");
+extern bool luaval_to_ccvaluemapintkey(lua_State* L, int lo, cocos2d::ValueMapIntKey* ret, const char* funcName = "");
 
 /**
  * Get a cocos2d::ValueVector object from the given accpetable index of stack.
@@ -685,7 +685,7 @@ CC_LUA_DLL extern bool luaval_to_ccvaluemapintkey(lua_State* L, int lo, cocos2d:
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the type of Lua value at the index is a Lua table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_ccvaluevector(lua_State* L, int lo, cocos2d::ValueVector* ret, const char* funcName = "");
+extern bool luaval_to_ccvaluevector(lua_State* L, int lo, cocos2d::ValueVector* ret, const char* funcName = "");
 
 
 /**
@@ -724,7 +724,7 @@ bool luaval_to_object(lua_State* L, int lo, const char* type, T** ret, const cha
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_mesh_vertex_attrib(lua_State* L, int lo, cocos2d::MeshVertexAttrib* ret, const char* funcName = "");
+extern bool luaval_to_mesh_vertex_attrib(lua_State* L, int lo, cocos2d::MeshVertexAttrib* ret, const char* funcName = "");
 
 /**
  * Get a pointer points to a std::vector<float> from a Lua array table in the stack.
@@ -735,7 +735,7 @@ CC_LUA_DLL extern bool luaval_to_mesh_vertex_attrib(lua_State* L, int lo, cocos2
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_std_vector_float(lua_State* L, int lo, std::vector<float>* ret, const char* funcName = "");
+extern bool luaval_to_std_vector_float(lua_State* L, int lo, std::vector<float>* ret, const char* funcName = "");
 
 /**
  * Get a pointer points to a std::vector<unsigned shortt> from a Lua array table in the stack.
@@ -746,7 +746,7 @@ CC_LUA_DLL extern bool luaval_to_std_vector_float(lua_State* L, int lo, std::vec
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_std_vector_ushort(lua_State* L, int lo, std::vector<unsigned short>* ret, const char* funcName = "");
+extern bool luaval_to_std_vector_ushort(lua_State* L, int lo, std::vector<unsigned short>* ret, const char* funcName = "");
 
 /**
  * Get a cocos2d::Quaternion object value from the given accpetable index of stack.
@@ -758,7 +758,7 @@ CC_LUA_DLL extern bool luaval_to_std_vector_ushort(lua_State* L, int lo, std::ve
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_quaternion(lua_State* L, int lo, cocos2d::Quaternion* outValue, const char* funcName = "");
+extern bool luaval_to_quaternion(lua_State* L,int lo,cocos2d::Quaternion* outValue, const char* funcName = "");
 
 /**
  * Get a cocos2d::Texture2D::TexParams object value from the given accpetable index of stack.
@@ -770,7 +770,7 @@ CC_LUA_DLL extern bool luaval_to_quaternion(lua_State* L, int lo, cocos2d::Quate
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_texparams(lua_State* L, int lo, cocos2d::Texture2D::TexParams* outValue, const char* funcName = "");
+extern bool luaval_to_texparams(lua_State* L,int lo,cocos2d::Texture2D::TexParams* outValue, const char* funcName = "");
 
 /**
  * Get a cocos2d::V3F_C4B_T2F object value from the given accpetable index of stack.
@@ -782,7 +782,7 @@ CC_LUA_DLL extern bool luaval_to_texparams(lua_State* L, int lo, cocos2d::Textur
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_v3f_c4b_t2f(lua_State* L, int lo, cocos2d::V3F_C4B_T2F* outValue, const char* funcName = "");
+extern bool luaval_to_v3f_c4b_t2f(lua_State* L,int lo,cocos2d::V3F_C4B_T2F* outValue, const char* funcName = "");
 
 
 /**
@@ -795,7 +795,7 @@ CC_LUA_DLL extern bool luaval_to_v3f_c4b_t2f(lua_State* L, int lo, cocos2d::V3F_
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_tex2f(lua_State* L, int lo, cocos2d::Tex2F* outValue, const char* funcName = "");
+extern bool luaval_to_tex2f(lua_State* L, int lo, cocos2d::Tex2F* outValue, const char* funcName = "");
 
 /**
  * Get a pointer points to a std::vector<cocos2d::V3F_C4B_T2F> from a Lua array table in the stack.
@@ -806,7 +806,7 @@ CC_LUA_DLL extern bool luaval_to_tex2f(lua_State* L, int lo, cocos2d::Tex2F* out
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_std_vector_v3f_c4b_t2f(lua_State* L, int lo, std::vector<cocos2d::V3F_C4B_T2F>* ret, const char* funcName = "");
+extern bool luaval_to_std_vector_v3f_c4b_t2f(lua_State* L, int lo, std::vector<cocos2d::V3F_C4B_T2F>* ret, const char* funcName = "");
 
 /**
  * Get a pointer points to a std::vector<cocos2d::Vec2> from a Lua array table in the stack.
@@ -817,7 +817,7 @@ CC_LUA_DLL extern bool luaval_to_std_vector_v3f_c4b_t2f(lua_State* L, int lo, st
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_std_vector_vec2(lua_State* L, int lo, std::vector<cocos2d::Vec2>* ret, const char* funcName = "");
+extern bool luaval_to_std_vector_vec2(lua_State* L, int lo, std::vector<cocos2d::Vec2>* ret, const char* funcName = "");
 
 /**
  * Get a pointer points to a std::vector<cocos2d::Vec3> from a Lua array table in the stack.
@@ -828,9 +828,9 @@ CC_LUA_DLL extern bool luaval_to_std_vector_vec2(lua_State* L, int lo, std::vect
  * @param funcName the name of calling function, it is used for error output in the debug model.
  * @return Return true if the value at the given accpetable index of stack is a table, otherwise return false.
  */
-CC_LUA_DLL extern bool luaval_to_std_vector_vec3(lua_State* L, int lo, std::vector<cocos2d::Vec3>* ret, const char* funcName = "");
+extern bool luaval_to_std_vector_vec3(lua_State* L, int lo, std::vector<cocos2d::Vec3>* ret, const char* funcName = "");
 
-CC_LUA_DLL extern bool luaval_to_std_map_string_string(lua_State* L, int lo, std::map<std::string, std::string>* ret, const char* funcName);
+extern bool luaval_to_std_map_string_string(lua_State* L, int lo, std::map<std::string, std::string>* ret, const char* funcName);
 
 /**@}**/
 
@@ -838,7 +838,7 @@ CC_LUA_DLL extern bool luaval_to_std_map_string_string(lua_State* L, int lo, std
 
 /**
  * @name native_to_luaval
- * The following function are all used to convert native c++ values to the the corresponding Lua values,then push it into the Lua stack.
+ * The following function are all used to convert native c++ values to the corresponding Lua values, then push it into the Lua stack.
  *
  * @{
  **/
@@ -850,7 +850,7 @@ CC_LUA_DLL extern bool luaval_to_std_map_string_string(lua_State* L, int lo, std
  * @param L the current lua_State.
  * @param vec2  a cocos2d::Vec2 object.
  */
-CC_LUA_DLL extern void vec2_to_luaval(lua_State* L, const cocos2d::Vec2& vec2);
+extern void vec2_to_luaval(lua_State* L,const cocos2d::Vec2& vec2);
 
 /**
  * Push a table converted from a cocos2d::Vec3 object into the Lua stack.
@@ -859,7 +859,7 @@ CC_LUA_DLL extern void vec2_to_luaval(lua_State* L, const cocos2d::Vec2& vec2);
  * @param L the current lua_State.
  * @param vec3  a cocos2d::Vec3 object.
  */
-CC_LUA_DLL extern void vec3_to_luaval(lua_State* L, const cocos2d::Vec3& vec3);
+extern void vec3_to_luaval(lua_State* L,const cocos2d::Vec3& vec3);
 
 /**
  * Push a table converted from a cocos2d::Vec4 object into the Lua stack.
@@ -868,7 +868,7 @@ CC_LUA_DLL extern void vec3_to_luaval(lua_State* L, const cocos2d::Vec3& vec3);
  * @param L the current lua_State.
  * @param vec4  a cocos2d::Vec4 object.
  */
-CC_LUA_DLL extern void vec4_to_luaval(lua_State* L, const cocos2d::Vec4& vec4);
+extern void vec4_to_luaval(lua_State* L,const cocos2d::Vec4& vec4);
 
 /**
  * Push a table converted from a cocos2d::Vec2 array into the Lua stack.
@@ -879,7 +879,7 @@ CC_LUA_DLL extern void vec4_to_luaval(lua_State* L, const cocos2d::Vec4& vec4);
  * @param points a pointer points to a cocos2d::Vec2 array.
  * @param count the number of cocos2d::Vec2 object should be converted to a Lua table and push into the Lua stack.
  */
-CC_LUA_DLL extern void vec2_array_to_luaval(lua_State* L, const cocos2d::Vec2* points, int count);
+extern void vec2_array_to_luaval(lua_State* L,const cocos2d::Vec2* points, int count);
 
 /**
  * Push a table converted from a cocos2d::Size object into the Lua stack.
@@ -888,7 +888,7 @@ CC_LUA_DLL extern void vec2_array_to_luaval(lua_State* L, const cocos2d::Vec2* p
  * @param L the current lua_State.
  * @param sz  a cocos2d::Size object.
  */
-CC_LUA_DLL extern void size_to_luaval(lua_State* L, const Size& sz);
+extern void size_to_luaval(lua_State* L,const Size& sz);
 
 /**
  * Push a table converted from a cocos2d::Rect object into the Lua stack.
@@ -897,7 +897,7 @@ CC_LUA_DLL extern void size_to_luaval(lua_State* L, const Size& sz);
  * @param L the current lua_State.
  * @param rt  a cocos2d::Rect object.
  */
-CC_LUA_DLL extern void rect_to_luaval(lua_State* L, const Rect& rt);
+extern void rect_to_luaval(lua_State* L,const Rect& rt);
 
 /**
  * Push a table converted from a cocos2d::Color3B object into the Lua stack.
@@ -906,7 +906,7 @@ CC_LUA_DLL extern void rect_to_luaval(lua_State* L, const Rect& rt);
  * @param L the current lua_State.
  * @param cc  a cocos2d::Color3B object.
  */
-CC_LUA_DLL extern void color3b_to_luaval(lua_State* L, const Color3B& cc);
+extern CC_LUA_DLL void color3b_to_luaval(lua_State* L,const Color3B& cc);
 
 /**
  * Push a table converted from a cocos2d::Color4B object into the Lua stack.
@@ -915,7 +915,7 @@ CC_LUA_DLL extern void color3b_to_luaval(lua_State* L, const Color3B& cc);
  * @param L the current lua_State.
  * @param cc a cocos2d::Color4B object.
  */
-CC_LUA_DLL extern void color4b_to_luaval(lua_State* L, const Color4B& cc);
+extern void color4b_to_luaval(lua_State* L,const Color4B& cc);
 
 /**
  * Push a table converted from a cocos2d::Color4F object into the Lua stack.
@@ -924,7 +924,7 @@ CC_LUA_DLL extern void color4b_to_luaval(lua_State* L, const Color4B& cc);
  * @param L the current lua_State.
  * @param cc a cocos2d::Color4F object.
  */
-CC_LUA_DLL extern void color4f_to_luaval(lua_State* L, const Color4F& cc);
+extern void color4f_to_luaval(lua_State* L,const Color4F& cc);
 #if CC_USE_PHYSICS
 
 /**
@@ -934,7 +934,7 @@ CC_LUA_DLL extern void color4f_to_luaval(lua_State* L, const Color4F& cc);
  * @param L the current lua_State.
  * @param pm a cocos2d::PhysicsMaterial object.
  */
-CC_LUA_DLL extern void physics_material_to_luaval(lua_State* L, const PhysicsMaterial& pm);
+extern void physics_material_to_luaval(lua_State* L,const PhysicsMaterial& pm);
 
 /**
  * Push a table converted from a cocos2d::PhysicsRayCastInfo object into the Lua stack.
@@ -943,7 +943,7 @@ CC_LUA_DLL extern void physics_material_to_luaval(lua_State* L, const PhysicsMat
  * @param L the current lua_State.
  * @param info a cocos2d::PhysicsRayCastInfo object.
  */
-CC_LUA_DLL extern void physics_raycastinfo_to_luaval(lua_State* L, const PhysicsRayCastInfo& info);
+extern void physics_raycastinfo_to_luaval(lua_State* L, const PhysicsRayCastInfo& info);
 
 /**
  * Push a table converted from a cocos2d::PhysicsContactData object into the Lua stack.
@@ -952,7 +952,7 @@ CC_LUA_DLL extern void physics_raycastinfo_to_luaval(lua_State* L, const Physics
  * @param L the current lua_State.
  * @param data a cocos2d::PhysicsContactData object.
  */
-CC_LUA_DLL extern void physics_contactdata_to_luaval(lua_State* L, const PhysicsContactData* data);
+extern void physics_contactdata_to_luaval(lua_State* L, const PhysicsContactData* data);
 #endif //#if CC_USE_PHYSICS
 
 /**
@@ -962,7 +962,7 @@ CC_LUA_DLL extern void physics_contactdata_to_luaval(lua_State* L, const Physics
  * @param L the current lua_State.
  * @param inValue a cocos2d::AffineTransform object.
  */
-CC_LUA_DLL extern void affinetransform_to_luaval(lua_State* L, const AffineTransform& inValue);
+extern void affinetransform_to_luaval(lua_State* L,const AffineTransform& inValue);
 
 /**
  * Push a table converted from a cocos2d::FontDefinition object into the Lua stack.
@@ -971,10 +971,10 @@ CC_LUA_DLL extern void affinetransform_to_luaval(lua_State* L, const AffineTrans
  * @param L the current lua_State.
  * @param inValue a cocos2d::FontDefinition object.
  */
-CC_LUA_DLL extern void fontdefinition_to_luaval(lua_State* L, const FontDefinition& inValue);
+extern void fontdefinition_to_luaval(lua_State* L,const FontDefinition& inValue);
 
-CC_LUA_DLL extern void array_to_luaval(lua_State* L, __Array* inValue);
-CC_LUA_DLL extern void dictionary_to_luaval(lua_State* L, __Dictionary* dict);
+extern void array_to_luaval(lua_State* L, __Array* inValue);
+extern void dictionary_to_luaval(lua_State* L, __Dictionary* dict);
 
 
 /**
@@ -984,7 +984,7 @@ CC_LUA_DLL extern void dictionary_to_luaval(lua_State* L, __Dictionary* dict);
  * @param L the current lua_State.
  * @param mat a cocos2d::Mat4 object.
  */
-CC_LUA_DLL extern void mat4_to_luaval(lua_State* L, const cocos2d::Mat4& mat);
+extern void mat4_to_luaval(lua_State* L, const cocos2d::Mat4& mat);
 
 /**
  * Push a table converted from a cocos2d::BlendFunc object into the Lua stack.
@@ -993,7 +993,7 @@ CC_LUA_DLL extern void mat4_to_luaval(lua_State* L, const cocos2d::Mat4& mat);
  * @param L the current lua_State.
  * @param func a cocos2d::BlendFunc object.
  */
-CC_LUA_DLL extern void blendfunc_to_luaval(lua_State* L, const cocos2d::BlendFunc& func);
+extern void blendfunc_to_luaval(lua_State* L, const cocos2d::BlendFunc& func);
 
 /**
  * Push a table converted from a cocos2d::TTFConfig object into the Lua stack.
@@ -1002,7 +1002,7 @@ CC_LUA_DLL extern void blendfunc_to_luaval(lua_State* L, const cocos2d::BlendFun
  * @param L the current lua_State.
  * @param config a cocos2d::TTFConfig object.
  */
-CC_LUA_DLL extern void ttfconfig_to_luaval(lua_State* L, const cocos2d::TTFConfig& config);
+extern void ttfconfig_to_luaval(lua_State* L, const cocos2d::TTFConfig& config);
 
 /**
  * Push a table converted from a cocos2d::Uniform object into the Lua stack.
@@ -1011,7 +1011,7 @@ CC_LUA_DLL extern void ttfconfig_to_luaval(lua_State* L, const cocos2d::TTFConfi
  * @param L the current lua_State.
  * @param uniform a cocos2d::Uniform object.
  */
-CC_LUA_DLL extern void uniform_to_luaval(lua_State* L, const cocos2d::Uniform& uniform);
+extern void uniform_to_luaval(lua_State* L, const cocos2d::Uniform& uniform);
 
 /**
  * Push a table converted from a cocos2d::VertexAttrib object into the Lua stack.
@@ -1020,7 +1020,7 @@ CC_LUA_DLL extern void uniform_to_luaval(lua_State* L, const cocos2d::Uniform& u
  * @param L the current lua_State.
  * @param verAttrib a cocos2d::VertexAttrib object.
  */
-CC_LUA_DLL extern void vertexattrib_to_luaval(lua_State* L, const cocos2d::VertexAttrib& verAttrib);
+extern void vertexattrib_to_luaval(lua_State* L, const cocos2d::VertexAttrib& verAttrib);
 
 
 static inline void point_to_luaval(lua_State* L,const cocos2d::Vec2& pt)
@@ -1124,7 +1124,7 @@ void ccmap_string_key_to_luaval(lua_State* L, const cocos2d::Map<std::string, T>
  * @param L the current lua_State.
  * @param inValue a cocos2d::Value object.
  */
-CC_LUA_DLL void ccvalue_to_luaval(lua_State* L, const cocos2d::Value& inValue);
+void ccvalue_to_luaval(lua_State* L,const cocos2d::Value& inValue);
 
 /**
  * Push a Lua hash table converted from a cocos2d::ValueMap object into the Lua stack.
@@ -1133,7 +1133,7 @@ CC_LUA_DLL void ccvalue_to_luaval(lua_State* L, const cocos2d::Value& inValue);
  * @param L the current lua_State.
  * @param inValue a cocos2d::ValueMap object.
  */
-CC_LUA_DLL void ccvaluemap_to_luaval(lua_State* L, const cocos2d::ValueMap& inValue);
+void ccvaluemap_to_luaval(lua_State* L,const cocos2d::ValueMap& inValue);
 
 /**
  * Push a Lua hash table converted from a cocos2d::ValueMapIntKey object into the Lua stack.
@@ -1142,7 +1142,7 @@ CC_LUA_DLL void ccvaluemap_to_luaval(lua_State* L, const cocos2d::ValueMap& inVa
  * @param L the current lua_State.
  * @param inValue a cocos2d::ValueMapIntKey object.
  */
-CC_LUA_DLL void ccvaluemapintkey_to_luaval(lua_State* L, const cocos2d::ValueMapIntKey& inValue);
+void ccvaluemapintkey_to_luaval(lua_State* L, const cocos2d::ValueMapIntKey& inValue);
 
 /**
  * Push a Lua array table converted from a cocos2d::ValueVector object into the Lua stack.
@@ -1151,7 +1151,7 @@ CC_LUA_DLL void ccvaluemapintkey_to_luaval(lua_State* L, const cocos2d::ValueMap
  * @param L the current lua_State.
  * @param inValue a cocos2d::ValueVector object.
  */
-CC_LUA_DLL void ccvaluevector_to_luaval(lua_State* L, const cocos2d::ValueVector& inValue);
+void ccvaluevector_to_luaval(lua_State* L, const cocos2d::ValueVector& inValue);
 
 /**@}**/
 
@@ -1221,7 +1221,7 @@ void object_to_luaval(lua_State* L,const char* type, T* ret)
  * @param L the current lua_State.
  * @param inValue a cocos2d::MeshVertexAttrib object.
  */
-CC_LUA_DLL void mesh_vertex_attrib_to_luaval(lua_State* L, const cocos2d::MeshVertexAttrib& inValue);
+void mesh_vertex_attrib_to_luaval(lua_State* L, const cocos2d::MeshVertexAttrib& inValue);
 
 /**
  * Push a Lua array table converted from a std::vector<std::string> into the Lua stack.
@@ -1230,7 +1230,7 @@ CC_LUA_DLL void mesh_vertex_attrib_to_luaval(lua_State* L, const cocos2d::MeshVe
  * @param L the current lua_State.
  * @param inValue a std::vector<std::string> value.
  */
-CC_LUA_DLL void ccvector_std_string_to_luaval(lua_State* L, const std::vector<std::string>& inValue);
+void ccvector_std_string_to_luaval(lua_State* L, const std::vector<std::string>& inValue);
 
 /**
  * Push a Lua array table converted from a std::vector<int> into the Lua stack.
@@ -1239,7 +1239,7 @@ CC_LUA_DLL void ccvector_std_string_to_luaval(lua_State* L, const std::vector<st
  * @param L the current lua_State.
  * @param inValue a std::vector<int> vaule.
  */
-CC_LUA_DLL void ccvector_int_to_luaval(lua_State* L, const std::vector<int>& inValue);
+void ccvector_int_to_luaval(lua_State* L, const std::vector<int>& inValue);
 
 /**
  * Push a Lua array table converted from a std::vector<float> into the Lua stack.
@@ -1248,7 +1248,7 @@ CC_LUA_DLL void ccvector_int_to_luaval(lua_State* L, const std::vector<int>& inV
  * @param L the current lua_State.
  * @param inValue a std::vector<float> vaule.
  */
-CC_LUA_DLL void ccvector_float_to_luaval(lua_State* L, const std::vector<float>& inValue);
+void ccvector_float_to_luaval(lua_State* L, const std::vector<float>& inValue);
 
 /**
  * Push a Lua array table converted from a std::vector<unsigned short> into the Lua stack.
@@ -1257,7 +1257,7 @@ CC_LUA_DLL void ccvector_float_to_luaval(lua_State* L, const std::vector<float>&
  * @param L the current lua_State.
  * @param inValue a std::vector<float> vaule.
  */
-CC_LUA_DLL void ccvector_ushort_to_luaval(lua_State* L, const std::vector<unsigned short>& inValue);
+void ccvector_ushort_to_luaval(lua_State* L, const std::vector<unsigned short>& inValue);
 
 /**
  * Push a table converted from a cocos2d::Quaternion object into the Lua stack.
@@ -1266,7 +1266,7 @@ CC_LUA_DLL void ccvector_ushort_to_luaval(lua_State* L, const std::vector<unsign
  * @param L the current lua_State.
  * @param inValue a cocos2d::Quaternion object.
  */
-CC_LUA_DLL void quaternion_to_luaval(lua_State* L, const cocos2d::Quaternion& inValue);
+void quaternion_to_luaval(lua_State* L,const cocos2d::Quaternion& inValue);
 
 /**
  * Push a table converted from a cocos2d::Texture2D::TexParams object into the Lua stack.
@@ -1275,7 +1275,7 @@ CC_LUA_DLL void quaternion_to_luaval(lua_State* L, const cocos2d::Quaternion& in
  * @param L the current lua_State.
  * @param inValue a cocos2d::Texture2D::TexParams object.
  */
-CC_LUA_DLL void texParams_to_luaval(lua_State* L, const cocos2d::Texture2D::TexParams& inValue);
+void texParams_to_luaval(lua_State* L, const cocos2d::Texture2D::TexParams& inValue);
 
 /**
  * Push a Lua array table converted from a std::vector<cocos2d::Vec3> into the Lua stack.
@@ -1284,7 +1284,7 @@ CC_LUA_DLL void texParams_to_luaval(lua_State* L, const cocos2d::Texture2D::TexP
  * @param L the current lua_State.
  * @param inValue a std::vector<cocos2d::Vec3> vaule.
  */
-CC_LUA_DLL void std_vector_vec3_to_luaval(lua_State* L, const std::vector<cocos2d::Vec3>& inValue);
+void std_vector_vec3_to_luaval(lua_State* L, const std::vector<cocos2d::Vec3>& inValue);
 
 /**
  * Push a Lua dict table converted from a std::map<std::string, std::string> into the Lua stack.
@@ -1292,9 +1292,9 @@ CC_LUA_DLL void std_vector_vec3_to_luaval(lua_State* L, const std::vector<cocos2
  * @param L the current lua_State.
  * @param inValue a std::map<std::string, std::string> vaule.
  */
-CC_LUA_DLL void std_map_string_string_to_luaval(lua_State* L, const std::map<std::string, std::string>& inValue);
+void std_map_string_string_to_luaval(lua_State* L, const std::map<std::string, std::string>& inValue);
 
-// For cocoStudio
+// Follow 2 function is added for Cocos Studio to compatible with MacOSX 32bit version
 CC_LUA_DLL extern bool luaval_to_node(lua_State* L, int lo, const char* type, cocos2d::Node** node);
 CC_LUA_DLL extern void node_to_luaval(lua_State* L, const char* type, cocos2d::Node* node);
 

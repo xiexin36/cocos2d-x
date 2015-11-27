@@ -50,7 +50,6 @@
 @end
 
 @implementation CustomTextFieldFormatter
-
 @synthesize maximumLength = _maximumLength;
 
 - (instancetype)init
@@ -125,12 +124,10 @@
 
 
 @implementation UIEditBoxImplMac
-
 @synthesize textField = _textField;
 @synthesize secureTextField = _secureTextField;
 @synthesize placeholderAttributes = _placeholderAttributes;
 @synthesize window = _window;
-
 @synthesize editState = _editState;
 @synthesize secure = _secure;
 @synthesize editBox = _editBox;
@@ -484,8 +481,8 @@ void EditBoxImplMac::setInputFlag(EditBox::InputFlag inputFlag)
         case EditBox::InputFlag::INITIAL_CAPS_SENTENCE:
             CCLOGWARN("INITIAL_CAPS_SENTENCE not implemented");
             break;
-        case EditBox::InputFlag::INTIAL_CAPS_ALL_CHARACTERS:
-            CCLOGWARN("INTIAL_CAPS_ALL_CHARACTERS not implemented");
+        case EditBox::InputFlag::INITIAL_CAPS_ALL_CHARACTERS:
+            CCLOGWARN("INITIAL_CAPS_ALL_CHARACTERS not implemented");
             break;
         case EditBox::InputFlag::SENSITIVE:
             CCLOGWARN("SENSITIVE not implemented");

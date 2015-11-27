@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include "ui/UITextBMFont.h"
 #include "2d/CCLabel.h"
+#include "2d/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -186,7 +187,7 @@ void TextBMFont::copySpecialProperties(Widget *widget)
     }
 }
 
-ResouceData TextBMFont::csGetRenderFile()
+ResouceData TextBMFont::getRenderFile()
 {
     ResouceData rData;
     rData.type = 0;

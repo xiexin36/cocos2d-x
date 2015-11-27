@@ -34,6 +34,8 @@ NS_CC_BEGIN
  * @{
  */
 
+struct CC_DLL ResouceData;
+
 namespace ui {
     class Scale9Sprite;
 
@@ -172,8 +174,8 @@ public:
     virtual Node* getVirtualRenderer() override;
     virtual std::string getDescription() const override;
 
-    //For Editor
-    ResouceData csGetRenderFile();
+    ResouceData getRenderFile(); 
+
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;
@@ -200,8 +202,6 @@ protected:
     bool _prevIgnoreSize;
     Rect _capInsets;
     bool _barRendererAdaptDirty;
-
-    // For editor
     std::string _textureFile;
 };
 

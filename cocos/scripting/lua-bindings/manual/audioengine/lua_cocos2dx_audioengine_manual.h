@@ -32,8 +32,6 @@ extern "C" {
 }
 #endif
 
-#include "Lua-BingingsExport.h"
-
 /**
  * @addtogroup lua
  * @{
@@ -47,7 +45,7 @@ extern "C" {
  * The current mechanism,this function is called in the lua_module_register.h
  */
 
-CC_LUA_DLL TOLUA_API int  register_audioengine_module(lua_State* L);
+TOLUA_API int  register_audioengine_module(lua_State* L);
 
 // end group
 /// @}

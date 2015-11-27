@@ -38,6 +38,7 @@ THE SOFTWARE.
 #include "renderer/CCRenderer.h"
 #include "base/CCDirector.h"
 #include "2d/CCCamera.h"
+#include "2d/CocosStudioExtension.h"
 
 #include "deprecated/CCString.h"
 
@@ -164,15 +165,18 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect)
 
 bool Sprite::initWithFile(const std::string& filename)
 {
-	//for editor
+#ifdef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
     if (filename.empty())
     {
+        CCLOG("Call Sprite::initWithFile with blank resource filename.");
         return false;
     }
-    //CCASSERT(filename.size()>0, "Invalid filename for sprite");
 
     _fileName = filename;
     _fileType = 0;
+#else
+    CCASSERT(filename.size()>0, "Invalid filename for sprite");
+#endif
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -192,8 +196,10 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 {
     CCASSERT(filename.size()>0, "Invalid filename");
 
+#ifdef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
     _fileName = filename;
     _fileType = 0;
+#endif
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -211,8 +217,10 @@ bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 {
     CCASSERT(spriteFrameName.size() > 0, "Invalid spriteFrameName");
 
+#ifdef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
     _fileName = spriteFrameName;
     _fileType = 1;
+#endif
 
     SpriteFrame *frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     return initWithSpriteFrame(frame);
@@ -301,11 +309,10 @@ Sprite::Sprite(void)
 , _texture(nullptr)
 , _spriteFrame(nullptr)
 , _insideBounds(true)
-, _fileName("")
-, _fileType(0)
 {
 #if CC_SPRITE_DEBUG_DRAW
-    debugDraw(true);
+    _debugDrawNode = DrawNode::create();
+    addChild(_debugDrawNode);
 #endif //CC_SPRITE_DEBUG_DRAW
 }
 
@@ -444,51 +451,6 @@ void Sprite::setTextureRect(const Rect& rect, bool rotated, const Size& untrimme
     
     _polyInfo.setQuad(&_quad);
 }
-
-void Sprite::debugDraw(bool on)
-{
-    if (_batchNode) {
-        log("Sprite doesn't support debug draw when using SpriteBatchNode");
-        return ;
-    }
-    DrawNode* draw = getChildByName<DrawNode*>("debugDraw");
-    if(on)
-    {
-        if(!draw)
-        {
-            draw = DrawNode::create();
-            draw->setName("debugDraw");
-            addChild(draw);
-        }
-        draw->setVisible(true);
-        draw->clear();
-        //draw lines
-        auto last = _polyInfo.triangles.indexCount/3;
-        auto _indices = _polyInfo.triangles.indices;
-        auto _verts = _polyInfo.triangles.verts;
-        for(ssize_t i = 0; i < last; i++)
-        {
-            //draw 3 lines
-            Vec3 from =_verts[_indices[i*3]].vertices;
-            Vec3 to = _verts[_indices[i*3+1]].vertices;
-            draw->drawLine(Vec2(from.x, from.y), Vec2(to.x,to.y), Color4F::GREEN);
-            
-            from =_verts[_indices[i*3+1]].vertices;
-            to = _verts[_indices[i*3+2]].vertices;
-            draw->drawLine(Vec2(from.x, from.y), Vec2(to.x,to.y), Color4F::GREEN);
-            
-            from =_verts[_indices[i*3+2]].vertices;
-            to = _verts[_indices[i*3]].vertices;
-            draw->drawLine(Vec2(from.x, from.y), Vec2(to.x,to.y), Color4F::GREEN);
-        }
-    }
-    else
-    {
-        if(draw)
-            draw->setVisible(false);
-    }
-}
-
 
 // override this method to generate "double scale" sprites
 void Sprite::setVertexRect(const Rect& rect)
@@ -701,6 +663,28 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     {
         _trianglesCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, _polyInfo.triangles, transform, flags);
         renderer->addCommand(&_trianglesCommand);
+        
+#if CC_SPRITE_DEBUG_DRAW
+        _debugDrawNode->clear();
+        auto count = _polyInfo.triangles.indexCount/3;
+        auto indices = _polyInfo.triangles.indices;
+        auto verts = _polyInfo.triangles.verts;
+        for(ssize_t i = 0; i < count; i++)
+        {
+            //draw 3 lines
+            Vec3 from =verts[indices[i*3]].vertices;
+            Vec3 to = verts[indices[i*3+1]].vertices;
+            _debugDrawNode->drawLine(Vec2(from.x, from.y), Vec2(to.x,to.y), Color4F::WHITE);
+            
+            from =verts[indices[i*3+1]].vertices;
+            to = verts[indices[i*3+2]].vertices;
+            _debugDrawNode->drawLine(Vec2(from.x, from.y), Vec2(to.x,to.y), Color4F::WHITE);
+            
+            from =verts[indices[i*3+2]].vertices;
+            to = verts[indices[i*3]].vertices;
+            _debugDrawNode->drawLine(Vec2(from.x, from.y), Vec2(to.x,to.y), Color4F::WHITE);
+        }
+#endif //CC_SPRITE_DEBUG_DRAW
     }
 }
 
@@ -1067,11 +1051,11 @@ void Sprite::setSpriteFrame(SpriteFrame *spriteFrame)
     // update rect
     _rectRotated = spriteFrame->isRotated();
     setTextureRect(spriteFrame->getRect(), _rectRotated, spriteFrame->getOriginalSize());
-}
-
-void Sprite::setOffsetPosFromCenter(Vec2 offsetFromCenter)
-{
-	_unflippedOffsetPositionFromCenter = offsetFromCenter;
+    
+    if(spriteFrame->hasPolygonInfo())
+    {
+        _polyInfo = spriteFrame->getPolygonInfo();
+    }
 }
 
 void Sprite::setDisplayFrameWithAnimationName(const std::string& animationName, ssize_t frameIndex)
@@ -1150,7 +1134,7 @@ void Sprite::updateBlendFunc(void)
 {
     CCASSERT(! _batchNode, "CCSprite: updateBlendFunc doesn't work when the sprite is rendered using a SpriteBatchNode");
 
-    // it is possible to have an untextured spritec
+    // it is possible to have an untextured sprite
     if (! _texture || ! _texture->hasPremultipliedAlpha())
     {
         _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
@@ -1173,7 +1157,7 @@ std::string Sprite::getDescription() const
     return StringUtils::format("<Sprite | Tag = %d, TextureID = %d>", _tag, texture_id );
 }
 
-PolygonInfo Sprite::getPolygonInfo() const
+PolygonInfo& Sprite::getPolygonInfo()
 {
     return _polyInfo;
 }
@@ -1183,11 +1167,17 @@ void Sprite::setPolygonInfo(const PolygonInfo& info)
     _polyInfo = info;
 }
 
-ResouceData Sprite::csGetRenderFile()
+void Sprite::setOffsetPosFromCenter(Vec2 offsetFromCenter)
+{
+    _unflippedOffsetPositionFromCenter = offsetFromCenter;
+}
+
+ResouceData Sprite::getRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_fileType;
     rData.file = _fileName;
     return rData;
 }
+
 NS_CC_END

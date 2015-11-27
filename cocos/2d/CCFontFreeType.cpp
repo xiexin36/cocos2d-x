@@ -49,12 +49,9 @@ typedef struct _DataRef
 
 static std::unordered_map<std::string, DataRef> s_cacheFontData;
 
-FontFreeType * FontFreeType::create(const std::string &fontName, int fontSize, GlyphCollection glyphs, const char *customGlyphs,bool distanceFieldEnabled /* = false */,int outline /* = 0 */)
+FontFreeType * FontFreeType::create(const std::string &fontName, float fontSize, GlyphCollection glyphs, const char *customGlyphs,bool distanceFieldEnabled /* = false */,int outline /* = 0 */)
 {
-    // use memPatch to avoid new FontFreeType object has the same address as old one
-    int * memPatch = new int[random() % 2 + 1];
     FontFreeType *tempFont =  new FontFreeType(distanceFieldEnabled,outline);
-    delete[] memPatch;
 
     if (!tempFont)
         return nullptr;
@@ -120,7 +117,7 @@ FontFreeType::FontFreeType(bool distanceFieldEnabled /* = false */,int outline /
     }
 }
 
-bool FontFreeType::createFontObject(const std::string &fontName, int fontSize)
+bool FontFreeType::createFontObject(const std::string &fontName, float fontSize)
 {
     FT_Face face;
     // save font name locally
@@ -185,13 +182,16 @@ bool FontFreeType::createFontObject(const std::string &fontName, int fontSize)
 
 FontFreeType::~FontFreeType()
 {
-    if (_stroker)
+    if (_FTInitialized)
     {
-        FT_Stroker_Done(_stroker);
-    }
-    if (_fontRef)
-    {
-        FT_Done_Face(_fontRef);
+        if (_stroker)
+        {
+            FT_Stroker_Done(_stroker);
+        }
+        if (_fontRef)
+        {
+            FT_Done_Face(_fontRef);
+        }
     }
 
     s_cacheFontData[_fontName].referenceCount -= 1;
@@ -634,8 +634,6 @@ const char* FontFreeType::getGlyphCollection() const
     return glyphCollection;
 }
 
-// For cocostudio
-#ifdef CC_STUDIO_ENABLED_VIEW
 void FontFreeType::releaseFont(const std::string &fontName)
 {
     auto item = s_cacheFontData.begin();
@@ -647,7 +645,5 @@ void FontFreeType::releaseFont(const std::string &fontName)
             item++;
     }
 }
-#endif
-
 
 NS_CC_END

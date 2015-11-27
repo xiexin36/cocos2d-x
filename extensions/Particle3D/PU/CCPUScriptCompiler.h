@@ -41,7 +41,7 @@ enum PUAbstractNodeType
     ANT_VARIABLE_SET,
     ANT_VARIABLE_ACCESS
 };
-class PUAbstractNode;
+class CC_DLL PUAbstractNode;
 typedef std::list<PUAbstractNode*> PUAbstractNodeList;
 
 class CC_DLL PUAbstractNode
@@ -124,7 +124,7 @@ private:
     void parseNumber() const;
 };
 
-class PUParticleSystem3D;
+class CC_DLL PUParticleSystem3D;
 class CC_DLL PUScriptCompiler
 {
 

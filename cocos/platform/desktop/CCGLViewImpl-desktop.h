@@ -57,11 +57,7 @@ class CC_DLL GLViewImpl : public GLView
 {
 public:
     static GLViewImpl* create(const std::string& viewName);
-	// For editor
-	static GLViewImpl* createWithglfwInit(const std::string& viewName);
     static GLViewImpl* createWithRect(const std::string& viewName, Rect size, float frameZoomFactor = 1.0f);
-	// For editor
-	static GLViewImpl* createWithRectWithglfwInit(const std::string& viewName, Rect size, float frameZoomFactor = 1.0f);
     static GLViewImpl* createWithFullScreen(const std::string& viewName);
     static GLViewImpl* createWithFullScreen(const std::string& viewName, const GLFWvidmode &videoMode, GLFWmonitor *monitor);
 
@@ -116,9 +112,7 @@ public:
 #endif // #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 
 protected:
-    GLViewImpl();
-	// For editor
-	GLViewImpl(bool initglfw);
+    GLViewImpl(bool initglfw = true);
     virtual ~GLViewImpl();
 
     bool initWithRect(const std::string& viewName, Rect rect, float frameZoomFactor);
@@ -151,6 +145,8 @@ protected:
 
     GLFWwindow* _mainWindow;
     GLFWmonitor* _monitor;
+
+    std::string _glfwError;
 
     float _mouseX;
     float _mouseY;

@@ -35,6 +35,7 @@ THE SOFTWARE.
 NS_CC_BEGIN
 
 class Label;
+struct CC_DLL ResouceData;
 
 namespace ui {
     
@@ -95,8 +96,8 @@ public:
      */
     virtual std::string getDescription() const override;
 
-    //For Editor
-    ResouceData csGetRenderFile();
+    ResouceData getRenderFile();
+
 protected:
     virtual void initRenderer() override;
     virtual void onSizeChanged() override;

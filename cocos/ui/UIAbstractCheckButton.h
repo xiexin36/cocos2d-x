@@ -34,6 +34,7 @@ THE SOFTWARE.
  */
 NS_CC_BEGIN
 class Sprite;
+struct CC_DLL ResouceData;
 
 namespace ui {
     
@@ -160,13 +161,12 @@ public:
      * @return the sprite instance of front cross when disabled
      */
     Sprite* getRendererFrontCrossDisabled() const { return _frontCrossDisabledRenderer; }
-    
-    //For Editor
-    ResouceData csGetBackNormalFile();
-    ResouceData csGetBackPressedFile();
-    ResouceData csGetBackDisabledFile();
-    ResouceData csGetCrossNormalFile();
-    ResouceData csGetCrossDisabeldFile();
+
+    ResouceData getBackNormalFile();
+    ResouceData getBackPressedFile();
+    ResouceData getBackDisabledFile();
+    ResouceData getCrossNormalFile();
+    ResouceData getCrossDisabeldFile();
 
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
@@ -245,12 +245,12 @@ protected:
     bool _backGroundBoxDisabledRendererAdaptDirty;
     bool _frontCrossDisabledRendererAdaptDirty;
 
-    // For editor
     std::string _backGroundFileName;
     std::string _backGroundSelectedFileName;
     std::string _frontCrossFileName;
     std::string _backGroundDisabledFileName;
-    std::string _frontCrossDisabledFileName;};
+    std::string _frontCrossDisabledFileName;
+};
     
 }
 

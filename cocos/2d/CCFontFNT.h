@@ -40,18 +40,15 @@ class CC_DLL FontFNT : public Font
 public:
     
     static FontFNT * create(const std::string& fntFilePath, const Vec2& imageOffset = Vec2::ZERO);
-
- // For cocostudio
-    static bool CheckBMFontResource(const std::string& fntFilePath);
-    static void reloadBMFontResource(const std::string& fntFilePath);
-
     /** Purges the cached data.
     Removes from memory the cached configurations and the atlas name dictionary.
     */
     static void purgeCachedData();
     virtual int* getHorizontalKerningForTextUTF16(const std::u16string& text, int &outNumLetters) const override;
     virtual FontAtlas *createFontAtlas() override;
-    
+
+    static void reloadBMFontResource(const std::string& fntFilePath);
+
 protected:
     
     FontFNT(BMFontConfiguration *theContfig, const Vec2& imageOffset = Vec2::ZERO);

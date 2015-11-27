@@ -104,9 +104,7 @@ static inline Tex2F __t(const Vec2 &v)
 
 // implementation of DrawNode
 
-static const int DEFAULT_LINE_WIDTH = 1;
-
-DrawNode::DrawNode()
+DrawNode::DrawNode(int lineWidth)
 : _vao(0)
 , _vbo(0)
 , _vaoGLPoint(0)
@@ -125,7 +123,8 @@ DrawNode::DrawNode()
 , _dirty(false)
 , _dirtyGLPoint(false)
 , _dirtyGLLine(false)
-, _lineWidth(DEFAULT_LINE_WIDTH)
+, _lineWidth(lineWidth)
+, _defaultLineWidth(lineWidth)
 , _lineSmoothEnable(false)
 {
     _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
@@ -157,9 +156,9 @@ DrawNode::~DrawNode()
     }
 }
 
-DrawNode* DrawNode::create()
+DrawNode* DrawNode::create(int defaultLineWidth)
 {
-    DrawNode* ret = new (std::nothrow) DrawNode();
+    DrawNode* ret = new (std::nothrow) DrawNode(defaultLineWidth);
     if (ret && ret->init())
     {
         ret->autorelease();
@@ -399,7 +398,7 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
         // texcood
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
-    //如果开启线抗锯齿,如参考线绘制, 则先关闭多重采样
+
     if (this->_lineSmoothEnable == false)
     {
         glDisable(GL_MULTISAMPLE);
@@ -408,15 +407,15 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
 
     glLineWidth(_lineWidth);
     glDrawArrays(GL_LINES, 0, _bufferCountGLLine);
-
+    
     if (Configuration::getInstance()->supportsShareableVAO())
     {
         GL::bindVAO(0);
     }
-
+    
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _bufferCountGLLine);
-    //如果开启线抗锯齿, 如参考线绘制, 绘制完成开启多重采样
+    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,_bufferCountGLLine);
+
     if (this->_lineSmoothEnable == true)
         glEnable(GL_MULTISAMPLE);
 
@@ -939,7 +938,7 @@ void DrawNode::clear()
     _dirtyGLLine = true;
     _bufferCountGLPoint = 0;
     _dirtyGLPoint = true;
-    _lineWidth = DEFAULT_LINE_WIDTH;
+    _lineWidth = _defaultLineWidth;
 }
 
 const BlendFunc& DrawNode::getBlendFunc() const
@@ -957,17 +956,17 @@ void DrawNode::setLineWidth(int lineWidth)
     _lineWidth = lineWidth;
 }
 
-void DrawNode::csSetLineSmooth(bool enable)
+void DrawNode::setLineSmooth(bool enable)
 {
     this->_lineSmoothEnable = enable;
 }
 
-bool DrawNode::csIsLineSmooth()
+bool DrawNode::isLineSmooth()
 {
     return this->_lineSmoothEnable;
 }
 
-float DrawNode::csGetLineWidth()
+float DrawNode::getLineWidth()
 {
     return this->_lineWidth;
 }

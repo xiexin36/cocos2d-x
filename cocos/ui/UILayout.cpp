@@ -37,6 +37,7 @@ THE SOFTWARE.
 #include "2d/CCLayer.h"
 #include "2d/CCSprite.h"
 #include "base/CCEventFocus.h"
+#include "2d/CocosStudioExtension.h"
 
 
 NS_CC_BEGIN
@@ -254,7 +255,7 @@ void Layout::stencilClippingVisit(Renderer *renderer, const Mat4& parentTransfor
     // To ease the migration to v3.0, we still support the Mat4 stack,
     // but it is deprecated and your code should not rely on it
     Director* director = Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+    CCASSERT(nullptr != director, "Director is null when setting matrix stack");
     director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
     //Add group command
@@ -376,7 +377,7 @@ void Layout::onBeforeVisitStencil()
 void Layout::drawFullScreenQuadClearStencil()
 {
     Director* director = Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+    CCASSERT(nullptr != director, "Director is null when setting matrix stack");
 
     director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     director->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
@@ -710,6 +711,11 @@ void Layout::setBackGroundImageScale9Enabled(bool able)
         setBackGroundImage(_backGroundImageFileName,_bgImageTexType);
     }
     _backGroundImage->setScale9Enabled(_backGroundScale9Enabled);
+    
+    if (able) {
+        _backGroundImage->setPreferredSize(_contentSize);
+    }
+    
     setBackGroundImageCapInsets(_backGroundImageCapInsets);
 }
     
@@ -2026,14 +2032,14 @@ void Layout::setCameraMask(unsigned short mask, bool applyChildren)
         _clippingStencil->setCameraMask(mask, applyChildren);
     }
 }
-
-ResouceData Layout::csGetRenderFile()
+    
+ResouceData Layout::getRenderFile()
 {
     ResouceData rData;
     rData.type = (int)_bgImageTexType;
     rData.file = _backGroundImageFileName;
     return rData;
 }
-    
+
 }
 NS_CC_END

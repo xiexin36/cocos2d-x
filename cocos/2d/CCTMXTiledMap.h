@@ -37,6 +37,7 @@ class TMXLayer;
 class TMXLayerInfo;
 class TMXTilesetInfo;
 class TMXMapInfo;
+struct CC_DLL ResouceData;
 
 /**
  * @addtogroup _2d
@@ -173,12 +174,12 @@ public:
     Value getPropertiesForGID(int GID) const;
     CC_DEPRECATED_ATTRIBUTE Value propertiesForGID(int GID) const { return getPropertiesForGID(GID); };
 
-    /** Assings properties to argument value, returns true if it did found properties 
-     * for that GID and did assinged a value, else it returns false.
+    /** Assigns properties to argument value, returns true if it did found properties 
+     * for that GID and did assigned a value, else it returns false.
      *
      * @param GID The tile GID.
      * @param value Argument value.
-     * @return Return true if it did found properties for that GID and did assinged a value, else it returns false.
+     * @return Return true if it did found properties for that GID and did assigned a value, else it returns false.
      */
     bool getPropertiesForGID(int GID, Value** value);
 
@@ -252,9 +253,9 @@ public:
      */
     virtual std::string getDescription() const override;
 
-    //For Editor
-    ResouceData csGetRenderFile();
-    
+    ResouceData getRenderFile();
+    int  getLayerNum();
+
 CC_CONSTRUCTOR_ACCESS:
     /**
      * @js ctor
@@ -271,9 +272,6 @@ CC_CONSTRUCTOR_ACCESS:
     
     /** initializes a TMX Tiled Map with a TMX formatted XML string and a path to TMX resources */
     bool initWithXML(const std::string& tmxString, const std::string& resourcePath);
-
-    /** get number of Layer */
-    int  getLayerNum();
 
 protected:
     TMXLayer * parseLayer(TMXLayerInfo *layerInfo, TMXMapInfo *mapInfo);
@@ -295,7 +293,6 @@ protected:
     ValueMapIntKey _tileProperties;
 
     std::string _tmxFile;
-
     int _tmxLayerNum;
 
     static const int TMXLayerTag = 32768;

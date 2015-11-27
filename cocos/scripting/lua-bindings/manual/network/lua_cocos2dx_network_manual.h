@@ -32,8 +32,6 @@ extern "C" {
 }
 #endif
 
-#include "Lua-BingingsExport.h"
-
 /**
  * @addtogroup lua
  * @{
@@ -46,7 +44,7 @@ extern "C" {
  * If you don't register the network module, the package size would become smaller .
  * The current mechanism,this registering function is called in the lua_module_register.h
  */
-CC_LUA_DLL TOLUA_API int register_network_module(lua_State* L);
+TOLUA_API int register_network_module(lua_State* L);
 
 // end group
 /// @}
