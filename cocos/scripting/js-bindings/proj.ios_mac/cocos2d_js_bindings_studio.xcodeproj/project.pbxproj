@@ -3067,6 +3067,7 @@
 					"$(SRCROOT)/../../../../external/chipmunk/prebuilt/mac",
 				);
 				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../../external/spidermonkey/include/mac $(SRCROOT)/../../../../cocos/platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac $(SRCROOT)/../../../../external/curl/include/mac";
 			};
 			name = Debug;
@@ -3099,6 +3100,7 @@
 					"$(SRCROOT)/../../../../external/chipmunk/prebuilt/mac",
 				);
 				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../../../external/spidermonkey/include/mac $(SRCROOT)/../../../../cocos/platform/mac $(SRCROOT)/../../../../external/glfw3/include/mac $(SRCROOT)/../../../../external/curl/include/mac";
 			};
 			name = Release;
