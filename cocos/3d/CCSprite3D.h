@@ -137,7 +137,6 @@ public:
      * to calculate the AABB.
      */
     const AABB& getAABB() const;
-    const AABB& getAABB(bool world) const;
     /* 
      * Get AABB Recursively
      * Because some times we may have an empty Sprite3D Node as parent, but

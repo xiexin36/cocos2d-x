@@ -285,6 +285,7 @@ bool Sprite3D::init()
 
 bool Sprite3D::initWithFile(const std::string& path)
 {
+    _aabbDirty = true;
     _meshes.clear();
     _meshVertexDatas.clear();
     CC_SAFE_RELEASE_NULL(_skeleton);
@@ -812,36 +813,6 @@ const AABB& Sprite3D::getAABB() const
             _nodeToWorldTransform = nodeToWorldTransform;
             _aabbDirty = false;
         }
-    }
-    
-    return _aabb;
-}
-
-const AABB& Sprite3D::getAABB(bool world) const
-{
-    //For Editor
-    _aabbDirty = true;
-
-    Mat4 nodeToWorldTransform(getNodeToWorldTransform());
-    
-    // If nodeToWorldTransform matrix isn't changed, we don't need to transform aabb.
-    if (memcmp(_nodeToWorldTransform.m, nodeToWorldTransform.m, sizeof(Mat4)) == 0 && !_aabbDirty)
-    {
-        return _aabb;
-    }
-    else
-    {
-        _aabb.reset();
-        Mat4 transform(nodeToWorldTransform);
-        for (const auto& it : _meshes) {
-            if (it->isVisible())
-                _aabb.merge(it->getAABB());
-        }
-        
-		if (world)
-			_aabb.transform(transform);
-
-        _nodeToWorldTransform = nodeToWorldTransform;
     }
     
     return _aabb;
