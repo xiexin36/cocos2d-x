@@ -40,6 +40,7 @@ AppPackages
 .vs/
 
 # Ignore files build by ndk and eclipse
+libs/
 bin/
 obj/
 gen/
@@ -120,7 +121,7 @@ tests/*/proj.android-studio/app/build.xml
 tests/*/proj.android-studio/app/proguard-project.txt
 
 # Android
-
+project.properties
 *.iml
 
 # Ignore prebuilt libraries folder
