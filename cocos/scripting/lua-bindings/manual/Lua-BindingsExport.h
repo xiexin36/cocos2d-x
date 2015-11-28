@@ -6,7 +6,7 @@
         #include <string.h>
     #endif
 
-    #if defined(CC_STATIC)
+    #if defined(_USRLUASTATIC)
         #define CC_LUA_DLL
     #else
         #if defined(_USRLUADLL)

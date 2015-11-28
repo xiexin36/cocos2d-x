@@ -217,6 +217,7 @@
     <ClInclude Include="..\lib\protobuf-lite\google\protobuf\stubs\type_traits.h">
       <Filter>runtime\protobuf-lite\stubs</Filter>
     </ClInclude>
+    <ClInclude Include="..\lib\libSimulatorExport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\network\CCHTTPRequest.cpp">
