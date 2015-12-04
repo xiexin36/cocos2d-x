@@ -310,13 +310,13 @@
     <ClInclude Include="..\manual\navmesh\jsb_cocos2dx_navmesh_conversions.h">
       <Filter>manual\navmesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\manual\component\CCComponentJS.h">
+      <Filter>auto</Filter>
+    </ClInclude>
     <ClInclude Include="..\manual\js_module_register.h">
       <Filter>manual</Filter>
     </ClInclude>
     <ClInclude Include="..\manual\js-BindingsExport.h">
-      <Filter>manual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\manual\component\CCComponentJS.h">
       <Filter>manual</Filter>
     </ClInclude>
   </ItemGroup>

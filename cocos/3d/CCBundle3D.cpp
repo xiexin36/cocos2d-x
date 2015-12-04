@@ -1048,9 +1048,7 @@ bool Bundle3D::loadJson(const std::string& path)
     if (_jsonReader.ParseInsitu<0>(_jsonBuffer).HasParseError())
     {
         clear();
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
-        CCASSERT(false, "Parse json failed");
-#endif
+        CCLOG("Parse json failed in Bundle3D::loadJson function");
         return false;
     }
 
@@ -2103,6 +2101,14 @@ unsigned int Bundle3D::parseGLProgramAttribute(const std::string& str)
     else if (str == "VERTEX_ATTRIB_BLEND_INDEX")
     {
         return GLProgram::VERTEX_ATTRIB_BLEND_INDEX;
+    }
+    else if (str == "VERTEX_ATTRIB_TANGENT")
+    {
+        return GLProgram::VERTEX_ATTRIB_TANGENT;
+    }
+    else if (str == "VERTEX_ATTRIB_BINORMAL")
+    {
+        return GLProgram::VERTEX_ATTRIB_BINORMAL;
     }
     else
     {

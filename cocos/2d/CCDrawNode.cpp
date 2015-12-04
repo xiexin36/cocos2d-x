@@ -398,16 +398,21 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
         // texcood
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
-    
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-    // GL_MULTISAMPLE & GL_LINE_SMOOTH only work on PC platform
+    // GL_MULTISAMPLE only work on PC platform, GL_LINE_SMOOTH will not support at GLES v3.0
     if (this->_lineSmoothEnable == false)
     {
         glDisable(GL_MULTISAMPLE);
         glDisable(GL_LINE_SMOOTH);
     }
+    else
+    {
+        glEnable(GL_MULTISAMPLE);
+        glEnable(GL_LINE_SMOOTH);
+    }
 #endif
-    
+
     glLineWidth(_lineWidth);
     glDrawArrays(GL_LINES, 0, _bufferCountGLLine);
     
@@ -418,12 +423,7 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,_bufferCountGLLine);
-    
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-    if (this->_lineSmoothEnable == true)
-        glEnable(GL_MULTISAMPLE);
-#endif
-    
+
     CHECK_GL_ERROR_DEBUG();
 }
 

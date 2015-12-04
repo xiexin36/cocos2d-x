@@ -9,7 +9,7 @@
 #include "PlayerFileDialogServiceWin.h"
 #include "PlayerEditBoxServiceWin.h"
 #include "PlayerTaskServiceWin.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 

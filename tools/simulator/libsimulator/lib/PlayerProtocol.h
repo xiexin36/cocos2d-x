@@ -12,7 +12,7 @@
 #include "PlayerTaskServiceProtocol.h"
 
 #include "ProjectConfig/ProjectConfig.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 

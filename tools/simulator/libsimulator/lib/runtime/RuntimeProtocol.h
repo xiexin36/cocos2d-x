@@ -9,7 +9,7 @@
 
 #include <string>
 #include "json/document.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 class CC_LIBSIM_DLL RuntimeProtocol
 {

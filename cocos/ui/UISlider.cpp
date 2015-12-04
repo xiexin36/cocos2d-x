@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include "ui/UIHelper.h"
 #include "2d/CCSprite.h"
 #include "2d/CCCamera.h"
-#include "2d/CocosStudioExtension.h"
+#include "editor-support/cocostudio/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -154,15 +154,15 @@ void Slider::initRenderer()
 void Slider::loadBarTexture(const std::string& fileName, TextureResType texType)
 {
     _textureFile = fileName;
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    _barTexType = texType;
     if (fileName.empty())
     {
-        return;
+        _barRenderer->init();
     }
-#endif
-    _barTexType = texType;
-    switch (_barTexType)
+    else
     {
+        switch (_barTexType)
+        {
         case TextureResType::LOCAL:
             _barRenderer->initWithFile(fileName);
             break;
@@ -171,6 +171,7 @@ void Slider::loadBarTexture(const std::string& fileName, TextureResType texType)
             break;
         default:
             break;
+        }
     }
     this->setupBarTexture();
 }
@@ -192,15 +193,15 @@ void Slider::setupBarTexture()
 void Slider::loadProgressBarTexture(const std::string& fileName, TextureResType texType)
 {
     _progressBarTextureFile = fileName;
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    _progressBarTexType = texType;
     if (fileName.empty())
     {
-        return;
+        _progressBarRenderer->init();
     }
-#endif
-    _progressBarTexType = texType;
-    switch (_progressBarTexType)
+    else
     {
+        switch (_progressBarTexType)
+        {
         case TextureResType::LOCAL:
             _progressBarRenderer->initWithFile(fileName);
             break;
@@ -209,6 +210,7 @@ void Slider::loadProgressBarTexture(const std::string& fileName, TextureResType 
             break;
         default:
             break;
+        }
     }
     this->setupProgressBarTexture();
 }
@@ -318,15 +320,15 @@ void Slider::loadSlidBallTextures(const std::string& normal,
 void Slider::loadSlidBallTextureNormal(const std::string& normal,TextureResType texType)
 {
     _slidBallNormalTextureFile = normal;
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    _ballNTexType = texType;
     if (normal.empty())
     {
-        return;
+        _slidBallNormalRenderer->init();
     }
-#endif
-    _ballNTexType = texType;
-    switch (_ballNTexType)
+    else
     {
+        switch (_ballNTexType)
+        {
         case TextureResType::LOCAL:
             _slidBallNormalRenderer->setTexture(normal);
             break;
@@ -335,6 +337,7 @@ void Slider::loadSlidBallTextureNormal(const std::string& normal,TextureResType 
             break;
         default:
             break;
+        }
     }
     this->updateChildrenDisplayedRGBA();
 }
@@ -348,15 +351,15 @@ void Slider::loadSlidBallTexturePressed(const std::string& pressed,TextureResTyp
 {
     _slidBallPressedTextureFile = pressed;
     _isSliderBallPressedTextureLoaded = !pressed.empty();
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    _ballPTexType = texType;
     if (pressed.empty())
     {
-        return;
+        _slidBallPressedRenderer->init();
     }
-#endif
-    _ballPTexType = texType;
-    switch (_ballPTexType)
+    else
     {
+        switch (_ballPTexType)
+        {
         case TextureResType::LOCAL:
             _slidBallPressedRenderer->setTexture(pressed);
             break;
@@ -365,6 +368,7 @@ void Slider::loadSlidBallTexturePressed(const std::string& pressed,TextureResTyp
             break;
         default:
             break;
+        }
     }
     this->updateChildrenDisplayedRGBA();
 }
@@ -380,15 +384,15 @@ void Slider::loadSlidBallTextureDisabled(const std::string& disabled,TextureResT
 {
     _slidBallDisabledTextureFile = disabled;
     _isSliderBallDisabledTexturedLoaded = !disabled.empty();
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    _ballDTexType = texType;
     if (disabled.empty())
     {
-        return;
+        _slidBallDisabledRenderer->init();
     }
-#endif
-    _ballDTexType = texType;
-    switch (_ballDTexType)
+    else
     {
+        switch (_ballDTexType)
+        {
         case TextureResType::LOCAL:
             _slidBallDisabledRenderer->setTexture(disabled);
             break;
@@ -397,6 +401,7 @@ void Slider::loadSlidBallTextureDisabled(const std::string& disabled,TextureResT
             break;
         default:
             break;
+        }
     }
     this->updateChildrenDisplayedRGBA();
 }

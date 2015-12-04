@@ -8,7 +8,7 @@
 #include "cocos2d.h"
 #include "stdafx.h"
 #include "PlayerMenuServiceProtocol.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 
