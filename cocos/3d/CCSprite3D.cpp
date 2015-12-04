@@ -390,6 +390,21 @@ Sprite3D* Sprite3D::createSprite3DNode(NodeData* nodedata,ModelData* modeldata,c
                         mesh->_isTransparent = (materialData->getTextureData(NTextureData::Usage::Transparency) != nullptr);
                     }
                 }
+                textureData = materialData->getTextureData(NTextureData::Usage::Normal);
+                if (textureData)
+                {
+                    auto tex = Director::getInstance()->getTextureCache()->addImage(textureData->filename);
+                    if(tex)
+                    {
+                        Texture2D::TexParams texParams;
+                        texParams.minFilter = GL_LINEAR;
+                        texParams.magFilter = GL_LINEAR;
+                        texParams.wrapS = textureData->wrapS;
+                        texParams.wrapT = textureData->wrapT;
+                        tex->setTexParameters(texParams);
+                    }
+                    mesh->setTexture(tex, NTextureData::Usage::Normal);
+                }
             }
         }
 
@@ -477,7 +492,6 @@ void Sprite3D::genMaterial(bool useLight)
     for (auto& mesh: _meshes)
     {
         auto material = materials[mesh->getMeshIndexData()->getMeshVertexData()];
-        
         //keep original state block if exist
         auto oldmaterial = mesh->getMaterial();
         if (oldmaterial)
@@ -539,6 +553,21 @@ void Sprite3D::createNode(NodeData* nodedata, Node* root, const MaterialDatas& m
                                     tex->setTexParameters(texParams);
                                     mesh->_isTransparent = (materialData->getTextureData(NTextureData::Usage::Transparency) != nullptr);
                                 }
+                            }
+                            textureData = materialData->getTextureData(NTextureData::Usage::Normal);
+                            if (textureData)
+                            {
+                                auto tex = Director::getInstance()->getTextureCache()->addImage(textureData->filename);
+                                if (tex)
+                                {
+                                    Texture2D::TexParams texParams;
+                                    texParams.minFilter = GL_LINEAR;
+                                    texParams.magFilter = GL_LINEAR;
+                                    texParams.wrapS = textureData->wrapS;
+                                    texParams.wrapT = textureData->wrapT;
+                                    tex->setTexParameters(texParams);
+                                }
+                                mesh->setTexture(tex, NTextureData::Usage::Normal);
                             }
                         }
                     }
@@ -896,35 +925,6 @@ void Sprite3D::setForce2DQueue(bool force2D)
     }
 }
 
-const AABB& Sprite3D::getAABB(bool world) const
-{
-    _aabbDirty = true;
-
-    Mat4 nodeToWorldTransform(getNodeToWorldTransform());
-
-    // If nodeToWorldTransform matrix isn't changed, we don't need to transform aabb.
-    if (memcmp(_nodeToWorldTransform.m, nodeToWorldTransform.m, sizeof(Mat4)) == 0 && !_aabbDirty)
-    {
-        return _aabb;
-    }
-    else
-    {
-        _aabb.reset();
-        Mat4 transform(nodeToWorldTransform);
-        for (const auto& it : _meshes) {
-            if (it->isVisible())
-                _aabb.merge(it->getAABB());
-        }
-
-        if (world)
-            _aabb.transform(transform);
-
-        _nodeToWorldTransform = nodeToWorldTransform;
-    }
-
-    return _aabb;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////
 Sprite3DCache* Sprite3DCache::_cacheInstance = nullptr;
 Sprite3DCache* Sprite3DCache::getInstance()
@@ -997,10 +997,17 @@ static Sprite3DMaterial* getSprite3DMaterialForAttribs(MeshVertexData* meshVerte
     bool hasSkin = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_BLEND_INDEX)
     && meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_BLEND_WEIGHT);
     bool hasNormal = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_NORMAL);
+    bool hasTangentSpace = meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_TANGENT) 
+    && meshVertexData->hasVertexAttrib(GLProgram::VERTEX_ATTRIB_BINORMAL);
     Sprite3DMaterial::MaterialType type;
     if(textured)
     {
-        type = hasNormal && usesLight ? Sprite3DMaterial::MaterialType::DIFFUSE : Sprite3DMaterial::MaterialType::UNLIT;
+        if (hasTangentSpace){
+            type = hasNormal && usesLight ? Sprite3DMaterial::MaterialType::BUMPED_DIFFUSE : Sprite3DMaterial::MaterialType::UNLIT;
+        }
+        else{
+            type = hasNormal && usesLight ? Sprite3DMaterial::MaterialType::DIFFUSE : Sprite3DMaterial::MaterialType::UNLIT;
+        }
     }
     else
     {

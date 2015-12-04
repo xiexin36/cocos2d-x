@@ -8,7 +8,7 @@
 using namespace std;
 
 #include "cocos2d.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 #define kCCRuntimeDebuggerNone      0
 #define kCCRuntimeDebuggerLDT       1

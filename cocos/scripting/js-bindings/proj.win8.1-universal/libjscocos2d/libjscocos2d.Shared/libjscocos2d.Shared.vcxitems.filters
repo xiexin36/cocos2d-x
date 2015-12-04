@@ -141,10 +141,10 @@
       <Filter>auto</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\manual\component\CCComponentJS.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\manual\js-BindingsExport.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\manual\js_module_register.h">
       <Filter>manual</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\manual\js_module_register.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\manual\js-BindingsExport.h">
       <Filter>manual</Filter>
     </ClInclude>
   </ItemGroup>

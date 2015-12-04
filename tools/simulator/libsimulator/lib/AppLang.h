@@ -11,7 +11,7 @@
 
 #include "json/document.h"
 #include "DeviceEx.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 class CC_LIBSIM_DLL AppLang
 {

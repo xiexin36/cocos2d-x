@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include <string>
 #include <functional>
 #include <unordered_map>
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 void recvBuf(int fd, char *pbuf, unsigned long bufsize);
 
@@ -36,9 +36,9 @@ void sendBuf(int fd, const char *pbuf, unsigned long bufsize);
 
 CC_LIBSIM_DLL extern std::string g_projectPath;
 
-CC_LIBSIM_DLL extern std::string& replaceAll(std::string& str, const std::string& old_value, const std::string& new_value);
+CC_LIBSIM_DLL std::string& replaceAll(std::string& str, const std::string& old_value, const std::string& new_value);
 
-CC_LIBSIM_DLL extern std::string getIPAddress();
+CC_LIBSIM_DLL std::string getIPAddress();
 
 const char* getRuntimeVersion();
 
@@ -56,7 +56,7 @@ const char* getRuntimeVersion();
 #define kRuntimeEngineCCS 4
 
 class RuntimeProtocol;
-class CC_LIBSIM_DLL RuntimeEngine
+class RuntimeEngine
 {
 public:
     static RuntimeEngine* getInstance();

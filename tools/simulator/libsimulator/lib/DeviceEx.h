@@ -2,7 +2,7 @@
 
 #include <string>
 #include "PlayerMacros.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 

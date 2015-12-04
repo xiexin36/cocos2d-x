@@ -1234,6 +1234,11 @@
 		2980F02B1BA9A5550059E678 /* UITextView+CCUITextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2980F0201BA9A5550059E678 /* UITextView+CCUITextInput.h */; };
 		2980F02C1BA9A5550059E678 /* UITextView+CCUITextInput.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2980F0211BA9A5550059E678 /* UITextView+CCUITextInput.mm */; };
 		2986667F18B1B246000E39CA /* CCTweenFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2986667818B1B079000E39CA /* CCTweenFunction.cpp */; };
+		298C75D51C0465D0006BAE63 /* CCStencilStateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 298C75D31C0465D0006BAE63 /* CCStencilStateManager.cpp */; };
+		298C75D61C0465D1006BAE63 /* CCStencilStateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 298C75D31C0465D0006BAE63 /* CCStencilStateManager.cpp */; };
+		298C75D71C0465D1006BAE63 /* CCStencilStateManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 298C75D41C0465D0006BAE63 /* CCStencilStateManager.hpp */; };
+		298C75D81C0465D1006BAE63 /* CCStencilStateManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 298C75D41C0465D0006BAE63 /* CCStencilStateManager.hpp */; };
+		298C75D91C04681F006BAE63 /* CCStencilStateManager.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 298C75D41C0465D0006BAE63 /* CCStencilStateManager.hpp */; };
 		299754F4193EC95400A54AC3 /* ObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 299754F2193EC95400A54AC3 /* ObjectFactory.cpp */; };
 		299754F5193EC95400A54AC3 /* ObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 299754F2193EC95400A54AC3 /* ObjectFactory.cpp */; };
 		299754F6193EC95400A54AC3 /* ObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 299754F3193EC95400A54AC3 /* ObjectFactory.h */; };
@@ -3683,23 +3688,6 @@
 		ED9C6A9718599AD8000A5232 /* CCNodeGrid.h in Headers */ = {isa = PBXBuildFile; fileRef = ED9C6A9318599AD8000A5232 /* CCNodeGrid.h */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		945C61401BFF09D000732581 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1551A33F158F2AB200E66CFE;
-			remoteInfo = "libcocos2d Mac";
-		};
-		945C61421BFF09D000732581 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A07A4D641783777C0073F6A7;
-			remoteInfo = "libcocos2d iOS";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		0634A4C5194B19E400E608AF /* CCActionTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimeline.cpp; sourceTree = "<group>"; };
 		0634A4C6194B19E400E608AF /* CCActionTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionTimeline.h; sourceTree = "<group>"; };
@@ -4161,6 +4149,8 @@
 		2980F0211BA9A5550059E678 /* UITextView+CCUITextInput.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UITextView+CCUITextInput.mm"; sourceTree = "<group>"; };
 		2986667818B1B079000E39CA /* CCTweenFunction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTweenFunction.cpp; sourceTree = "<group>"; };
 		2986667918B1B079000E39CA /* CCTweenFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTweenFunction.h; sourceTree = "<group>"; };
+		298C75D31C0465D0006BAE63 /* CCStencilStateManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCStencilStateManager.cpp; path = ../base/CCStencilStateManager.cpp; sourceTree = "<group>"; };
+		298C75D41C0465D0006BAE63 /* CCStencilStateManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CCStencilStateManager.hpp; path = ../base/CCStencilStateManager.hpp; sourceTree = "<group>"; };
 		299754F2193EC95400A54AC3 /* ObjectFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjectFactory.cpp; path = ../base/ObjectFactory.cpp; sourceTree = "<group>"; };
 		299754F3193EC95400A54AC3 /* ObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectFactory.h; path = ../base/ObjectFactory.h; sourceTree = "<group>"; };
 		299CF1F919A434BC00C378C1 /* ccRandom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ccRandom.cpp; path = ../base/ccRandom.cpp; sourceTree = "<group>"; };
@@ -4714,7 +4704,6 @@
 		5E9F61251A3FFE3D0038DE01 /* CCPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPlane.h; sourceTree = "<group>"; };
 		8525E3A11B291E42008EE815 /* clipper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = clipper.hpp; sourceTree = "<group>"; };
 		85B374381B204B9400C488D6 /* clipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clipper.cpp; sourceTree = "<group>"; };
-		945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = cocos2d_libs_studio.xcodeproj; sourceTree = "<group>"; };
 		A045F6D41BA81577005076C7 /* CCTextureCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTextureCube.cpp; sourceTree = "<group>"; };
 		A045F6D51BA81577005076C7 /* CCTextureCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTextureCube.h; sourceTree = "<group>"; };
 		A045F6DA1BA816A1005076C7 /* CCCameraBackgroundBrush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCCameraBackgroundBrush.cpp; sourceTree = "<group>"; };
@@ -5725,7 +5714,6 @@
 		1551A334158F2AB200E66CFE = {
 			isa = PBXGroup;
 			children = (
-				945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */,
 				46A15FCC1807A544005B8026 /* AUTHORS */,
 				1A57FFF7180BC5160088DEC7 /* CHANGELOG */,
 				50272539190BF1B900AAF4ED /* cocos2d.cpp */,
@@ -6056,6 +6044,8 @@
 				50ABBE1C1925AB6F00A911A9 /* utlist.h */,
 				50ABBE1D1925AB6F00A911A9 /* ZipUtils.cpp */,
 				50ABBE1E1925AB6F00A911A9 /* ZipUtils.h */,
+				298C75D31C0465D0006BAE63 /* CCStencilStateManager.cpp */,
+				298C75D41C0465D0006BAE63 /* CCStencilStateManager.hpp */,
 			);
 			name = base;
 			path = ../cocos/2d;
@@ -7958,15 +7948,6 @@
 			path = ../external/clipper;
 			sourceTree = "<group>";
 		};
-		945C613C1BFF09CF00732581 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				945C61411BFF09D000732581 /* libcocos2d Mac.dylib */,
-				945C61431BFF09D000732581 /* libcocos2d iOS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		A045F6EC1BA81821005076C7 /* GameNode3DReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -9257,6 +9238,7 @@
 				15AE182A19AAD2F700C27E9E /* CCMeshSkin.h in Headers */,
 				B276EF5F1988D1D500CD400F /* CCVertexIndexData.h in Headers */,
 				1A57007F180BC5A10088DEC7 /* CCActionInterval.h in Headers */,
+				298C75D71C0465D1006BAE63 /* CCStencilStateManager.hpp in Headers */,
 				B6DD2FDB1B04825B00E47F5F /* DetourLocalBoundary.h in Headers */,
 				B6CAB3491AF9AA1A00B9B856 /* gim_clip_polygon.h in Headers */,
 				B677B0DB1B18492D006762CB /* CCNavMeshUtils.h in Headers */,
@@ -10697,6 +10679,7 @@
 				85505F051B60E3B2003F2CD4 /* CCBoneNode.h in Headers */,
 				B665E2491AA80A6500DDB1C5 /* CCPUCollisionAvoidanceAffectorTranslator.h in Headers */,
 				B6CAB4461AF9AA1A00B9B856 /* btParallelConstraintSolver.h in Headers */,
+				298C75D81C0465D1006BAE63 /* CCStencilStateManager.hpp in Headers */,
 				15AE18D119AAD33D00C27E9E /* CCNodeLoaderLibrary.h in Headers */,
 				15AE1AC319AAD40300C27E9E /* b2DistanceJoint.h in Headers */,
 				B6CAB5261AF9AA1A00B9B856 /* btQuickprof.h in Headers */,
@@ -11144,12 +11127,6 @@
 			mainGroup = 1551A334158F2AB200E66CFE;
 			productRefGroup = 1551A340158F2AB200E66CFE /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 945C613C1BFF09CF00732581 /* Products */;
-					ProjectRef = 945C613B1BFF09CF00732581 /* cocos2d_libs_studio.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1551A33E158F2AB200E66CFE /* libcocos2d Mac */,
@@ -11157,23 +11134,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		945C61411BFF09D000732581 /* libcocos2d Mac.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libcocos2d Mac.dylib";
-			remoteRef = 945C61401BFF09D000732581 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		945C61431BFF09D000732581 /* libcocos2d iOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libcocos2d iOS.a";
-			remoteRef = 945C61421BFF09D000732581 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1551A33B158F2AB200E66CFE /* Sources */ = {
@@ -11881,6 +11841,7 @@
 				B665E2EE1AA80A6500DDB1C5 /* CCPULineEmitter.cpp in Sources */,
 				B6CAB2DD1AF9AA1A00B9B856 /* btScaledBvhTriangleMeshShape.cpp in Sources */,
 				B665E4121AA80A6600DDB1C5 /* CCPUTextureAnimator.cpp in Sources */,
+				298C75D51C0465D0006BAE63 /* CCStencilStateManager.cpp in Sources */,
 				B665E3D21AA80A6600DDB1C5 /* CCPUScriptLexer.cpp in Sources */,
 				B665E4021AA80A6600DDB1C5 /* CCPUSphereColliderTranslator.cpp in Sources */,
 				15AE1A3619AAD3D500C27E9E /* b2PolygonShape.cpp in Sources */,
@@ -12015,6 +11976,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				298C75D91C04681F006BAE63 /* CCStencilStateManager.hpp in Sources */,
 				D0FD03541A3B51AA00825BB5 /* CCAllocatorGlobalNewDelete.cpp in Sources */,
 				15AE1B9819AADAA100C27E9E /* UIVideoPlayer-ios.mm in Sources */,
 				B665E38F1AA80A6500DDB1C5 /* CCPUPlaneCollider.cpp in Sources */,
@@ -12165,6 +12127,7 @@
 				15AE193C19AAD35100C27E9E /* CCArmatureDefine.cpp in Sources */,
 				B665E35F1AA80A6500DDB1C5 /* CCPUOnRandomObserverTranslator.cpp in Sources */,
 				B29594B51926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */,
+				298C75D61C0465D1006BAE63 /* CCStencilStateManager.cpp in Sources */,
 				15AE194B19AAD35100C27E9E /* CCComRender.cpp in Sources */,
 				382384451A25915C002C4610 /* SpriteReader.cpp in Sources */,
 				B6CAB2321AF9AA1A00B9B856 /* btCollisionWorld.cpp in Sources */,

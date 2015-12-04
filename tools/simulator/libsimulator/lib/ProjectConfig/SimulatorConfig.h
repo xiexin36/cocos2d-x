@@ -8,7 +8,7 @@
 using namespace std;
 
 #include "cocos2d.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 #if defined(_WINDOWS)
 #define DIRECTORY_SEPARATOR "\\"
