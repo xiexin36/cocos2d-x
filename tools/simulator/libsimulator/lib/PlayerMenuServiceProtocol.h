@@ -7,7 +7,7 @@
 #include "cocos2d.h"
 #include "PlayerMacros.h"
 #include "PlayerServiceProtocol.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 

@@ -59,6 +59,7 @@ TextureCache::TextureCache()
 : _loadingThread(nullptr)
 , _needQuit(false)
 , _asyncRefCount(0)
+, _dirty(false)
 {
 }
 
@@ -360,6 +361,8 @@ Texture2D * TextureCache::addImage(const std::string &path)
             else
             {
                 CCLOG("cocos2d: Couldn't create texture for file:%s in TextureCache", path.c_str());
+                CC_SAFE_RELEASE(texture);
+                texture = nullptr;
             }
         } while (0);
     }
@@ -493,7 +496,8 @@ void TextureCache::removeTexture(Texture2D* texture)
 
     for( auto it=_textures.cbegin(); it!=_textures.cend(); /* nothing */ ) {
         if( it->second == texture ) {
-            texture->release();
+            texture->setValid(false);
+            texture->autorelease();
             _textures.erase(it++);
             break;
         } else
@@ -512,7 +516,8 @@ void TextureCache::removeTextureForKey(const std::string &textureKeyName)
     }
 
     if( it != _textures.end() ) {
-        (it->second)->release();
+        it->second->setValid(false);
+        (it->second)->autorelease();
         _textures.erase(it);
     }
 }
@@ -598,7 +603,7 @@ std::string TextureCache::getCachedTextureInfo() const
     return buffer;
 }
 
-void TextureCache::renameTextureWithKey(std::string srcName, std::string dstName)
+void TextureCache::renameTextureWithKey(const std::string srcName, const std::string dstName)
 {
     std::string key = srcName;
     auto it = _textures.find(key);
@@ -611,6 +616,7 @@ void TextureCache::renameTextureWithKey(std::string srcName, std::string dstName
     if( it != _textures.end() ) {
         std::string fullpath = FileUtils::getInstance()->fullPathForFilename(dstName);
         Texture2D* tex = it->second;
+
         Image* image = new Image();
         if (image)
         {

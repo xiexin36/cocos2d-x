@@ -15,7 +15,7 @@
 #include "json/filestream.h"
 #include "json/stringbuffer.h"
 #include "json/writer.h"
-#include "libSimulatorExport.h"
+#include "SimulatorExport.h"
 
 enum
 {

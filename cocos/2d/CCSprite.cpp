@@ -38,7 +38,6 @@ THE SOFTWARE.
 #include "renderer/CCRenderer.h"
 #include "base/CCDirector.h"
 #include "2d/CCCamera.h"
-#include "2d/CocosStudioExtension.h"
 
 #include "deprecated/CCString.h"
 
@@ -165,7 +164,6 @@ bool Sprite::initWithTexture(Texture2D *texture, const Rect& rect)
 
 bool Sprite::initWithFile(const std::string& filename)
 {
-#ifdef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
     if (filename.empty())
     {
         CCLOG("Call Sprite::initWithFile with blank resource filename.");
@@ -174,9 +172,6 @@ bool Sprite::initWithFile(const std::string& filename)
 
     _fileName = filename;
     _fileType = 0;
-#else
-    CCASSERT(filename.size()>0, "Invalid filename for sprite");
-#endif
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -196,10 +191,8 @@ bool Sprite::initWithFile(const std::string &filename, const Rect& rect)
 {
     CCASSERT(filename.size()>0, "Invalid filename");
 
-#ifdef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
     _fileName = filename;
     _fileType = 0;
-#endif
 
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     if (texture)
@@ -217,10 +210,8 @@ bool Sprite::initWithSpriteFrameName(const std::string& spriteFrameName)
 {
     CCASSERT(spriteFrameName.size() > 0, "Invalid spriteFrameName");
 
-#ifdef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
     _fileName = spriteFrameName;
     _fileType = 1;
-#endif
 
     SpriteFrame *frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName);
     return initWithSpriteFrame(frame);
@@ -351,7 +342,7 @@ void Sprite::setTexture(const std::string &filename)
 {
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
     setTexture(texture);
-
+    _unflippedOffsetPositionFromCenter = Vec2::ZERO;
     Rect rect = Rect::ZERO;
     if (texture)
         rect.size = texture->getContentSize();
@@ -1165,19 +1156,6 @@ PolygonInfo& Sprite::getPolygonInfo()
 void Sprite::setPolygonInfo(const PolygonInfo& info)
 {
     _polyInfo = info;
-}
-
-void Sprite::setOffsetPosFromCenter(Vec2 offsetFromCenter)
-{
-    _unflippedOffsetPositionFromCenter = offsetFromCenter;
-}
-
-ResouceData Sprite::getRenderFile()
-{
-    ResouceData rData;
-    rData.type = (int)_fileType;
-    rData.file = _fileName;
-    return rData;
 }
 
 NS_CC_END

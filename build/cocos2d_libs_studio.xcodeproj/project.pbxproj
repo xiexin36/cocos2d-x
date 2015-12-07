@@ -1898,6 +1898,8 @@
 		9450D0941BFF08E60078972B /* RecastMeshDetail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9450D0871BFF08E60078972B /* RecastMeshDetail.cpp */; };
 		9450D0951BFF08E60078972B /* RecastRasterization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9450D0881BFF08E60078972B /* RecastRasterization.cpp */; };
 		9450D0961BFF08E60078972B /* RecastRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9450D0891BFF08E60078972B /* RecastRegion.cpp */; };
+		946FD9771C115E0500A8EACE /* CCStencilStateManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 946FD9751C115E0500A8EACE /* CCStencilStateManager.cpp */; };
+		946FD9781C115E0500A8EACE /* CCStencilStateManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 946FD9761C115E0500A8EACE /* CCStencilStateManager.hpp */; };
 		A045F6D61BA81577005076C7 /* CCTextureCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A045F6D41BA81577005076C7 /* CCTextureCube.cpp */; };
 		A045F6D71BA81577005076C7 /* CCTextureCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A045F6D41BA81577005076C7 /* CCTextureCube.cpp */; };
 		A045F6D81BA81577005076C7 /* CCTextureCube.h in Headers */ = {isa = PBXBuildFile; fileRef = A045F6D51BA81577005076C7 /* CCTextureCube.h */; };
@@ -4730,6 +4732,8 @@
 		9450D0871BFF08E60078972B /* RecastMeshDetail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RecastMeshDetail.cpp; path = ../external/recast/Recast/RecastMeshDetail.cpp; sourceTree = "<group>"; };
 		9450D0881BFF08E60078972B /* RecastRasterization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RecastRasterization.cpp; path = ../external/recast/Recast/RecastRasterization.cpp; sourceTree = "<group>"; };
 		9450D0891BFF08E60078972B /* RecastRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RecastRegion.cpp; path = ../external/recast/Recast/RecastRegion.cpp; sourceTree = "<group>"; };
+		946FD9751C115E0500A8EACE /* CCStencilStateManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCStencilStateManager.cpp; path = ../base/CCStencilStateManager.cpp; sourceTree = "<group>"; };
+		946FD9761C115E0500A8EACE /* CCStencilStateManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CCStencilStateManager.hpp; path = ../base/CCStencilStateManager.hpp; sourceTree = "<group>"; };
 		A045F6D41BA81577005076C7 /* CCTextureCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTextureCube.cpp; sourceTree = "<group>"; };
 		A045F6D51BA81577005076C7 /* CCTextureCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTextureCube.h; sourceTree = "<group>"; };
 		A045F6DA1BA816A1005076C7 /* CCCameraBackgroundBrush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCCameraBackgroundBrush.cpp; sourceTree = "<group>"; };
@@ -5963,6 +5967,8 @@
 		1A5700A2180BC5E60088DEC7 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				946FD9751C115E0500A8EACE /* CCStencilStateManager.cpp */,
+				946FD9761C115E0500A8EACE /* CCStencilStateManager.hpp */,
 				291901411B05895600F8B4BA /* CCNinePatchImageParser.h */,
 				291901421B05895600F8B4BA /* CCNinePatchImageParser.cpp */,
 				505385001B01887A00793096 /* CCProperties.h */,
@@ -10060,6 +10066,7 @@
 				50ABBDB31925AB4100A911A9 /* ccShaders.h in Headers */,
 				B6CAB3831AF9AA1A00B9B856 /* btMinkowskiPenetrationDepthSolver.h in Headers */,
 				50ABBDAB1925AB4100A911A9 /* CCRenderCommandPool.h in Headers */,
+				946FD9781C115E0500A8EACE /* CCStencilStateManager.hpp in Headers */,
 				5034CA45191D591100CE6051 /* ccShader_Label_outline.frag in Headers */,
 				B6CAB4311AF9AA1A00B9B856 /* btWheelInfo.h in Headers */,
 				D0FD035F1A3B51AA00825BB5 /* CCAllocatorStrategyPool.h in Headers */,
@@ -11888,6 +11895,7 @@
 				B6CAAFE61AF9A9E100B9B856 /* CCPhysics3DComponent.cpp in Sources */,
 				B68778F81A8CA82E00643ABF /* CCParticle3DAffector.cpp in Sources */,
 				15AE19A019AAD39600C27E9E /* TextAtlasReader.cpp in Sources */,
+				946FD9771C115E0500A8EACE /* CCStencilStateManager.cpp in Sources */,
 				15AE1A2A19AAD3D500C27E9E /* b2Distance.cpp in Sources */,
 				50ABBE6D1925AB6F00A911A9 /* CCEventListenerKeyboard.cpp in Sources */,
 				15FB20871AE7C57D00C31518 /* shapes.cc in Sources */,

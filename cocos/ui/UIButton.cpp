@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "platform/CCFileUtils.h"
 #include "ui/UIHelper.h"
 #include <algorithm>
-#include "2d/CocosStudioExtension.h"
+#include "editor-support/cocostudio/CocosStudioExtension.h"
 
 NS_CC_BEGIN
 
@@ -232,16 +232,16 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
 {
     _normalFileName = normal;
     _normalTexType = texType;
-
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    bool textureLoaded = true;
     if (normal.empty())
     {
-        return;
+        _buttonNormalRenderer->init();
+        textureLoaded = false;
     }
-#endif
-
-    switch (texType)
+    else
     {
+        switch (texType)
+        {
         case TextureResType::LOCAL:
             _buttonNormalRenderer->initWithFile(normal);
             break;
@@ -250,12 +250,12 @@ void Button::loadTextureNormal(const std::string& normal,TextureResType texType)
             break;
         default:
             break;
+        }
     }
-    this->setupNormalTexture();
-
+    this->setupNormalTexture(textureLoaded);
 }
 
-void Button::setupNormalTexture()
+void Button::setupNormalTexture(bool textureLoaded)
 {
     _normalTextureSize = _buttonNormalRenderer->getContentSize();
     // force update _customSize, fixed issue:
@@ -275,30 +275,30 @@ void Button::setupNormalTexture()
     {
         updateContentSizeWithTextureSize(_normalTextureSize);
     }
-    _normalTextureLoaded = true;
+    _normalTextureLoaded = textureLoaded;
     _normalTextureAdaptDirty = true;
 }
 
 void Button::loadTextureNormal(SpriteFrame* normalSpriteFrame)
 {
     _buttonNormalRenderer->initWithSpriteFrame(normalSpriteFrame);
-    this->setupNormalTexture();
+    this->setupNormalTexture(nullptr != normalSpriteFrame);
 }
 
 void Button::loadTexturePressed(const std::string& selected,TextureResType texType)
 {
     _clickedFileName = selected;
     _pressedTexType = texType;
-
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    bool textureLoade = true;
     if (selected.empty())
     {
-        return;
+        _buttonClickedRenderer->init();
+        textureLoade = false;
     }
-#endif
-
-    switch (texType)
+    else
     {
+        switch (texType)
+        {
         case TextureResType::LOCAL:
             _buttonClickedRenderer->initWithFile(selected);
             break;
@@ -307,41 +307,41 @@ void Button::loadTexturePressed(const std::string& selected,TextureResType texTy
             break;
         default:
             break;
+        }
     }
-
-    this->setupPressedTexture();
+    this->setupPressedTexture(textureLoade);
 }
 
-void Button::setupPressedTexture()
+void Button::setupPressedTexture(bool textureLoaded)
 {
     _pressedTextureSize = _buttonClickedRenderer->getContentSize();
 
     this->updateChildrenDisplayedRGBA();
 
-    _pressedTextureLoaded = true;
+    _pressedTextureLoaded = textureLoaded;
     _pressedTextureAdaptDirty = true;
 }
 
 void Button::loadTexturePressed(SpriteFrame* pressedSpriteFrame)
 {
     _buttonClickedRenderer->initWithSpriteFrame(pressedSpriteFrame);
-    this->setupPressedTexture();
+    this->setupPressedTexture(nullptr != pressedSpriteFrame);
 }
 
 void Button::loadTextureDisabled(const std::string& disabled,TextureResType texType)
 {
     _disabledFileName = disabled;
     _disabledTexType = texType;
-
-#ifndef CC_STUDIO_ENABLED_VIEW   // for cocostudio only
+    bool textureLoaded = true;
     if (disabled.empty())
     {
-        return;
+        _buttonDisabledRenderer->init();
+        textureLoaded = false;
     }
-#endif
-
-    switch (texType)
+    else
     {
+        switch (texType)
+        {
         case TextureResType::LOCAL:
             _buttonDisabledRenderer->initWithFile(disabled);
             break;
@@ -350,24 +350,25 @@ void Button::loadTextureDisabled(const std::string& disabled,TextureResType texT
             break;
         default:
             break;
+        }
     }
-    this->setupDisabledTexture();
+    this->setupDisabledTexture(textureLoaded);
 }
 
-void Button::setupDisabledTexture()
+void Button::setupDisabledTexture(bool textureLoaded)
 {
     _disabledTextureSize = _buttonDisabledRenderer->getContentSize();
 
     this->updateChildrenDisplayedRGBA();
 
-    _disabledTextureLoaded = true;
+    _disabledTextureLoaded = textureLoaded;
     _disabledTextureAdaptDirty = true;
 }
 
 void Button::loadTextureDisabled(SpriteFrame* disabledSpriteFrame)
 {
     _buttonDisabledRenderer->initWithSpriteFrame(disabledSpriteFrame);
-    this->setupDisabledTexture();
+    this->setupDisabledTexture(nullptr != disabledSpriteFrame);
 }
 
 void Button::setCapInsets(const Rect &capInsets)
