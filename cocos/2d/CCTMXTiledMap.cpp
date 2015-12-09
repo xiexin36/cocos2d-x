@@ -189,7 +189,9 @@ void TMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
                 idx++;
                 continue;
             }
-            addChild(child, idx, idx);
+            addChild(child, 0, idx);
+            child->setOrderOfArrival(idx);
+            child->setTag(TMXLayerTag);
             // update content size with the max size
             const Size& childSize = child->getContentSize();
             Size currentSize = this->getContentSize();

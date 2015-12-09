@@ -37,6 +37,7 @@ ipch/
 SubmissionInfo
 Generated Files
 AppPackages
+BundleArtifacts
 .vs/
 
 # Ignore files build by ndk and eclipse
@@ -77,7 +78,6 @@ DerivedData/
 
 # Ignore files built by blackberry
 Simulator/
-!/tools/simulator/
 Device-Debug/
 Device-Release/
 
@@ -125,9 +125,8 @@ project.properties
 *.iml
 
 # Ignore prebuilt libraries folder
-#/external/*
+/external/*
 !/external/config.json
-!/tools/simulator/config.json
 /templates/lua-template-runtime/runtime
 /v*-deps-*.zip
 /v*-lua-runtime-*.zip
@@ -149,4 +148,3 @@ tests/cpp-tests/Resources/audio
 /*/*/*/prebuilt-mk/Android.mk
 /*/*/*/*/prebuilt-mk/Android.mk
 *.xcscmblueprint
-/tools/simulator/runtime/win32
