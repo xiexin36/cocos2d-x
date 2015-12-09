@@ -33,14 +33,11 @@ bool js_cocos2dx_ui_LayoutParameter_clone(JSContext *cx, uint32_t argc, jsval *v
     if (argc == 0) {
         cocos2d::ui::LayoutParameter* ret = cobj->clone();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -76,14 +73,11 @@ bool js_cocos2dx_ui_LayoutParameter_createCloneInstance(JSContext *cx, uint32_t 
     if (argc == 0) {
         cocos2d::ui::LayoutParameter* ret = cobj->createCloneInstance();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -123,17 +117,11 @@ bool js_cocos2dx_ui_LayoutParameter_create(JSContext *cx, uint32_t argc, jsval *
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::LayoutParameter* ret = cocos2d::ui::LayoutParameter::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::LayoutParameter::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::LayoutParameter>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::LayoutParameter"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_LayoutParameter_create : wrong number of arguments");
@@ -248,17 +236,11 @@ bool js_cocos2dx_ui_LinearLayoutParameter_create(JSContext *cx, uint32_t argc, j
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::LinearLayoutParameter* ret = cocos2d::ui::LinearLayoutParameter::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LinearLayoutParameter>(cx, (cocos2d::ui::LinearLayoutParameter*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::LinearLayoutParameter::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::LinearLayoutParameter>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::LinearLayoutParameter"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_LinearLayoutParameter_create : wrong number of arguments");
@@ -450,17 +432,11 @@ bool js_cocos2dx_ui_RelativeLayoutParameter_create(JSContext *cx, uint32_t argc,
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::RelativeLayoutParameter* ret = cocos2d::ui::RelativeLayoutParameter::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RelativeLayoutParameter>(cx, (cocos2d::ui::RelativeLayoutParameter*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::RelativeLayoutParameter::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::RelativeLayoutParameter>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::RelativeLayoutParameter"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_RelativeLayoutParameter_create : wrong number of arguments");
@@ -664,14 +640,11 @@ bool js_cocos2dx_ui_Widget_getVirtualRenderer(JSContext *cx, uint32_t argc, jsva
     if (argc == 0) {
         cocos2d::Node* ret = cobj->getVirtualRenderer();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Node>(cx, (cocos2d::Node*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Node>(cx, (cocos2d::Node*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -897,14 +870,11 @@ bool js_cocos2dx_ui_Widget_getLayoutParameter(JSContext *cx, uint32_t argc, jsva
     if (argc == 0) {
         cocos2d::ui::LayoutParameter* ret = cobj->getLayoutParameter();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LayoutParameter>(cx, (cocos2d::ui::LayoutParameter*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -930,14 +900,11 @@ bool js_cocos2dx_ui_Widget_addCCSEventListener(JSContext *cx, uint32_t argc, jsv
 		        auto lambda = [=](cocos2d::Ref* larg0, int larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -1042,14 +1009,11 @@ bool js_cocos2dx_ui_Widget_findNextFocusedWidget(JSContext *cx, uint32_t argc, j
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Widget_findNextFocusedWidget : Error processing arguments");
         cocos2d::ui::Widget* ret = cobj->findNextFocusedWidget(arg0, arg1);
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -1395,14 +1359,11 @@ bool js_cocos2dx_ui_Widget_clone(JSContext *cx, uint32_t argc, jsval *vp)
     if (argc == 0) {
         cocos2d::ui::Widget* ret = cobj->clone();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -1761,14 +1722,11 @@ bool js_cocos2dx_ui_Widget_addTouchEventListener(JSContext *cx, uint32_t argc, j
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::Widget::TouchEventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -1887,14 +1845,11 @@ bool js_cocos2dx_ui_Widget_addClickEventListener(JSContext *cx, uint32_t argc, j
 		        auto lambda = [=](cocos2d::Ref* larg0) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[1];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(1, &largv[0], &rval);
 		            if (!succeed && JS_IsExceptionPending(cx)) {
@@ -2114,16 +2069,14 @@ bool js_cocos2dx_ui_Widget_getCurrentFocusedWidget(JSContext *cx, uint32_t argc,
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
+
         cocos2d::ui::Widget* ret = cocos2d::ui::Widget::getCurrentFocusedWidget();
         jsval jsret = JSVAL_NULL;
-        do {
         if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
+        jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+    } else {
+        jsret = JSVAL_NULL;
+    };
         args.rval().set(jsret);
         return true;
     }
@@ -2135,17 +2088,11 @@ bool js_cocos2dx_ui_Widget_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::Widget* ret = cocos2d::ui::Widget::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::Widget::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::Widget>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::Widget"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_Widget_create : wrong number of arguments");
@@ -2448,9 +2395,9 @@ bool js_cocos2dx_ui_Layout_getRenderFile(JSContext *cx, uint32_t argc, jsval *vp
     cocos2d::ui::Layout* cobj = (cocos2d::ui::Layout *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Layout_getRenderFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getRenderFile();
+        cocos2d::ResourceData ret = cobj->getRenderFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -2971,41 +2918,14 @@ bool js_cocos2dx_ui_Layout_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::Layout* ret = cocos2d::ui::Layout::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Layout>(cx, (cocos2d::ui::Layout*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::Layout::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::Layout>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::Layout"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_Layout_create : wrong number of arguments");
-    return false;
-}
-
-bool js_cocos2dx_ui_Layout_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::Layout::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_Layout_createInstance : wrong number of arguments");
     return false;
 }
 
@@ -3101,7 +3021,6 @@ void js_register_cocos2dx_ui_Layout(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_Layout_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_Layout_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -3243,14 +3162,11 @@ bool js_cocos2dx_ui_Button_getTitleRenderer(JSContext *cx, uint32_t argc, jsval 
     if (argc == 0) {
         cocos2d::Label* ret = cobj->getTitleRenderer();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Label>(cx, (cocos2d::Label*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Label>(cx, (cocos2d::Label*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -3268,14 +3184,11 @@ bool js_cocos2dx_ui_Button_getRendererClicked(JSContext *cx, uint32_t argc, jsva
     if (argc == 0) {
         cocos2d::ui::Scale9Sprite* ret = cobj->getRendererClicked();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -3291,9 +3204,9 @@ bool js_cocos2dx_ui_Button_getDisabledFile(JSContext *cx, uint32_t argc, jsval *
     cocos2d::ui::Button* cobj = (cocos2d::ui::Button *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Button_getDisabledFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getDisabledFile();
+        cocos2d::ResourceData ret = cobj->getDisabledFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -3365,9 +3278,9 @@ bool js_cocos2dx_ui_Button_getNormalFile(JSContext *cx, uint32_t argc, jsval *vp
     cocos2d::ui::Button* cobj = (cocos2d::ui::Button *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Button_getNormalFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getNormalFile();
+        cocos2d::ResourceData ret = cobj->getNormalFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -3401,14 +3314,11 @@ bool js_cocos2dx_ui_Button_getRendererDisabled(JSContext *cx, uint32_t argc, jsv
     if (argc == 0) {
         cocos2d::ui::Scale9Sprite* ret = cobj->getRendererDisabled();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -3839,9 +3749,9 @@ bool js_cocos2dx_ui_Button_getPressedFile(JSContext *cx, uint32_t argc, jsval *v
     cocos2d::ui::Button* cobj = (cocos2d::ui::Button *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Button_getPressedFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getPressedFile();
+        cocos2d::ResourceData ret = cobj->getPressedFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -3877,14 +3787,11 @@ bool js_cocos2dx_ui_Button_getRendererNormal(JSContext *cx, uint32_t argc, jsval
     if (argc == 0) {
         cocos2d::ui::Scale9Sprite* ret = cobj->getRendererNormal();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -3980,14 +3887,11 @@ bool js_cocos2dx_ui_Button_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Button* ret = cocos2d::ui::Button::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4002,14 +3906,11 @@ bool js_cocos2dx_ui_Button_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Button* ret = cocos2d::ui::Button::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4027,14 +3928,11 @@ bool js_cocos2dx_ui_Button_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Button* ret = cocos2d::ui::Button::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4055,14 +3953,11 @@ bool js_cocos2dx_ui_Button_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Button* ret = cocos2d::ui::Button::create(arg0, arg1, arg2, arg3);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4072,14 +3967,11 @@ bool js_cocos2dx_ui_Button_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::Button* ret = cocos2d::ui::Button::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Button>(cx, (cocos2d::ui::Button*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4087,27 +3979,6 @@ bool js_cocos2dx_ui_Button_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_Button_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_Button_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::Button::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_Button_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_Button_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -4203,7 +4074,6 @@ void js_register_cocos2dx_ui_Button(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_Button_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_Button_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -4227,6 +4097,24 @@ void js_register_cocos2dx_ui_Button(JSContext *cx, JS::HandleObject global) {
 JSClass  *jsb_cocos2d_ui_AbstractCheckButton_class;
 JSObject *jsb_cocos2d_ui_AbstractCheckButton_prototype;
 
+bool js_cocos2dx_ui_AbstractCheckButton_getCrossDisabledFile(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    cocos2d::ui::AbstractCheckButton* cobj = (cocos2d::ui::AbstractCheckButton *)(proxy ? proxy->ptr : NULL);
+    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_AbstractCheckButton_getCrossDisabledFile : Invalid Native Object");
+    if (argc == 0) {
+        cocos2d::ResourceData ret = cobj->getCrossDisabledFile();
+        jsval jsret = JSVAL_NULL;
+        jsret = resourcedata_to_jsval(cx, ret);
+        args.rval().set(jsret);
+        return true;
+    }
+
+    JS_ReportError(cx, "js_cocos2dx_ui_AbstractCheckButton_getCrossDisabledFile : wrong number of arguments: %d, was expecting %d", argc, 0);
+    return false;
+}
 bool js_cocos2dx_ui_AbstractCheckButton_getBackDisabledFile(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -4235,32 +4123,14 @@ bool js_cocos2dx_ui_AbstractCheckButton_getBackDisabledFile(JSContext *cx, uint3
     cocos2d::ui::AbstractCheckButton* cobj = (cocos2d::ui::AbstractCheckButton *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_AbstractCheckButton_getBackDisabledFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBackDisabledFile();
+        cocos2d::ResourceData ret = cobj->getBackDisabledFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
 
     JS_ReportError(cx, "js_cocos2dx_ui_AbstractCheckButton_getBackDisabledFile : wrong number of arguments: %d, was expecting %d", argc, 0);
-    return false;
-}
-bool js_cocos2dx_ui_AbstractCheckButton_getCrossDisabeldFile(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
-    js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cocos2d::ui::AbstractCheckButton* cobj = (cocos2d::ui::AbstractCheckButton *)(proxy ? proxy->ptr : NULL);
-    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_AbstractCheckButton_getCrossDisabeldFile : Invalid Native Object");
-    if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getCrossDisabeldFile();
-        jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
-        args.rval().set(jsret);
-        return true;
-    }
-
-    JS_ReportError(cx, "js_cocos2dx_ui_AbstractCheckButton_getCrossDisabeldFile : wrong number of arguments: %d, was expecting %d", argc, 0);
     return false;
 }
 bool js_cocos2dx_ui_AbstractCheckButton_loadTextureBackGroundSelected(JSContext *cx, uint32_t argc, jsval *vp)
@@ -4331,9 +4201,9 @@ bool js_cocos2dx_ui_AbstractCheckButton_getCrossNormalFile(JSContext *cx, uint32
     cocos2d::ui::AbstractCheckButton* cobj = (cocos2d::ui::AbstractCheckButton *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_AbstractCheckButton_getCrossNormalFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getCrossNormalFile();
+        cocos2d::ResourceData ret = cobj->getCrossNormalFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -4369,9 +4239,9 @@ bool js_cocos2dx_ui_AbstractCheckButton_getBackPressedFile(JSContext *cx, uint32
     cocos2d::ui::AbstractCheckButton* cobj = (cocos2d::ui::AbstractCheckButton *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_AbstractCheckButton_getBackPressedFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBackPressedFile();
+        cocos2d::ResourceData ret = cobj->getBackPressedFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -4389,14 +4259,11 @@ bool js_cocos2dx_ui_AbstractCheckButton_getRendererFrontCrossDisabled(JSContext 
     if (argc == 0) {
         cocos2d::Sprite* ret = cobj->getRendererFrontCrossDisabled();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -4414,14 +4281,11 @@ bool js_cocos2dx_ui_AbstractCheckButton_getRendererBackground(JSContext *cx, uin
     if (argc == 0) {
         cocos2d::Sprite* ret = cobj->getRendererBackground();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -4469,14 +4333,11 @@ bool js_cocos2dx_ui_AbstractCheckButton_getRendererBackgroundDisabled(JSContext 
     if (argc == 0) {
         cocos2d::Sprite* ret = cobj->getRendererBackgroundDisabled();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -4560,9 +4421,9 @@ bool js_cocos2dx_ui_AbstractCheckButton_getBackNormalFile(JSContext *cx, uint32_
     cocos2d::ui::AbstractCheckButton* cobj = (cocos2d::ui::AbstractCheckButton *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_AbstractCheckButton_getBackNormalFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBackNormalFile();
+        cocos2d::ResourceData ret = cobj->getBackNormalFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -4644,14 +4505,11 @@ bool js_cocos2dx_ui_AbstractCheckButton_getRendererFrontCross(JSContext *cx, uin
     if (argc == 0) {
         cocos2d::Sprite* ret = cobj->getRendererFrontCross();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -4669,14 +4527,11 @@ bool js_cocos2dx_ui_AbstractCheckButton_getRendererBackgroundSelected(JSContext 
     if (argc == 0) {
         cocos2d::Sprite* ret = cobj->getRendererBackgroundSelected();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -4786,8 +4641,8 @@ void js_register_cocos2dx_ui_AbstractCheckButton(JSContext *cx, JS::HandleObject
     };
 
     static JSFunctionSpec funcs[] = {
+        JS_FN("getCrossDisabledFile", js_cocos2dx_ui_AbstractCheckButton_getCrossDisabledFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getBackDisabledFile", js_cocos2dx_ui_AbstractCheckButton_getBackDisabledFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("getCrossDisabeldFile", js_cocos2dx_ui_AbstractCheckButton_getCrossDisabeldFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("loadTextureBackGroundSelected", js_cocos2dx_ui_AbstractCheckButton_loadTextureBackGroundSelected, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("loadTextureBackGroundDisabled", js_cocos2dx_ui_AbstractCheckButton_loadTextureBackGroundDisabled, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getCrossNormalFile", js_cocos2dx_ui_AbstractCheckButton_getCrossNormalFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -4849,14 +4704,11 @@ bool js_cocos2dx_ui_CheckBox_addEventListener(JSContext *cx, uint32_t argc, jsva
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::CheckBox::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -4905,14 +4757,11 @@ bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::CheckBox* ret = cocos2d::ui::CheckBox::create(arg0, arg1, arg2, arg3, arg4);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4939,14 +4788,11 @@ bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::CheckBox* ret = cocos2d::ui::CheckBox::create(arg0, arg1, arg2, arg3, arg4, arg5);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4956,14 +4802,11 @@ bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::CheckBox* ret = cocos2d::ui::CheckBox::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -4979,14 +4822,11 @@ bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::CheckBox* ret = cocos2d::ui::CheckBox::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5004,14 +4844,11 @@ bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::CheckBox* ret = cocos2d::ui::CheckBox::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::CheckBox>(cx, (cocos2d::ui::CheckBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5019,27 +4856,6 @@ bool js_cocos2dx_ui_CheckBox_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_CheckBox_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_CheckBox_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::CheckBox::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_CheckBox_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_CheckBox_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -5099,7 +4915,6 @@ void js_register_cocos2dx_ui_CheckBox(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_CheckBox_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_CheckBox_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -5141,14 +4956,11 @@ bool js_cocos2dx_ui_RadioButton_addEventListener(JSContext *cx, uint32_t argc, j
 		        auto lambda = [=](cocos2d::ui::RadioButton* larg0, cocos2d::ui::RadioButton::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -5197,14 +5009,11 @@ bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::RadioButton* ret = cocos2d::ui::RadioButton::create(arg0, arg1, arg2, arg3, arg4);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5231,14 +5040,11 @@ bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::RadioButton* ret = cocos2d::ui::RadioButton::create(arg0, arg1, arg2, arg3, arg4, arg5);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5248,14 +5054,11 @@ bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::RadioButton* ret = cocos2d::ui::RadioButton::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5271,14 +5074,11 @@ bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::RadioButton* ret = cocos2d::ui::RadioButton::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5296,14 +5096,11 @@ bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::RadioButton* ret = cocos2d::ui::RadioButton::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -5311,27 +5108,6 @@ bool js_cocos2dx_ui_RadioButton_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_RadioButton_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_RadioButton_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::RadioButton::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_RadioButton_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_RadioButton_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -5391,7 +5167,6 @@ void js_register_cocos2dx_ui_RadioButton(JSContext *cx, JS::HandleObject global)
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_RadioButton_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_RadioButton_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -5561,14 +5336,11 @@ bool js_cocos2dx_ui_RadioButtonGroup_addEventListener(JSContext *cx, uint32_t ar
 		        auto lambda = [=](cocos2d::ui::RadioButton* larg0, int larg1, cocos2d::ui::RadioButtonGroup::EventType larg2) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[3];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, larg1);
 		            largv[2] = int32_to_jsval(cx, (int)larg2);
 		            JS::RootedValue rval(cx);
@@ -5624,14 +5396,11 @@ bool js_cocos2dx_ui_RadioButtonGroup_getRadioButtonByIndex(JSContext *cx, uint32
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_RadioButtonGroup_getRadioButtonByIndex : Error processing arguments");
         cocos2d::ui::RadioButton* ret = cobj->getRadioButtonByIndex(arg0);
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RadioButton>(cx, (cocos2d::ui::RadioButton*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -5733,17 +5502,11 @@ bool js_cocos2dx_ui_RadioButtonGroup_create(JSContext *cx, uint32_t argc, jsval 
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::RadioButtonGroup* ret = cocos2d::ui::RadioButtonGroup::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RadioButtonGroup>(cx, (cocos2d::ui::RadioButtonGroup*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::RadioButtonGroup::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::RadioButtonGroup>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::RadioButtonGroup"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_RadioButtonGroup_create : wrong number of arguments");
@@ -5974,9 +5737,9 @@ bool js_cocos2dx_ui_ImageView_getRenderFile(JSContext *cx, uint32_t argc, jsval 
     cocos2d::ui::ImageView* cobj = (cocos2d::ui::ImageView *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_ImageView_getRenderFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getRenderFile();
+        cocos2d::ResourceData ret = cobj->getRenderFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -6032,14 +5795,11 @@ bool js_cocos2dx_ui_ImageView_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::ImageView* ret = cocos2d::ui::ImageView::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::ImageView>(cx, (cocos2d::ui::ImageView*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::ImageView>(cx, (cocos2d::ui::ImageView*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -6054,14 +5814,11 @@ bool js_cocos2dx_ui_ImageView_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::ImageView* ret = cocos2d::ui::ImageView::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::ImageView>(cx, (cocos2d::ui::ImageView*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::ImageView>(cx, (cocos2d::ui::ImageView*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -6071,14 +5828,11 @@ bool js_cocos2dx_ui_ImageView_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::ImageView* ret = cocos2d::ui::ImageView::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::ImageView>(cx, (cocos2d::ui::ImageView*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::ImageView>(cx, (cocos2d::ui::ImageView*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -6086,27 +5840,6 @@ bool js_cocos2dx_ui_ImageView_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_ImageView_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_ImageView_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::ImageView::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_ImageView_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_ImageView_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -6173,7 +5906,6 @@ void js_register_cocos2dx_ui_ImageView(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_ImageView_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_ImageView_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -6729,14 +6461,11 @@ bool js_cocos2dx_ui_Text_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Text* ret = cocos2d::ui::Text::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Text>(cx, (cocos2d::ui::Text*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Text>(cx, (cocos2d::ui::Text*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -6746,14 +6475,11 @@ bool js_cocos2dx_ui_Text_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::Text* ret = cocos2d::ui::Text::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Text>(cx, (cocos2d::ui::Text*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Text>(cx, (cocos2d::ui::Text*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -6761,27 +6487,6 @@ bool js_cocos2dx_ui_Text_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_Text_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_Text_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::Text::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_Text_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_Text_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -6864,7 +6569,6 @@ void js_register_cocos2dx_ui_Text(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_Text_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_Text_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -6952,9 +6656,9 @@ bool js_cocos2dx_ui_TextAtlas_getRenderFile(JSContext *cx, uint32_t argc, jsval 
     cocos2d::ui::TextAtlas* cobj = (cocos2d::ui::TextAtlas *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_TextAtlas_getRenderFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getRenderFile();
+        cocos2d::ResourceData ret = cobj->getRenderFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -7030,14 +6734,11 @@ bool js_cocos2dx_ui_TextAtlas_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::TextAtlas* ret = cocos2d::ui::TextAtlas::create(arg0, arg1, arg2, arg3, arg4);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::TextAtlas>(cx, (cocos2d::ui::TextAtlas*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::TextAtlas>(cx, (cocos2d::ui::TextAtlas*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7047,14 +6748,11 @@ bool js_cocos2dx_ui_TextAtlas_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::TextAtlas* ret = cocos2d::ui::TextAtlas::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::TextAtlas>(cx, (cocos2d::ui::TextAtlas*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::TextAtlas>(cx, (cocos2d::ui::TextAtlas*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7062,27 +6760,6 @@ bool js_cocos2dx_ui_TextAtlas_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_TextAtlas_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_TextAtlas_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::TextAtlas::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_TextAtlas_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_TextAtlas_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -7147,7 +6824,6 @@ void js_register_cocos2dx_ui_TextAtlas(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_TextAtlas_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_TextAtlas_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -7249,9 +6925,9 @@ bool js_cocos2dx_ui_LoadingBar_getRenderFile(JSContext *cx, uint32_t argc, jsval
     cocos2d::ui::LoadingBar* cobj = (cocos2d::ui::LoadingBar *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_LoadingBar_getRenderFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getRenderFile();
+        cocos2d::ResourceData ret = cobj->getRenderFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -7383,14 +7059,11 @@ bool js_cocos2dx_ui_LoadingBar_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::LoadingBar* ret = cocos2d::ui::LoadingBar::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7405,14 +7078,11 @@ bool js_cocos2dx_ui_LoadingBar_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::LoadingBar* ret = cocos2d::ui::LoadingBar::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7422,14 +7092,11 @@ bool js_cocos2dx_ui_LoadingBar_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::LoadingBar* ret = cocos2d::ui::LoadingBar::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7445,14 +7112,11 @@ bool js_cocos2dx_ui_LoadingBar_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::LoadingBar* ret = cocos2d::ui::LoadingBar::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7470,14 +7134,11 @@ bool js_cocos2dx_ui_LoadingBar_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::LoadingBar* ret = cocos2d::ui::LoadingBar::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LoadingBar>(cx, (cocos2d::ui::LoadingBar*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -7485,27 +7146,6 @@ bool js_cocos2dx_ui_LoadingBar_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_LoadingBar_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_LoadingBar_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::LoadingBar::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_LoadingBar_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_LoadingBar_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -7574,7 +7214,6 @@ void js_register_cocos2dx_ui_LoadingBar(JSContext *cx, JS::HandleObject global) 
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_LoadingBar_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_LoadingBar_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -7796,14 +7435,11 @@ bool js_cocos2dx_ui_ScrollView_getInnerContainer(JSContext *cx, uint32_t argc, j
     if (argc == 0) {
         cocos2d::ui::Layout* ret = cobj->getInnerContainer();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Layout>(cx, (cocos2d::ui::Layout*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Layout>(cx, (cocos2d::ui::Layout*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -8033,14 +7669,11 @@ bool js_cocos2dx_ui_ScrollView_addEventListener(JSContext *cx, uint32_t argc, js
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::ScrollView::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -8627,41 +8260,14 @@ bool js_cocos2dx_ui_ScrollView_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::ScrollView* ret = cocos2d::ui::ScrollView::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::ScrollView>(cx, (cocos2d::ui::ScrollView*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::ScrollView::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::ScrollView>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::ScrollView"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_ScrollView_create : wrong number of arguments");
-    return false;
-}
-
-bool js_cocos2dx_ui_ScrollView_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::ScrollView::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_ScrollView_createInstance : wrong number of arguments");
     return false;
 }
 
@@ -8774,7 +8380,6 @@ void js_register_cocos2dx_ui_ScrollView(JSContext *cx, JS::HandleObject global) 
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_ScrollView_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_ScrollView_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -8844,14 +8449,11 @@ bool js_cocos2dx_ui_ListView_getCenterItemInCurrentView(JSContext *cx, uint32_t 
     if (argc == 0) {
         cocos2d::ui::Widget* ret = cobj->getCenterItemInCurrentView();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9055,14 +8657,11 @@ bool js_cocos2dx_ui_ListView_addEventListener(JSContext *cx, uint32_t argc, jsva
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::ListView::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -9113,14 +8712,11 @@ bool js_cocos2dx_ui_ListView_getTopmostItemInCurrentView(JSContext *cx, uint32_t
     if (argc == 0) {
         cocos2d::ui::Widget* ret = cobj->getTopmostItemInCurrentView();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9154,14 +8750,11 @@ bool js_cocos2dx_ui_ListView_getBottommostItemInCurrentView(JSContext *cx, uint3
     if (argc == 0) {
         cocos2d::ui::Widget* ret = cobj->getBottommostItemInCurrentView();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9197,14 +8790,11 @@ bool js_cocos2dx_ui_ListView_getLeftmostItemInCurrentView(JSContext *cx, uint32_
     if (argc == 0) {
         cocos2d::ui::Widget* ret = cobj->getLeftmostItemInCurrentView();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9264,14 +8854,11 @@ bool js_cocos2dx_ui_ListView_getItem(JSContext *cx, uint32_t argc, jsval *vp)
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_ListView_getItem : Error processing arguments");
         cocos2d::ui::Widget* ret = cobj->getItem(arg0);
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9400,14 +8987,11 @@ bool js_cocos2dx_ui_ListView_getClosestItemToPosition(JSContext *cx, uint32_t ar
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_ListView_getClosestItemToPosition : Error processing arguments");
         cocos2d::ui::Widget* ret = cobj->getClosestItemToPosition(arg0, arg1);
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9425,14 +9009,11 @@ bool js_cocos2dx_ui_ListView_getRightmostItemInCurrentView(JSContext *cx, uint32
     if (argc == 0) {
         cocos2d::ui::Widget* ret = cobj->getRightmostItemInCurrentView();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9456,14 +9037,11 @@ bool js_cocos2dx_ui_ListView_getClosestItemToPositionInCurrentView(JSContext *cx
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_ListView_getClosestItemToPositionInCurrentView : Error processing arguments");
         cocos2d::ui::Widget* ret = cobj->getClosestItemToPositionInCurrentView(arg0, arg1);
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -9533,41 +9111,14 @@ bool js_cocos2dx_ui_ListView_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::ListView* ret = cocos2d::ui::ListView::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::ListView>(cx, (cocos2d::ui::ListView*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::ListView::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::ListView>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::ListView"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_ListView_create : wrong number of arguments");
-    return false;
-}
-
-bool js_cocos2dx_ui_ListView_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::ListView::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_ListView_createInstance : wrong number of arguments");
     return false;
 }
 
@@ -9659,7 +9210,6 @@ void js_register_cocos2dx_ui_ListView(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_ListView_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_ListView_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -9789,9 +9339,9 @@ bool js_cocos2dx_ui_Slider_getBallNormalFile(JSContext *cx, uint32_t argc, jsval
     cocos2d::ui::Slider* cobj = (cocos2d::ui::Slider *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Slider_getBallNormalFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBallNormalFile();
+        cocos2d::ResourceData ret = cobj->getBallNormalFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -9845,9 +9395,9 @@ bool js_cocos2dx_ui_Slider_getBallPressedFile(JSContext *cx, uint32_t argc, jsva
     cocos2d::ui::Slider* cobj = (cocos2d::ui::Slider *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Slider_getBallPressedFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBallPressedFile();
+        cocos2d::ResourceData ret = cobj->getBallPressedFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -9947,14 +9497,11 @@ bool js_cocos2dx_ui_Slider_addEventListener(JSContext *cx, uint32_t argc, jsval 
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::Slider::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -10037,9 +9584,9 @@ bool js_cocos2dx_ui_Slider_getProgressBarFile(JSContext *cx, uint32_t argc, jsva
     cocos2d::ui::Slider* cobj = (cocos2d::ui::Slider *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Slider_getProgressBarFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getProgressBarFile();
+        cocos2d::ResourceData ret = cobj->getProgressBarFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -10103,9 +9650,9 @@ bool js_cocos2dx_ui_Slider_getBackFile(JSContext *cx, uint32_t argc, jsval *vp)
     cocos2d::ui::Slider* cobj = (cocos2d::ui::Slider *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Slider_getBackFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBackFile();
+        cocos2d::ResourceData ret = cobj->getBackFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -10129,6 +9676,24 @@ bool js_cocos2dx_ui_Slider_isScale9Enabled(JSContext *cx, uint32_t argc, jsval *
     }
 
     JS_ReportError(cx, "js_cocos2dx_ui_Slider_isScale9Enabled : wrong number of arguments: %d, was expecting %d", argc, 0);
+    return false;
+}
+bool js_cocos2dx_ui_Slider_getBallDisabledFile(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    cocos2d::ui::Slider* cobj = (cocos2d::ui::Slider *)(proxy ? proxy->ptr : NULL);
+    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Slider_getBallDisabledFile : Invalid Native Object");
+    if (argc == 0) {
+        cocos2d::ResourceData ret = cobj->getBallDisabledFile();
+        jsval jsret = JSVAL_NULL;
+        jsret = resourcedata_to_jsval(cx, ret);
+        args.rval().set(jsret);
+        return true;
+    }
+
+    JS_ReportError(cx, "js_cocos2dx_ui_Slider_getBallDisabledFile : wrong number of arguments: %d, was expecting %d", argc, 0);
     return false;
 }
 bool js_cocos2dx_ui_Slider_setCapInsetProgressBarRebderer(JSContext *cx, uint32_t argc, jsval *vp)
@@ -10169,24 +9734,6 @@ bool js_cocos2dx_ui_Slider_setCapInsetsBarRenderer(JSContext *cx, uint32_t argc,
     }
 
     JS_ReportError(cx, "js_cocos2dx_ui_Slider_setCapInsetsBarRenderer : wrong number of arguments: %d, was expecting %d", argc, 1);
-    return false;
-}
-bool js_cocos2dx_ui_Slider_getBallDisabeldFile(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    JS::RootedObject obj(cx, args.thisv().toObjectOrNull());
-    js_proxy_t *proxy = jsb_get_js_proxy(obj);
-    cocos2d::ui::Slider* cobj = (cocos2d::ui::Slider *)(proxy ? proxy->ptr : NULL);
-    JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_Slider_getBallDisabeldFile : Invalid Native Object");
-    if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getBallDisabeldFile();
-        jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
-        args.rval().set(jsret);
-        return true;
-    }
-
-    JS_ReportError(cx, "js_cocos2dx_ui_Slider_getBallDisabeldFile : wrong number of arguments: %d, was expecting %d", argc, 0);
     return false;
 }
 bool js_cocos2dx_ui_Slider_getPercent(JSContext *cx, uint32_t argc, jsval *vp)
@@ -10292,14 +9839,11 @@ bool js_cocos2dx_ui_Slider_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Slider* ret = cocos2d::ui::Slider::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Slider>(cx, (cocos2d::ui::Slider*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Slider>(cx, (cocos2d::ui::Slider*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -10317,14 +9861,11 @@ bool js_cocos2dx_ui_Slider_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Slider* ret = cocos2d::ui::Slider::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Slider>(cx, (cocos2d::ui::Slider*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Slider>(cx, (cocos2d::ui::Slider*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -10334,14 +9875,11 @@ bool js_cocos2dx_ui_Slider_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::Slider* ret = cocos2d::ui::Slider::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Slider>(cx, (cocos2d::ui::Slider*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Slider>(cx, (cocos2d::ui::Slider*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -10349,27 +9887,6 @@ bool js_cocos2dx_ui_Slider_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_Slider_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_Slider_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::Slider::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_Slider_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_Slider_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -10440,9 +9957,9 @@ void js_register_cocos2dx_ui_Slider(JSContext *cx, JS::HandleObject global) {
         JS_FN("loadSlidBallTexturePressed", js_cocos2dx_ui_Slider_loadSlidBallTexturePressed, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getBackFile", js_cocos2dx_ui_Slider_getBackFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("isScale9Enabled", js_cocos2dx_ui_Slider_isScale9Enabled, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FN("getBallDisabledFile", js_cocos2dx_ui_Slider_getBallDisabledFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setCapInsetProgressBarRebderer", js_cocos2dx_ui_Slider_setCapInsetProgressBarRebderer, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setCapInsetsBarRenderer", js_cocos2dx_ui_Slider_setCapInsetsBarRenderer, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("getBallDisabeldFile", js_cocos2dx_ui_Slider_getBallDisabeldFile, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("getPercent", js_cocos2dx_ui_Slider_getPercent, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("setCapInsets", js_cocos2dx_ui_Slider_setCapInsets, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FN("loadSlidBallTextureDisabled", js_cocos2dx_ui_Slider_loadSlidBallTextureDisabled, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -10453,7 +9970,6 @@ void js_register_cocos2dx_ui_Slider(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_Slider_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_Slider_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -11011,17 +10527,11 @@ bool js_cocos2dx_ui_UICCTextField_create(JSContext *cx, uint32_t argc, jsval *vp
         ok &= jsval_to_std_string(cx, args.get(1), &arg1);
         ok &= JS::ToNumber( cx, args.get(2), &arg2) && !isnan(arg2);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_UICCTextField_create : Error processing arguments");
-        cocos2d::ui::UICCTextField* ret = cocos2d::ui::UICCTextField::create(arg0, arg1, arg2);
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::UICCTextField>(cx, (cocos2d::ui::UICCTextField*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::UICCTextField::create(arg0, arg1, arg2);
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::UICCTextField>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::UICCTextField"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_UICCTextField_create : wrong number of arguments");
@@ -11400,14 +10910,11 @@ bool js_cocos2dx_ui_TextField_addEventListener(JSContext *cx, uint32_t argc, jsv
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::TextField::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -11956,14 +11463,11 @@ bool js_cocos2dx_ui_TextField_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::TextField* ret = cocos2d::ui::TextField::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::TextField>(cx, (cocos2d::ui::TextField*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::TextField>(cx, (cocos2d::ui::TextField*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -11973,14 +11477,11 @@ bool js_cocos2dx_ui_TextField_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::TextField* ret = cocos2d::ui::TextField::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::TextField>(cx, (cocos2d::ui::TextField*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::TextField>(cx, (cocos2d::ui::TextField*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -11988,27 +11489,6 @@ bool js_cocos2dx_ui_TextField_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_TextField_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_TextField_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::TextField::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_TextField_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_TextField_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -12108,7 +11588,6 @@ void js_register_cocos2dx_ui_TextField(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_TextField_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_TextField_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -12196,9 +11675,9 @@ bool js_cocos2dx_ui_TextBMFont_getRenderFile(JSContext *cx, uint32_t argc, jsval
     cocos2d::ui::TextBMFont* cobj = (cocos2d::ui::TextBMFont *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_ui_TextBMFont_getRenderFile : Invalid Native Object");
     if (argc == 0) {
-        cocos2d::ResouceData ret = cobj->getRenderFile();
+        cocos2d::ResourceData ret = cobj->getRenderFile();
         jsval jsret = JSVAL_NULL;
-        jsret = resoucedata_to_jsval(cx, ret);
+        jsret = resourcedata_to_jsval(cx, ret);
         args.rval().set(jsret);
         return true;
     }
@@ -12241,14 +11720,11 @@ bool js_cocos2dx_ui_TextBMFont_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::TextBMFont* ret = cocos2d::ui::TextBMFont::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::TextBMFont>(cx, (cocos2d::ui::TextBMFont*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::TextBMFont>(cx, (cocos2d::ui::TextBMFont*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -12258,14 +11734,11 @@ bool js_cocos2dx_ui_TextBMFont_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::TextBMFont* ret = cocos2d::ui::TextBMFont::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::TextBMFont>(cx, (cocos2d::ui::TextBMFont*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::TextBMFont>(cx, (cocos2d::ui::TextBMFont*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -12273,27 +11746,6 @@ bool js_cocos2dx_ui_TextBMFont_create(JSContext *cx, uint32_t argc, jsval *vp)
     JS_ReportError(cx, "js_cocos2dx_ui_TextBMFont_create : wrong number of arguments");
     return false;
 }
-bool js_cocos2dx_ui_TextBMFont_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::TextBMFont::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_TextBMFont_createInstance : wrong number of arguments");
-    return false;
-}
-
 bool js_cocos2dx_ui_TextBMFont_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
@@ -12357,7 +11809,6 @@ void js_register_cocos2dx_ui_TextBMFont(JSContext *cx, JS::HandleObject global) 
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_TextBMFont_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_TextBMFont_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -12589,14 +12040,11 @@ bool js_cocos2dx_ui_PageView_addEventListener(JSContext *cx, uint32_t argc, jsva
 		        auto lambda = [=](cocos2d::Ref* larg0, cocos2d::ui::PageView::EventType larg1) -> void {
 		            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
 		            jsval largv[2];
-		            do {
 		            if (larg0) {
-		                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0);
-		                largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-		            } else {
-		                largv[0] = JSVAL_NULL;
-		            }
-		        } while (0);
+		            largv[0] = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Ref>(cx, (cocos2d::Ref*)larg0));
+		        } else {
+		            largv[0] = JSVAL_NULL;
+		        };
 		            largv[1] = int32_to_jsval(cx, (int)larg1);
 		            JS::RootedValue rval(cx);
 		            bool succeed = func->invoke(2, &largv[0], &rval);
@@ -12825,41 +12273,14 @@ bool js_cocos2dx_ui_PageView_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::PageView* ret = cocos2d::ui::PageView::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::PageView>(cx, (cocos2d::ui::PageView*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::PageView::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::PageView>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::PageView"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_PageView_create : wrong number of arguments");
-    return false;
-}
-
-bool js_cocos2dx_ui_PageView_createInstance(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
-    if (argc == 0) {
-        cocos2d::Ref* ret = cocos2d::ui::PageView::createInstance();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Ref>(cx, (cocos2d::Ref*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
-        return true;
-    }
-    JS_ReportError(cx, "js_cocos2dx_ui_PageView_createInstance : wrong number of arguments");
     return false;
 }
 
@@ -12941,7 +12362,6 @@ void js_register_cocos2dx_ui_PageView(JSContext *cx, JS::HandleObject global) {
 
     static JSFunctionSpec st_funcs[] = {
         JS_FN("create", js_cocos2dx_ui_PageView_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FN("createInstance", js_cocos2dx_ui_PageView_createInstance, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
         JS_FS_END
     };
 
@@ -12977,6 +12397,7 @@ bool js_cocos2dx_ui_Helper_getSubStringOfUTF8String(JSContext *cx, uint32_t argc
         ok &= jsval_to_ulong(cx, args.get(1), &arg1);
         ok &= jsval_to_ulong(cx, args.get(2), &arg2);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Helper_getSubStringOfUTF8String : Error processing arguments");
+
         std::string ret = cocos2d::ui::Helper::getSubStringOfUTF8String(arg0, arg1, arg2);
         jsval jsret = JSVAL_NULL;
         jsret = std_string_to_jsval(cx, ret);
@@ -13003,6 +12424,7 @@ bool js_cocos2dx_ui_Helper_convertBoundingBoxToScreen(JSContext *cx, uint32_t ar
             JSB_PRECONDITION2( arg0, cx, false, "Invalid Native Object");
         } while (0);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Helper_convertBoundingBoxToScreen : Error processing arguments");
+
         cocos2d::Rect ret = cocos2d::ui::Helper::convertBoundingBoxToScreen(arg0);
         jsval jsret = JSVAL_NULL;
         jsret = ccrect_to_jsval(cx, ret);
@@ -13047,16 +12469,14 @@ bool js_cocos2dx_ui_Helper_seekActionWidgetByActionTag(JSContext *cx, uint32_t a
         } while (0);
         ok &= jsval_to_int32(cx, args.get(1), (int32_t *)&arg1);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Helper_seekActionWidgetByActionTag : Error processing arguments");
+
         cocos2d::ui::Widget* ret = cocos2d::ui::Helper::seekActionWidgetByActionTag(arg0, arg1);
         jsval jsret = JSVAL_NULL;
-        do {
         if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
+        jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+    } else {
+        jsret = JSVAL_NULL;
+    };
         args.rval().set(jsret);
         return true;
     }
@@ -13082,16 +12502,14 @@ bool js_cocos2dx_ui_Helper_seekWidgetByName(JSContext *cx, uint32_t argc, jsval 
         } while (0);
         ok &= jsval_to_std_string(cx, args.get(1), &arg1);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Helper_seekWidgetByName : Error processing arguments");
+
         cocos2d::ui::Widget* ret = cocos2d::ui::Helper::seekWidgetByName(arg0, arg1);
         jsval jsret = JSVAL_NULL;
-        do {
         if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
+        jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+    } else {
+        jsret = JSVAL_NULL;
+    };
         args.rval().set(jsret);
         return true;
     }
@@ -13117,16 +12535,14 @@ bool js_cocos2dx_ui_Helper_seekWidgetByTag(JSContext *cx, uint32_t argc, jsval *
         } while (0);
         ok &= jsval_to_int32(cx, args.get(1), (int32_t *)&arg1);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Helper_seekWidgetByTag : Error processing arguments");
+
         cocos2d::ui::Widget* ret = cocos2d::ui::Helper::seekWidgetByTag(arg0, arg1);
         jsval jsret = JSVAL_NULL;
-        do {
         if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
+        jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Widget>(cx, (cocos2d::ui::Widget*)ret));
+    } else {
+        jsret = JSVAL_NULL;
+    };
         args.rval().set(jsret);
         return true;
     }
@@ -13144,6 +12560,7 @@ bool js_cocos2dx_ui_Helper_restrictCapInsetRect(JSContext *cx, uint32_t argc, js
         ok &= jsval_to_ccrect(cx, args.get(0), &arg0);
         ok &= jsval_to_ccsize(cx, args.get(1), &arg1);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Helper_restrictCapInsetRect : Error processing arguments");
+
         cocos2d::Rect ret = cocos2d::ui::Helper::restrictCapInsetRect(arg0, arg1);
         jsval jsret = JSVAL_NULL;
         jsret = ccrect_to_jsval(cx, ret);
@@ -13383,17 +12800,11 @@ bool js_cocos2dx_ui_RichElementText_create(JSContext *cx, uint32_t argc, jsval *
         ok &= jsval_to_std_string(cx, args.get(4), &arg4);
         ok &= JS::ToNumber( cx, args.get(5), &arg5) && !isnan(arg5);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_RichElementText_create : Error processing arguments");
-        cocos2d::ui::RichElementText* ret = cocos2d::ui::RichElementText::create(arg0, arg1, arg2, arg3, arg4, arg5);
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RichElementText>(cx, (cocos2d::ui::RichElementText*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::RichElementText::create(arg0, arg1, arg2, arg3, arg4, arg5);
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::RichElementText>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::RichElementText"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_RichElementText_create : wrong number of arguments");
@@ -13524,17 +12935,11 @@ bool js_cocos2dx_ui_RichElementImage_create(JSContext *cx, uint32_t argc, jsval 
         ok &= jsval_to_uint16(cx, args.get(2), &arg2);
         ok &= jsval_to_std_string(cx, args.get(3), &arg3);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_RichElementImage_create : Error processing arguments");
-        cocos2d::ui::RichElementImage* ret = cocos2d::ui::RichElementImage::create(arg0, arg1, arg2, arg3);
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RichElementImage>(cx, (cocos2d::ui::RichElementImage*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::RichElementImage::create(arg0, arg1, arg2, arg3);
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::RichElementImage>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::RichElementImage"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_RichElementImage_create : wrong number of arguments");
@@ -13681,17 +13086,11 @@ bool js_cocos2dx_ui_RichElementCustomNode_create(JSContext *cx, uint32_t argc, j
             JSB_PRECONDITION2( arg3, cx, false, "Invalid Native Object");
         } while (0);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_RichElementCustomNode_create : Error processing arguments");
-        cocos2d::ui::RichElementCustomNode* ret = cocos2d::ui::RichElementCustomNode::create(arg0, arg1, arg2, arg3);
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RichElementCustomNode>(cx, (cocos2d::ui::RichElementCustomNode*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::RichElementCustomNode::create(arg0, arg1, arg2, arg3);
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::RichElementCustomNode>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::RichElementCustomNode"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_RichElementCustomNode_create : wrong number of arguments");
@@ -13922,17 +13321,11 @@ bool js_cocos2dx_ui_RichText_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::RichText* ret = cocos2d::ui::RichText::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RichText>(cx, (cocos2d::ui::RichText*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::RichText::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::RichText>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::RichText"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_RichText_create : wrong number of arguments");
@@ -14059,14 +13452,11 @@ bool js_cocos2dx_ui_HBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::HBox* ret = cocos2d::ui::HBox::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::HBox>(cx, (cocos2d::ui::HBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::HBox>(cx, (cocos2d::ui::HBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -14076,14 +13466,11 @@ bool js_cocos2dx_ui_HBox_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::HBox* ret = cocos2d::ui::HBox::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::HBox>(cx, (cocos2d::ui::HBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::HBox>(cx, (cocos2d::ui::HBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -14207,14 +13594,11 @@ bool js_cocos2dx_ui_VBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::VBox* ret = cocos2d::ui::VBox::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::VBox>(cx, (cocos2d::ui::VBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::VBox>(cx, (cocos2d::ui::VBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -14224,14 +13608,11 @@ bool js_cocos2dx_ui_VBox_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::VBox* ret = cocos2d::ui::VBox::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::VBox>(cx, (cocos2d::ui::VBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::VBox>(cx, (cocos2d::ui::VBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -14355,14 +13736,11 @@ bool js_cocos2dx_ui_RelativeBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::RelativeBox* ret = cocos2d::ui::RelativeBox::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RelativeBox>(cx, (cocos2d::ui::RelativeBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RelativeBox>(cx, (cocos2d::ui::RelativeBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -14372,14 +13750,11 @@ bool js_cocos2dx_ui_RelativeBox_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::RelativeBox* ret = cocos2d::ui::RelativeBox::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::RelativeBox>(cx, (cocos2d::ui::RelativeBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::RelativeBox>(cx, (cocos2d::ui::RelativeBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -14655,14 +14030,11 @@ bool js_cocos2dx_ui_Scale9Sprite_resizableSpriteWithCapInsets(JSContext *cx, uin
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_Scale9Sprite_resizableSpriteWithCapInsets : Error processing arguments");
         cocos2d::ui::Scale9Sprite* ret = cobj->resizableSpriteWithCapInsets(arg0);
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -14797,14 +14169,11 @@ bool js_cocos2dx_ui_Scale9Sprite_getSprite(JSContext *cx, uint32_t argc, jsval *
     if (argc == 0) {
         cocos2d::Sprite* ret = cobj->getSprite();
         jsval jsret = JSVAL_NULL;
-        do {
-            if (ret) {
-                js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret);
-                jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-            } else {
-                jsret = JSVAL_NULL;
-            }
-        } while (0);
+        if (ret) {
+            jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::Sprite>(cx, (cocos2d::Sprite*)ret));
+        } else {
+            jsret = JSVAL_NULL;
+        };
         args.rval().set(jsret);
         return true;
     }
@@ -15472,14 +14841,11 @@ bool js_cocos2dx_ui_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15489,14 +14855,11 @@ bool js_cocos2dx_ui_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsval *vp)
         if (argc == 0) {
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::create();
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15512,14 +14875,11 @@ bool js_cocos2dx_ui_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15535,14 +14895,11 @@ bool js_cocos2dx_ui_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15555,14 +14912,11 @@ bool js_cocos2dx_ui_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::create(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15585,14 +14939,11 @@ bool js_cocos2dx_ui_Scale9Sprite_createWithSpriteFrameName(JSContext *cx, uint32
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::createWithSpriteFrameName(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15605,14 +14956,11 @@ bool js_cocos2dx_ui_Scale9Sprite_createWithSpriteFrameName(JSContext *cx, uint32
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::createWithSpriteFrameName(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15643,14 +14991,11 @@ bool js_cocos2dx_ui_Scale9Sprite_createWithSpriteFrame(JSContext *cx, uint32_t a
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::createWithSpriteFrame(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -15671,14 +15016,11 @@ bool js_cocos2dx_ui_Scale9Sprite_createWithSpriteFrame(JSContext *cx, uint32_t a
             if (!ok) { ok = true; break; }
             cocos2d::ui::Scale9Sprite* ret = cocos2d::ui::Scale9Sprite::createWithSpriteFrame(arg0);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::Scale9Sprite>(cx, (cocos2d::ui::Scale9Sprite*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -16263,14 +15605,11 @@ bool js_cocos2dx_ui_EditBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::EditBox* ret = cocos2d::ui::EditBox::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -16288,14 +15627,11 @@ bool js_cocos2dx_ui_EditBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::EditBox* ret = cocos2d::ui::EditBox::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -16319,14 +15655,11 @@ bool js_cocos2dx_ui_EditBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::EditBox* ret = cocos2d::ui::EditBox::create(arg0, arg1);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -16360,14 +15693,11 @@ bool js_cocos2dx_ui_EditBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::EditBox* ret = cocos2d::ui::EditBox::create(arg0, arg1, arg2);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -16412,14 +15742,11 @@ bool js_cocos2dx_ui_EditBox_create(JSContext *cx, uint32_t argc, jsval *vp)
             if (!ok) { ok = true; break; }
             cocos2d::ui::EditBox* ret = cocos2d::ui::EditBox::create(arg0, arg1, arg2, arg3);
             jsval jsret = JSVAL_NULL;
-            do {
-                if (ret) {
-                    js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret);
-                    jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-                } else {
-                    jsret = JSVAL_NULL;
-                }
-            } while (0);
+            if (ret) {
+                jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::EditBox>(cx, (cocos2d::ui::EditBox*)ret));
+            } else {
+                jsret = JSVAL_NULL;
+            };
             args.rval().set(jsret);
             return true;
         }
@@ -17460,17 +16787,11 @@ bool js_cocos2dx_ui_LayoutComponent_create(JSContext *cx, uint32_t argc, jsval *
 {
     JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
     if (argc == 0) {
-        cocos2d::ui::LayoutComponent* ret = cocos2d::ui::LayoutComponent::create();
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LayoutComponent>(cx, (cocos2d::ui::LayoutComponent*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::LayoutComponent::create();
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::LayoutComponent>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::LayoutComponent"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_LayoutComponent_create : wrong number of arguments");
@@ -17493,16 +16814,14 @@ bool js_cocos2dx_ui_LayoutComponent_bindLayoutComponent(JSContext *cx, uint32_t 
             JSB_PRECONDITION2( arg0, cx, false, "Invalid Native Object");
         } while (0);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_LayoutComponent_bindLayoutComponent : Error processing arguments");
+
         cocos2d::ui::LayoutComponent* ret = cocos2d::ui::LayoutComponent::bindLayoutComponent(arg0);
         jsval jsret = JSVAL_NULL;
-        do {
         if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::LayoutComponent>(cx, (cocos2d::ui::LayoutComponent*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
+        jsret = OBJECT_TO_JSVAL(js_get_or_create_jsobject<cocos2d::ui::LayoutComponent>(cx, (cocos2d::ui::LayoutComponent*)ret));
+    } else {
+        jsret = JSVAL_NULL;
+    };
         args.rval().set(jsret);
         return true;
     }
@@ -17831,17 +17150,11 @@ bool js_cocos2dx_ui_ScrollViewBar_create(JSContext *cx, uint32_t argc, jsval *vp
         } while (0);
         ok &= jsval_to_int32(cx, args.get(1), (int32_t *)&arg1);
         JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_ui_ScrollViewBar_create : Error processing arguments");
-        cocos2d::ui::ScrollViewBar* ret = cocos2d::ui::ScrollViewBar::create(arg0, arg1);
-        jsval jsret = JSVAL_NULL;
-        do {
-        if (ret) {
-            js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::ui::ScrollViewBar>(cx, (cocos2d::ui::ScrollViewBar*)ret);
-            jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-        } else {
-            jsret = JSVAL_NULL;
-        }
-    } while (0);
-        args.rval().set(jsret);
+
+        auto ret = cocos2d::ui::ScrollViewBar::create(arg0, arg1);
+        js_type_class_t *typeClass = js_get_type_from_native<cocos2d::ui::ScrollViewBar>(ret);
+        JS::RootedObject jsret(cx, jsb_ref_autoreleased_create_jsobject(cx, ret, typeClass, "cocos2d::ui::ScrollViewBar"));
+        args.rval().set(OBJECT_TO_JSVAL(jsret));
         return true;
     }
     JS_ReportError(cx, "js_cocos2dx_ui_ScrollViewBar_create : wrong number of arguments");
